@@ -34,6 +34,7 @@
 	
 	<developers>
 		<developer>
+
 			<id>Fer</id>
 			<name>Fernando</name>
 			<email>ferherque@alum.us.es</email>
@@ -47,6 +48,24 @@
 				</picUrl>
 			</properties>
 		</developer>
+		
+		<developer>
+			<id>Jes</id>
+			<name>Jesus</name>
+			<email>jesbarsig@alum.us.es</email>
+			<url>http://www.tmht.com/jes</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<properties>
+				<picUrl>
+					https://www.mediavida.com/img/featured/2020/05/4cwe57n4wl_xl.jpg
+				</picUrl>
+			</properties>
+		</developer>
+		
+		<!-- More developers ... -->
+
 	</developers>
 	
 	<dependencies>
