@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.samples</groupId>
-	<artifactId>g1-12</artifactId>
+
 	<version>2.2.0.BUILD-SNAPSHOT</version>
 
 	<parent>
@@ -12,7 +12,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.4.RELEASE</version>
 	</parent>
-	<name>g1-12</name>
+
 
 	<properties>
 
@@ -77,9 +77,25 @@
 				</picUrl>
 			</properties>
 		</developer>
+    
+    <developer>
+			<id>man</id>
+			<name>Manuel</name>
+			<email>manmogvil@gmail.com</email>
+			<url>http://www.tmht.com/donnie</url>
+			<roles>
+				<role>Grand master</role>
+			</roles>
+			<properties>
+				<picUrl>
+					https://discordapp.com/channels/762949109589475328/762949109589475334/767717256145797131
+				</picUrl>
+			</properties>
+		</developer>
 		
 		<!-- More developers ... -->
 	</developers>
+
 	<dependencies>
 		<!-- Spring and Spring Boot dependencies -->
 		<dependency>
