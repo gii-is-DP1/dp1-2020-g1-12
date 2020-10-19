@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.samples</groupId>
-	<artifactId>spring-petclinic</artifactId>
+
 	<version>2.2.0.BUILD-SNAPSHOT</version>
 
 	<parent>
@@ -12,7 +12,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.4.RELEASE</version>
 	</parent>
-	<name>petclinic</name>
+
 
 	<properties>
 
@@ -31,11 +31,54 @@
 		<spring-format.version>0.0.19</spring-format.version>
 
 	</properties>
-	
-	
-	<developers>
 
+	<developers>
+    
 		<developer>
+			<id>Fer</id>
+			<name>Fernando</name>
+			<email>ferherque@alum.us.es</email>
+			<url>http://www.tmht.com/fer</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<properties>
+				<picUrl>
+					https://as00.epimg.net/img/comunes/fotos/fichas/equipos/large/171.png
+				</picUrl>
+			</properties>
+		</developer>
+		
+		<developer>
+            <id>Jes</id>
+            <name>Jesus</name>
+            <email>jesbarsig@alum.us.es</email>
+            <url>http://www.tmht.com/jes</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://www.mediavida.com/img/featured/2020/05/4cwe57n4wl_xl.jpg
+                </picUrl>
+            </properties>
+        </developer>
+      
+      <developer>
+			<id>Laura</id>
+			<name>Laura</name>
+			<email>lauraportillosoler@gmail.com</email>
+			<url></url>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<properties>
+				<picUrl>
+				</picUrl>
+			</properties>
+		</developer>
+    
+    <developer>
 			<id>man</id>
 			<name>Manuel</name>
 			<email>manmogvil@gmail.com</email>
@@ -49,10 +92,10 @@
 				</picUrl>
 			</properties>
 		</developer>
+		
 		<!-- More developers ... -->
 	</developers>
-	
-	
+
 	<dependencies>
 		<!-- Spring and Spring Boot dependencies -->
 		<dependency>
