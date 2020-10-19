@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.samples</groupId>
-    <artifactId>g1-12</artifactId>
+    <artifactId>G1-12</artifactId>
 	<version>2.2.0.BUILD-SNAPSHOT</version>
 
 	<parent>
@@ -13,7 +13,7 @@
 		<version>2.2.4.RELEASE</version>
 	</parent>
 
-    <name>g1-12</name>
+    <name>G1-12</name>
 
 	<properties>
 
