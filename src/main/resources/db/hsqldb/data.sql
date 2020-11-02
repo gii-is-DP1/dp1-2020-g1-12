@@ -18,6 +18,11 @@ INSERT INTO users(username,password,enabled) VALUES ('fer1','f3r',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'fer1','owner');
 
 
+-- Introducimos a un cliente.
+
+INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com');
+
+
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
