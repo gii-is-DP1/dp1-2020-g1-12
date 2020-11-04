@@ -3,15 +3,10 @@ package org.springframework.samples.petclinic.web;
 import java.util.Optional;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Cliente;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.ClienteService;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -23,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/clientes/{clienteId}")
-
 public class ClienteController {
 	
 	@Autowired
@@ -50,7 +44,7 @@ public class ClienteController {
 		String vista="clientes/perfil";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("cliente", cliente);
-			return "cliente/editPerfil";
+			return "cliente/editarPerfil";
 		}else {
 			clienteService.guardar(cliente);
 			modelMap.addAttribute("mensage", "El cliente ha sido guardado con éxito.");			
@@ -77,7 +71,5 @@ public class ClienteController {
 			return "redirect:/clientes/{clienteId}";
 		}
 	}
-	
-	
 
 }

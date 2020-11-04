@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 
+
 @Entity
 @Table(name = "clientes")
 public class Cliente extends Persona{
@@ -22,6 +23,4 @@ public class Cliente extends Persona{
 	}
 	
 	
-	
-
 }
