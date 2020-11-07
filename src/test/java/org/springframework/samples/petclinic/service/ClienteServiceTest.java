@@ -15,11 +15,11 @@ public class ClienteServiceTest {
 	@Autowired
 	private ClienteService clienteService;
 	
-	@Test
-	public void testCountWithInititalData() {
-		int count=clienteService.clienteCount();
-		assertEquals(count,1);
-	}
+//	@Test
+//	public void testCountWithInititalData() {
+//		int count=clienteService.clienteCount();
+//		assertEquals(count,1);
+//	}
 	
 
 }

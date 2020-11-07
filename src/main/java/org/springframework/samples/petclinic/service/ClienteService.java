@@ -35,5 +35,10 @@ public class ClienteService {
 		return clienteRepository.findById(id).get();
 	}
 	
+	public Iterable<Cliente> findAllClient(){
+		Iterable<Cliente> result = clienteRepository.findAll();
+		return result;
+	}
+	
 	
 }
