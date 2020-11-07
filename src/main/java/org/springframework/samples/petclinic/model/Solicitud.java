@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.validator.constraints.Length;
 
 
 @Entity
@@ -16,10 +19,13 @@ public class Solicitud extends BaseEntity{
 
 	@Column(name = "descripcion")
 	@NotEmpty
+	@Length(min=3,max=250)
 	private String descripcion;
 
 	@Column(name = "stock")
 	@NotEmpty
+	@Min(1)
+	@Max(500)
 	private Integer stock;
 	
 	@Column(name = "situacion")
@@ -29,6 +35,7 @@ public class Solicitud extends BaseEntity{
 	private Situacion situacion;
 	
 	@Column(name = "respuesta")
+	@Length(min=0,max=100)
 	private String respuesta;
 
 	public String getDescripcion() {

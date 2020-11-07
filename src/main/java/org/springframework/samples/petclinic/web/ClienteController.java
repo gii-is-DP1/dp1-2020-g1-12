@@ -17,18 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/clientes/{clienteId}")
+@RequestMapping("/clientes")
 public class ClienteController {
 	
 	@Autowired
 	private ClienteService clienteService;
 	
-	@GetMapping()
+	@GetMapping(value="/{clienteId}")
 	public String mostrarPerfil(@PathVariable("clienteId") Integer clienteId, ModelMap modelMap){
 		
 		String  perfil="clientes/perfil";
-		Optional<Cliente> optperfil = clienteService.datosPerfil(clienteId);
-		
+		Optional<Cliente> optperfil = clienteService.datosPerfil(clienteId);		
 		modelMap.addAttribute("cliente",optperfil.get());
 		return perfil;
 	}
@@ -52,14 +51,14 @@ public class ClienteController {
 		return vista;
 	}
 	
-	@GetMapping(value = "/editar")
+	@GetMapping(value = "/{clienteId}/editar")
 	public String editar(@PathVariable("clienteId") int clienteId, Model model) {
 		Cliente cliente = this.clienteService.findClientById(clienteId);
 		model.addAttribute(cliente);
 		return "clientes/editarPerfil";
 	}
 
-	@PostMapping(value = "/editar")
+	@PostMapping(value = "/{clienteId}/editar")
 	public String procesoEditar(@Valid Cliente cliente, BindingResult result,
 			@PathVariable("clienteId") int clienteId) {
 		if (result.hasErrors()) {
@@ -71,5 +70,14 @@ public class ClienteController {
 			return "redirect:/clientes/{clienteId}";
 		}
 	}
+	
+	@GetMapping()
+	 public String listadoCliente(ModelMap modelMap) {
+		String vista = "moderadores/listadoClientes";
+		Iterable<Cliente> clientes = clienteService.findAllClient();
+		modelMap.addAttribute("clientes",clientes);
+		return vista;
+	}
+
 
 }
