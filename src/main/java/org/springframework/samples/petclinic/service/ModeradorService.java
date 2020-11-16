@@ -16,7 +16,6 @@ public class ModeradorService {
 	
 	@Autowired
 	private ModeradorRepository moderadorRepository;
-	//private ClienteRepository clienteRepository;
 	
 
 	@Transactional

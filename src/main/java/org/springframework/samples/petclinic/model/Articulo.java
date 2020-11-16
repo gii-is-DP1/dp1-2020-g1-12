@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.URL;
 @Table(name = "articulos")
 public class Articulo extends Producto{
 	
-
+	
 	@Column(name = "urlImagen")
 	@URL
 	private String urlImagen;
@@ -37,11 +37,17 @@ public class Articulo extends Producto{
 	@ColumnDefault(value = "'Nuevo'")
 	private Tipo tipo;
 	
+	@Column(name="gastoEnvio")//Realmente queremos que esto se pueda cambiar? en ese caso quitar el set
+	@NotEmpty
+	@Min(0)
+	private Integer gastoEnvio;
+	
 	@Column(name = "tiempoEntrega")
 	@NotEmpty
 	@Min(1)
 	@Max(30)
 	private Integer tiempoEntrega;
+	
 
 	
 	
@@ -100,5 +106,15 @@ public class Articulo extends Producto{
 	public void setTiempoEntrega(Integer tiempoEntrega) {
 		this.tiempoEntrega = tiempoEntrega;
 	}
+
+	public Integer getGastoEnvio() {
+		return gastoEnvio;
+	}
+
+	public void setGastoEnvio(Integer gastoEnvio) {
+		this.gastoEnvio = gastoEnvio;
+	}
+	
+	
 	
 }
