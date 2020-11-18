@@ -7,7 +7,7 @@
 
 <petclinic:layout pageName="solicitud">
     <h2>Listado de solicitudes</h2>
-
+    <p>${mensaje}</p>
     <table id="solicitudesTable" class="table table-striped">
         <thead>
         <tr>
@@ -60,20 +60,17 @@
                 </td> 
                 <td>
                     <c:out value="${solicitudes.respuesta}"/>
-                </td>                                                  
-
-<!--
-                <td> 
-                    <c:out value="${owner.user.username}"/> 
                 </td>
-                <td> 
-                   <c:out value="${owner.user.password}"/> 
-                </td> -->
-
                 
+ 				<spring:url value="/solicitudes/{solicitudId}" var="solicitudUrl">
+              		<spring:param name="solicitudId" value="${solicitudes.id}"/>
+           		</spring:url>
+        		
+        		<td>
+				<a href="${fn:escapeXml(solicitudUrl)}"><button class="btn btn-default" type="submit">Acceder</button></a>
+            	</td>
             </tr>
         </c:forEach> 
-           
         </tbody>
     </table>
 </petclinic:layout>
