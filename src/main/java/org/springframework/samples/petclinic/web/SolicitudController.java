@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.web;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -34,8 +37,21 @@ public class SolicitudController {
 		return vista;
 	}
 	
-
-
+	@GetMapping(value="/{solicitudId}")
+	public String mostrarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
+		String solicitud="solicitudes/detalles";
+		Optional<Solicitud> optsolicitud = solicitudService.detallesSolicitud(solicitudId);
+		modelMap.addAttribute("solicitud", optsolicitud.get());
+		return solicitud;
+	}
+	
+	@GetMapping(value="/{solicitudId}/aceptar")
+	public String aceptarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
+		solicitudService.aceptarSolicitud(solicitudId);
+		modelMap.addAttribute("mensaje", "La solicitud ha sido aceptada correctamente");
+		return listadoSolicitud(modelMap);
+	}
+	
 	@GetMapping(path="/new")
 	public String crearSolicutud(ModelMap modelMap) {
 		String vista = "solicitudes/editarSolicitud";
@@ -50,9 +66,8 @@ public class SolicitudController {
 			modelMap.addAttribute("solicitud",solicitud);
 			return "solicitudes/editarSolicitud";
 		}else {
-			System.out.println("gggggggggggggggggggggggggggg");
 			solicitudService.guardar(solicitud);
-			modelMap.addAttribute("mensaje","Se ha guardado correctamente.");
+			modelMap.addAttribute("mensaje", "Se ha guardado correctamente.");
 			vista =listadoSolicitud(modelMap); 
 		}
 		return vista;

@@ -39,7 +39,6 @@ public class ClienteController {
 	}
     
 	public String guardarPerfil(@Valid Cliente cliente,BindingResult result, ModelMap modelMap) {
-		
 		String vista="clientes/perfil";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("cliente", cliente);

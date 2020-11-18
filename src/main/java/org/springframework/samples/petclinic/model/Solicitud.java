@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "solicitudes")
-public class Solicitud extends BaseEntity{
+public class Solicitud extends BaseEntity {
 
 	@Column(name = "descripcion")
 	@NotEmpty
@@ -43,32 +43,26 @@ public class Solicitud extends BaseEntity{
 	private Double precio;
 	
 	@Column(name = "stock")
-	@NotEmpty
 	@Min(1)
 	@Max(500)
 	private Integer stock;
 	
 	@Column(name = "tipo")
-	//@NotEmpty
+	@NotEmpty
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault(value = "'Nuevo'")
 	private Tipo tipo;
 	
 	@Column(name = "tiempoEntrega")
-	@NotEmpty
 	@Min(1)
 	@Max(30)
 	private Integer tiempoEntrega;
 	
 	@Column(name="gastoEnvio")
-	@NotEmpty
 	@Min(0)
 	private Integer gastoEnvio;
 
 	@Column(name = "situacion")
-	//@NotEmpty
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault(value = "'Pendiente'")
 	private Situacion situacion;
 	
 	@Column(name = "respuesta")
@@ -162,6 +156,5 @@ public class Solicitud extends BaseEntity{
 	public void setRespuesta(String respuesta) {
 		this.respuesta = respuesta;
 	}
-
 	
 }

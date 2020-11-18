@@ -15,17 +15,17 @@
             <petclinic:inputField label="Descripción" name="descripcion"/>
             <petclinic:inputField label="Modelo" name="modelo"/>
             <petclinic:inputField label="Marca" name="marca"/>
+            <label for="tipo">Tipo </label>
+            <select name="tipo">
+    			<option value="Nuevo">Nuevo</option>
+    			<option value="Reacondicionado">Reacondicionado</option>
+    			<option value="SemiNuevo">Seminuevo</option>
+  			</select>
             <petclinic:inputField label="Url de la imagen" name="urlImagen"/>
             <petclinic:inputField label="Precio" name="precio"/>
-            <label>Stock:</label>
-            <input type="number" name="stock"/>
-            <label>Tipo:</label>
-            <input name="tipo"/>
-            <label>Tiempo de la entrega:</label>
-            <input name="tiempoEntrega"/>
-            <label>Gastos de envio:</label>
-            <input name="gastoEnvio"/>            
-            
+            <petclinic:inputField label="Stock" name="stock"/>
+            <petclinic:inputField label="Tiempo de la entrega" name="tiempoEntrega"/>
+            <petclinic:inputField label="Gastos de envio" name="gastoEnvio"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

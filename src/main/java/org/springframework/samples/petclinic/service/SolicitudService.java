@@ -2,8 +2,7 @@ package org.springframework.samples.petclinic.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.validation.Valid;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Situacion;
@@ -36,9 +35,23 @@ public class SolicitudService {
 		}
 		return lista;
 	}
+	
+	@Transactional
+	public Optional<Solicitud> detallesSolicitud(Integer solicitudId) {
+		Optional<Solicitud> result = solicitudRepository.findById(solicitudId);
+		return result;
+	}
+	
+	@Transactional
+	public void aceptarSolicitud(Integer solicitudId) {
+		Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
+		solicitud.get().setSituacion(Situacion.Aceptada);
+	}
 
 	@Transactional
 	public void guardar(Solicitud solicitud) {
+		solicitud.setSituacion(Situacion.Pendiente); // Por defecto, la solicitud tiene situación "Pendiente".
+		solicitud.setRespuesta(""); // Por defecto, la solicitud no tiene una respuesta.
 		solicitudRepository.save(solicitud);
 	}
 	
