@@ -14,14 +14,7 @@
             <th style="width: 150px;">Descripción</th>
             <th style="width: 200px;">Modelo</th>
             <th>Marca</th>
-            <th style="width: 120px">UrlImagen</th>
-            <th>Precio</th>
-            <th style="width: 120px">Stock</th>
-            <th style="width: 120px">Tipo</th>
-            <th style="width: 120px">Tiempo de Entrega</th>
-            <th style="width: 120px">Gasto de Envio</th>
-            <th style="width: 120px">Situación</th>
-            <th style="width: 120px">Respuesta</th>
+  
         </tr>
         </thead>
         <tbody>
@@ -37,30 +30,7 @@
                 <td>
                     <c:out value="${solicitudes.marca}"/>
                 </td>
-                <td>
-                    <c:out value="${solicitudes.urlImagen}"/>
-                </td>
-                <td>
-                    <c:out value="${solicitudes.precio}"/>
-                </td>
-                <td>
-                    <c:out value="${solicitudes.stock}"/>
-                </td>
-                <td>
-                    <c:out value="${solicitudes.tipo}"/>
-                </td>  
-                <td>
-                    <c:out value="${solicitudes.tiempoEntrega}"/>
-                </td>  
-                <td>
-                    <c:out value="${solicitudes.gastoEnvio}"/>
-                </td>
-                <td>
-                    <c:out value="${solicitudes.situacion}"/>
-                </td> 
-                <td>
-                    <c:out value="${solicitudes.respuesta}"/>
-                </td>
+
                 
  				<spring:url value="/solicitudes/{solicitudId}" var="solicitudUrl">
               		<spring:param name="solicitudId" value="${solicitudes.id}"/>

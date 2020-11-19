@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="solicitudes">
@@ -45,25 +46,24 @@
             <th>Gasto de Envío</th>
             <td>${solicitud.gastoEnvio}</td>
         </tr>
-        <tr>
-            <th>Situación</th>
-            <td>${solicitud.situacion}</td>
-        </tr>
-		<tr>
-            <th>Respuesta</th>
-            <td>${solicitud.respuesta}</td>
-        </tr>
+
    		</table>
+
+   		
            <spring:url value="/solicitudes/{solicitudId}/aceptar" var="aceptarUrl">
                <spring:param name="solicitudId" value="${solicitud.id}"/>
            </spring:url>      
-            
-    
-            <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-				<a href="${fn:escapeXml(aceptarUrl)}"><button class="btn btn-default" type="submit">Aceptar</button></a>
-            </div>
-        </div>
+           <spring:url value="/solicitudes/{solicitudId}/denegar" var="denegarUrl">
+               <spring:param name="solicitudId" value="${solicitud.id}"/>
+           </spring:url>
+ 
+        <form:form modelAttribute="solicitud" action="/solicitudes/${solicitudId}/denegar" class="form-horizontal" id="add-owner-form">
+				<petclinic:inputField label="Respuesta" name="respuesta"/>
+				<button class="btn btn-default" type="submit">Denegar</button>
+				
+   		</form:form>    	
+		<a href="${fn:escapeXml(aceptarUrl)}"><button class="btn btn-default" type="submit">Aceptar</button></a>
+
 
     
 

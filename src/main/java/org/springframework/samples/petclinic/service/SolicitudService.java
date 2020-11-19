@@ -43,9 +43,16 @@ public class SolicitudService {
 	}
 	
 	@Transactional
-	public void aceptarSolicitud(Integer solicitudId) {
+	public void aceptarSolicitud(Integer solicitudId,String respuesta) {
 		Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
+		solicitud.get().setRespuesta(respuesta);
 		solicitud.get().setSituacion(Situacion.Aceptada);
+	}
+	@Transactional
+	public void denegarSolicitud(Integer solicitudId,String respuesta) {
+		Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
+		solicitud.get().setRespuesta(respuesta);
+		solicitud.get().setSituacion(Situacion.Denegada);
 	}
 
 	@Transactional
