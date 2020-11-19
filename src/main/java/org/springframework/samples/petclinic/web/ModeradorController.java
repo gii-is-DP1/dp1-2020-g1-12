@@ -26,8 +26,6 @@ public class ModeradorController {
 	@Autowired
 	private ModeradorService moderadorService;
 	
-	
-	
 	@GetMapping()
 	public String mostrarPerfil(@PathVariable("moderadorId") Integer moderadorId, ModelMap modelMap){
 		
