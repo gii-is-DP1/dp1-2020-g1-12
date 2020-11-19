@@ -37,7 +37,6 @@ public class ClienteService {
 	
 	public Iterable<Cliente> findAllClient(){
 		Iterable<Cliente> result = clienteRepository.findAll();
-		
 		return result;
 	}
 	

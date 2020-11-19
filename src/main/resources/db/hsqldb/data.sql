@@ -18,10 +18,22 @@ INSERT INTO users(username,password,enabled) VALUES ('fer1','f3r',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'fer1','owner');
 
 
+-- Introducimos un bloqueo.
+
+INSERT INTO bloqueos VALUES (1, false, '');
+INSERT INTO bloqueos VALUES (2, false, '');
+INSERT INTO bloqueos VALUES (3, false, '');
+INSERT INTO bloqueos VALUES (4, false, '');
+
 -- Introducimos a un cliente.
 
-INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com');
-INSERT INTO clientes VALUES (2, 'Martin', 'C/Konquero 4', '23456119', 'Francisco', '988733111', 'martin@gmail.com');
+INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com',1);
+INSERT INTO clientes VALUES (2, 'Martin', 'C/Konquero 4', '23456119', 'Francisco', '988733111', 'martin@gmail.com',2);
+
+-- Introducimos a un vendedor.
+
+INSERT INTO vendedores VALUES (1, 'Lorca', 'C/Galindo 96', '29976789', 'Pepe', '678733221', 'pepe200@gmail.com',3);
+INSERT INTO vendedores VALUES (2, 'Pérez', 'C/Real 2', '09456119', 'Lola', '688733111', 'lolaindigo@gmail.com',4);
 
 -- Introducimos a un moderador.
 

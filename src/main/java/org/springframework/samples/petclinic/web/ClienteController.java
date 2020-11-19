@@ -6,7 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Cliente;
+import org.springframework.samples.petclinic.model.Vendedor;
 import org.springframework.samples.petclinic.service.ClienteService;
+import org.springframework.samples.petclinic.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -22,6 +24,9 @@ public class ClienteController {
 	
 	@Autowired
 	private ClienteService clienteService;
+	
+	@Autowired
+	private VendedorService vendedorService;
 	
 	@GetMapping(value="/{clienteId}")
 	public String mostrarPerfil(@PathVariable("clienteId") Integer clienteId, ModelMap modelMap){
@@ -74,7 +79,12 @@ public class ClienteController {
 	 public String listadoCliente(ModelMap modelMap) {
 		String vista = "moderadores/listadoClientes";
 		Iterable<Cliente> clientes = clienteService.findAllClient();
+		Iterable<Vendedor> vendedores = vendedorService.findAllSeller();
+
+		
+		
 		modelMap.addAttribute("clientes",clientes);
+		modelMap.addAttribute("vendedores",vendedores);
 		return vista;
 	}
 
