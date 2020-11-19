@@ -48,7 +48,6 @@ public class Solicitud extends BaseEntity {
 	private Integer stock;
 	
 	@Column(name = "tipo")
-	@NotEmpty
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
 	

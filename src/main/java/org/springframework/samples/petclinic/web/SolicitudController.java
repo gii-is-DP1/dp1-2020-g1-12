@@ -45,10 +45,16 @@ public class SolicitudController {
 		return solicitud;
 	}
 	
-	@GetMapping(value="/{solicitudId}/aceptar")
-	public String aceptarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
-		solicitudService.aceptarSolicitud(solicitudId);
+	@PostMapping(value="/{solicitudId}/aceptar")
+	public String aceptarSolicitud(@PathVariable("solicitudId") Integer solicitudId,Solicitud solicitud, ModelMap modelMap) {
+		solicitudService.aceptarSolicitud(solicitudId,solicitud.getRespuesta());
 		modelMap.addAttribute("mensaje", "La solicitud ha sido aceptada correctamente");
+		return listadoSolicitud(modelMap);
+	}
+	@PostMapping(value="/{solicitudId}/denegar")
+	public String denegarSolicitud(@PathVariable("solicitudId") Integer solicitudId,Solicitud solicitud, ModelMap modelMap) {
+		solicitudService.denegarSolicitud(solicitudId,solicitud.getRespuesta());
+		modelMap.addAttribute("mensaje", "La solicitud ha sido denegada correctamente");
 		return listadoSolicitud(modelMap);
 	}
 	
