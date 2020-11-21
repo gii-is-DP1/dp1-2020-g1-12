@@ -50,6 +50,10 @@ INSERT INTO solicitudes VALUES (3, 'Solicitud de venta de MSI Prestige Evo A11M-
 INSERT INTO solicitudes VALUES (4, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI Prestige','Evo A11M-003ES',988.99,
 									'','Pendiente',5,8,'Nuevo','vacía');
 
+-- Introducimos un artículo.
+
+INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',4.99,988.99, 100,8,'Nuevo','vacía',1);
+									
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');

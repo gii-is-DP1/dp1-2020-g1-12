@@ -4,18 +4,22 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Table(name = "articulos")
 public class Articulo extends Producto{
 	
+	@ManyToOne
+	@JoinColumn(name = "vendedor_id")
+	private Vendedor vendedor;
 	
 	@Column(name = "urlImagen")
 	@URL
@@ -34,7 +38,6 @@ public class Articulo extends Producto{
 	@Column(name = "tipo")
 	@NotEmpty
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault(value = "'Nuevo'")
 	private Tipo tipo;
 	
 	@Column(name="gastoEnvio")//Realmente queremos que esto se pueda cambiar? en ese caso quitar el set

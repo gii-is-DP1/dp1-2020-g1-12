@@ -17,6 +17,7 @@
             <th style="width: 120px">Teléfono</th>
             <th>Dirección</th>
             <th style="width: 120px">Email</th>
+            <th style="width: 120px">Bloquear Actividad</th>
         </tr>
         </thead>
         <tbody>
@@ -80,6 +81,7 @@
             <th style="width: 120px">Teléfono</th>
             <th>Dirección</th>
             <th style="width: 120px">Email</th>
+            <th style="width: 120px">Bloquear Actividad</th>
         </tr>
         </thead>
         <tbody>

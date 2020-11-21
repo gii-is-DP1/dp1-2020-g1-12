@@ -26,8 +26,20 @@ public class ClienteService {
 		return result;
 	}
 	
+	@Transactional
 	public void guardar(Cliente cliente) {
 		clienteRepository.save(cliente);		
+	}
+	
+	@Transactional
+	public void editar(Cliente cliente, Integer id) {
+		Cliente clienteGuardado = findClientById(id);
+		clienteGuardado.setApellido(cliente.getApellido());
+		clienteGuardado.setDireccion(cliente.getDireccion());
+		clienteGuardado.setDni(cliente.getDni());
+		clienteGuardado.setEmail(cliente.getEmail());
+		clienteGuardado.setNombre(cliente.getNombre());
+		clienteGuardado.setTelefono(cliente.getTelefono());
 	}
 	
 	@Transactional(readOnly = true)
