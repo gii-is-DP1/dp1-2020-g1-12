@@ -5,7 +5,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Articulo;
 import org.springframework.samples.petclinic.model.Vendedor;
 import org.springframework.samples.petclinic.service.VendedorService;
 import org.springframework.stereotype.Controller;
@@ -68,6 +67,7 @@ public class VendedorController {
 		}
 	}
 	
+	/*
 	@GetMapping(value="/{vendedorId}/articulosVendidos")
 	public String mostrarArticulos(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
 		String vista = "vendedores/listadoArticulos";
@@ -75,4 +75,5 @@ public class VendedorController {
 		modelMap.addAttribute("articulos", optarticulos);
 		return vista;
 	}
+	*/
 }

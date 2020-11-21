@@ -27,12 +27,12 @@ public class Solicitud extends BaseEntity {
 	
 	@Column(name = "modelo")
 	@NotEmpty
-	@Length(min=3,max=20)
+	@Length(min=3,max=200)
 	private String modelo;
 	
 	@Column(name = "marca")
 	@NotEmpty
-	@Length(min=3,max=20)
+	@Length(min=3,max=50)
 	private String marca;
 	
 	@Column(name = "urlImagen")

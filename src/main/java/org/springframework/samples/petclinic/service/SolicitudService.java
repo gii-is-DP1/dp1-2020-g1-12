@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Articulo;
 import org.springframework.samples.petclinic.model.Situacion;
 import org.springframework.samples.petclinic.model.Solicitud;
 import org.springframework.samples.petclinic.model.Vendedor;
+import org.springframework.samples.petclinic.repository.ArticuloRepository;
 import org.springframework.samples.petclinic.repository.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,8 @@ public class SolicitudService {
 	
 	@Autowired
 	private SolicitudRepository solicitudRepository;
+	@Autowired
+	private ArticuloRepository articuloRepository;
 
 	@Transactional
 	public Iterable<Solicitud> solicitudesPendientes() {
@@ -39,8 +43,19 @@ public class SolicitudService {
 	
 	@Transactional
 	public void aceptarSolicitud(Integer solicitudId) {
-		Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
-		solicitud.get().setSituacion(Situacion.Aceptada);
+		Solicitud solicitud = solicitudRepository.findById(solicitudId).get();
+		solicitud.setSituacion(Situacion.Aceptada);
+		Articulo articulo = new Articulo();
+		articulo.setSolicitud(solicitud);
+		articulo.setGastoEnvio(solicitud.getGastoEnvio());
+		articulo.setMarca(solicitud.getMarca());
+		articulo.setModelo(solicitud.getModelo());
+		articulo.setPrecio(solicitud.getPrecio());
+		articulo.setStock(solicitud.getStock());
+		articulo.setTiempoEntrega(solicitud.getTiempoEntrega());
+		articulo.setTipo(solicitud.getTipo());
+		articulo.setUrlImagen(solicitud.getUrlImagen());
+		articuloRepository.save(articulo);
 	}
 	@Transactional
 	public void denegarSolicitud(Integer solicitudId,String respuesta) {
