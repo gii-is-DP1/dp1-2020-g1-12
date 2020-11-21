@@ -22,50 +22,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class VendedorController {
 	@Autowired
 	private VendedorService vendedorService;
-	
-	@GetMapping(value="/{vendedorId}")
-public String mostrarPerfil(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap){
-		
-		String  perfil="vendedor/perfil";
-		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorId);		
-		modelMap.addAttribute("vendedor",optperfil.get());
+
+	@GetMapping(value = "/{vendedorId}")
+	public String mostrarPerfil(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
+
+		String perfil = "vendedor/perfil";
+		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorId);
+		modelMap.addAttribute("vendedor", optperfil.get());
 		return perfil;
 	}
-	
+
 	public String salvarPerfil() {
-		String perfil = "vendedor/salvarPerfil";
-		
+		String perfil = "vendedores/salvarPerfil";
+
 		return perfil;
 	}
-	public String guardarPerfil(@Valid Vendedor vendedor,BindingResult result, ModelMap modelMap) {
-		String vista="vendedor/perfil";
-		if(result.hasErrors()) {
+
+	public String guardarPerfil(@Valid Vendedor vendedor, BindingResult result, ModelMap modelMap) {
+		String vista = "vendedores/perfil";
+		if (result.hasErrors()) {
 			modelMap.addAttribute("vendedor", vendedor);
 			return "vendedor/editarPerfil";
-		}else {
+		} else {
 			vendedorService.guardar(vendedor);
-			modelMap.addAttribute("mensage", "El vendedor ha sido guardado con éxito.");			
+			modelMap.addAttribute("mensage", "El vendedor ha sido guardado con éxito.");
 		}
 		return vista;
 	}
+
 	@GetMapping(value = "/{vendedorId}/editar")
 	public String editar(@PathVariable("vendedorId") int vendedorId, Model model) {
 		Vendedor vendedor = this.vendedorService.findSellerById(vendedorId);
 		model.addAttribute(vendedor);
-		return "vendedor/editarPerfil";
+		return "vendedores/editarPerfil";
 	}
+
 	@PostMapping(value = "/{vendedorId}/editar")
 	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result,
 			@PathVariable("vendedorId") int vendedorId) {
 		if (result.hasErrors()) {
-			return "vendedor/editarPerfil";
-		}
-		else {
+			return "vendedores/editarPerfil";
+		} else {
 			vendedor.setId(vendedorId);
 			this.vendedorService.guardar(vendedor);
 			return "redirect:/vendedores/{vendedorId}";
 		}
-		
+
 	}
-	
+
 }
