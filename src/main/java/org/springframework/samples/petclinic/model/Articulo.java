@@ -4,21 +4,25 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Table(name = "articulos")
 public class Articulo extends Producto{
+	/*
+	@ManyToOne
+	@JoinColumn(name = "vendedor_id")
+	private Vendedor vendedor;
+	*/
 	
+	@OneToOne(optional=false)
+	private Solicitud solicitud;
 	
 	@Column(name = "urlImagen")
-	@URL
+	//@URL
 	private String urlImagen;
 	
 	@Column(name = "precio")
@@ -32,25 +36,19 @@ public class Articulo extends Producto{
 	private Integer stock;
 	
 	@Column(name = "tipo")
-	@NotEmpty
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault(value = "'Nuevo'")
 	private Tipo tipo;
 	
 	@Column(name="gastoEnvio")//Realmente queremos que esto se pueda cambiar? en ese caso quitar el set
-	@NotEmpty
 	@Min(0)
 	private Integer gastoEnvio;
 	
 	@Column(name = "tiempoEntrega")
-	@NotEmpty
 	@Min(1)
 	@Max(30)
 	private Integer tiempoEntrega;
 	
 
-	
-	
 	public String getModelo() {
 		return modelo;
 	}
@@ -114,7 +112,13 @@ public class Articulo extends Producto{
 	public void setGastoEnvio(Integer gastoEnvio) {
 		this.gastoEnvio = gastoEnvio;
 	}
-	
-	
+
+	public Solicitud getSolicitud() {
+		return solicitud;
+	}
+
+	public void setSolicitud(Solicitud solicitud) {
+		this.solicitud = solicitud;
+	}
 	
 }

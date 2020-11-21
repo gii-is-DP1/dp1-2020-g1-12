@@ -20,6 +20,10 @@ public class Vendedor extends Persona {
 	public String getEmail() {
 		return email;
 	}
+	
+	/* @OneToMany(cascade = CascadeType.ALL, mappedBy = "vendedor", fetch = FetchType.EAGER)
+	private Collection<Articulo> articulos;
+	*/
 
 	public void setEmail(String email) {
 		this.email = email;
@@ -32,4 +36,18 @@ public class Vendedor extends Persona {
 	public void setBloqueo(Bloqueo bloqueo) {
 		this.bloqueo = bloqueo;
 	}
+
+	/*
+	public Collection<Articulo> getArticulos() {
+		return articulos;
+	}
+
+	public void setArticulos(Collection<Articulo> articulos) {
+		this.articulos = articulos;
+	}
+
+	public void añadirArticulo(Articulo articulo) {
+		getArticulos().add(articulo);
+	}
+*/
 }

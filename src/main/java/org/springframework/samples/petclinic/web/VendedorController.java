@@ -18,15 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/vendedores")
-
 public class VendedorController {
+	
 	@Autowired
 	private VendedorService vendedorService;
 
 	@GetMapping(value = "/{vendedorId}")
 	public String mostrarPerfil(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
-
-		String perfil = "vendedor/perfil";
+		String perfil = "vendedores/perfil";
 		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorId);
 		modelMap.addAttribute("vendedor", optperfil.get());
 		return perfil;
@@ -63,11 +62,18 @@ public class VendedorController {
 		if (result.hasErrors()) {
 			return "vendedores/editarPerfil";
 		} else {
-			vendedor.setId(vendedorId);
-			this.vendedorService.guardar(vendedor);
+			this.vendedorService.editar(vendedor, vendedorId);
 			return "redirect:/vendedores/{vendedorId}";
 		}
-
 	}
-
+	
+	/*
+	@GetMapping(value="/{vendedorId}/articulosVendidos")
+	public String mostrarArticulos(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
+		String vista = "vendedores/listadoArticulos";
+		Iterable<Articulo> optarticulos = vendedorService.findArticlesByProvider(vendedorId);
+		modelMap.addAttribute("articulos", optarticulos);
+		return vista;
+	}
+	*/
 }

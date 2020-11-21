@@ -1,16 +1,15 @@
 package org.springframework.samples.petclinic.model;
 
 import javax.persistence.Column;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
 
 
@@ -18,6 +17,9 @@ import org.hibernate.validator.constraints.Length;
 @Table(name = "solicitudes")
 public class Solicitud extends BaseEntity {
 
+	@ManyToOne(optional=false)
+	private Vendedor vendedor;
+	
 	@Column(name = "descripcion")
 	@NotEmpty
 	@Length(min=3,max=250)
@@ -25,12 +27,12 @@ public class Solicitud extends BaseEntity {
 	
 	@Column(name = "modelo")
 	@NotEmpty
-	@Length(min=3,max=20)
+	@Length(min=3,max=200)
 	private String modelo;
 	
 	@Column(name = "marca")
 	@NotEmpty
-	@Length(min=3,max=20)
+	@Length(min=3,max=50)
 	private String marca;
 	
 	@Column(name = "urlImagen")
@@ -154,6 +156,14 @@ public class Solicitud extends BaseEntity {
 
 	public void setRespuesta(String respuesta) {
 		this.respuesta = respuesta;
+	}
+	
+	public Vendedor getVendedor() {
+		return vendedor;
+	}
+	
+	public void setVendedor(Vendedor vendedor) {
+		this.vendedor = vendedor;
 	}
 	
 }
