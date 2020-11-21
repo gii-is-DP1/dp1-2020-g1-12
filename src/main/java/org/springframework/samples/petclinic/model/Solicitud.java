@@ -4,7 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -16,8 +18,12 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Table(name = "solicitudes")
 public class Solicitud extends BaseEntity {
+	
+	@OneToOne(optional=true)
+	private Articulo articulo;
 
 	@ManyToOne(optional=false)
+	@JoinColumn(name = "vendedor_id")
 	private Vendedor vendedor;
 	
 	@Column(name = "descripcion")
@@ -60,7 +66,7 @@ public class Solicitud extends BaseEntity {
 	
 	@Column(name="gastoEnvio")
 	@Min(0)
-	private Integer gastoEnvio;
+	private Double gastoEnvio;
 
 	@Column(name = "situacion")
 	@Enumerated(EnumType.STRING)
@@ -134,11 +140,11 @@ public class Solicitud extends BaseEntity {
 		this.tiempoEntrega = tiempoEntrega;
 	}
 
-	public Integer getGastoEnvio() {
+	public Double getGastoEnvio() {
 		return gastoEnvio;
 	}
 
-	public void setGastoEnvio(Integer gastoEnvio) {
+	public void setGastoEnvio(Double gastoEnvio) {
 		this.gastoEnvio = gastoEnvio;
 	}
 
@@ -165,5 +171,12 @@ public class Solicitud extends BaseEntity {
 	public void setVendedor(Vendedor vendedor) {
 		this.vendedor = vendedor;
 	}
-	
+
+	public Articulo getArticulo() {
+		return articulo;
+	}
+
+	public void setArticulo(Articulo articulo) {
+		this.articulo = articulo;
+	}
 }

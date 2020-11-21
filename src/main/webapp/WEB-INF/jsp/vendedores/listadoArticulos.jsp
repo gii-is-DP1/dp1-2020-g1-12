@@ -7,14 +7,14 @@
 
 <petclinic:layout pageName="articulos">
     
-    <h2>Lista de artículos vendidos</h2>
+    <h2>Lista de artículos en venta</h2>
 
     <table id="articulosTable" class="table table-striped">
         <thead>
         <tr>
             <th style="width: 150px;">Artículo</th>
             <th style="width: 200px;">Precio</th>
-            <th style="width: 120px">Comprador</th>
+            <th style="width: 120px">Oferta</th>
         </tr>
         </thead>
         <tbody>

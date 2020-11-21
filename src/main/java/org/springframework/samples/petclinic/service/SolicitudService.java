@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,12 +15,12 @@ import org.springframework.samples.petclinic.repository.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 public class SolicitudService {
-	
+
 	@Autowired
 	private SolicitudRepository solicitudRepository;
+
 	@Autowired
 	private ArticuloRepository articuloRepository;
 
@@ -27,26 +28,25 @@ public class SolicitudService {
 	public Iterable<Solicitud> solicitudesPendientes() {
 		Iterable<Solicitud> result = solicitudRepository.findAll();
 		List<Solicitud> lista = new ArrayList<>();
-		for(Solicitud sol:result) {
-			if(sol.getSituacion().equals(Situacion.Pendiente)) {
+		for (Solicitud sol : result) {
+			if (sol.getSituacion().equals(Situacion.Pendiente)) {
 				lista.add(sol);
 			}
 		}
 		return lista;
 	}
-	
+
 	@Transactional
 	public Optional<Solicitud> detallesSolicitud(Integer solicitudId) {
 		Optional<Solicitud> result = solicitudRepository.findById(solicitudId);
 		return result;
 	}
-	
+
 	@Transactional
 	public void aceptarSolicitud(Integer solicitudId) {
 		Solicitud solicitud = solicitudRepository.findById(solicitudId).get();
 		solicitud.setSituacion(Situacion.Aceptada);
 		Articulo articulo = new Articulo();
-		articulo.setSolicitud(solicitud);
 		articulo.setGastoEnvio(solicitud.getGastoEnvio());
 		articulo.setMarca(solicitud.getMarca());
 		articulo.setModelo(solicitud.getModelo());
@@ -55,10 +55,12 @@ public class SolicitudService {
 		articulo.setTiempoEntrega(solicitud.getTiempoEntrega());
 		articulo.setTipo(solicitud.getTipo());
 		articulo.setUrlImagen(solicitud.getUrlImagen());
+		solicitud.setArticulo(articulo);
 		articuloRepository.save(articulo);
 	}
+
 	@Transactional
-	public void denegarSolicitud(Integer solicitudId,String respuesta) {
+	public void denegarSolicitud(Integer solicitudId, String respuesta) {
 		Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
 		solicitud.get().setRespuesta(respuesta);
 		solicitud.get().setSituacion(Situacion.Denegada);
@@ -71,8 +73,28 @@ public class SolicitudService {
 		solicitud.setRespuesta(""); // Por defecto, la solicitud no tiene una respuesta.
 		solicitudRepository.save(solicitud);
 	}
+
+	@Transactional
+	public List<Articulo> articulosEnVentaByProvider(Collection<Solicitud> solicitudes) {
+		List<Articulo> result = new ArrayList<>();
+
+		for (Solicitud sol : solicitudes) {
+			if (sol.getSituacion().equals(Situacion.Aceptada) && sol.getStock() > 0) {
+				result.add(sol.getArticulo());
+			}
+		}
+		return result;
+	}
 	
-	
-	
-	
+	@Transactional
+	public List<Articulo> articulosVendidosByProvider(Collection<Solicitud> solicitudes) {
+		List<Articulo> result = new ArrayList<>();
+
+		for (Solicitud sol : solicitudes) {
+			if (sol.getSituacion().equals(Situacion.Aceptada)) {
+				result.add(sol.getArticulo());
+			}
+		}
+		return result;
+	}
 }
