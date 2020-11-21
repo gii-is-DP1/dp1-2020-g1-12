@@ -10,7 +10,7 @@
     <h2>
         <c:if test="${solicitud['new']}">Nueva </c:if> Solicitud
     </h2>
-    <form:form modelAttribute="solicitud" action="/solicitudes/save" class="form-horizontal" id="add-solicitud-form">
+    <form:form modelAttribute="solicitud" action="/solicitudes/save/${vendedorId}" class="form-horizontal" id="add-solicitud-form">
         <div class="form-group has-feedback">
             <petclinic:inputField label="Descripción" name="descripcion"/>
             <petclinic:inputField label="Modelo" name="modelo"/>

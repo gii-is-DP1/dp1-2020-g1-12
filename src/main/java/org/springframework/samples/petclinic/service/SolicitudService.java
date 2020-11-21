@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Situacion;
 import org.springframework.samples.petclinic.model.Solicitud;
+import org.springframework.samples.petclinic.model.Vendedor;
 import org.springframework.samples.petclinic.repository.SolicitudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,14 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SolicitudService {
 	
-	
-	private SolicitudRepository solicitudRepository;	
-	
 	@Autowired
-	public SolicitudService(SolicitudRepository solicitudRepository) {
-		super();
-		this.solicitudRepository = solicitudRepository;
-	}
+	private SolicitudRepository solicitudRepository;
 
 	@Transactional
 	public Iterable<Solicitud> solicitudesPendientes() {
@@ -43,9 +38,8 @@ public class SolicitudService {
 	}
 	
 	@Transactional
-	public void aceptarSolicitud(Integer solicitudId,String respuesta) {
+	public void aceptarSolicitud(Integer solicitudId) {
 		Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
-		solicitud.get().setRespuesta(respuesta);
 		solicitud.get().setSituacion(Situacion.Aceptada);
 	}
 	@Transactional
@@ -56,7 +50,8 @@ public class SolicitudService {
 	}
 
 	@Transactional
-	public void guardar(Solicitud solicitud) {
+	public void guardar(Solicitud solicitud, Vendedor vendedor) {
+		solicitud.setVendedor(vendedor);
 		solicitud.setSituacion(Situacion.Pendiente); // Por defecto, la solicitud tiene situación "Pendiente".
 		solicitud.setRespuesta(""); // Por defecto, la solicitud no tiene una respuesta.
 		solicitudRepository.save(solicitud);
