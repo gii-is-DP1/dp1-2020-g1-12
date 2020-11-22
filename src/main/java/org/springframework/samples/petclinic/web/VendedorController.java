@@ -6,7 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Articulo;
+import org.springframework.samples.petclinic.model.Cliente;
 import org.springframework.samples.petclinic.model.Vendedor;
+import org.springframework.samples.petclinic.service.ClienteService;
 import org.springframework.samples.petclinic.service.SolicitudService;
 import org.springframework.samples.petclinic.service.VendedorService;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,9 @@ public class VendedorController {
 	
 	@Autowired
 	private SolicitudService solicitudService;
+	
+	@Autowired
+	private ClienteService clienteService;
 
 	@GetMapping(value = "/{vendedorId}")
 	public String mostrarPerfil(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
@@ -80,4 +85,15 @@ public class VendedorController {
 		modelMap.addAttribute("articulos", optarticulos);
 		return vista;
 	}
+	@GetMapping(value="/{vendedorId}/perfilCliente/{clienteId}")
+	public String mostrarPerfilCliente(@PathVariable("clienteId")ModelMap modelMap, Integer clienteId) {
+		String comprador = "vendedores/perfilCliente";
+		Cliente cliente = clienteService.findClientById(clienteId);
+		
+		modelMap.addAttribute("cliente", cliente);
+		modelMap.remove(cliente.getDni());
+		System.out.println("----------------------------------------" + modelMap);
+		return comprador;
+	}
+
 }
