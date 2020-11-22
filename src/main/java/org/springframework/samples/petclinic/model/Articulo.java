@@ -7,18 +7,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Table(name = "articulos")
 public class Articulo extends Producto{
 	
-	
 	@Column(name = "urlImagen")
-	@URL
+	//@URL
 	private String urlImagen;
 	
 	@Column(name = "precio")
@@ -32,25 +27,19 @@ public class Articulo extends Producto{
 	private Integer stock;
 	
 	@Column(name = "tipo")
-	@NotEmpty
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault(value = "'Nuevo'")
 	private Tipo tipo;
 	
 	@Column(name="gastoEnvio")//Realmente queremos que esto se pueda cambiar? en ese caso quitar el set
-	@NotEmpty
 	@Min(0)
-	private Integer gastoEnvio;
+	private Double gastoEnvio;
 	
 	@Column(name = "tiempoEntrega")
-	@NotEmpty
 	@Min(1)
 	@Max(30)
 	private Integer tiempoEntrega;
 	
 
-	
-	
 	public String getModelo() {
 		return modelo;
 	}
@@ -107,14 +96,12 @@ public class Articulo extends Producto{
 		this.tiempoEntrega = tiempoEntrega;
 	}
 
-	public Integer getGastoEnvio() {
+	public Double getGastoEnvio() {
 		return gastoEnvio;
 	}
 
-	public void setGastoEnvio(Integer gastoEnvio) {
+	public void setGastoEnvio(Double gastoEnvio) {
 		this.gastoEnvio = gastoEnvio;
 	}
-	
-	
-	
+
 }

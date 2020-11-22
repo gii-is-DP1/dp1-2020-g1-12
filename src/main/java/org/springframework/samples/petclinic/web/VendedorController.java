@@ -5,7 +5,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Articulo;
 import org.springframework.samples.petclinic.model.Vendedor;
+import org.springframework.samples.petclinic.service.SolicitudService;
 import org.springframework.samples.petclinic.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,54 +20,64 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/vendedores")
-
 public class VendedorController {
+	
 	@Autowired
 	private VendedorService vendedorService;
 	
-	@GetMapping(value="/{vendedorId}")
-public String mostrarPerfil(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap){
-		
-		String  perfil="vendedor/perfil";
-		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorId);		
-		modelMap.addAttribute("vendedor",optperfil.get());
+	@Autowired
+	private SolicitudService solicitudService;
+
+	@GetMapping(value = "/{vendedorId}")
+	public String mostrarPerfil(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
+		String perfil = "vendedores/perfil";
+		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorId);
+		modelMap.addAttribute("vendedor", optperfil.get());
 		return perfil;
 	}
-	
+
 	public String salvarPerfil() {
-		String perfil = "vendedor/salvarPerfil";
-		
+		String perfil = "vendedores/salvarPerfil";
+
 		return perfil;
 	}
-	public String guardarPerfil(@Valid Vendedor vendedor,BindingResult result, ModelMap modelMap) {
-		String vista="vendedor/perfil";
-		if(result.hasErrors()) {
+
+	public String guardarPerfil(@Valid Vendedor vendedor, BindingResult result, ModelMap modelMap) {
+		String vista = "vendedores/perfil";
+		if (result.hasErrors()) {
 			modelMap.addAttribute("vendedor", vendedor);
 			return "vendedor/editarPerfil";
-		}else {
+		} else {
 			vendedorService.guardar(vendedor);
-			modelMap.addAttribute("mensage", "El vendedor ha sido guardado con éxito.");			
+			modelMap.addAttribute("mensage", "El vendedor ha sido guardado con éxito.");
 		}
 		return vista;
 	}
+
 	@GetMapping(value = "/{vendedorId}/editar")
 	public String editar(@PathVariable("vendedorId") int vendedorId, Model model) {
 		Vendedor vendedor = this.vendedorService.findSellerById(vendedorId);
 		model.addAttribute(vendedor);
-		return "vendedor/editarPerfil";
+		return "vendedores/editarPerfil";
 	}
+
 	@PostMapping(value = "/{vendedorId}/editar")
 	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result,
 			@PathVariable("vendedorId") int vendedorId) {
 		if (result.hasErrors()) {
-			return "vendedor/editarPerfil";
-		}
-		else {
-			vendedor.setId(vendedorId);
-			this.vendedorService.guardar(vendedor);
+			return "vendedores/editarPerfil";
+		} else {
+			this.vendedorService.editar(vendedor, vendedorId);
 			return "redirect:/vendedores/{vendedorId}";
 		}
-		
 	}
 	
+	@GetMapping(value="/{vendedorId}/articulosEnVenta")
+	public String mostrarArticulosVendidos(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
+		String vista = "vendedores/listadoArticulos";
+		Iterable<Articulo> optarticulos = solicitudService.
+				articulosEnVentaByProvider(vendedorService.findSellerById(vendedorId).getSolicitudes());
+		modelMap.addAttribute("articulos", optarticulos);
+		return vista;
+	}
 }
