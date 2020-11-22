@@ -5,7 +5,10 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Cliente;
 import org.springframework.samples.petclinic.model.Moderador;
+import org.springframework.samples.petclinic.repository.ClienteRepository;
+import org.springframework.samples.petclinic.service.ClienteService;
 import org.springframework.samples.petclinic.service.ModeradorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,7 +69,8 @@ public class ModeradorController {
 			return "moderadores/editarPerfil";
 		}
 		else {
-			this.moderadorService.editar(moderador, moderadorId);
+			moderador.setId(moderadorId);
+			this.moderadorService.guardar(moderador);
 			return "redirect:/moderadores/{moderadorId}";
 		}
 	}

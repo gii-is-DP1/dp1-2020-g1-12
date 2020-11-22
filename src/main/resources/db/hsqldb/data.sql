@@ -39,23 +39,16 @@ INSERT INTO vendedores VALUES (2, 'Pérez', 'C/Real 2', '09456119', 'Lola', '688
 
 INSERT INTO moderadores VALUES (1, 'García', 'C/Buenavista 12', '49456789', 'Pedro', '663733221');
 
--- Introducimos un artículo.
-
-INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (2, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (3, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (4, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-
 -- Introducimos una solicitud.
 
 INSERT INTO solicitudes VALUES (1, 'Solicitud de venta de MSI Prestige 14 Evo A11M-003ES',5,'MSI Prestige','14 Evo A11M-003ES',988.99,
-									'','Aceptada',5,8,'Nuevo','vacía', 1, 1);
-INSERT INTO solicitudes VALUES (2, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI',' Prestige Evo A11M-003ES',988.99,
-									'','Aceptada',5,8,'Nuevo','vacía', 2, 1);
+									'','Pendiente',5,8,'Nuevo','vacía');
+INSERT INTO solicitudes VALUES (2, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI Prestige','Evo A11M-003ES',988.99,
+									'','Aceptada',5,8,'Nuevo','vacía');
 INSERT INTO solicitudes VALUES (3, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI Prestige','Evo A11M-003ES',988.99,
-									'','Denegada',5,8,'Nuevo','vacía', 3, 2);
+									'','Denegada',5,8,'Nuevo','vacía');
 INSERT INTO solicitudes VALUES (4, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI Prestige','Evo A11M-003ES',988.99,
-									'','Pendiente',5,8,'Nuevo','vacía', 4, 2);
+									'','Pendiente',5,8,'Nuevo','vacía');
 
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');

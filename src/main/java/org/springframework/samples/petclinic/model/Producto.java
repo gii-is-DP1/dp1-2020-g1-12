@@ -1,22 +1,24 @@
 package org.springframework.samples.petclinic.model;
 
 import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-@MappedSuperclass
+@Entity
+@Table(name = "producto")
 public class Producto extends BaseEntity{
 	
 	@Column(name = "modelo")
 	@NotEmpty
-	@Length(min=3,max=200)
+	@Length(min=3,max=20)
 	protected String modelo;
 	
 	@Column(name = "marca")
 	@NotEmpty
-	@Length(min=3,max=50)
+	@Length(min=3,max=20)
 	protected String marca;
 
 	public String getModelo() {

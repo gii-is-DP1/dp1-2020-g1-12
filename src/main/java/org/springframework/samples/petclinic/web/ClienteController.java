@@ -69,7 +69,8 @@ public class ClienteController {
 			return "clientes/editarPerfil";
 		}
 		else {
-			this.clienteService.editar(cliente, clienteId);
+			cliente.setId(clienteId);
+			this.clienteService.guardar(cliente);
 			return "redirect:/clientes/{clienteId}";
 		}
 	}
@@ -80,6 +81,8 @@ public class ClienteController {
 		Iterable<Cliente> clientes = clienteService.findAllClient();
 		Iterable<Vendedor> vendedores = vendedorService.findAllSeller();
 
+		
+		
 		modelMap.addAttribute("clientes",clientes);
 		modelMap.addAttribute("vendedores",vendedores);
 		return vista;
