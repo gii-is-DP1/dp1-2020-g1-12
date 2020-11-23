@@ -34,17 +34,11 @@
             <th>Email</th>
             <td>${cliente.email}</td>
         </tr>
-   
-           <spring:url value="{clienteId}/editar" var="clienteUrl">
-               <spring:param name="clienteId" value="${cliente.id}"/>
-           </spring:url>
-        
-         
-            
+              
     </table>
             <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-				<a href="${fn:escapeXml(clienteUrl)}"><button class="btn btn-default" type="submit">Editar</button></a>
+				<a href="/clientes/editar"><button class="btn btn-default" type="submit">Editar</button></a>
             </div>
         </div>
 

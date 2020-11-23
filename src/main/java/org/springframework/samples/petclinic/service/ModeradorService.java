@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.service;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Moderador;
 import org.springframework.samples.petclinic.repository.ModeradorRepository;
@@ -12,9 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ModeradorService {
 	
-	@Autowired
-	private ModeradorRepository moderadorRepository;
+	private final ModeradorRepository moderadorRepository;
+	private final UserService userService;
 	
+	public ModeradorService(ModeradorRepository moderadorRepository, UserService userService) {
+		this.moderadorRepository = moderadorRepository;
+		this.userService = userService;
+	}
+	
+	@Transactional
+	public Integer obtenerIdSesion() {
+		return moderadorRepository.moderadorId(userService.obtenerUsername());
+	}
+
 	@Transactional
 	public Optional<Moderador> datosPerfil(Integer moderadorId){
 		Optional<Moderador> result = moderadorRepository.findById(moderadorId);

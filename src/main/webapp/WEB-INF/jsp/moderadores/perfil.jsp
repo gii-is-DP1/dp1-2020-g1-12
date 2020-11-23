@@ -31,13 +31,10 @@
             <td>${moderador.telefono}</td>
         </tr>
    
-           <spring:url value="{moderadorId}/editar" var="moderadorUrl">
-               <spring:param name="moderadorId" value="${moderador.id}"/>
-           </spring:url>
     </table>
             <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-				<a href="${fn:escapeXml(moderadorUrl)}"><button class="btn btn-default" type="submit">Editar</button></a>
+				<a href="/moderadores/editar"><button class="btn btn-default" type="submit">Editar</button></a>
             </div>
         </div>
 

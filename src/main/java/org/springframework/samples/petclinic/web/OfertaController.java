@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("vendedores/{vendedorId}/ofertas")
+@RequestMapping("vendedores/ofertas")
 public class OfertaController {
 
+	private final OfertaService ofertaService;
+	
 	@Autowired
-	private OfertaService ofertaService;
+	public OfertaController(OfertaService ofertaService) {
+		this.ofertaService = ofertaService;
+	}
 
 	@GetMapping(value = "/{ofertaId}")
 	public String editar(@PathVariable("ofertaId") int ofertaId, Model model) {
@@ -28,13 +32,12 @@ public class OfertaController {
 	}
 
 	@PostMapping(value = "/{ofertaId}")
-	public String procesoOfertar(@Valid Oferta oferta, BindingResult result, @PathVariable("vendedorId") int vendedorId,
-			@PathVariable("ofertaId") int ofertaId) {
+	public String procesoOfertar(@Valid Oferta oferta, BindingResult result, @PathVariable("ofertaId") int ofertaId) {
 		if (result.hasErrors()) {
 			return "vendedores/editarOferta";
 		} else {
 			this.ofertaService.editar(oferta, ofertaId, true);
-			return "redirect:/vendedores/{vendedorId}/articulosEnVenta";
+			return "redirect:/vendedores/articulosEnVenta";
 		}
 	}
 	
@@ -42,7 +45,7 @@ public class OfertaController {
 	  public String procesoDesofertar(@Valid Oferta oferta, BindingResult result,
 			  @PathVariable("ofertaId") int ofertaId) {
 		  this.ofertaService.editar(oferta, ofertaId, false); 
-		  return "redirect:/vendedores/{vendedorId}/articulosEnVenta";
+		  return "redirect:/vendedores/articulosEnVenta";
 	  }
 	 
 }

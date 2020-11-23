@@ -12,12 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ClienteService {
 	
+	private final ClienteRepository clienteRepository;
+	private final UserService userService;
+	
 	@Autowired
-	private ClienteRepository clienteRepository;
+	public ClienteService(ClienteRepository clienteRepository, UserService userService) {
+		this.clienteRepository = clienteRepository;
+		this.userService = userService;
+	}
 
 	@Transactional
-	public int clienteCount() {
-		return (int)clienteRepository.count();
+	public Integer obtenerIdSesion() {
+		return clienteRepository.clienteId(userService.obtenerUsername());
 	}
 	
 	@Transactional

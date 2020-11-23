@@ -17,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/bloqueos")
 public class BloqueoController {
 	
-	@Autowired
-	private BloqueoService bloqueoService;
+	private final BloqueoService bloqueoService;
 	
+	@Autowired
+	public BloqueoController(BloqueoService bloqueoService) {
+		this.bloqueoService = bloqueoService;
+	}
+
 	@GetMapping(value = "/{bloqueoId}")
 	public String editar(@PathVariable("bloqueoId") int bloqueoId, Model model) {
 		Bloqueo bloqueo = this.bloqueoService.findBlockById(bloqueoId);

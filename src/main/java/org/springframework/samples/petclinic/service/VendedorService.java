@@ -12,12 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class VendedorService {
 
-	@Autowired
-	private VendedorRepository vendedorRepository;
+	private final VendedorRepository vendedorRepository;
+	private final UserService userService;
 
+	@Autowired
+	public VendedorService(VendedorRepository vendedorRepository, UserService userService) {
+		this.vendedorRepository = vendedorRepository;
+		this.userService = userService;
+	}
+	
 	@Transactional
-	public int vendedorCount() {
-		return (int) vendedorRepository.count();
+	public Integer obtenerIdSesion() {
+		return vendedorRepository.vendedorId(userService.obtenerUsername());
 	}
 
 	@Transactional
