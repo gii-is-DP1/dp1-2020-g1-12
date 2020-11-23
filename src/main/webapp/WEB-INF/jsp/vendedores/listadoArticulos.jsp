@@ -33,9 +33,8 @@
 	                    	<c:out value="${articulos.oferta.porcentaje}%"/>
 	                	</td>
 	                	<td>
-					 		<spring:url value="/vendedores/{vendedorId}/ofertas/desofertar/{ofertaId}" var="ofertaArticuloUrl">
+					 		<spring:url value="/vendedores/ofertas/desofertar/{ofertaId}" var="ofertaArticuloUrl">
 					              <spring:param name="ofertaId" value="${articulos.oferta.id}"/>
-					              <spring:param name="vendedorId" value="${vendedorId}"/>
 					        </spring:url>
 							<a href="${fn:escapeXml(ofertaArticuloUrl)}">
 								<button class="btn btn-default" type="submit">Eliminar Oferta</button>
@@ -47,9 +46,8 @@
 	                    	<c:out value="N/A"/>
 	                	</td>
 	                	<td>
-					 		<spring:url value="/vendedores/{vendedorId}/ofertas/{ofertaId}" var="ofertaArticuloUrl">
+					 		<spring:url value="/vendedores/ofertas/{ofertaId}" var="ofertaArticuloUrl">
 					              <spring:param name="ofertaId" value="${articulos.oferta.id}"/>
-					              <spring:param name="vendedorId" value="${vendedorId}"/>
 					        </spring:url>
 							<a href="${fn:escapeXml(ofertaArticuloUrl)}">
 								<button class="btn btn-default" type="submit">Crear oferta</button>

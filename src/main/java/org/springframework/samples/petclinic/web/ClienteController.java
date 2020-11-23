@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,55 +21,55 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/clientes")
 public class ClienteController {
 	
-	@Autowired
-	private ClienteService clienteService;
+	private final ClienteService clienteService;
+	private final VendedorService vendedorService;
 	
 	@Autowired
-	private VendedorService vendedorService;
-	
-	@GetMapping(value="/{clienteId}")
-	public String mostrarPerfil(@PathVariable("clienteId") Integer clienteId, ModelMap modelMap){
-		
+	public ClienteController(ClienteService clienteService, VendedorService vendedorService) {
+		this.clienteService = clienteService;
+		this.vendedorService = vendedorService;
+	}
+
+	@GetMapping(value="/perfil")
+	public String mostrarPerfil(ModelMap modelMap){
 		String  perfil="clientes/perfil";
-		Optional<Cliente> optperfil = clienteService.datosPerfil(clienteId);		
-		modelMap.addAttribute("cliente",optperfil.get());
+		Optional<Cliente> optperfil = clienteService.datosPerfil(clienteService.obtenerIdSesion());		
+		modelMap.addAttribute("cliente", optperfil.get());
 		return perfil;
 	}
 	
-	public String salvarPerfil() {
-		String perfil = "clientes/salvarPerfil";
-		
-		return perfil;
-	}
+//	public String salvarPerfil() {
+//		String perfil = "clientes/salvarPerfil";
+//		return perfil;
+//	}
     
-	public String guardarPerfil(@Valid Cliente cliente,BindingResult result, ModelMap modelMap) {
-		String vista="clientes/perfil";
-		if(result.hasErrors()) {
-			modelMap.addAttribute("cliente", cliente);
-			return "cliente/editarPerfil";
-		}else {
-			clienteService.guardar(cliente);
-			modelMap.addAttribute("mensage", "El cliente ha sido guardado con éxito.");			
-		}
-		return vista;
-	}
+//	public String guardarPerfil(@Valid Cliente cliente,BindingResult result, ModelMap modelMap) {
+//		String vista="clientes/perfil";
+//		if(result.hasErrors()) {
+//			modelMap.addAttribute("cliente", cliente);
+//			return "cliente/editarPerfil";
+//		}else {
+//			clienteService.guardar(cliente);
+//			modelMap.addAttribute("mensage", "El cliente ha sido guardado con éxito.");			
+//		}
+//		return vista;
+//	}
 	
-	@GetMapping(value = "/{clienteId}/editar")
-	public String editar(@PathVariable("clienteId") int clienteId, Model model) {
-		Cliente cliente = this.clienteService.findClientById(clienteId);
+	@GetMapping(value = "/editar")
+	public String editar(Model model) {
+		Cliente cliente = this.clienteService.findClientById(clienteService.obtenerIdSesion());
 		model.addAttribute(cliente);
 		return "clientes/editarPerfil";
 	}
 
-	@PostMapping(value = "/{clienteId}/editar")
-	public String procesoEditar(@Valid Cliente cliente, BindingResult result,
-			@PathVariable("clienteId") int clienteId) {
+	@PostMapping(value = "/editar")
+	public String procesoEditar(@Valid Cliente cliente, BindingResult result) {
+		
 		if (result.hasErrors()) {
 			return "clientes/editarPerfil";
-		}
-		else {
-			this.clienteService.editar(cliente, clienteId);
-			return "redirect:/clientes/{clienteId}";
+		} else {
+			this.clienteService.editar(cliente, clienteService.obtenerIdSesion());
+			return "redirect:/clientes/perfil";
 		}
 	}
 	

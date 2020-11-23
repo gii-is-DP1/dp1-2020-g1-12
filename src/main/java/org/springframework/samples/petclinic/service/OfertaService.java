@@ -12,8 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OfertaService {
 
+	private final OfertaRepository ofertaRepository;
+	
 	@Autowired
-	private OfertaRepository ofertaRepository;
+	public OfertaService(OfertaRepository ofertaRepository) {
+		this.ofertaRepository = ofertaRepository;
+	}
 
 	@Transactional(readOnly = true)
 	public Oferta findOfertById(int id) throws DataAccessException {
@@ -25,5 +29,10 @@ public class OfertaService {
 		Oferta ofertaGuardada = findOfertById(id);
 		ofertaGuardada.setPorcentaje(oferta.getPorcentaje());
 		ofertaGuardada.setDisponibilidad(disponible);
+	}
+	
+	@Transactional
+	public void guardarOferta(Oferta oferta) {
+		ofertaRepository.save(oferta);
 	}
 }
