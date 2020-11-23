@@ -87,10 +87,11 @@ public class VendedorController {
 	}
 
 	@GetMapping(value = "/{vendedorId}/articulosEnVenta")
-	public String mostrarArticulosVendidos(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
+	public String mostrarArticulosEnVenta(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
 		String vista = "vendedores/listadoArticulos";
 		Iterable<Articulo> optarticulos = solicitudService
 				.articulosEnVentaByProvider(vendedorService.findSellerById(vendedorId).getSolicitudes());
+		modelMap.addAttribute("vendedorId", vendedorId);
 		modelMap.addAttribute("articulos", optarticulos);
 		return vista;
 	}

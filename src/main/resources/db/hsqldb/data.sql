@@ -41,10 +41,17 @@ INSERT INTO moderadores VALUES (1, 'García', 'C/Buenavista 12', '49456789', 'Pe
 
 -- Introducimos un artículo.
 
-INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (2, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (3, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (4, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
+INSERT INTO ofertas VALUES (1, false, 5);
+INSERT INTO ofertas VALUES (2, true, 50);
+INSERT INTO ofertas VALUES (3, false, 5);
+INSERT INTO ofertas VALUES (4, true, 20);
+
+-- Introducimos un artículo.
+
+INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía', 1);
+INSERT INTO articulos VALUES (2, 'Lenovo', 'Prestige Evo',5,500.99, 5,8,'Nuevo','vacía', 2);
+INSERT INTO articulos VALUES (3, 'Acer', 'Aspire One',5,700.99, 5,8,'Nuevo','vacía', 3);
+INSERT INTO articulos VALUES (4, 'Apple', 'Macbook Pro',5,1000.99, 5,8,'Nuevo','vacía', 4);
 
 -- Introducimos una solicitud.
 
