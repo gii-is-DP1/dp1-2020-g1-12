@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/vendedores")
 public class VendedorController {
-	
+
 	@Autowired
 	private VendedorService vendedorService;
-	
+
 	@Autowired
 	private SolicitudService solicitudService;
-	
+
 	@Autowired
 	private ClienteService clienteService;
 
@@ -76,24 +76,23 @@ public class VendedorController {
 			return "redirect:/vendedores/{vendedorId}";
 		}
 	}
-	
-	@GetMapping(value="/{vendedorId}/articulosEnVenta")
+
+	@GetMapping(value = "/{vendedorId}/perfilCliente/{clienteId}")
+	public String mostrarPerfilCliente(@PathVariable("vendedorId") int vendedorId,
+			@PathVariable("clienteId") int clienteId, ModelMap modelMap) {
+		Cliente cliente = this.clienteService.findClientById(clienteId);
+		modelMap.addAttribute(cliente);
+		modelMap.remove(cliente.getDni());
+		return "vendedores/perfilCliente";
+	}
+
+	@GetMapping(value = "/{vendedorId}/articulosEnVenta")
 	public String mostrarArticulosVendidos(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
 		String vista = "vendedores/listadoArticulos";
-		Iterable<Articulo> optarticulos = solicitudService.
-				articulosEnVentaByProvider(vendedorService.findSellerById(vendedorId).getSolicitudes());
+		Iterable<Articulo> optarticulos = solicitudService
+				.articulosEnVentaByProvider(vendedorService.findSellerById(vendedorId).getSolicitudes());
 		modelMap.addAttribute("articulos", optarticulos);
 		return vista;
-	}
-	@GetMapping(value="/{vendedorId}/perfilCliente/{clienteId}")
-	public String mostrarPerfilCliente(@PathVariable("clienteId")ModelMap modelMap, Integer clienteId) {
-		String comprador = "vendedores/perfilCliente";
-		Cliente cliente = clienteService.findClientById(clienteId);
-		
-		modelMap.addAttribute("cliente", cliente);
-		modelMap.remove(cliente.getDni());
-		System.out.println("----------------------------------------" + modelMap);
-		return comprador;
 	}
 
 }
