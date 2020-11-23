@@ -30,7 +30,7 @@ public class VendedorService {
 	public void guardar(Vendedor vendedor) {
 		vendedorRepository.save(vendedor);
 	}
-	
+
 	@Transactional
 	public void editar(Vendedor vendedor, Integer id) {
 		Vendedor vendedorGuardado = findSellerById(id);
@@ -51,12 +51,4 @@ public class VendedorService {
 		Iterable<Vendedor> result = vendedorRepository.findAll();
 		return result;
 	}
-	
-	/*
-	@Transactional(readOnly = true)
-	public Iterable<Articulo> findArticlesByProvider(Integer id) {
-		return findSellerById(id).getArticulos();
-	}
-	*/
-
 }

@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -12,14 +11,6 @@ import javax.validation.constraints.Min;
 @Entity
 @Table(name = "articulos")
 public class Articulo extends Producto{
-	/*
-	@ManyToOne
-	@JoinColumn(name = "vendedor_id")
-	private Vendedor vendedor;
-	*/
-	
-	@OneToOne(optional=false)
-	private Solicitud solicitud;
 	
 	@Column(name = "urlImagen")
 	//@URL
@@ -41,7 +32,7 @@ public class Articulo extends Producto{
 	
 	@Column(name="gastoEnvio")//Realmente queremos que esto se pueda cambiar? en ese caso quitar el set
 	@Min(0)
-	private Integer gastoEnvio;
+	private Double gastoEnvio;
 	
 	@Column(name = "tiempoEntrega")
 	@Min(1)
@@ -105,20 +96,12 @@ public class Articulo extends Producto{
 		this.tiempoEntrega = tiempoEntrega;
 	}
 
-	public Integer getGastoEnvio() {
+	public Double getGastoEnvio() {
 		return gastoEnvio;
 	}
 
-	public void setGastoEnvio(Integer gastoEnvio) {
+	public void setGastoEnvio(Double gastoEnvio) {
 		this.gastoEnvio = gastoEnvio;
 	}
 
-	public Solicitud getSolicitud() {
-		return solicitud;
-	}
-
-	public void setSolicitud(Solicitud solicitud) {
-		this.solicitud = solicitud;
-	}
-	
 }
