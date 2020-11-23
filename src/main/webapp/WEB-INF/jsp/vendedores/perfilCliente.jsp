@@ -19,12 +19,12 @@
             <td>${cliente.apellido}</td>
         </tr>
           <tr>
-            <th>Direcciï¿½n</th>
+            <th>Dirección</th>
             <td>${cliente.direccion}</td>
         </tr>
 
         <tr>
-            <th>Telï¿½fono</th>
+            <th>Teléfono</th>
             <td>${cliente.telefono}</td>
         </tr>
         <tr>
