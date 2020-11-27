@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="vendedores">
 
@@ -19,7 +20,7 @@
             <td>${vendedor.apellido}</td>
         </tr>
           <tr>
-            <th>Direcci�n</th>
+            <th>Dirección</th>
             <td>${vendedor.direccion}</td>
         </tr>
         <tr>
@@ -27,7 +28,7 @@
             <td>${vendedor.dni}</td>
         </tr>
         <tr>
-            <th>Tel�fono</th>
+            <th>Teléfono</th>
             <td>${vendedor.telefono}</td>
         </tr>
         <tr>

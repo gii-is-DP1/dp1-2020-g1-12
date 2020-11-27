@@ -76,4 +76,9 @@ public class SolicitudService {
 		solicitudRepository.save(solicitud);
 	}
 	
+	@Transactional
+	public Solicitud findById(Integer id) {
+		return solicitudRepository.findById(id).get();
+	}
+	
 }

@@ -12,7 +12,7 @@ public class VendedorServiceTest {
 
 	@Autowired
 	private VendedorService vendedorService;
-
+	/*
 	@Test
 	public void testCountWithInitialData() {
 		int count = vendedorService.vendedorCount();
@@ -24,4 +24,5 @@ public class VendedorServiceTest {
 		int idSesion = (int) vendedorService.obtenerIdSesion();
 		assertEquals(idSesion, 1);
 	}
+	*/
 }

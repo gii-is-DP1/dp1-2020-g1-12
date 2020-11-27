@@ -27,18 +27,15 @@ public class Solicitud extends BaseEntity {
 	private Vendedor vendedor;
 	
 	@Column(name = "descripcion")
-	@NotEmpty
-	@Length(min=3,max=250)
+	@Length(min=3,max=250, message="La descripción debe contener entre 3 y 250 caracteres.")
 	private String descripcion;
 	
 	@Column(name = "modelo")
-	@NotEmpty
-	@Length(min=3,max=200)
+	@Length(min=3,max=200, message= "El modelo debe de contener entre 3 y 200 caracteres.")
 	private String modelo;
 	
 	@Column(name = "marca")
-	@NotEmpty
-	@Length(min=3,max=50)
+	@Length(min=3,max=50, message= "El modelo debe de contener entre 3 y 200 caracteres.")
 	private String marca;
 	
 	@Column(name = "urlImagen")
