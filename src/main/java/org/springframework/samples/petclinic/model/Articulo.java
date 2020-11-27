@@ -34,7 +34,7 @@ public class Articulo extends Producto{
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
 	
-	@Column(name="gastoEnvio")//Realmente queremos que esto se pueda cambiar? en ese caso quitar el set
+	@Column(name="gastoEnvio")
 	@Min(0)
 	private Double gastoEnvio;
 	
