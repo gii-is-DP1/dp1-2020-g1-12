@@ -20,7 +20,12 @@ public class VendedorService {
 		this.vendedorRepository = vendedorRepository;
 		this.userService = userService;
 	}
-	
+
+	@Transactional
+	public int vendedorCount() {
+		return (int) vendedorRepository.count();
+	}
+
 	@Transactional
 	public Integer obtenerIdSesion() {
 		return vendedorRepository.vendedorId(userService.obtenerUsername());
