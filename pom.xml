@@ -27,13 +27,14 @@
 		<webjars-jquery-ui.version>1.11.4</webjars-jquery-ui.version>
 		<webjars-jquery.version>2.2.4</webjars-jquery.version>
 		<wro4j.version>1.8.0</wro4j.version>
-		
+
 		<jacoco.version>0.8.5</jacoco.version>
 		<spring-format.version>0.0.19</spring-format.version>
-		
-    </properties>
-    
+
+	</properties>
+
 	<developers>
+    
 		<developer>
 			<id>Fer</id>
 			<name>Fernando</name>
@@ -92,16 +93,6 @@
 				</picUrl>
 			</properties>
 		</developer>
-		
-		<developer>
- 			<id>dansuaper</id>
- 			<name>Daniel</name>
- 			<email>dansuaper@alum.us.es</email>
- 			<url>http://www.tmht.com/leo</url>
- 			<roles>
-				 <role>developer</role>
- 			</roles>
- 		</developer>
 		
 		<!-- More developers ... -->
 	</developers>
