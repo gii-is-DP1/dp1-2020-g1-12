@@ -6,11 +6,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "bloqueos")
-public class Bloqueo extends BaseEntity{
+public class Bloqueo extends BaseEntity {
 
 	@Column(name = "bloqueado")
 	private boolean bloqueado;
-	
+
 	@Column(name = "descripcion")
 	private String descripcion;
 
@@ -29,4 +29,10 @@ public class Bloqueo extends BaseEntity{
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
+	@Override
+	public String toString() {
+		return "Bloqueo [bloqueado=" + bloqueado + ", descripcion=" + descripcion + "]";
+	}
+
 }

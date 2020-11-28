@@ -33,21 +33,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
-				.antMatchers("/users/new").permitAll()
-				.antMatchers("/clientes").hasAnyAuthority("moderador")
-				.antMatchers("/clientes/**").hasAnyAuthority("cliente")
-				.antMatchers("/vendedores/**").hasAnyAuthority("vendedor")
-				.antMatchers("/solicitudes/new").hasAnyAuthority("vendedor")
-				.antMatchers("/solicitudes/save").hasAnyAuthority("vendedor")
-				.antMatchers("/solicitudes").hasAnyAuthority("moderador")
+				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/users/new").permitAll()
+				.antMatchers("/clientes").hasAnyAuthority("moderador").antMatchers("/clientes/**")
+				.hasAnyAuthority("cliente").antMatchers("/vendedores/**").hasAnyAuthority("vendedor")
+				.antMatchers("/solicitudes/new").hasAnyAuthority("vendedor").antMatchers("/solicitudes/save")
+				.hasAnyAuthority("vendedor").antMatchers("/solicitudes").hasAnyAuthority("moderador")
 				.antMatchers("/solicitudes/{solicitudId}/**").hasAnyAuthority("moderador")
-				.antMatchers("/solicitudes/solicitante/**").hasAnyAuthority("moderador")
-				.antMatchers("/bloqueos/**").hasAnyAuthority("moderador")
-				.antMatchers("/moderadores/**").hasAnyAuthority("moderador")
-				.antMatchers("/admin/**").hasAnyAuthority("admin")
-				.antMatchers("/owners/**").hasAnyAuthority("owner", "admin")
-				.antMatchers("/vets/**").authenticated().anyRequest().denyAll().and().formLogin()
+				.antMatchers("/solicitudes/solicitante/**").hasAnyAuthority("moderador").antMatchers("/bloqueos/**")
+				.hasAnyAuthority("moderador").antMatchers("/moderadores/**").hasAnyAuthority("moderador")
+				.antMatchers("/admin/**").hasAnyAuthority("admin").antMatchers("/owners/**")
+				.hasAnyAuthority("owner", "admin").antMatchers("/vets/**").authenticated().anyRequest().denyAll().and()
+				.formLogin()
 				/* .loginPage("/login") */
 				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
 		// Configuración para que funcione la consola de administración

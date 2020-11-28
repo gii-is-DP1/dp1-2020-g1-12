@@ -14,63 +14,62 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-
 @Entity
 @Table(name = "solicitudes")
 public class Solicitud extends BaseEntity {
-	
-	@OneToOne(optional=true)
+
+	@OneToOne(optional = true)
 	private Articulo articulo;
 
-	@ManyToOne(optional=false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "vendedor_id")
 	private Vendedor vendedor;
-	
+
 	@Column(name = "descripcion")
-	@Length(min=3,max=250, message="La descripción debe contener entre 3 y 250 caracteres.")
+	@Length(min = 3, max = 250, message = "La descripción debe contener entre 3 y 250 caracteres.")
 	private String descripcion;
-	
+
 	@Column(name = "modelo")
-	@Length(min=3,max=200, message= "El modelo debe de contener entre 3 y 200 caracteres.")
+	@Length(min = 3, max = 200, message = "El modelo debe de contener entre 3 y 200 caracteres.")
 	private String modelo;
-	
+
 	@Column(name = "marca")
-	@Length(min=3,max=50, message= "El modelo debe de contener entre 3 y 200 caracteres.")
+	@Length(min = 3, max = 50, message = "El modelo debe de contener entre 3 y 200 caracteres.")
 	private String marca;
-	
+
 	@Column(name = "urlImagen")
-	//@URL
+	// @URL
 	private String urlImagen;
-	
+
 	@Column(name = "precio")
 	@Min(1)
 	@Max(10000)
 	private Double precio;
-	
+
 	@Column(name = "stock")
 	@Min(1)
 	@Max(500)
 	private Integer stock;
-	
+
 	@Column(name = "tipo")
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
-	
+
 	@Column(name = "tiempoEntrega")
 	@Min(1)
 	@Max(30)
 	private Integer tiempoEntrega;
-	
-	@Column(name="gastoEnvio")
+
+	@Column(name = "gastoEnvio")
 	@Min(0)
 	private Double gastoEnvio;
 
 	@Column(name = "situacion")
 	@Enumerated(EnumType.STRING)
 	private Situacion situacion;
-	
+
 	@Column(name = "respuesta")
-	@Length(min=0,max=100)
+	@Length(min = 0, max = 100)
 	private String respuesta;
 
 	public String getDescripcion() {
@@ -160,11 +159,11 @@ public class Solicitud extends BaseEntity {
 	public void setRespuesta(String respuesta) {
 		this.respuesta = respuesta;
 	}
-	
+
 	public Vendedor getVendedor() {
 		return vendedor;
 	}
-	
+
 	public void setVendedor(Vendedor vendedor) {
 		this.vendedor = vendedor;
 	}
@@ -176,4 +175,13 @@ public class Solicitud extends BaseEntity {
 	public void setArticulo(Articulo articulo) {
 		this.articulo = articulo;
 	}
+
+	@Override
+	public String toString() {
+		return "Solicitud [articulo=" + articulo + ", vendedor=" + vendedor + ", descripcion=" + descripcion
+				+ ", modelo=" + modelo + ", marca=" + marca + ", urlImagen=" + urlImagen + ", precio=" + precio
+				+ ", stock=" + stock + ", tipo=" + tipo + ", tiempoEntrega=" + tiempoEntrega + ", gastoEnvio="
+				+ gastoEnvio + ", situacion=" + situacion + ", respuesta=" + respuesta + "]";
+	}
+
 }
