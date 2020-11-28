@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -77,9 +78,9 @@ public class VendedorController {
 		}
 	}
 
-	@GetMapping(value = "/perfilCliente")
-	public String mostrarPerfilCliente(ModelMap modelMap) {
-		Cliente cliente = this.clienteService.findClientById(clienteService.obtenerIdSesion());
+	@GetMapping(value = "/perfilCliente/{clienteId}")
+	public String mostrarPerfilCliente(@PathVariable("clienteId") int clienteId, ModelMap modelMap) {
+		Cliente cliente = this.clienteService.findClientById(clienteId);
 		modelMap.addAttribute(cliente);
 		modelMap.remove(cliente.getDni());
 		return "vendedores/perfilCliente";
