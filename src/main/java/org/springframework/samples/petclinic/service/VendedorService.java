@@ -58,6 +58,11 @@ public class VendedorService {
 		return vendedorRepository.findById(id).get();
 	}
 
+	@Transactional(readOnly = true)
+	public Vendedor findSellerByDni(String dni) throws DataAccessException {
+		return vendedorRepository.findByDni(dni);
+	}
+
 	public Iterable<Vendedor> findAllSeller() {
 		Iterable<Vendedor> result = vendedorRepository.findAll();
 		return result;

@@ -15,25 +15,24 @@ import javax.validation.constraints.Email;
 @Entity
 @Table(name = "vendedores")
 public class Vendedor extends Persona {
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username", referencedColumnName = "username")
+	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
-	
+
 	@Column(name = "email")
 	@Email
 	private String email;
-	
-	@OneToOne(optional=false)
+
+	@OneToOne(optional = false)
 	private Bloqueo bloqueo;
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vendedor", fetch = FetchType.EAGER)
 	private Collection<Solicitud> solicitudes;
-
 
 	public void setEmail(String email) {
 		this.email = email;
@@ -62,5 +61,11 @@ public class Vendedor extends Persona {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Vendedor [user=" + user + ", email=" + email + ", bloqueo=" + bloqueo + ", solicitudes=" + solicitudes
+				+ "]";
+	}
+
 }
