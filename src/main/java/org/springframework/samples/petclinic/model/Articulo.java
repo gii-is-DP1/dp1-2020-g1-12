@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -11,6 +12,9 @@ import javax.validation.constraints.Min;
 @Entity
 @Table(name = "articulos")
 public class Articulo extends Producto{
+	
+	@OneToOne(optional=true)
+	private Oferta oferta;
 	
 	@Column(name = "urlImagen")
 	//@URL
@@ -30,7 +34,7 @@ public class Articulo extends Producto{
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
 	
-	@Column(name="gastoEnvio")//Realmente queremos que esto se pueda cambiar? en ese caso quitar el set
+	@Column(name="gastoEnvio")
 	@Min(0)
 	private Double gastoEnvio;
 	
@@ -104,4 +108,12 @@ public class Articulo extends Producto{
 		this.gastoEnvio = gastoEnvio;
 	}
 
+	public Oferta getOferta() {
+		return oferta;
+	}
+
+	public void setOferta(Oferta oferta) {
+		this.oferta = oferta;
+	}
+	
 }

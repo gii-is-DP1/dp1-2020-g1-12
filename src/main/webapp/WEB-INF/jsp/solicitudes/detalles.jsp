@@ -54,28 +54,48 @@
             <th>Gasto de Envío</th>
             <td>${solicitud.gastoEnvio}</td>
         </tr>
-        <tr>
-        <th>
-		   <spring:url value="/solicitudes/{solicitudId}/denegar" var="denegarUrl">
-               <spring:param name="solicitudId" value="${solicitud.id}"/>
-           </spring:url>
-           
- 		<form:form modelAttribute="solicitud" action="/solicitudes/${solicitudId}/denegar" class="form-horizontal" id="add-owner-form">
-			<petclinic:inputField label="Respuesta" name="respuesta"/>
-			</th>
-			<td>
-			<button class="btn btn-default" type="submit">Denegar</button>
-			</td>	
-   		</form:form>    	
-   		
-   		</table>
-   		
-           <spring:url value="/solicitudes/{solicitudId}/aceptar" var="aceptarUrl">
-               <spring:param name="solicitudId" value="${solicitud.id}"/>
-           </spring:url>      
-           
- 
-       
-		<a href="${fn:escapeXml(aceptarUrl)}"><button class="btn btn-default" type="submit">Aceptar</button></a>
-
+		<c:if test="${solicitud.situacion == 'Pendiente'}" >
+	        <tr>
+	        <th>
+			   <spring:url value="/solicitudes/{solicitudId}/denegar" var="denegarUrl">
+	               <spring:param name="solicitudId" value="${solicitud.id}"/>
+	           </spring:url>
+	           
+	 		<form:form modelAttribute="solicitud" action="/solicitudes/${solicitudId}/denegar" class="form-horizontal" id="add-owner-form">
+				<petclinic:inputField label="Respuesta" name="respuesta"/>
+				</th>
+				<td>
+				<button class="btn btn-default" type="submit">Denegar</button>
+				</td>	
+	   		</form:form>    	
+	   		
+	   		</table>
+	   		
+	           <spring:url value="/solicitudes/{solicitudId}/aceptar" var="aceptarUrl">
+	               <spring:param name="solicitudId" value="${solicitud.id}"/>
+	           </spring:url>      
+	           
+			<a href="${fn:escapeXml(aceptarUrl)}"><button class="btn btn-default" type="submit">Aceptar</button></a>
+		</c:if>
+		
+		<c:if test="${solicitud.situacion == 'Aceptada'}" >	
+   			<tr>
+            	<th>Situación:</th>
+            	<td>${solicitud.situacion}</td>
+       	 	</tr>
+   			</table>
+		</c:if>
+		
+		<c:if test="${solicitud.situacion == 'Denegada'}" >	
+   			<tr>
+            	<th>Situación:</th>
+            	<td>${solicitud.situacion}</td>
+       	 	</tr>
+       	 	<tr>
+            	<th>Respuesta:</th>
+            	<td>${solicitud.respuesta}</td>
+       	 	</tr>
+   			</table>
+		</c:if>
+		
 </petclinic:layout>

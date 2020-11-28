@@ -55,6 +55,7 @@ public class SolicitudController {
 		modelMap.addAttribute("mensaje", "La solicitud ha sido aceptada correctamente");
 		return listadoSolicitud(modelMap);
 	}
+	
 	@PostMapping(value="/{solicitudId}/denegar")
 	public String denegarSolicitud(@PathVariable("solicitudId") Integer solicitudId,Solicitud solicitud, ModelMap modelMap) {
 		solicitudService.denegarSolicitud(solicitudId,solicitud.getRespuesta());
@@ -62,31 +63,30 @@ public class SolicitudController {
 		return listadoSolicitud(modelMap);
 	}
 	
-	@GetMapping(path="/{vendedorId}/new")
-	public String crearSolicutud(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
+	@GetMapping(path="/new")
+	public String crearSolicutud(ModelMap modelMap) {
 		String vista = "solicitudes/editarSolicitud";
-		modelMap.addAttribute("solicitud",new Solicitud());
-		modelMap.addAttribute("vendedorId", vendedorId);
+		modelMap.addAttribute("solicitud", new Solicitud());
+		modelMap.addAttribute("vendedorId", vendedorService.obtenerIdSesion());
 		return vista;
 	}
 	
-	@PostMapping(path = "/save/{vendedorId}")
-	public String guardarSolicitud(@Valid Solicitud solicitud, @PathVariable("vendedorId") Integer vendedorId, 
-			BindingResult result,ModelMap modelMap) {
-		String vista = "solicitudes/listadoSolicitud";
+	@PostMapping(path = "/save")
+	public String guardarSolicitud(@Valid Solicitud solicitud, BindingResult result,ModelMap modelMap) {
+		String vista = "welcome";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("solicitud",solicitud);
 			return "solicitudes/editarSolicitud";
 		}else {
-			solicitudService.guardar(solicitud, vendedorService.findSellerById(vendedorId));
+			solicitudService.guardar(solicitud, vendedorService.findSellerById(vendedorService.obtenerIdSesion()));
 			modelMap.addAttribute("mensaje", "Se ha guardado correctamente.");
-			vista =listadoSolicitud(modelMap); 
+			// vista = ...
 		}
 		return vista;
 	}
 	
 	@GetMapping(value="/solicitante/{vendedorId}")
-	public String perfilSolicitante(@PathVariable("vendedorId") Integer vendedorId, ModelMap modelMap) {
+	public String perfilSolicitante(ModelMap modelMap, @PathVariable("vendedorId") Integer vendedorId) {
 		String solicitante="solicitudes/solicitante";
 		Vendedor vendedor = vendedorService.findSellerById(vendedorId);
 		modelMap.addAttribute("vendedor", vendedor);

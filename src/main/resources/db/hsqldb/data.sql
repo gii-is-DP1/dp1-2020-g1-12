@@ -7,16 +7,23 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
--- Other owner user, named manu1 with passwor m4nu
-INSERT INTO users(username,password,enabled) VALUES ('manu1','m4nu',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (4,'manu1','owner');
--- One owner user, named jesbarsig with passwor 0wn3r
-INSERT INTO users(username,password,enabled) VALUES ('jesbarsig','0wn3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'jesbarsig','owner');
--- Other owner user, named manu1 with passwor f3r
-INSERT INTO users(username,password,enabled) VALUES ('fer1','f3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (6,'fer1','owner');
+-----------------------------------------------------------------------------------
 
+-- Other owner user, named manu1 with passwor m4nu
+INSERT INTO users(username,password,enabled) VALUES ('cliente1','cliente1',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (4,'cliente1','cliente');
+-- One owner user, named jesbarsig with passwor 0wn3r
+INSERT INTO users(username,password,enabled) VALUES ('cliente2','cliente2',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (5,'cliente2','cliente');
+-- Other owner user, named fer1 with passwor f3r
+INSERT INTO users(username,password,enabled) VALUES ('vendedor1','vendedor1',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (6,'vendedor1','vendedor');
+
+INSERT INTO users(username,password,enabled) VALUES ('vendedor2','vendedor2',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (7,'vendedor2','vendedor');
+
+INSERT INTO users(username,password,enabled) VALUES ('moderador1','moderador1',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (8,'moderador1','moderador');
 
 -- Introducimos un bloqueo.
 
@@ -27,24 +34,31 @@ INSERT INTO bloqueos VALUES (4, false, '');
 
 -- Introducimos a un cliente.
 
-INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com',1);
-INSERT INTO clientes VALUES (2, 'Martin', 'C/Konquero 4', '23456119', 'Francisco', '988733111', 'martin@gmail.com',2);
+INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com', 1,'cliente1');
+INSERT INTO clientes VALUES (2, 'Martin', 'C/Konquero 4', '23456119', 'Francisco', '988733111', 'martin@gmail.com', 2,'cliente2');
 
 -- Introducimos a un vendedor.
 
-INSERT INTO vendedores VALUES (1, 'Lorca', 'C/Galindo 96', '29976789', 'Pepe', '678733221', 'pepe200@gmail.com',3);
-INSERT INTO vendedores VALUES (2, 'Pérez', 'C/Real 2', '09456119', 'Lola', '688733111', 'lolaindigo@gmail.com',4);
+INSERT INTO vendedores VALUES (1, 'Lorca', 'C/Galindo 96', '29976789', 'Pepe', '678733221', 'pepe200@gmail.com', 3,'vendedor1');
+INSERT INTO vendedores VALUES (2, 'Pérez', 'C/Real 2', '09456119', 'Lola', '688733111', 'lolaindigo@gmail.com', 4,'vendedor2');
 
 -- Introducimos a un moderador.
 
-INSERT INTO moderadores VALUES (1, 'García', 'C/Buenavista 12', '49456789', 'Pedro', '663733221');
+INSERT INTO moderadores VALUES (1, 'García', 'C/Buenavista 12', '49456789', 'Pedro', '663733221', 'moderador1');
 
 -- Introducimos un artículo.
 
-INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (2, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (3, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
-INSERT INTO articulos VALUES (4, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía');
+INSERT INTO ofertas VALUES (1, false, 5);
+INSERT INTO ofertas VALUES (2, true, 50);
+INSERT INTO ofertas VALUES (3, false, 5);
+INSERT INTO ofertas VALUES (4, true, 20);
+
+-- Introducimos un artículo.
+
+INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','vacía', 1);
+INSERT INTO articulos VALUES (2, 'Lenovo', 'Prestige Evo',5,500.99, 5,8,'Nuevo','vacía', 2);
+INSERT INTO articulos VALUES (3, 'Acer', 'Aspire One',5,700.99, 5,8,'Nuevo','vacía', 3);
+INSERT INTO articulos VALUES (4, 'Apple', 'Macbook Pro',5,1000.99, 5,8,'Nuevo','vacía', 4);
 
 -- Introducimos una solicitud.
 
@@ -91,10 +105,6 @@ INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085
 INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683', 'owner1');
 INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435', 'owner1');
 INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'owner1');
-INSERT INTO owners VALUES (11, 'Manuel', 'Estaban', '2334 Street.', 'Waunakee', '6080535487', 'manu1');
-INSERT INTO owners VALUES (12, 'Jesus', 'Barba', '110 W. Liberty St.', 'Madison', '6085551023', 'jesbarsig');
-INSERT INTO owners VALUES (13, 'Fernando', 'Toro', '817 Friendly St.', 'Monona', '6085555387', 'fer1');
-
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
@@ -109,9 +119,6 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (10, 'Mulligan', '2
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (11, 'Freddy', '2010-03-09', 5, 9);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky', '2010-06-24', 2, 10);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 1, 10);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (14, 'Shin', '2010-06-08', 1, 11);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (15, 'Pepe', '2012-06-08', 1, 12);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (16, 'Qwerty', '2016-02-23', 3, 13);
 
 
 

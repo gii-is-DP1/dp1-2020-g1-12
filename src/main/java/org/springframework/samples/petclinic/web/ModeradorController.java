@@ -12,62 +12,45 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/moderadores/{moderadorId}")
+@RequestMapping("/moderadores")
 public class ModeradorController {
 	
-	@Autowired
-	private ModeradorService moderadorService;
+	private final ModeradorService moderadorService;
 	
-	@GetMapping()
-	public String mostrarPerfil(@PathVariable("moderadorId") Integer moderadorId, ModelMap modelMap){
+	@Autowired
+	public ModeradorController(ModeradorService moderadorService) {
+		this.moderadorService = moderadorService;
+	}
+
+	@GetMapping("/perfil")
+	public String mostrarPerfil(ModelMap modelMap){
 		
 		String  perfil="moderadores/perfil";
-		Optional<Moderador> optperfil = moderadorService.datosPerfil(moderadorId);
+		Optional<Moderador> optperfil = moderadorService.datosPerfil(moderadorService.obtenerIdSesion());
 		
 		modelMap.addAttribute("moderador",optperfil.get());
 		return perfil;
 	}
-	
-	public String salvarPerfil() {
-		String perfil = "moderadores/salvarPerfil";
 		
-		return perfil;
-	}
-    
-	public String guardarPerfil(@Valid Moderador moderador,BindingResult result, ModelMap modelMap) {
-		
-		String vista="moderadores/perfil";
-		if(result.hasErrors()) {
-			modelMap.addAttribute("moderador", moderador);
-			return "moderadores/editarPerfil";
-		}else {
-			moderadorService.guardar(moderador);
-			modelMap.addAttribute("mensage", "El moderador ha sido guardado con éxito.");			
-		}
-		return vista;
-	}
-	
 	@GetMapping(value = "/editar")
-	public String editar(@PathVariable("moderadorId") int moderadorId, Model model) {
-		Moderador moderador = this.moderadorService.findModeradorById(moderadorId);
+	public String editar(Model model) {
+		Moderador moderador = this.moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
 		model.addAttribute(moderador);
 		return "moderadores/editarPerfil";
 	}
 
 	@PostMapping(value = "/editar")
-	public String procesoEditar(@Valid Moderador moderador, BindingResult result,
-			@PathVariable("moderadorId") int moderadorId) {
+	public String procesoEditar(@Valid Moderador moderador, BindingResult result) {
 		if (result.hasErrors()) {
 			return "moderadores/editarPerfil";
 		}
 		else {
-			this.moderadorService.editar(moderador, moderadorId);
-			return "redirect:/moderadores/{moderadorId}";
+			this.moderadorService.editar(moderador, moderadorService.obtenerIdSesion());
+			return "redirect:/moderadores/perfil";
 		}
 	}
 	

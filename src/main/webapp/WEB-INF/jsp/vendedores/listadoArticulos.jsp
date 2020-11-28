@@ -13,8 +13,9 @@
         <thead>
         <tr>
             <th style="width: 150px;">Artículo</th>
-            <th style="width: 200px;">Precio</th>
-            <th style="width: 120px">Oferta</th>
+            <th style="width: 30px;">Precio</th>
+            <th style="width: 30px">Oferta</th>
+            <th style="width: 50px">Acción</th>
         </tr>
         </thead>
         <tbody>
@@ -25,7 +26,35 @@
                 </td>
                 <td>
                     <c:out value="${articulos.precio}"/>
-                </td>                                                
+                </td>
+                <c:choose>
+                    <c:when test="${articulos.oferta.disponibilidad == true}">          
+	                    <td>
+	                    	<c:out value="${articulos.oferta.porcentaje}%"/>
+	                	</td>
+	                	<td>
+					 		<spring:url value="/vendedores/ofertas/desofertar/{ofertaId}" var="ofertaArticuloUrl">
+					              <spring:param name="ofertaId" value="${articulos.oferta.id}"/>
+					        </spring:url>
+							<a href="${fn:escapeXml(ofertaArticuloUrl)}">
+								<button class="btn btn-default" type="submit">Eliminar Oferta</button>
+							</a>
+				        </td>
+               		</c:when>
+					<c:otherwise>
+	                    <td>
+	                    	<c:out value="N/A"/>
+	                	</td>
+	                	<td>
+					 		<spring:url value="/vendedores/ofertas/{ofertaId}" var="ofertaArticuloUrl">
+					              <spring:param name="ofertaId" value="${articulos.oferta.id}"/>
+					        </spring:url>
+							<a href="${fn:escapeXml(ofertaArticuloUrl)}">
+								<button class="btn btn-default" type="submit">Crear oferta</button>
+							</a>
+				        </td>
+	                </c:otherwise>               		
+               	</c:choose>                      
             </tr>
         </c:forEach> 
         </tbody>

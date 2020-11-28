@@ -17,7 +17,7 @@
             <th style="width: 120px">Teléfono</th>
             <th>Dirección</th>
             <th style="width: 120px">Email</th>
-            <th style="width: 120px">Bloquear Actividad</th>
+            <th style="width: 150px">Bloquear Actividad</th>
         </tr>
         </thead>
         <tbody>
@@ -45,8 +45,8 @@
                 <c:choose>
                     <c:when test="${clientes.bloqueo.bloqueado == false}">
 				 		<spring:url value="/bloqueos/{bloqueoId}" var="bloqueoClienteUrl">
-				              <spring:param name="bloqueoId" value="${clientes.bloqueo.id}"/></spring:url>
-		
+				              <spring:param name="bloqueoId" value="${clientes.bloqueo.id}"/>
+				        </spring:url>
 				        <td>
 							<a href="${fn:escapeXml(bloqueoClienteUrl)}">
 								<button class="btn btn-default" type="submit">Bloquear</button>
@@ -55,8 +55,8 @@
 		            </c:when>
 					<c:otherwise>
 				 		<spring:url value="/bloqueos/desbloquear/{bloqueoId}" var="bloqueoClienteUrl">
-				              <spring:param name="bloqueoId" value="${clientes.bloqueo.id}"/></spring:url>
-		
+				              <spring:param name="bloqueoId" value="${clientes.bloqueo.id}"/>
+						</spring:url>
 				        <td>
 							<a href="${fn:escapeXml(bloqueoClienteUrl)}">
 								<button class="btn btn-default" type="submit">Desbloquear</button>
@@ -81,7 +81,7 @@
             <th style="width: 120px">Teléfono</th>
             <th>Dirección</th>
             <th style="width: 120px">Email</th>
-            <th style="width: 120px">Bloquear Actividad</th>
+            <th style="width: 150px">Bloquear Actividad</th>
         </tr>
         </thead>
         <tbody>
