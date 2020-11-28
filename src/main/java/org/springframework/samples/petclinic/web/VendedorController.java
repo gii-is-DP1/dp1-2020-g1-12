@@ -44,22 +44,22 @@ public class VendedorController {
 		return perfil;
 	}
 
-//	public String salvarPerfil() {
-//		String perfil = "vendedores/salvarPerfil";
-//		return perfil;
-//	}
-//
-//	public String guardarPerfil(@Valid Vendedor vendedor, BindingResult result, ModelMap modelMap) {
-//		String vista = "vendedores/perfil";
-//		if (result.hasErrors()) {
-//			modelMap.addAttribute("vendedor", vendedor);
-//			return "vendedor/editarPerfil";
-//		} else {
-//			vendedorService.guardar(vendedor);
-//			modelMap.addAttribute("mensage", "El vendedor ha sido guardado con éxito.");
-//		}
-//		return vista;
-//	}
+	public String salvarPerfil() {
+		String perfil = "vendedores/salvarPerfil";
+		return perfil;
+	}
+
+	public String guardarPerfil(@Valid Vendedor vendedor, BindingResult result, ModelMap modelMap) {
+		String vista = "vendedores/perfil";
+		if (result.hasErrors()) {
+			modelMap.addAttribute("vendedor", vendedor);
+			return "vendedor/editarPerfil";
+		} else {
+			vendedorService.guardar(vendedor);
+			modelMap.addAttribute("mensage", "El vendedor ha sido guardado con éxito.");
+		}
+		return vista;
+	}
 
 	@GetMapping(value = "/editar")
 	public String editar(Model model) {
