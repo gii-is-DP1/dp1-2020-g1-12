@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Bloqueo;
 import org.springframework.samples.petclinic.service.BloqueoService;
+import org.springframework.samples.petclinic.service.exceptions.BloquearSinDescripcionException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/bloqueos")
 public class BloqueoController {
-	
+
 	private final BloqueoService bloqueoService;
-	
+
 	@Autowired
 	public BloqueoController(BloqueoService bloqueoService) {
 		this.bloqueoService = bloqueoService;
@@ -34,19 +35,25 @@ public class BloqueoController {
 	@PostMapping(value = "/{bloqueoId}")
 	public String procesoBloquear(@Valid Bloqueo bloqueo, BindingResult result,
 			@PathVariable("bloqueoId") int bloqueoId) {
-		if (result.hasErrors()) {
-			return "moderadores/editarBloqueo";
-		}
-		else {
+		String vista;
+		try {
 			this.bloqueoService.editar(bloqueo, bloqueoId, true);
-			return "redirect:/clientes";
+			vista = "redirect:/clientes";
+		} catch (BloquearSinDescripcionException e) {
+            result.rejectValue("descripcion", "errónea", "La descripción debe estar entre 20 y 250 caractéres");
+			vista = "moderadores/editarBloqueo";
 		}
+		return vista;
 	}
-	
+
 	@GetMapping(value = "/desbloquear/{bloqueoId}")
 	public String procesoDesbloquear(@Valid Bloqueo bloqueo, BindingResult result,
 			@PathVariable("bloqueoId") int bloqueoId) {
-		this.bloqueoService.editar(bloqueo, bloqueoId, false);
-		return "redirect:/clientes";
+		try {
+			this.bloqueoService.editar(bloqueo, bloqueoId, false);
+		} catch (BloquearSinDescripcionException e) {
+			e.printStackTrace();
 		}
+		return "redirect:/clientes";
+	}
 }
