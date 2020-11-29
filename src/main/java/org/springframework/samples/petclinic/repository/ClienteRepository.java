@@ -7,8 +7,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.model.Cliente;
 
 public interface ClienteRepository extends CrudRepository<Cliente, Integer> {
-	
+
 	@Query("select u.id from Cliente u where u.user.username = :username")
 	Integer clienteId(@Param("username") String username) throws DataAccessException;
-	
+
+	@Query("SELECT DISTINCT u FROM Cliente u WHERE u.dni LIKE :dni%")
+	Cliente findByDni(@Param("dni") String dni) throws DataAccessException;
+
 }
