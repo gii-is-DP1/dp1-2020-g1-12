@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.model;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -10,12 +9,10 @@ import org.hibernate.validator.constraints.Length;
 public class Producto extends BaseEntity{
 	
 	@Column(name = "modelo")
-	@NotEmpty
 	@Length(min=3,max=200)
 	protected String modelo;
 	
 	@Column(name = "marca")
-	@NotEmpty
 	@Length(min=3,max=50)
 	protected String marca;
 

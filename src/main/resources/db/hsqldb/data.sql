@@ -62,13 +62,13 @@ INSERT INTO articulos VALUES (4, 'Apple', 'Macbook Pro',5,1000.99, 5,8,'Nuevo','
 
 -- Introducimos una solicitud.
 
-INSERT INTO solicitudes VALUES (1, 'Solicitud de venta de MSI Prestige 14 Evo A11M-003ES',5,'MSI Prestige','14 Evo A11M-003ES',988.99,
+INSERT INTO solicitudes VALUES (1, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI','Prestige Evo A11M-003ES',988.99,
 									'','Aceptada',5,8,'Nuevo','vacía', 1, 1);
-INSERT INTO solicitudes VALUES (2, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI',' Prestige Evo A11M-003ES',988.99,
+INSERT INTO solicitudes VALUES (2, 'Solicitud de venta de Lenovo Prestige Evo',5,'Lenovo',' Prestige Evo',500.99,
 									'','Aceptada',5,8,'Nuevo','vacía', 2, 1);
-INSERT INTO solicitudes VALUES (3, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI Prestige','Evo A11M-003ES',988.99,
+INSERT INTO solicitudes VALUES (3, 'Solicitud de venta de Acer Aspire One',5,'Acer','Aspire One',700.99,
 									'','Denegada',5,8,'Nuevo','vacía', 3, 2);
-INSERT INTO solicitudes VALUES (4, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI Prestige','Evo A11M-003ES',988.99,
+INSERT INTO solicitudes VALUES (4, 'Solicitud de venta de Apple Macbook Pro',5,'Apple','Macbook Pro',1000.99,
 									'','Pendiente',5,8,'Nuevo','vacía', 4, 2);
 
 INSERT INTO vets VALUES (1, 'James', 'Carter');

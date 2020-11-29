@@ -34,9 +34,6 @@ public class SolicitudControllerTest {
 	
 	private static final int TEST_SOLICITUD_ID = 1;
 	private static final int TEST_VENDEDOR_ID = 1;
-	
-	@Autowired
-	private SolicitudController solicitudController;
 
 	@MockBean
 	private VendedorService vendedorService;
