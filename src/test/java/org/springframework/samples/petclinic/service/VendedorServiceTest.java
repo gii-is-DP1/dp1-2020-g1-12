@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Bloqueo;
+import org.springframework.samples.petclinic.model.Situacion;
 import org.springframework.samples.petclinic.model.Solicitud;
+import org.springframework.samples.petclinic.model.Tipo;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.model.Vendedor;
 import org.springframework.stereotype.Service;
@@ -23,12 +25,6 @@ public class VendedorServiceTest {
 
 	@Autowired
 	private VendedorService vendedorService;
-
-	@Test
-	public void testCountWithInitialData() {
-		int count = vendedorService.vendedorCount();
-		assertEquals(count, 1);
-	}
 
 	@Test
 	public void shouldFindVendedorById() {
@@ -53,24 +49,17 @@ public class VendedorServiceTest {
 		vend.setTelefono("647896370");
 		vend.setEmail("quique@mail.com");
 		Bloqueo b = new Bloqueo();
+		b.setId(1);
 		b.setBloqueado(false);
-		b.setDescripcion("hola");
+		b.setDescripcion("");
 		vend.setBloqueo(b);
-//		Solicitud s1 = new Solicitud();
-//		Solicitud s2 = new Solicitud();
-//		Collection<Solicitud> c = new ArrayList<Solicitud>();
-//		c.add(s1);
-//		c.add(s2);
-//		vend.setSolicitudes(c);
 		User user = new User();
 		user.setUsername("quique");
 		user.setPassword("supersecretpassword");
 		user.setEnabled(true);
 		vend.setUser(user);
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + vend.getBloqueo().toString() + vend.toString());
 		this.vendedorService.guardar(vend);
 		Vendedor vendedor = this.vendedorService.findSellerByDni("12345678");
-		System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + vendedor);
 		assertEquals(vend, vendedor);
 	}
 

@@ -81,7 +81,7 @@ public class VendedorController {
 	@GetMapping(value = "/perfilCliente/{clienteId}")
 	public String mostrarPerfilCliente(@PathVariable("clienteId") int clienteId, ModelMap modelMap) {
 		Cliente cliente = this.clienteService.findClientById(clienteId);
-		modelMap.addAttribute(cliente);
+		modelMap.addAttribute("cliente",cliente);
 		modelMap.remove(cliente.getDni());
 		return "vendedores/perfilCliente";
 	}
