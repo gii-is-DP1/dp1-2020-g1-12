@@ -27,12 +27,6 @@ public class VendedorServiceTest {
 	private VendedorService vendedorService;
 
 	@Test
-	public void testCountWithInitialData() {
-		int count = vendedorService.vendedorCount();
-		assertEquals(count, 1);
-	}
-
-	@Test
 	public void shouldFindVendedorById() {
 		Vendedor optperfil = this.vendedorService.findSellerById(1);
 		assertEquals(optperfil.getNombre(), "Pepe");

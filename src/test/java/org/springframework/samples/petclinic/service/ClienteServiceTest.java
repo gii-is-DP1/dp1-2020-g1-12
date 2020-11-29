@@ -21,15 +21,9 @@ public class ClienteServiceTest {
 	private ClienteService clienteService;
 
 	@Test
-	public void testCountWithInitialData() {
-		int count = clienteService.clienteCount();
-		assertEquals(count, 1);
-	}
-
-	@Test
 	public void shouldFindclienteById() {
 		Cliente optperfil = this.clienteService.findClientById(1);
-		assertEquals(optperfil.getNombre(), "Pepe");
+		assertEquals(optperfil.getNombre(), "Juan");
 	}
 
 	@Test
