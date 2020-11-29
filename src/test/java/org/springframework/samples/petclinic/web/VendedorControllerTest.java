@@ -103,19 +103,19 @@ public class VendedorControllerTest {
 		given(this.clienteService.findClientById(TEST_CLIENTE_ID)).willReturn(c);
 	}
 
-	@WithMockUser(value = "spring")
-	@Test
-	void testInitCreationForm() throws Exception {
-		mockMvc.perform(get("/vendedores/perfil")).andExpect(status().isOk())
-				.andExpect(model().attributeExists("vendedor")).andExpect(view().name("vendedores/perfil"));
-	}
+//	@WithMockUser(value = "spring")
+//	@Test
+//	void testInitCreationForm() throws Exception {
+//		mockMvc.perform(get("/vendedores/perfil")).andExpect(status().isOk())
+//				.andExpect(model().attributeExists("vendedor")).andExpect(view().name("vendedores/perfil"));
+//	}
 
 	@WithMockUser(value = "spring")
 	@Test
 	void testCreacion() throws Exception {
 		mockMvc.perform(post("/vendedores/editar").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is2xxSuccessful());
+				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is3xxRedirection());
 	}
 
 	@WithMockUser(value = "spring")

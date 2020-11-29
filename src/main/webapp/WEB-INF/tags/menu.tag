@@ -22,7 +22,7 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<petclinic:menuItem active="${name eq 'inicio'}" url="/"
+				<petclinic:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Inicio</span>
@@ -30,12 +30,12 @@
 
 
 				<sec:authorize access="hasAuthority('moderador')">
-					<petclinic:menuItem active="${name eq 'moderador'}" url="/solicitudes" title="Solicitudes">
+					<petclinic:menuItem active="${name eq 'solicitudes'}" url="/solicitudes" title="Solicitudes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Solicitudes</span>
 					</petclinic:menuItem>
 					
-					<petclinic:menuItem active="${name eq 'clientes'}" url="/clientes"
+					<petclinic:menuItem active="${name eq 'listadoClientes'}" url="/clientes"
 						title="Listado de clientes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Listado de clientes</span>
@@ -44,11 +44,11 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('vendedor')">
-					<petclinic:menuItem active="${name eq 'vendedores'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
+					<petclinic:menuItem active="${name eq 'articulos'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Artículos en venta</span>
 					</petclinic:menuItem>
-					<petclinic:menuItem active="${name eq 'vendedores'}" url="/solicitudes/new" title="Creación solicitudes">
+					<petclinic:menuItem active="${name eq 'crearSolicitud'}" url="/solicitudes/new" title="Creación solicitudes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Creación solicitudes</span>
 					</petclinic:menuItem>					
