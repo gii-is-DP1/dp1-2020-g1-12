@@ -25,7 +25,7 @@
             <petclinic:inputField label="Precio" name="precio"/>
             <petclinic:inputField label="Stock" name="stock"/>
             <petclinic:inputField label="Tiempo de la entrega" name="tiempoEntrega"/>
-            <petclinic:inputField label="Gastos de envio" name="gastoEnvio"/>
+            <petclinic:inputField label="Gastos de envío" name="gastoEnvio"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

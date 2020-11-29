@@ -8,6 +8,7 @@
 <petclinic:layout pageName="solicitudes">
 
     <h2>Solicitud ${solicitud.id}</h2>
+    <p>${mensaje}</p>
 
 			<spring:url value="/solicitudes/solicitante/{solicitanteId}" var="solicitanteUrl">
                <spring:param name="solicitanteId" value="${solicitud.vendedor.id}"/>
@@ -66,8 +67,8 @@
 				</th>
 				<td>
 				<button class="btn btn-default" type="submit">Denegar</button>
-				</td>	
-	   		</form:form>    	
+				</td>
+	   		</form:form>
 	   		
 	   		</table>
 	   		

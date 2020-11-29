@@ -7,7 +7,6 @@
 
 <petclinic:layout pageName="solicitud">
     <h2>Listado de solicitudes</h2>
-    <p>${mensaje}</p>
     <table id="solicitudesTable" class="table table-striped">
         <thead>
         <tr>
