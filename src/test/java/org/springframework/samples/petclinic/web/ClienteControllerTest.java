@@ -36,6 +36,7 @@ public class ClienteControllerTest {
 
 	@MockBean
 	private VendedorService vendedorService;
+	@MockBean
 	private ClienteService clienteService;
 
 	@MockBean

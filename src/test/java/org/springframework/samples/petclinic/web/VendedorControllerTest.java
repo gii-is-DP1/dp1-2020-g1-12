@@ -40,7 +40,9 @@ public class VendedorControllerTest {
 
 	@MockBean
 	private VendedorService vendedorService;
+	@MockBean
 	private ArticuloService articuloService;
+	@MockBean
 	private ClienteService clienteService;
 
 	@MockBean
