@@ -37,11 +37,8 @@
         </tr>
             
     </table>
-            <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-				<a href="/vendedores/editar"><button class="btn btn-default" type="submit">Editar</button></a>
-            </div>
-        </div>
+
+	<a href="/vendedores/editar"><button class="btn btn-default" type="submit">Editar</button></a>
 
     
 

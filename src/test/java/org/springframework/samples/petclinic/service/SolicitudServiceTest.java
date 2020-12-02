@@ -65,7 +65,7 @@ public class SolicitudServiceTest {
 		sol.setGastoEnvio(600.);
         Vendedor vendedor = vendedorService.findSellerById(VENDEDOR_ID);
         
-        assertThrows(PrecioMenorAlEnvioException.class ,() -> this.solicitudService.guardar(sol,vendedor));
+        assertThrows(PrecioMenorAlEnvioException.class ,() -> this.solicitudService.guardar(sol,vendedor)); // Separar
         
         sol.setGastoEnvio(5.);
         this.solicitudService.guardar(sol,vendedor);
@@ -96,7 +96,7 @@ public class SolicitudServiceTest {
 				() -> this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, ""));
 		
 		assertThrows(SolicitudRechazadaSinRespuestaException.class, 
-				() -> this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, "Prohibido"));
+				() -> this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, "Prohibido")); // SEPARAR
 		
 		
 		this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, "No está permitida la venta de RPGs");

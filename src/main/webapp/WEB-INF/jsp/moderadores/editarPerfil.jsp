@@ -24,4 +24,5 @@
             </div>
         </div>
     </form:form>
-</petclinic:layout>>
+     <a href="/moderadores/perfil"><button class="btn btn-default" type="submit">Volver</button></a>
+</petclinic:layout>

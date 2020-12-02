@@ -99,7 +99,7 @@ public class SolicitudControllerTest {
 //	@WithMockUser(value = "spring")
 //    @Test
 //    void testProcesoSolicitud() throws Exception {
-//		mockMvc.perform(get("/solicitudes/"+ TEST_SOLICITUD_ID)).andExpect(status().isOk())
+//		mockMvc.perform(get("/solicitudes/"+TEST_SOLICITUD_ID)).andExpect(status().isOk())
 //		.andExpect(view().name("solicitudes/detalles"));
 //	}
 	
@@ -120,7 +120,7 @@ public class SolicitudControllerTest {
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoPerfilSolicitante() throws Exception {
-		mockMvc.perform(get("/solicitudes/solicitante/"+TEST_VENDEDOR_ID))
+		mockMvc.perform(get("/solicitudes/"+TEST_SOLICITUD_ID+"/solicitante/"+TEST_VENDEDOR_ID))
 		.andExpect(status().isOk()).andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/solicitante"));
 	}
 
