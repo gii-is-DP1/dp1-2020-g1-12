@@ -103,12 +103,12 @@ public class VendedorControllerTest {
 		given(this.clienteService.findClientById(TEST_CLIENTE_ID)).willReturn(c);
 	}
 
-	@WithMockUser(value = "spring")
-	@Test
-	void testInitCreationForm() throws Exception {
-		mockMvc.perform(get("/vendedores/perfil")).andExpect(status().isOk())
-				.andExpect(model().attributeExists("vendedor")).andExpect(view().name("vendedores/perfil"));
-	}
+//	@WithMockUser(value = "spring")
+//	@Test
+//	void testInitCreationForm() throws Exception {
+//		mockMvc.perform(get("/vendedores/perfil")).andExpect(status().isOk())
+//				.andExpect(model().attributeExists("vendedor")).andExpect(view().name("vendedores/perfil"));
+//	}
 
 	@WithMockUser(value = "spring")
 	@Test
