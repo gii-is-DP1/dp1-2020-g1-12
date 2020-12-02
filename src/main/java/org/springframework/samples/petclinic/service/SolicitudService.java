@@ -63,7 +63,7 @@ public class SolicitudService {
 		ofertaService.guardarOferta(oferta);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = SolicitudRechazadaSinRespuestaException.class)
 	public void denegarSolicitud(Integer solicitudId, String respuesta) throws SolicitudRechazadaSinRespuestaException {
 		if(respuesta.isEmpty() || (respuesta.length() < 15)) {
 			throw new SolicitudRechazadaSinRespuestaException();
@@ -74,7 +74,7 @@ public class SolicitudService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = PrecioMenorAlEnvioException.class)
 	public void guardar(Solicitud solicitud, Vendedor vendedor) throws PrecioMenorAlEnvioException {
 		if(solicitud.getPrecio() <= solicitud.getGastoEnvio()) {
 			throw new PrecioMenorAlEnvioException();

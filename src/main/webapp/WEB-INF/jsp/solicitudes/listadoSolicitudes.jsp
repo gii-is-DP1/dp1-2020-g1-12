@@ -10,27 +10,29 @@
     <table id="solicitudesTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Descripción</th>
-            <th style="width: 200px;">Modelo</th>
-            <th>Marca</th>
-  
+        	<th style="width: 100px;">Marca</th>
+        	<th style="width: 200px;">Modelo</th>
+            <th style="width: 600px;">Descripción</th>
+            <th style="width: 200px;">Solicitante</th>
+  			<th>Acceso</th>
         </tr>
         </thead>
         <tbody>
       <c:forEach items="${solicitudes}" var="solicitudes">
             <tr>
-
-                <td>
-                    <c:out value="${solicitudes.descripcion}"/>
+           		<td>
+                    <c:out value="${solicitudes.marca}"/>
                 </td>
                 <td>
                     <c:out value="${solicitudes.modelo}"/>
                 </td>
                 <td>
-                    <c:out value="${solicitudes.marca}"/>
+                    <c:out value="${solicitudes.descripcion}"/>
                 </td>
-
-                
+				<td>
+                    <c:out value="${solicitudes.vendedor.nombre} ${solicitudes.vendedor.apellido} "/>
+                </td>
+                        
  				<spring:url value="/solicitudes/{solicitudId}" var="solicitudUrl">
               		<spring:param name="solicitudId" value="${solicitudes.id}"/>
            		</spring:url>

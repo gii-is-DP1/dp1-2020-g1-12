@@ -21,7 +21,7 @@ public class BloqueoService {
 		return bloqueoRepository.findById(id).get();
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = BloquearSinDescripcionException.class)
 	public void editar(@Valid Bloqueo bloqueo, Integer id, Boolean bloqueado) throws BloquearSinDescripcionException {
 		Bloqueo bloqueoGuardado = findBlockById(id);
 		if(bloqueado) {

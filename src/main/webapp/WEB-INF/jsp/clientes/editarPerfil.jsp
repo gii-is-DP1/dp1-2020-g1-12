@@ -21,8 +21,9 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-				<button class="btn btn-default" type="submit">Actualizar datos</button>
+				<button class="btn btn-default" type="submit">Guardar</button>
             </div>
         </div>
     </form:form>
-</petclinic:layout>>
+    <a href="/clientes/perfil"><button class="btn btn-default" type="submit">Volver</button></a>
+</petclinic:layout>

@@ -32,12 +32,7 @@
         </tr>
    
     </table>
-            <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-				<a href="/moderadores/editar"><button class="btn btn-default" type="submit">Editar</button></a>
-            </div>
-        </div>
-
-    
+	
+	<a href="/moderadores/editar"><button class="btn btn-default" type="submit">Editar</button></a>
 
 </petclinic:layout>

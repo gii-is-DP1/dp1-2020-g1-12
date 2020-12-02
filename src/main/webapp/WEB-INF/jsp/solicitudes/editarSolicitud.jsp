@@ -40,4 +40,7 @@
             </div>
         </div>
     </form:form>
+    
+      <a href="/"><button class="btn btn-default" type="submit">Volver</button></a>
+     
 </petclinic:layout>

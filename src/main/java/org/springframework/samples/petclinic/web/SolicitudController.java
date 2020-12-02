@@ -101,11 +101,13 @@ public class SolicitudController {
 		return vista;
 	}
 	
-	@GetMapping(value="/solicitante/{vendedorId}")
-	public String perfilSolicitante(ModelMap modelMap, @PathVariable("vendedorId") Integer vendedorId) {
+	@GetMapping(value="/{solicitudId}/solicitante/{vendedorId}")
+	public String perfilSolicitante(ModelMap modelMap, @PathVariable("vendedorId") Integer vendedorId, 
+			@PathVariable("solicitudId") Integer solicitudId) {
 		String solicitante="solicitudes/solicitante";
 		Vendedor vendedor = vendedorService.findSellerById(vendedorId);
 		modelMap.addAttribute("vendedor", vendedor);
+		modelMap.addAttribute("solicitudId", solicitudId);
 		return solicitante;
 	}
 

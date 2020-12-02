@@ -39,7 +39,7 @@ public class VendedorController {
 	@GetMapping(value = "/perfil")
 	public String mostrarPerfil(ModelMap modelMap) {
 		String perfil = "vendedores/perfil";
-		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorService.obtenerIdSesion());
+		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorService.obtenerIdSesion()); // Quitar optional
 		modelMap.addAttribute("vendedor", optperfil.get());
 		return perfil;
 	}
