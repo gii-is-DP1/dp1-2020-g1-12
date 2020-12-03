@@ -3,9 +3,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="solicitudes">
+<dpc:layout pageName="solicitudes">
 
     <h2>Solicitud ${solicitud.id}</h2>
     <p>${mensaje}</p>
@@ -64,7 +64,7 @@
 	           </spring:url>
 	           
 	 		<form:form modelAttribute="solicitud" action="/solicitudes/${solicitudId}/denegar" class="form-horizontal" id="add-owner-form">
-				<petclinic:inputField label="Respuesta" name="respuesta"/>
+				<dpc:inputField label="Respuesta" name="respuesta"/>
 				</th>
 				<td>
 				<button class="btn btn-default" type="submit">Denegar</button>
@@ -100,4 +100,4 @@
    			</table>
 		</c:if>
 		<br><br><a href="/solicitudes"><button class="btn btn-default" type="submit">Volver</button></a>
-</petclinic:layout>
+</dpc:layout>

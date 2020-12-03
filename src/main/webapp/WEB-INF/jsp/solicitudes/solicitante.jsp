@@ -3,9 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="solicitante">
+<dpc:layout pageName="solicitante">
 	 <h2>Perfil de ${vendedor.nombre} ${vendedor.apellido}</h2>
 
     <table class="table table-striped">
@@ -36,4 +36,4 @@
 	           
 	<a href="${fn:escapeXml(solicitudUrl)}"><button class="btn btn-default" type="submit">Volver</button></a>
     
-</petclinic:layout>
+</dpc:layout>
