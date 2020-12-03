@@ -2,9 +2,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="moderadores">
+<dpc:layout pageName="moderadores">
 
     <h2>Mi perfil</h2>
 
@@ -32,12 +32,7 @@
         </tr>
    
     </table>
-            <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-				<a href="/moderadores/editar"><button class="btn btn-default" type="submit">Editar</button></a>
-            </div>
-        </div>
+	
+	<a href="/moderadores/editar"><button class="btn btn-default" type="submit">Editar</button></a>
 
-    
-
-</petclinic:layout>
+</dpc:layout>
