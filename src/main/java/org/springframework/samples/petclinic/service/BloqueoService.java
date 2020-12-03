@@ -15,7 +15,12 @@ public class BloqueoService {
 
 	@Autowired
 	private BloqueoRepository bloqueoRepository;
-	
+
+	@Transactional
+	public void guardar(Bloqueo bloqueo) {
+		bloqueoRepository.save(bloqueo);
+	}
+
 	@Transactional(readOnly = true)
 	public Bloqueo findBlockById(int id) throws DataAccessException {
 		return bloqueoRepository.findById(id).get();
@@ -24,15 +29,13 @@ public class BloqueoService {
 	@Transactional(rollbackFor = BloquearSinDescripcionException.class)
 	public void editar(@Valid Bloqueo bloqueo, Integer id, Boolean bloqueado) throws BloquearSinDescripcionException {
 		Bloqueo bloqueoGuardado = findBlockById(id);
-		if(bloqueado) {
-			if(bloqueo.getDescripcion().length() > 20 && bloqueo.getDescripcion().length() < 250) {
+		if (bloqueado) {
+			if (bloqueo.getDescripcion().length() > 20 && bloqueo.getDescripcion().length() < 250) {
 				bloqueoGuardado.setDescripcion(bloqueo.getDescripcion());
-			}
-			else {
+			} else {
 				throw new BloquearSinDescripcionException();
 			}
-		}
-		else {
+		} else {
 			bloqueoGuardado.setDescripcion("");
 		}
 		bloqueoGuardado.setBloqueado(bloqueado);
