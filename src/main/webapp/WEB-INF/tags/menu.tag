@@ -44,12 +44,13 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('vendedor')">
+
 					<dpc:menuItem active="${name eq 'articulos'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
-						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Artículos en venta</span>
 					</dpc:menuItem>
 					<dpc:menuItem active="${name eq 'crearSolicitud'}" url="/solicitudes/new" title="Creación solicitudes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+
 						<span>Creación solicitudes</span>
 					</dpc:menuItem>					
 				</sec:authorize>
@@ -69,10 +70,11 @@
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Iniciar Sesión</a></li>
 					<li><a href="<c:url value="/registro" />">Registrarse</a></li>
+
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
