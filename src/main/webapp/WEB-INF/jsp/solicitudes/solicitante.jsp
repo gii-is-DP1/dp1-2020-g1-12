@@ -30,4 +30,10 @@
     
     </table>
     
+    <spring:url value="/solicitudes/{solicitudId}" var="solicitudUrl">
+		<spring:param name="solicitudId" value="${solicitudId}"/>
+	</spring:url>
+	           
+	<a href="${fn:escapeXml(solicitudUrl)}"><button class="btn btn-default" type="submit">Volver</button></a>
+    
 </petclinic:layout>

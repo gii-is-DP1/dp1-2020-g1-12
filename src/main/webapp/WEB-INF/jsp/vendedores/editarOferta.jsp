@@ -20,4 +20,5 @@
             </div>
         </div>
     </form:form>
+    <a href="/vendedores/articulosEnVenta"><button class="btn btn-default" type="submit">Volver</button></a>
 </petclinic:layout>

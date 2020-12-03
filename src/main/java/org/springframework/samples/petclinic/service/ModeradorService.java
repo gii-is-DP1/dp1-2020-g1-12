@@ -25,7 +25,7 @@ public class ModeradorService {
 	}
 
 	@Transactional
-	public Optional<Moderador> datosPerfil(Integer moderadorId){
+	public Optional<Moderador> datosPerfil(Integer moderadorId) {
 		Optional<Moderador> result = moderadorRepository.findById(moderadorId);
 		return result;
 	}

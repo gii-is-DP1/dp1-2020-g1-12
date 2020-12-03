@@ -10,6 +10,8 @@ import org.springframework.samples.petclinic.model.Situacion;
 import org.springframework.samples.petclinic.model.Solicitud;
 import org.springframework.samples.petclinic.model.Vendedor;
 import org.springframework.samples.petclinic.repository.SolicitudRepository;
+import org.springframework.samples.petclinic.service.exceptions.PrecioMenorAlEnvioException;
+import org.springframework.samples.petclinic.service.exceptions.SolicitudRechazadaSinRespuestaException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,19 +63,27 @@ public class SolicitudService {
 		ofertaService.guardarOferta(oferta);
 	}
 
-	@Transactional
-	public void denegarSolicitud(Integer solicitudId, String respuesta) {
-		Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
-		solicitud.get().setRespuesta(respuesta);
-		solicitud.get().setSituacion(Situacion.Denegada);
+	@Transactional(rollbackFor = SolicitudRechazadaSinRespuestaException.class)
+	public void denegarSolicitud(Integer solicitudId, String respuesta) throws SolicitudRechazadaSinRespuestaException {
+		if(respuesta.isEmpty() || (respuesta.length() < 15)) {
+			throw new SolicitudRechazadaSinRespuestaException();
+		} else {
+			Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
+			solicitud.get().setRespuesta(respuesta);
+			solicitud.get().setSituacion(Situacion.Denegada);
+		}
 	}
 
-	@Transactional
-	public void guardar(Solicitud solicitud, Vendedor vendedor) {
-		solicitud.setVendedor(vendedor);
-		solicitud.setSituacion(Situacion.Pendiente); // Por defecto, la solicitud tiene situación "Pendiente".
-		solicitud.setRespuesta(""); // Por defecto, la solicitud no tiene una respuesta.
-		solicitudRepository.save(solicitud);
+	@Transactional(rollbackFor = PrecioMenorAlEnvioException.class)
+	public void guardar(Solicitud solicitud, Vendedor vendedor) throws PrecioMenorAlEnvioException {
+		if(solicitud.getPrecio() <= solicitud.getGastoEnvio()) {
+			throw new PrecioMenorAlEnvioException();
+		} else {	
+			solicitud.setVendedor(vendedor);
+			solicitud.setSituacion(Situacion.Pendiente); // Por defecto, la solicitud tiene situación "Pendiente".
+			solicitud.setRespuesta(""); // Por defecto, la solicitud no tiene una respuesta.
+			solicitudRepository.save(solicitud);
+		}
 	}
 	
 	@Transactional

@@ -8,8 +8,10 @@
 <petclinic:layout pageName="solicitudes">
 
     <h2>Solicitud ${solicitud.id}</h2>
+    <p>${mensaje}</p>
 
-			<spring:url value="/solicitudes/solicitante/{solicitanteId}" var="solicitanteUrl">
+			<spring:url value="/solicitudes/{solicitudId}/solicitante/{solicitanteId}" var="solicitanteUrl">
+               <spring:param name="solicitudId" value="${solicitud.id}"/>
                <spring:param name="solicitanteId" value="${solicitud.vendedor.id}"/>
            </spring:url>
 
@@ -19,7 +21,7 @@
               <td>${solicitud.marca}</td>
         </tr>
          <tr>
-            <th>Vendedor</th>
+            <th>Perfil solicitante</th>
               <td><a href="${fn:escapeXml(solicitanteUrl)}"> ${solicitud.vendedor.nombre}</a></td>
         </tr>
         <tr>
@@ -31,7 +33,7 @@
             <td>${solicitud.descripcion}</td>
         </tr>
         <tr>
-            <th>UrlImagen</th>
+            <th>Imagen</th>
             <td>${solicitud.urlImagen}</td>
         </tr>
         <tr>
@@ -66,14 +68,14 @@
 				</th>
 				<td>
 				<button class="btn btn-default" type="submit">Denegar</button>
-				</td>	
-	   		</form:form>    	
+				</td>
+	   		</form:form>
 	   		
 	   		</table>
 	   		
 	           <spring:url value="/solicitudes/{solicitudId}/aceptar" var="aceptarUrl">
 	               <spring:param name="solicitudId" value="${solicitud.id}"/>
-	           </spring:url>      
+	           </spring:url>
 	           
 			<a href="${fn:escapeXml(aceptarUrl)}"><button class="btn btn-default" type="submit">Aceptar</button></a>
 		</c:if>
@@ -97,5 +99,5 @@
        	 	</tr>
    			</table>
 		</c:if>
-		
+		<br><br><a href="/solicitudes"><button class="btn btn-default" type="submit">Volver</button></a>
 </petclinic:layout>

@@ -6,7 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="solicitudes">
+<petclinic:layout pageName="crearSolicitud">
     <h2>
         <c:if test="${solicitud['new']}">Nueva </c:if> Solicitud
     </h2>
@@ -25,7 +25,7 @@
             <petclinic:inputField label="Precio" name="precio"/>
             <petclinic:inputField label="Stock" name="stock"/>
             <petclinic:inputField label="Tiempo de la entrega" name="tiempoEntrega"/>
-            <petclinic:inputField label="Gastos de envio" name="gastoEnvio"/>
+            <petclinic:inputField label="Gastos de envío" name="gastoEnvio"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -40,4 +40,7 @@
             </div>
         </div>
     </form:form>
+    
+      <a href="/"><button class="btn btn-default" type="submit">Volver</button></a>
+     
 </petclinic:layout>

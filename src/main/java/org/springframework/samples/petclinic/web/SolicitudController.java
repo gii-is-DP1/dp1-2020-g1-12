@@ -9,6 +9,8 @@ import org.springframework.samples.petclinic.model.Solicitud;
 import org.springframework.samples.petclinic.model.Vendedor;
 import org.springframework.samples.petclinic.service.SolicitudService;
 import org.springframework.samples.petclinic.service.VendedorService;
+import org.springframework.samples.petclinic.service.exceptions.PrecioMenorAlEnvioException;
+import org.springframework.samples.petclinic.service.exceptions.SolicitudRechazadaSinRespuestaException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -57,9 +59,17 @@ public class SolicitudController {
 	}
 	
 	@PostMapping(value="/{solicitudId}/denegar")
-	public String denegarSolicitud(@PathVariable("solicitudId") Integer solicitudId,Solicitud solicitud, ModelMap modelMap) {
-		solicitudService.denegarSolicitud(solicitudId,solicitud.getRespuesta());
-		modelMap.addAttribute("mensaje", "La solicitud ha sido denegada correctamente");
+	public String denegarSolicitud(@PathVariable("solicitudId") Integer solicitudId,Solicitud solicitud, 
+			ModelMap modelMap, BindingResult result) {
+		try {
+			solicitudService.denegarSolicitud(solicitudId,solicitud.getRespuesta());
+			modelMap.addAttribute("mensaje", "La solicitud ha sido denegada correctamente");
+		} catch(SolicitudRechazadaSinRespuestaException ex) {
+			result.rejectValue("respuesta", "error", 
+					"La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
+			modelMap.addAttribute("mensaje", "La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
+			return mostrarSolicitud(solicitudId, modelMap);
+		}
 		return listadoSolicitud(modelMap);
 	}
 	
@@ -77,19 +87,27 @@ public class SolicitudController {
 		if(result.hasErrors()) {
 			modelMap.addAttribute("solicitud",solicitud);
 			return "solicitudes/editarSolicitud";
-		}else {
+		} else {
+			try {
 			solicitudService.guardar(solicitud, vendedorService.findSellerById(vendedorService.obtenerIdSesion()));
 			modelMap.addAttribute("mensaje", "Se ha guardado correctamente.");
 			// vista = ...
+			} catch(PrecioMenorAlEnvioException ex) {
+				result.rejectValue("gastoEnvio", "error", 
+						"Los gastos de envío deben ser inferiores al precio del artículo");
+				return "solicitudes/editarSolicitud";
+			}
 		}
 		return vista;
 	}
 	
-	@GetMapping(value="/solicitante/{vendedorId}")
-	public String perfilSolicitante(ModelMap modelMap, @PathVariable("vendedorId") Integer vendedorId) {
+	@GetMapping(value="/{solicitudId}/solicitante/{vendedorId}")
+	public String perfilSolicitante(ModelMap modelMap, @PathVariable("vendedorId") Integer vendedorId, 
+			@PathVariable("solicitudId") Integer solicitudId) {
 		String solicitante="solicitudes/solicitante";
 		Vendedor vendedor = vendedorService.findSellerById(vendedorId);
 		modelMap.addAttribute("vendedor", vendedor);
+		modelMap.addAttribute("solicitudId", solicitudId);
 		return solicitante;
 	}
 
