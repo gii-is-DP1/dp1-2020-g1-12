@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="registro">
@@ -13,3 +14,4 @@
     <a href="/registro/cliente"><button class="btn btn-default">Registrarse como cliente</button></a>
     <a href="/registro/vendedor"><button class="btn btn-default">Registrarse como vendedor</button></a>
 </petclinic:layout>
+

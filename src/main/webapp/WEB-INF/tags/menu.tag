@@ -1,6 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="dpc" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
@@ -22,43 +22,44 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<petclinic:menuItem active="${name eq 'home'}" url="/"
+				<dpc:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Inicio</span>
-				</petclinic:menuItem>
+				</dpc:menuItem>
 
 
 				<sec:authorize access="hasAuthority('moderador')">
-					<petclinic:menuItem active="${name eq 'solicitudes'}" url="/solicitudes" title="Solicitudes">
+					<dpc:menuItem active="${name eq 'solicitudes'}" url="/solicitudes" title="Solicitudes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Solicitudes</span>
-					</petclinic:menuItem>
+					</dpc:menuItem>
 					
-					<petclinic:menuItem active="${name eq 'listadoClientes'}" url="/clientes"
+					<dpc:menuItem active="${name eq 'listadoClientes'}" url="/clientes"
 						title="Listado de clientes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Listado de clientes</span>
-					</petclinic:menuItem>
+					</dpc:menuItem>
 				
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('vendedor')">
-					<petclinic:menuItem active="${name eq 'articulos'}" url="/vendedores/articulosEnVenta" title="Artï¿½culos en venta">
+
+					<dpc:menuItem active="${name eq 'articulos'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
+						<span>Artículos en venta</span>
+					</dpc:menuItem>
+					<dpc:menuItem active="${name eq 'crearSolicitud'}" url="/solicitudes/new" title="Creación solicitudes">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-						<span>Artï¿½culos en venta</span>
-					</petclinic:menuItem>
-					<petclinic:menuItem active="${name eq 'crearSolicitud'}" url="/solicitudes/new" title="Creaciï¿½n solicitudes">
-						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-						<span>Creaciï¿½n solicitudes</span>
-					</petclinic:menuItem>					
+
+						<span>Creación solicitudes</span>
+					</dpc:menuItem>					
 				</sec:authorize>
 				
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
+				<dpc:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
-				</petclinic:menuItem>
+				</dpc:menuItem>
 
 			</ul>
 
@@ -67,12 +68,13 @@
 
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
-					<li><a href="<c:url value="/login" />">Login</a></li>
-					<li><a href="<c:url value="/registro" />">Register</a></li>
+					<li><a href="<c:url value="/login" />">Iniciar Sesión</a></li>
+					<li><a href="<c:url value="/registro" />">Registrarse</a></li>
+
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>ï¿½
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
@@ -109,7 +111,7 @@
 											</sec:authorize>																						
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Logout</a>
+													class="btn btn-primary btn-block btn-sm">Cerrar Sesión</a>
 											</p>
 										</div>
 									</div>
