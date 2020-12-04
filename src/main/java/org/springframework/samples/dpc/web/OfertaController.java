@@ -24,28 +24,29 @@ public class OfertaController {
 		this.ofertaService = ofertaService;
 	}
 
-	@GetMapping(value = "/{ofertaId}")
+	@GetMapping(value = "/{ofertaId}/articulo/{articuloId}")
 	public String editar(@PathVariable("ofertaId") int ofertaId, Model model) {
 		Oferta oferta = this.ofertaService.findOfertById(ofertaId);
 		model.addAttribute(oferta);
 		return "vendedores/editarOferta";
 	}
 
-	@PostMapping(value = "/{ofertaId}")
-	public String procesoOfertar(@Valid Oferta oferta, BindingResult result, @PathVariable("ofertaId") int ofertaId) {
+	@PostMapping(value = "/{ofertaId}/articulo/{articuloId}")
+	public String procesoOfertar(@Valid Oferta oferta, BindingResult result, @PathVariable("ofertaId") int ofertaId,
+			@PathVariable("articuloId") int articuloId) {
 		if (result.hasErrors()) {
 			return "vendedores/editarOferta";
 		} else {
 			this.ofertaService.editar(oferta, ofertaId, true);
-			return "redirect:/vendedores/articulosEnVenta";
+			return "redirect:/vendedores/articulo/{articuloId}";
 		}
 	}
 	
-	  @GetMapping(value = "/desofertar/{ofertaId}") 
+	  @GetMapping(value = "/desofertar/{ofertaId}/articulo/{articuloId}") 
 	  public String procesoDesofertar(@Valid Oferta oferta, BindingResult result,
-			  @PathVariable("ofertaId") int ofertaId) {
+			  @PathVariable("ofertaId") int ofertaId, @PathVariable("articuloId") int articuloId) {
 		  this.ofertaService.editar(oferta, ofertaId, false); 
-		  return "redirect:/vendedores/articulosEnVenta";
+		  return "redirect:/vendedores/articulo/{articuloId}";
 	  }
 	 
 }

@@ -93,5 +93,13 @@ public class VendedorController {
 		modelMap.addAttribute("articulos", optarticulos);
 		return vista;
 	}
+	
+	@GetMapping(value = "/articulo/{articuloId}")
+	public String mostrarArticuloDetallado(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
+		String vista = "vendedores/articulo";
+		Articulo articulo = articuloService.findArticuloById(articuloId);
+		modelMap.addAttribute("articulo", articulo);
+		return vista;
+	}
 
 }
