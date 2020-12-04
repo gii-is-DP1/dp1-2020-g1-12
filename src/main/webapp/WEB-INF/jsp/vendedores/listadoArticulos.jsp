@@ -4,57 +4,55 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <dpc:layout pageName="articulosEnVenta">
     
-    <h2>Lista de artículos en venta</h2>
+    <h2>Lista de artÃ­culos en venta</h2>
 
     <table id="articulosTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Artículo</th>
-            <th style="width: 30px;">Precio</th>
-            <th style="width: 30px">Oferta</th>
-            <th style="width: 50px">Acción</th>
+            <th style="width: 150px;">ArtÃ­culo</th>
+            <th style="width: 30px;">Stock</th>
+            <th style="width: 30px;">Precio Base</th>
+            <th style="width: 30px">Precio reducido</th>
+            <th style="width: 50px">Porcentaje</th>
         </tr>
         </thead>
         <tbody>
       <c:forEach items="${articulos}" var="articulos">
             <tr>
                 <td>
-                    <c:out value="${articulos.marca} ${articulos.modelo}"/>
+					<spring:url value="/vendedores/articulo/{articuloId}" var="articuloUrl">
+						<spring:param name="articuloId" value="${articulos.id}"/>
+					</spring:url>
+					<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${articulos.marca} ${articulos.modelo}"></c:out></a>
+                </td>
+                <td>
+                    <c:out value="${articulos.stock}"/>
                 </td>
                 <td>
                     <c:out value="${articulos.precio}"/>
                 </td>
-                <c:choose>
-                    <c:when test="${articulos.oferta.disponibilidad == true}">          
-	                    <td>
-	                    	<c:out value="${articulos.oferta.porcentaje}%"/>
-	                	</td>
-	                	<td>
-					 		<spring:url value="/vendedores/ofertas/desofertar/{ofertaId}" var="ofertaArticuloUrl">
-					              <spring:param name="ofertaId" value="${articulos.oferta.id}"/>
-					        </spring:url>
-							<a href="${fn:escapeXml(ofertaArticuloUrl)}">
-								<button class="btn btn-default" type="submit">Eliminar Oferta</button>
-							</a>
-				        </td>
-               		</c:when>
-					<c:otherwise>
-	                    <td>
-	                    	<c:out value="N/A"/>
-	                	</td>
-	                	<td>
-					 		<spring:url value="/vendedores/ofertas/{ofertaId}" var="ofertaArticuloUrl">
-					              <spring:param name="ofertaId" value="${articulos.oferta.id}"/>
-					        </spring:url>
-							<a href="${fn:escapeXml(ofertaArticuloUrl)}">
-								<button class="btn btn-default" type="submit">Crear oferta</button>
-							</a>
-				        </td>
-	                </c:otherwise>               		
-               	</c:choose>                      
+				<td>
+					<c:if test="${articulos.oferta.disponibilidad}" >
+		                <span style="color: red; font-size: large"><fmt:formatNumber type="number" maxFractionDigits="2" 
+		                    value="${articulos.precio * (1 - articulos.oferta.porcentaje/100)}"/> â‚¬ </span>
+	                </c:if>
+	                <c:if test="${!articulos.oferta.disponibilidad}" >
+		                <c:out value="${articulos.precio} â‚¬"/>
+	               </c:if>
+				</td>
+				<td>	
+					<c:if test="${articulos.oferta.disponibilidad}" >
+                		<span style="color: white; background-color: #f35a5a; border-radius: 3px">
+                			${articulos.oferta.porcentaje}%</span>
+					</c:if>
+	                <c:if test="${!articulos.oferta.disponibilidad}" >
+		                <p>N/A</p>
+	               </c:if>
+				</td>
             </tr>
         </c:forEach> 
         </tbody>

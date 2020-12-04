@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.dpc.model.Solicitud;
 
 
@@ -12,6 +13,7 @@ public interface SolicitudRepository extends CrudRepository<Solicitud, Integer> 
 	
 	@Query("select u from Solicitud u where u.situacion = 'Pendiente'")
 	List<Solicitud> solicitudesPendientes() throws DataAccessException;
-		
-	
+
+	@Query("select u from Solicitud u where u.vendedor.id = :vendedorId")
+	List<Solicitud> findByVendedor(@Param("vendedorId") int vendedorId);
 }

@@ -48,11 +48,14 @@
 					<dpc:menuItem active="${name eq 'articulosEnVenta'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
 						<span>Artículos en venta</span>
 					</dpc:menuItem>
-					<dpc:menuItem active="${name eq 'crearSolicitud'}" url="/solicitudes/new" title="Creación solicitudes">
+					<dpc:menuItem active="${name eq 'crearSolicitud'}" url="/solicitudes/new" title="Crear solicitud">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-
-						<span>Creación solicitudes</span>
-					</dpc:menuItem>					
+						<span>Crear solicitud</span>
+					</dpc:menuItem>
+					<dpc:menuItem active="${name eq 'solicitudes'}" url="/vendedores/listadoSolicitudes" title="Mis solicitudes">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Mis solicitudes</span>
+					</dpc:menuItem>
 				</sec:authorize>
 				
 				<dpc:menuItem active="${name eq 'error'}" url="/oups"

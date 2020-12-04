@@ -42,7 +42,7 @@ public class SolicitudTests {
 		this.solicitud.setStock(5);
 		this.solicitud.setTiempoEntrega(8);
 		this.solicitud.setTipo(Tipo.Nuevo);
-		this.solicitud.setUrlImagen("vacia");
+		this.solicitud.setUrlImagen("https://images-na.ssl-images-amazon.com/images/I/71QQz9ZPLoL._AC_SL1500_.jpg");
 	}
 	@Test
 	void descripcionValidacion() {

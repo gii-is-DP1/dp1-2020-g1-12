@@ -34,6 +34,11 @@ public class SolicitudService {
 	public List<Solicitud> solicitudesPendientes() {
 		return solicitudRepository.solicitudesPendientes();
 	}
+	
+	@Transactional
+	public List<Solicitud> getsolicitudesByProvider(Integer vendedorId) {
+		return solicitudRepository.findByVendedor(vendedorId);
+	}
 
 	@Transactional
 	public Optional<Solicitud> detallesSolicitud(Integer solicitudId) {
