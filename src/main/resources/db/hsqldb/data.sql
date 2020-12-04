@@ -47,7 +47,6 @@ INSERT INTO ofertas VALUES (4, true, 20);
 INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','https://storage-asset.msi.com/global/picture/image/feature/nb/Prestige/Prestige15//mobility-nb.png', 1);
 INSERT INTO articulos VALUES (2, 'Lenovo', 'Ideapad',5,500.99, 5,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71QQz9ZPLoL._AC_SL1500_.jpg', 2);
 INSERT INTO articulos VALUES (3, 'Acer', 'Aspire One',5,700.99, 5,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/31MpIy75yyL._AC_.jpg', 3);
-INSERT INTO articulos VALUES (4, 'Apple', 'Macbook Pro',5,1000.99, 5,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71VHEQqByPL._AC_SL1500_.jpg', 4);
 
 -- Introducimos una solicitud.
 
@@ -58,4 +57,4 @@ INSERT INTO solicitudes VALUES (2, 'Solicitud de venta de Lenovo Ideapad',5,'Len
 INSERT INTO solicitudes VALUES (3, 'Solicitud de venta de Acer Aspire One',5,'Acer','Aspire One',700.99,
 									'','Denegada',5,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/31MpIy75yyL._AC_.jpg', 3, 2);
 INSERT INTO solicitudes VALUES (4, 'Solicitud de venta de Apple Macbook Pro',5,'Apple','Macbook Pro',1000.99,
-									'','Pendiente',5,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71VHEQqByPL._AC_SL1500_.jpg', 4, 2);
+									'','Pendiente',5,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71VHEQqByPL._AC_SL1500_.jpg', null, 2);

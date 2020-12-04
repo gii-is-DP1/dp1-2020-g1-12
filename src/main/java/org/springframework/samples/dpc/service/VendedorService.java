@@ -30,6 +30,12 @@ public class VendedorService {
 	public Integer obtenerIdSesion() {
 		return vendedorRepository.vendedorId(userService.obtenerUsername());
 	}
+	
+	@Transactional
+	public Vendedor vendedorDeUnArticulo(Integer articuloId) {
+		Vendedor result = vendedorRepository.vendedorDeArticulo(articuloId);
+		return result;
+	}
 
 	@Transactional
 	public Optional<Vendedor> datosPerfil(Integer vendedorId) {

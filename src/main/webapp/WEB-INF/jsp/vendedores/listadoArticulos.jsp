@@ -6,7 +6,7 @@
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<dpc:layout pageName="articulos">
+<dpc:layout pageName="articulosEnVenta">
     
     <h2>Lista de artículos en venta</h2>
 
