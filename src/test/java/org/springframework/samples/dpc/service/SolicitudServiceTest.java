@@ -60,7 +60,7 @@ public class SolicitudServiceTest {
 		sol.setModelo("Iphone XS");
 		sol.setMarca("Apple");
 		sol.setPrecio(500.);
-		sol.setUrlImagen("No especificada");
+		sol.setUrlImagen("https://images-na.ssl-images-amazon.com/images/I/71QQz9ZPLoL._AC_SL1500_.jpg");
 		sol.setStock(100);
 		sol.setTipo(Tipo.Nuevo);
 		sol.setTiempoEntrega(3);

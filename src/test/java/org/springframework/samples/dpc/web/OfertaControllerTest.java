@@ -30,6 +30,8 @@ excludeAutoConfiguration= SecurityConfiguration.class)
 public class OfertaControllerTest {
 	
 	private static final int TEST_OFERTA_ID = 1;
+	private static final int TEST_ARTICULO_ID = 1;
+
 
 	@Autowired(required=true)
 	private OfertaController ofertaController;
@@ -54,24 +56,24 @@ public class OfertaControllerTest {
 	@WithMockUser(value = "spring")
     @Test
     void testEdit() throws Exception {
-		mockMvc.perform(get("/vendedores/ofertas/"+TEST_OFERTA_ID)).andExpect(model().attributeExists("oferta"))
-		.andExpect(view().name("vendedores/editarOferta"));
+		mockMvc.perform(get("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID)).
+			andExpect(model().attributeExists("oferta")).andExpect(view().name("vendedores/editarOferta"));
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoOfertar() throws Exception{
-		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID).param("disponibilidad", "true")
-		.param("porcentaje", "10").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/vendedores/articulosEnVenta"));
+		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).
+				param("disponibilidad", "true").param("porcentaje", "10").with(csrf())).andExpect(status().
+						is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
 	}
 	
 	
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcesoDesofertar() throws Exception{
-		mockMvc.perform(get("/vendedores/ofertas/desofertar/"+TEST_OFERTA_ID)).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/vendedores/articulosEnVenta"));
+		mockMvc.perform(get("/vendedores/ofertas/desofertar/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID)).
+			andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
 	}
 	
 }
