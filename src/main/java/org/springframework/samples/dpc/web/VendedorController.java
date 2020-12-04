@@ -1,5 +1,6 @@
 package org.springframework.samples.dpc.web;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -7,9 +8,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.ClienteService;
+import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +30,15 @@ public class VendedorController {
 	private VendedorService vendedorService;
 	private ArticuloService articuloService;
 	private ClienteService clienteService;
+	private SolicitudService solicitudService;
 
 	@Autowired
 	public VendedorController(VendedorService vendedorService, ArticuloService articuloService,
-			ClienteService clienteService) {
+			ClienteService clienteService, SolicitudService solicitudService) {
 		this.vendedorService = vendedorService;
 		this.articuloService = articuloService;
 		this.clienteService = clienteService;
+		this.solicitudService = solicitudService;
 	}
 
 	@GetMapping(value = "/perfil")
@@ -93,13 +98,43 @@ public class VendedorController {
 		modelMap.addAttribute("articulos", optarticulos);
 		return vista;
 	}
+
+	@GetMapping(value = "/listadoSolicitudes")
+	public String mostrarListadoSolicitudes(ModelMap modelMap) {
+		String vista = "vendedores/listadoSolicitudes";
+		List<Solicitud> solicitudes = solicitudService.getsolicitudesByProvider(vendedorService.obtenerIdSesion());
+		modelMap.addAttribute("solicitudes", solicitudes);
+		return vista;
+	}
 	
 	@GetMapping(value = "/articulo/{articuloId}")
 	public String mostrarArticuloDetallado(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
-		String vista = "vendedores/articulo";
-		Articulo articulo = articuloService.findArticuloById(articuloId);
-		modelMap.addAttribute("articulo", articulo);
+		String vista;
+		if(vendedorService.vendedorDeUnArticulo(articuloId) != null && vendedorService.
+				vendedorDeUnArticulo(articuloId).getId().equals(vendedorService.obtenerIdSesion())) {
+			vista = "vendedores/articulo";
+			Articulo articulo = articuloService.findArticuloById(articuloId);
+			modelMap.addAttribute("articulo", articulo);
+		}
+		else {
+
+			vista = "redirect:/vendedores/articulosEnVenta";
+		}
 		return vista;
 	}
+	
+	@GetMapping(value = "/solicitud/{solicitudId}")
+	public String mostrarSolicitudDetallada(@PathVariable("solicitudId") int solicitudId, ModelMap modelMap) {
+		String vista;
+		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId).get();
+		if(solicitud.getVendedor() != null && solicitud.getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
+			vista = "vendedores/solicitud";
+			modelMap.addAttribute("solicitud", solicitud);
+		}
+		else {
 
+			vista = "redirect:/vendedores/listadoSolicitudes";
+		}
+		return vista;
+	}	
 }

@@ -12,6 +12,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Table(name = "solicitudes")
@@ -37,7 +38,7 @@ public class Solicitud extends BaseEntity {
 	private String marca;
 
 	@Column(name = "urlImagen")
-	// @URL
+	@URL
 	private String urlImagen;
 
 	@Column(name = "precio")

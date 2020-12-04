@@ -24,10 +24,10 @@
       <c:forEach items="${articulos}" var="articulos">
             <tr>
                 <td>
-					<spring:url value="/vendedores/articulo/{articuloId}" var="ofertaArticuloUrl">
+					<spring:url value="/vendedores/articulo/{articuloId}" var="articuloUrl">
 						<spring:param name="articuloId" value="${articulos.id}"/>
 					</spring:url>
-					<a href="${fn:escapeXml(ofertaArticuloUrl)}"><c:out value="${articulos.marca} ${articulos.modelo}"></c:out></a>
+					<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${articulos.marca} ${articulos.modelo}"></c:out></a>
                 </td>
                 <td>
                     <c:out value="${articulos.stock}"/>
