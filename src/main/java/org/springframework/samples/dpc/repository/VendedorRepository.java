@@ -13,4 +13,7 @@ public interface VendedorRepository extends CrudRepository<Vendedor, Integer> {
 
 	@Query("SELECT DISTINCT u FROM Vendedor u WHERE u.dni LIKE :dni%")
 	Vendedor findByDni(@Param("dni") String dni) throws DataAccessException;
+	
+	@Query("SELECT u.vendedor FROM Solicitud u WHERE u.articulo.id = :articuloId")
+	Vendedor vendedorDeArticulo(@Param("articuloId") Integer articuloId) throws DataAccessException;
 }

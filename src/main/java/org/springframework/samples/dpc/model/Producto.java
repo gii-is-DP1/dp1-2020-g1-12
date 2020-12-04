@@ -6,7 +6,7 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.validator.constraints.Length;
 
 @MappedSuperclass
-public class Producto extends BaseEntity{
+public class Producto extends BaseEntity {
 	
 	@Column(name = "modelo")
 	@Length(min=3,max=200)

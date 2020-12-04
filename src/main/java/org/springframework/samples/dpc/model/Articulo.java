@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import org.hibernate.validator.constraints.URL;
+
 @Entity
 @Table(name = "articulos")
 public class Articulo extends Producto{
@@ -17,7 +19,7 @@ public class Articulo extends Producto{
 	private Oferta oferta;
 	
 	@Column(name = "urlImagen")
-	//@URL
+	@URL
 	private String urlImagen;
 	
 	@Column(name = "precio")

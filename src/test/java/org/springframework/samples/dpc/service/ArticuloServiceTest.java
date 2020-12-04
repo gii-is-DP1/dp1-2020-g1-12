@@ -24,7 +24,7 @@ public class ArticuloServiceTest {
 	@Test
 	void testSave() {
 		Articulo a = new Articulo();
-		a.setUrlImagen("/");
+		a.setUrlImagen("https://storage-asset.msi.com/global/picture/image/feature/nb/Prestige/Prestige15/intel-Visual-Basic.png");
 		a.setPrecio(10.99);
 		a.setStock(200);
 		a.setTipo(Tipo.Nuevo);
