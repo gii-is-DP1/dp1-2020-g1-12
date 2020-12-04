@@ -22,7 +22,7 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<dpc:menuItem active="${name eq 'home'}" url="/"
+				<dpc:menuItem active="${name eq 'articulos'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Inicio</span>
@@ -45,7 +45,7 @@
 				
 				<sec:authorize access="hasAuthority('vendedor')">
 
-					<dpc:menuItem active="${name eq 'articulos'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
+					<dpc:menuItem active="${name eq 'articulosEnVenta'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
 						<span>Artículos en venta</span>
 					</dpc:menuItem>
 					<dpc:menuItem active="${name eq 'crearSolicitud'}" url="/solicitudes/new" title="Creación solicitudes">

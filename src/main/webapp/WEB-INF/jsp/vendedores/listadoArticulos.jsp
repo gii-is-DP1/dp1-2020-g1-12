@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 
-<dpc:layout pageName="articulos">
+<dpc:layout pageName="articulosEnVenta">
     
     <h2>Lista de artículos en venta</h2>
 
