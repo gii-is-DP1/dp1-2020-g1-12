@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -62,5 +63,19 @@ public class ArticuloService {
 		}
 		return relacionados;
 	}
+	
+	@Transactional(readOnly = true)
+	public List<Articulo> articulosPorGenero(int generoId) {
+		Set<Integer> art = articuloRepository.artPorGenero(generoId);
+		List<Integer> articulos = art.stream().collect(Collectors.toList());
+		List<Articulo> result =  new ArrayList<>();
+		for(Integer x:articulos) {
+			result.add(articuloRepository.findById(x).get());
+		}
+		result.sort(Comparator.comparing(Articulo::getId).reversed());
+		return result;
+	}
+	
+	
 	
 }

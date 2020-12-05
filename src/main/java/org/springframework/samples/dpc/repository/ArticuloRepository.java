@@ -1,6 +1,7 @@
 package org.springframework.samples.dpc.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,8 @@ public interface ArticuloRepository extends CrudRepository<Articulo, Integer> {
 	
 //	@Query("select u from Articulo u where :genero in (u.generos)")
 //	List<Articulo> relacionados(@Param("genero") Genero genero) throws DataAccessException;
+	
+	@Query(value = "select ARTICULOS_GENEROS.articulo_id from ARTICULOS_GENEROS where :generoId = ARTICULOS_GENEROS.generos_id", nativeQuery = true)
+	Set<Integer> artPorGenero(@Param("generoId") int generoId) throws DataAccessException;
 
 }

@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Articulo;
+import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.model.Vendedor;
+import org.springframework.samples.dpc.repository.GeneroRepository;
 import org.springframework.samples.dpc.service.ArticuloService;
+import org.springframework.samples.dpc.service.GeneroService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -44,6 +47,13 @@ private final VendedorService vendedorService;
 		modelMap.addAttribute("articulo", articulo);
 		modelMap.addAttribute("vendedor", vendedor);
 		modelMap.addAttribute("relacionados", relacionados);
+		return vista;
+	}
+	@GetMapping(value="/articulosGenero/{generoId}")
+	public String articulosGenero(@PathVariable("generoId") int generoId,ModelMap modelMap) {
+		String vista = "articulos/genero";
+		List<Articulo> articulos = articuloService.articulosPorGenero(generoId);
+		modelMap.addAttribute("articulos", articulos);
 		return vista;
 	}
 }
