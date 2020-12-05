@@ -1,6 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -22,6 +23,13 @@ public class ArticuloService {
 	@Transactional
 	public void guardarArticulo(Articulo articulo) {
 		articuloRepository.save(articulo);
+	}
+	
+
+	@Transactional
+	public void eliminarArticulo(Integer articuloId) {
+		Optional<Articulo> articulo = articuloRepository.findById(articuloId);
+		articulo.get().setStock(0);
 	}
 
 	@Transactional
