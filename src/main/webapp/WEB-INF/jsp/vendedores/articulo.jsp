@@ -85,5 +85,14 @@
                	</c:choose>                     
         </tr>
 	</table>
-		<br><br><a href="/vendedores/articulosEnVenta"><button class="btn btn-default" type="submit">Volver</button></a>
+	<c:if test="${articulo.stock != 0}" >
+		<spring:url value="/vendedores/eliminarArticulo/{articuloId}" var="eliminarArticuloUrl">
+			<spring:param name="articuloId" value="${articulo.id}"/>
+		</spring:url>
+		
+		<a href="${fn:escapeXml(eliminarArticuloUrl)}">
+			<button class="btn btn-default" type="submit">Dar de baja</button>
+		</a>
+	</c:if>
+	<a href="/vendedores/articulosEnVenta"><button class="btn btn-default" type="submit">Volver</button></a>
 </dpc:layout>

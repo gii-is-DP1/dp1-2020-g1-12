@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,13 @@ public class ArticuloService {
 	@Transactional
 	public void guardarArticulo(Articulo articulo) {
 		articuloRepository.save(articulo);
+	}
+	
+
+	@Transactional
+	public void eliminarArticulo(Integer articuloId) {
+		Optional<Articulo> articulo = articuloRepository.findById(articuloId);
+		articulo.get().setStock(0);
 	}
 
 	@Transactional

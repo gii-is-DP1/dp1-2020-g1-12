@@ -110,14 +110,13 @@ public class VendedorController {
 	@GetMapping(value = "/articulo/{articuloId}")
 	public String mostrarArticuloDetallado(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
 		String vista;
-		if(vendedorService.vendedorDeUnArticulo(articuloId) != null && vendedorService.
-				vendedorDeUnArticulo(articuloId).getId().equals(vendedorService.obtenerIdSesion())) {
+		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
+		if(vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
 			vista = "vendedores/articulo";
 			Articulo articulo = articuloService.findArticuloById(articuloId);
 			modelMap.addAttribute("articulo", articulo);
 		}
 		else {
-
 			vista = "redirect:/vendedores/articulosEnVenta";
 		}
 		return vista;
@@ -126,15 +125,25 @@ public class VendedorController {
 	@GetMapping(value = "/solicitud/{solicitudId}")
 	public String mostrarSolicitudDetallada(@PathVariable("solicitudId") int solicitudId, ModelMap modelMap) {
 		String vista;
-		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId).get();
-		if(solicitud.getVendedor() != null && solicitud.getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
+		Optional<Solicitud> solicitud = solicitudService.detallesSolicitud(solicitudId);
+		if(solicitud.isPresent() && solicitud.get().getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
 			vista = "vendedores/solicitud";
-			modelMap.addAttribute("solicitud", solicitud);
+			modelMap.addAttribute("solicitud", solicitud.get());
 		}
 		else {
-
 			vista = "redirect:/vendedores/listadoSolicitudes";
 		}
 		return vista;
-	}	
+	}
+	
+	@GetMapping(value = "/eliminarArticulo/{articuloId}")
+	public String eliminarArticulo(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
+		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
+		if(vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
+			articuloService.eliminarArticulo(articuloId);
+			Articulo articulo = articuloService.findArticuloById(articuloId);
+			modelMap.addAttribute("articulo", articulo);
+		}
+		return "redirect:/vendedores/articulosEnVenta";
+	}
 }
