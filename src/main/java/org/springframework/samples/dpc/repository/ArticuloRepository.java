@@ -16,4 +16,8 @@ public interface ArticuloRepository extends CrudRepository<Articulo, Integer> {
 	
 	@Query("select u from Articulo u where u.stock > 0")
 	List<Articulo> articulosDisponibles() throws DataAccessException;
+	
+//	@Query("select u from Articulo u where :genero in (u.generos)")
+//	List<Articulo> relacionados(@Param("genero") Genero genero) throws DataAccessException;
+
 }

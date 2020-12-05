@@ -40,8 +40,10 @@ private final VendedorService vendedorService;
 		String vista = "articulos/detalles";
 		Articulo articulo = articuloService.findArticuloById(articuloId);
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
+		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo.getGeneros(), articuloId);
 		modelMap.addAttribute("articulo", articulo);
 		modelMap.addAttribute("vendedor", vendedor);
+		modelMap.addAttribute("relacionados", relacionados);
 		return vista;
 	}
 }

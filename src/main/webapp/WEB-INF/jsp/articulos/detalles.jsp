@@ -49,5 +49,23 @@
             <th>Tiempo de Entrega</th>
             <td>${articulo.tiempoEntrega} días</td>
         </tr>
+		 <tr>
+            <th>Géneros</th>
+            <td><c:forEach items="${articulo.generos}" var="genero">
+				<span>${genero.nombre}</span>
+		</c:forEach></td>
+        </tr>
+		
         </table>
+        <h2>Productos relacionados:</h2>
+        <c:forEach items="${relacionados}" var="relacionado">
+				<spring:url value="/articulos/{articuloId}" var="articuloUrl">
+	              		<spring:param name="articuloId" value="${relacionado.id}"/>
+	            </spring:url>
+	            
+	            <a href="${fn:escapeXml(articuloUrl)}"><img style='width: 20%; height: 10%' alt='' 
+	            	onerror="this.src=''" src='${relacionado.urlImagen}'/><br><br>
+	            	
+	            <c:out value="${relacionado.marca} ${relacionado.modelo}"/></a><br>
+		</c:forEach>
 </dpc:layout>

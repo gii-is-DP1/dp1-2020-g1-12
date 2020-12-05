@@ -35,18 +35,35 @@ INSERT INTO vendedores VALUES (2, 'Pérez', 'C/Real 2', '09456119', 'Lola', '688
 
 INSERT INTO moderadores VALUES (1, 'García', 'C/Buenavista 12', '49456789', 'Pedro', '663733221', 'moderador1');
 
--- Introducimos un artículo.
+-- Introducimos ofertas.
 
 INSERT INTO ofertas VALUES (1, false, 5);
 INSERT INTO ofertas VALUES (2, true, 50);
 INSERT INTO ofertas VALUES (3, false, 5);
 INSERT INTO ofertas VALUES (4, true, 20);
 
+-- Introducimos géneros
+
+INSERT INTO generos VALUES (1, 'Smartphones');
+INSERT INTO generos VALUES (2, 'Ordenadores');
+INSERT INTO generos VALUES (3, 'Electrodomésticos');
+INSERT INTO generos VALUES (4, 'Multimedia');
+INSERT INTO generos VALUES (5, 'Entretenimiento');
+INSERT INTO generos VALUES (6, 'Videojuegos');
+
 -- Introducimos un artículo.
 
 INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 5,8,'Nuevo','https://storage-asset.msi.com/global/picture/image/feature/nb/Prestige/Prestige15//mobility-nb.png', 1);
 INSERT INTO articulos VALUES (2, 'Lenovo', 'Ideapad',5,500.99, 5,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71QQz9ZPLoL._AC_SL1500_.jpg', 2);
 INSERT INTO articulos VALUES (3, 'Acer', 'Aspire One',5,700.99, 5,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/31MpIy75yyL._AC_.jpg', 3);
+
+-- Introducimos relaciones articulos-generos
+
+INSERT INTO articulos_generos VALUES (1, 2);
+INSERT INTO articulos_generos VALUES (1, 5);
+INSERT INTO articulos_generos VALUES (2, 2);
+INSERT INTO articulos_generos VALUES (2, 5);
+INSERT INTO articulos_generos VALUES (3, 2);
 
 -- Introducimos una solicitud.
 
