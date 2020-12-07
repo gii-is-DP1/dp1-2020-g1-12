@@ -68,7 +68,7 @@
 							</spring:url>
 					        <td>
 								<a href="${fn:escapeXml(bloqueoClienteUrl)}">
-									<button class="btn btn-default" type="submit">Desbloquear</button>
+									<button onclick="return alertaDesbloqueo()" class="btn btn-default" type="submit">Desbloquear</button>
 								</a>
 							</td>
 						</c:otherwise>
