@@ -24,8 +24,6 @@ public final class GenericIdToEntityConverter implements ConditionalGenericConve
     @Autowired(required = false)
     private EntityManager entityManager;
 
-        
-
     public Set<ConvertiblePair> getConvertibleTypes() {
     	Set<ConvertiblePair> result=new HashSet<ConvertiblePair>();
         result.add(new ConvertiblePair(Number.class, BaseEntity.class));
