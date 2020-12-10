@@ -4,11 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Articulo;
-import org.springframework.samples.dpc.model.Genero;
+import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Vendedor;
-import org.springframework.samples.dpc.repository.GeneroRepository;
 import org.springframework.samples.dpc.service.ArticuloService;
-import org.springframework.samples.dpc.service.GeneroService;
+import org.springframework.samples.dpc.service.ComentarioService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,11 +21,13 @@ public class ArticuloController {
 	
 private final ArticuloService articuloService;
 private final VendedorService vendedorService;
+private final ComentarioService comentarioService;
 	
 	@Autowired
-	public ArticuloController(ArticuloService articuloService, VendedorService vendedorService) {
+	public ArticuloController(ArticuloService articuloService, VendedorService vendedorService, ComentarioService comentarioService) {
 		this.articuloService = articuloService;
 		this.vendedorService = vendedorService;
+		this.comentarioService = comentarioService;
 	}
 	
 	@GetMapping()
@@ -43,12 +44,15 @@ private final VendedorService vendedorService;
 		String vista = "articulos/detalles";
 		Articulo articulo = articuloService.findArticuloById(articuloId);
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
+		List<Comentario> comentarios = comentarioService.getComentariosById(articuloId);
 		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo.getGeneros(), articuloId);
 		modelMap.addAttribute("articulo", articulo);
 		modelMap.addAttribute("vendedor", vendedor);
+		modelMap.addAttribute("comentarios", comentarios);
 		modelMap.addAttribute("relacionados", relacionados);
 		return vista;
 	}
+	
 	@GetMapping(value="/articulosGenero/{generoId}")
 	public String articulosGenero(@PathVariable("generoId") int generoId,ModelMap modelMap) {
 		String vista = "articulos/genero";

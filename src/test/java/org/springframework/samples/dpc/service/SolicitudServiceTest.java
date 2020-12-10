@@ -1,6 +1,8 @@
 package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -13,8 +15,6 @@ import org.springframework.samples.dpc.model.Situacion;
 import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Tipo;
 import org.springframework.samples.dpc.model.Vendedor;
-import org.springframework.samples.dpc.service.SolicitudService;
-import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.samples.dpc.service.exceptions.PrecioMenorAlEnvioException;
 import org.springframework.samples.dpc.service.exceptions.SolicitudRechazadaSinRespuestaException;
 import org.springframework.stereotype.Service;
@@ -107,4 +107,24 @@ public class SolicitudServiceTest {
 		assertThat(solicitud.getRespuesta()).isEqualTo("No está permitida la venta de RPGs");
 	}
 
+	@Test
+	void testBuscarSolicitudPorProveedorId() {
+		List<Solicitud> solicitud = this.solicitudService.getsolicitudesByProvider(VENDEDOR_ID);
+		assertThat(solicitud.size()).isEqualTo(2);
+		assertThat(solicitud.get(0).getId()).isEqualTo(1);
+		assertThat(solicitud.get(1).getId()).isEqualTo(2);
+		assertThat(solicitud.get(0).getMarca()).isEqualTo("MSI");
+		assertThat(solicitud.get(1).getMarca()).isEqualTo("Lenovo");
+		
+		assertFalse(solicitud.get(0).getDescripcion().isEmpty());
+		assertTrue(solicitud.get(0).getRespuesta().isEmpty());
+	}
+	
+//	@Test
+//	void testEliminarSolicitud() {
+//		Solicitud solicitud = this.solicitudService.findById(SOLICITUD_PENDIENTE_ID);
+//		solicitudService.eliminarSolicitud(solicitud.getId());
+//		List<Solicitud> aux = solicitudService.solicitudesPendientes();
+//		assertFalse(aux.contains(solicitud));
+//	}
 }
