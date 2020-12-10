@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -36,6 +37,7 @@ private final ComentarioService comentarioService;
 
 		List<Articulo> articulos = articuloService.articulosDisponibles();
 		modelMap.addAttribute("articulos", articulos);
+		modelMap.addAttribute("articulo", new Articulo());
 		return vista;
 	}
 	
@@ -52,11 +54,12 @@ private final ComentarioService comentarioService;
 		modelMap.addAttribute("relacionados", relacionados);
 		return vista;
 	}
-	
-	@GetMapping(value="/articulosGenero/{generoId}")
-	public String articulosGenero(@PathVariable("generoId") int generoId,ModelMap modelMap) {
-		String vista = "articulos/genero";
-		List<Articulo> articulos = articuloService.articulosPorGenero(generoId);
+
+	@PostMapping(value="/busqueda")
+	public String busqueda(Articulo articulo,ModelMap modelMap) {
+		String vista = "/articulos/principal";
+		List<Articulo> articulos= articuloService.busqueda(articulo);
+		modelMap.addAttribute("articulo", new Articulo());
 		modelMap.addAttribute("articulos", articulos);
 		return vista;
 	}

@@ -9,10 +9,34 @@
 
 <dpc:layout pageName="articulos">
 
+    
+ 
+
+    <form:form modelAttribute="articulo" action="/busqueda" class="form-horizontal" >
+        <div class="form-group has-feedback">
+            <dpc:inputField label="Busqueda" name="modelo"/>
+            
+            <select class="selectpicker" name="generos" multiple>
+            	<option value="" disabled selected>Seleccione géneros a buscar</option>
+    			<option value="1">Smartphones</option>
+    			<option value="2">Ordenadores</option>
+    			<option value="3">Electrodomésticos</option>
+    			<option value="4">Multimedia</option>
+    			<option value="5">Entretenimiento</option>
+    			<option value="6">Videojuegos</option>
+  			</select>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+				<button class="btn btn-default" type="submit">Buscar</button>
+            </div>
+        </div>
+    </form:form>
     <h1>${articulo.marca} ${' '} ${articulo.modelo}</h1>
     <img style='width: 40%; height: 20%' alt='' 
 	            	onerror="this.src=''" src='${articulo.urlImagen}'/>
-
+	<br><a style="width:22%;float:right" class="btn btn-primary btn-lg btn-block" role="button" href="#">Añadir al carrito</a>
+	
 <table class="table table-borderless">
         <tr>
             <th style="width: 600px;">Vendedor</th>
