@@ -49,11 +49,7 @@ public class SolicitudServiceTest {
 		assertThat(solicitud.getStock()).isGreaterThan(0);
 	}
 	
-	@Test
-	@Transactional
-	public void testInsertarSolicitud() throws PrecioMenorAlEnvioException {
-		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
-		int size = pendientes.size();
+	public Solicitud arrange() throws PrecioMenorAlEnvioException {
 
 		Solicitud sol = new Solicitud();
 		sol.setDescripcion("Venta de Apple Iphone XS");
@@ -63,18 +59,40 @@ public class SolicitudServiceTest {
 		sol.setUrlImagen("https://images-na.ssl-images-amazon.com/images/I/71QQz9ZPLoL._AC_SL1500_.jpg");
 		sol.setStock(100);
 		sol.setTipo(Tipo.Nuevo);
-		sol.setTiempoEntrega(3);
-		sol.setGastoEnvio(600.);
-        Vendedor vendedor = vendedorService.findSellerById(VENDEDOR_ID);
-        
-        assertThrows(PrecioMenorAlEnvioException.class ,() -> this.solicitudService.guardar(sol,vendedor)); // Separar
-        
+		sol.setTiempoEntrega(3);      
         sol.setGastoEnvio(5.);
+        return sol;
+
+	}
+	@Test
+	@Transactional
+	public void testInsertarSolicitud() throws PrecioMenorAlEnvioException {
+		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
+		int size = pendientes.size();
+
+		Solicitud sol = arrange();
+		Vendedor vendedor = vendedorService.findSellerById(VENDEDOR_ID);
         this.solicitudService.guardar(sol,vendedor);
 		assertThat(sol.getId().longValue()).isNotEqualTo(0);
 
 		pendientes = this.solicitudService.solicitudesPendientes();
 		assertThat(pendientes.size()).isEqualTo(size + 1);
+	}
+	
+	@Test
+	@Transactional
+	public void testInsertarSolicitudFallida() throws PrecioMenorAlEnvioException {
+		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
+		int size = pendientes.size();
+
+		Solicitud sol = arrange();
+		sol.setGastoEnvio(600.);
+        Vendedor vendedor = vendedorService.findSellerById(VENDEDOR_ID);
+        
+        assertThrows(PrecioMenorAlEnvioException.class ,() -> this.solicitudService.guardar(sol,vendedor));
+
+		pendientes = this.solicitudService.solicitudesPendientes();
+		assertThat(pendientes.size()).isEqualTo(size);
 	}
 	
 	@Test
@@ -93,18 +111,23 @@ public class SolicitudServiceTest {
 		Solicitud solicitud = solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID).get();
 		
 		assertThat(solicitud.getSituacion()).isEqualTo(Situacion.Aceptada);
+			
+		
+		this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, "No está permitida la venta de RPGs");
+		
+		assertThat(solicitud.getSituacion()).isEqualTo(Situacion.Denegada);
+		assertThat(solicitud.getRespuesta()).isEqualTo("No está permitida la venta de RPGs");
+	}
+	
+	@Test
+	void testDenegarSolicitudFallido() throws SolicitudRechazadaSinRespuestaException {
 		
 		assertThrows(SolicitudRechazadaSinRespuestaException.class, 
 				() -> this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, ""));
 		
 		assertThrows(SolicitudRechazadaSinRespuestaException.class, 
 				() -> this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, "Prohibido")); // SEPARAR
-		
-		
-		this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, "No está permitida la venta de RPGs");
-		
-		assertThat(solicitud.getSituacion()).isEqualTo(Situacion.Denegada);
-		assertThat(solicitud.getRespuesta()).isEqualTo("No está permitida la venta de RPGs");
+
 	}
 
 }

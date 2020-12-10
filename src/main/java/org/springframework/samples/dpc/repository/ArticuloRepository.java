@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.repository;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
@@ -18,10 +17,17 @@ public interface ArticuloRepository extends CrudRepository<Articulo, Integer> {
 	@Query("select u from Articulo u where u.stock > 0")
 	List<Articulo> articulosDisponibles() throws DataAccessException;
 	
-//	@Query("select u from Articulo u where :genero in (u.generos)")
-//	List<Articulo> relacionados(@Param("genero") Genero genero) throws DataAccessException;
 	
-	@Query(value = "select ARTICULOS_GENEROS.articulo_id from ARTICULOS_GENEROS where :generoId = ARTICULOS_GENEROS.generos_id", nativeQuery = true)
-	Set<Integer> artPorGenero(@Param("generoId") int generoId) throws DataAccessException;
+	@Query(value = "SELECT * FROM ARTICULOS WHERE UPPER(ARTICULOS.marca || ' ' || ARTICULOS.modelo) LIKE '%' || UPPER(:nombre) || '%' ", nativeQuery = true)
+	List<Articulo> articulosPorNombre(@Param("nombre") String nombre) throws DataAccessException;
+	
+	@Query(value = "select * from Articulos where Articulos.id in (select ARTICULOS_GENEROS.articulo_id from ARTICULOS_GENEROS where ARTICULOS_GENEROS.generos_id IN :generosId)", nativeQuery = true)
+	List<Articulo> articulosPorGenero(@Param("generosId") List<Integer> generosId) throws DataAccessException;
+	
+	@Query(value = "select * from Articulos where (Articulos.id in (select ARTICULOS_GENEROS.articulo_id from ARTICULOS_GENEROS where ARTICULOS_GENEROS.generos_id IN :generosId)) "
+			+ "and (UPPER(ARTICULOS.marca || ' ' || ARTICULOS.modelo) LIKE '%' || UPPER(:nombre) || '%')", nativeQuery = true)
+	List<Articulo> articulosPorGeneroNombre(@Param("generosId") List<Integer> generosId, @Param("nombre") String nombre) throws DataAccessException;
+	
+
 
 }

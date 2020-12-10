@@ -4,16 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Articulo;
-import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.model.Vendedor;
-import org.springframework.samples.dpc.repository.GeneroRepository;
 import org.springframework.samples.dpc.service.ArticuloService;
-import org.springframework.samples.dpc.service.GeneroService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -35,6 +33,7 @@ private final VendedorService vendedorService;
 
 		List<Articulo> articulos = articuloService.articulosDisponibles();
 		modelMap.addAttribute("articulos", articulos);
+		modelMap.addAttribute("articulo", new Articulo());
 		return vista;
 	}
 	
@@ -49,10 +48,12 @@ private final VendedorService vendedorService;
 		modelMap.addAttribute("relacionados", relacionados);
 		return vista;
 	}
-	@GetMapping(value="/articulosGenero/{generoId}")
-	public String articulosGenero(@PathVariable("generoId") int generoId,ModelMap modelMap) {
-		String vista = "articulos/genero";
-		List<Articulo> articulos = articuloService.articulosPorGenero(generoId);
+
+	@PostMapping(value="/busqueda")
+	public String busqueda(Articulo articulo,ModelMap modelMap) {
+		String vista = "/articulos/principal";
+		List<Articulo> articulos= articuloService.busqueda(articulo);
+		modelMap.addAttribute("articulo", new Articulo());
 		modelMap.addAttribute("articulos", articulos);
 		return vista;
 	}

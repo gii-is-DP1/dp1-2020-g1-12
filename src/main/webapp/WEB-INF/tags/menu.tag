@@ -8,6 +8,7 @@
 	description="Name of the active menu: home, owners, vets or error"%>
 
 <nav class="navbar navbar-default" role="navigation">
+
 	<div class="container">
 		<div class="navbar-header">
 			<a class="navbar-brand"
@@ -19,6 +20,7 @@
 					class="icon-bar"></span>
 			</button>
 		</div>
+		
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 

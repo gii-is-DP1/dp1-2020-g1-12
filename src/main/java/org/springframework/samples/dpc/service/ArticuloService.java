@@ -65,15 +65,19 @@ public class ArticuloService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<Articulo> articulosPorGenero(int generoId) {
-		Set<Integer> art = articuloRepository.artPorGenero(generoId);
-		List<Integer> articulos = art.stream().collect(Collectors.toList());
-		List<Articulo> result =  new ArrayList<>();
-		for(Integer x:articulos) {
-			result.add(articuloRepository.findById(x).get());
+	public List<Articulo> busqueda(Articulo articulo) {
+		String busqueda = articulo.getModelo();
+//		List<Articulo> result = new ArrayList<>();
+		if(busqueda.isEmpty() && articulo.getGeneros()==null) {
+			return articulosDisponibles();
+		}else if(articulo.getGeneros()==null) {
+			return articuloRepository.articulosPorNombre(busqueda);
+		}else if(busqueda.isEmpty()) {
+			return articuloRepository.articulosPorGenero(articulo.getGeneros().stream().map(x->x.getId()).collect(Collectors.toList()));	
+		}else {
+			return articuloRepository.articulosPorGeneroNombre(articulo.getGeneros().stream().map(x->x.getId()).collect(Collectors.toList()), busqueda);
 		}
-		result.sort(Comparator.comparing(Articulo::getId).reversed());
-		return result;
+
 	}
 	
 	
