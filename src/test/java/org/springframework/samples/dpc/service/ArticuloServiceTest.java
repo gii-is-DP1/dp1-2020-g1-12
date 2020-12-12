@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class ArticuloServiceTest {
 
+	private final Integer ARTICULO_ID = 1;
+	
 	@Autowired 
 	private ArticuloService articuloService;
 	
@@ -47,10 +49,19 @@ public class ArticuloServiceTest {
 	
 	@Test
 	void testArticulosEnVentaByProvider() {
-		List<Articulo> articulos1 = this.articuloService.articulosEnVentaByProvider(1);
+		List<Articulo> articulos1 = this.articuloService.articulosEnVentaByProvider(ARTICULO_ID);
 		assertThat(articulos1.size()).isEqualTo(2);
 		
 		List<Articulo> articulos2 = this.articuloService.articulosEnVentaByProvider(10);
 		assertThat(articulos2.isEmpty());
+	}
+	
+	@Test
+	void testEliminarArticulo() {
+		Articulo articulo = articuloService.findArticuloById(ARTICULO_ID);
+		assertThat(articulo.getStock()).isGreaterThan(0);
+		
+		articuloService.eliminarArticulo(ARTICULO_ID);
+		assertThat(articulo.getStock()).isEqualTo(0);
 	}
 }

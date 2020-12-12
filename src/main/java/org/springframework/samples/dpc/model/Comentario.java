@@ -2,31 +2,39 @@ package org.springframework.samples.dpc.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.samples.dpc.service.exceptions.ValoracionConstraint;
 
 @Entity
 @Table(name = "comentario")
 public class Comentario extends BaseEntity{
 
-	@Column(name = "descipcion")
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "articulo_id")
+	private Articulo articulo;
+	
+	@Column(name = "descripcion")
 	@Length(min = 50, max = 200)
-	protected String descipcion;
+	private String descripcion;
 	
 	@Column(name = "valoracion")
-	@Min(0)
-	@Max(10)
+	@ValoracionConstraint
 	private Integer valoracion;
 
-	public String getDescipcion() {
-		return descipcion;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setDescipcion(String descipcion) {
-		this.descipcion = descipcion;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public Integer getValoracion() {
@@ -35,5 +43,21 @@ public class Comentario extends BaseEntity{
 
 	public void setValoracion(Integer valoracion) {
 		this.valoracion = valoracion;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Articulo getArticulo() {
+		return articulo;
+	}
+
+	public void setArticulo(Articulo articulo) {
+		this.articulo = articulo;
 	}
 }

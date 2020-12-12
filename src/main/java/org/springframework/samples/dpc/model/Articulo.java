@@ -1,9 +1,14 @@
 package org.springframework.samples.dpc.model;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
@@ -17,6 +22,9 @@ public class Articulo extends Producto{
 	
 	@OneToOne(optional=true)
 	private Oferta oferta;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "articulo", fetch = FetchType.EAGER)
+	private Collection<Comentario> comentarios;
 	
 	@Column(name = "urlImagen")
 	@URL
@@ -117,7 +125,12 @@ public class Articulo extends Producto{
 	public void setOferta(Oferta oferta) {
 		this.oferta = oferta;
 	}
-	
-	
-	
+
+	public Collection<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(Collection<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
 }

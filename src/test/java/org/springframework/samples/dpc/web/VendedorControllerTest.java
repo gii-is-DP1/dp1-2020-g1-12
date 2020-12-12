@@ -39,6 +39,7 @@ public class VendedorControllerTest {
 	private static final int TEST_VENDEDOR_ID = 1;
 	private static final int TEST_CLIENTE_ID = 1;
 	private static final int TEST_ARTICULO_ID = 1;
+	private static final int TEST_SOLICITUD_ID = 1;
 
 	@MockBean
 	private VendedorService vendedorService;
@@ -137,5 +138,40 @@ public class VendedorControllerTest {
 	void testProcesoArticulosVenta() throws Exception {
 		mockMvc.perform(get("/vendedores/articulosEnVenta")).andExpect(status().isOk())
 				.andExpect(model().attributeExists("articulos")).andExpect(view().name("vendedores/listadoArticulos"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testMostrarListadoSolicitudes() throws Exception {
+		mockMvc.perform(get("/vendedores/listadoSolicitudes")).andExpect(status().isOk())
+				.andExpect(model().attributeExists("solicitudes")).andExpect(view().name("vendedores/listadoSolicitudes"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testMostrarArticuloDetallado() throws Exception {
+		mockMvc.perform(get("/vendedores/articulo/" + TEST_ARTICULO_ID)).andExpect(status().is3xxRedirection())
+					.andExpect(view().name("redirect:/vendedores/articulosEnVenta"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testMostrarSolicitudDetallada() throws Exception {
+		mockMvc.perform(get("/vendedores/solicitud/" + TEST_SOLICITUD_ID)).andExpect(status().is3xxRedirection())
+					.andExpect(view().name("redirect:/vendedores/listadoSolicitudes"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testEliminarArticulo() throws Exception {
+		mockMvc.perform(get("/vendedores/eliminarArticulo/" + TEST_ARTICULO_ID)).andExpect(status()
+				.is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulosEnVenta"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testEliminarSolicitud() throws Exception {
+		mockMvc.perform(get("/vendedores/eliminarSolicitud/" + TEST_SOLICITUD_ID)).andExpect(status()
+				.is3xxRedirection()).andExpect(view().name("redirect:/vendedores/listadoSolicitudes"));
 	}
 }
