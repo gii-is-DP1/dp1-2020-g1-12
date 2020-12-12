@@ -81,18 +81,41 @@
         </tr>
 		
         </table>
-        <c:if test="${relacionados.size() != 0 }">
+
+		<spring:url value="/comentario/articulo/{articuloId}" var="comentarioUrl">
+	   		<spring:param name="articuloId" value="${articulo.id}"/>
+		</spring:url>
+
+		<a href="${fn:escapeXml(comentarioUrl)}">
+			<button class="btn btn-default" type="submit">Añadir un comentario</button>
+		</a>
+		
+		<h2>Comentarios:</h2>	
+		<c:if test="${articulo.comentarios.size() == 0}">
+			<p>Sé el primero en comentar.</p>
+		</c:if>
+		<c:forEach items="${articulo.comentarios}" var="comentario">
+			<div class="card">
+				<div class="card-body">
+					<c:out value="Valoración: ${comentario.valoracion}"></c:out>
+					<c:out value="Autor: ${comentario.cliente.nombre} ${comentario.cliente.apellido}"></c:out>
+					<c:out value="Opinión: ${comentario.descripcion}"></c:out>
+				</div>
+			</div>
+		</c:forEach>
+		<br>
+		<c:if test="${relacionados.size() != 0 }">
         <hr width=900></hr>
         <br>
+
         <h2>Productos relacionados:</h2>
         
         <c:forEach items="${relacionados}" var="relacionado">
-				<spring:url value="/articulos/{articuloId}" var="articuloUrl">
-	              		<spring:param name="articuloId" value="${relacionado.id}"/>
-	            </spring:url>
-	            
-	            <a href="${fn:escapeXml(articuloUrl)}"><img style='width: 20%; height: 10%' alt='' 
-	            	onerror="this.src=''" src='${relacionado.urlImagen}'/><br><br>
+			<spring:url value="/articulos/{articuloId}" var="articuloUrl">
+		   		<spring:param name="articuloId" value="${relacionado.id}"/>
+			</spring:url>
+			<a href="${fn:escapeXml(articuloUrl)}"><img style='width: 20%; height: 10%' alt='' 
+	        	onerror="this.src=''" src='${relacionado.urlImagen}'/><br><br>
 	            	
 	            <c:out value="${relacionado.marca} ${relacionado.modelo}"/></a><br>
 	            <c:if test="${relacionado.oferta.disponibilidad}" >

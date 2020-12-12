@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.Situacion;
 import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
@@ -145,5 +146,14 @@ public class VendedorController {
 			modelMap.addAttribute("articulo", articulo);
 		}
 		return "redirect:/vendedores/articulosEnVenta";
+	}
+	
+	@GetMapping(value = "/eliminarSolicitud/{solicitudId}")
+	public String eliminarSolicitud(@PathVariable("solicitudId") int solicitudId) {
+		Optional<Solicitud> solicitud = solicitudService.detallesSolicitud(solicitudId);
+		if(solicitud.isPresent() && solicitud.get().getSituacion().equals(Situacion.Pendiente) && solicitud.get().getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
+			solicitudService.eliminarSolicitud(solicitudId);
+		}
+		return "redirect:/vendedores/listadoSolicitudes";
 	}
 }

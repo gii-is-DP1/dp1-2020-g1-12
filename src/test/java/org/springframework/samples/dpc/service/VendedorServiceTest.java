@@ -2,28 +2,23 @@ package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Bloqueo;
-import org.springframework.samples.dpc.model.Situacion;
-import org.springframework.samples.dpc.model.Solicitud;
-import org.springframework.samples.dpc.model.Tipo;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
-import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class VendedorServiceTest {
 
+	public final Integer ARTICULO_ID = 1;
+	
 	@Autowired
 	private VendedorService vendedorService;
 
@@ -77,9 +72,15 @@ public class VendedorServiceTest {
 		vend = this.vendedorService.findSellerById(1);
 		assertThat(vend.getApellido()).isEqualTo(newLastName);
 	}
+	
+	@Test
+	void testVendedorArticulo() {
+		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(ARTICULO_ID);
+		Vendedor vendedor2 = vendedorService.vendedorDeUnArticulo(100);
 
-//	@Test
-//	public void shouldFindCliente() {
-//
-//	}
+		assertThat(vendedor.getId()).isEqualTo(1);
+		assertThat(vendedor.getApellido()).isEqualTo("Lorca");
+		assertThat(vendedor2).isNull();
+		assertFalse(vendedor.getId().equals(2));
+	}
 }

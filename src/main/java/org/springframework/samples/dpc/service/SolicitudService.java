@@ -45,6 +45,12 @@ public class SolicitudService {
 		Optional<Solicitud> result = solicitudRepository.findById(solicitudId);
 		return result;
 	}
+	
+	@Transactional
+	public void eliminarSolicitud(Integer solicitudId) {
+		solicitudRepository.deleteById(solicitudId);
+	}
+
 
 	@Transactional
 	public void aceptarSolicitud(Integer solicitudId) {

@@ -13,8 +13,10 @@
     <title>DPC</title>
 
     <%-- CSS generated from LESS --%>
+    <%--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">--%>
     <spring:url value="/resources/css/petclinic.css" var="dpcCss"/>
-    <link href="${dpcCss}" rel="stylesheet"/>
+    <link href="${dpcCss}" rel="stylesheet"/>    
+    <link rel="stylesheet" href="/less/valoracion.css">
 
 
     <%-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --%>
