@@ -1,6 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,23 @@ public class ArticuloService {
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosDisponibles() {
 		return articuloRepository.articulosDisponibles();
+	}
+	
+	@Transactional(readOnly = true)
+	public List<Articulo> articulosOfertados() {
+		
+		return articuloRepository.articulosOfert();
+	}
+	
+	@Transactional(readOnly = true)
+	public List<Articulo> ofertasRandomAcotada() {
+		List<Articulo>  ofertas =articulosOfertados(); 
+		Collections.shuffle(ofertas);
+		if(ofertas.size() > 5) {
+			ofertas = ofertas.subList(0, 5);
+		}
+		
+		return ofertas;
 	}
 	
 	@Transactional(readOnly = true)

@@ -27,7 +27,7 @@
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Inicio</span>
-				</dpc:menuItem>
+				</dpc:menuItem>			
 
 
 				<sec:authorize access="hasAuthority('moderador')">

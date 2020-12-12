@@ -8,7 +8,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <dpc:layout pageName="articulos">
-    <form:form modelAttribute="articulo" action="/busqueda" class="form-horizontal" >
+
+    
+ 
+
+    <form:form modelAttribute="query" action="/busqueda" class="form-horizontal" >
         <div class="form-group has-feedback">
             <dpc:inputField label="Busqueda" name="modelo"/>
             
@@ -77,6 +81,7 @@
         </tr>
 		
         </table>
+
 		<spring:url value="/comentario/articulo/{articuloId}" var="comentarioUrl">
 	   		<spring:param name="articuloId" value="${articulo.id}"/>
 		</spring:url>
@@ -99,7 +104,12 @@
 			</div>
 		</c:forEach>
 		<br>
+		<c:if test="${relacionados.size() != 0 }">
+        <hr width=900></hr>
+        <br>
+
         <h2>Productos relacionados:</h2>
+        
         <c:forEach items="${relacionados}" var="relacionado">
 			<spring:url value="/articulos/{articuloId}" var="articuloUrl">
 		   		<spring:param name="articuloId" value="${relacionado.id}"/>
@@ -107,6 +117,17 @@
 			<a href="${fn:escapeXml(articuloUrl)}"><img style='width: 20%; height: 10%' alt='' 
 	        	onerror="this.src=''" src='${relacionado.urlImagen}'/><br><br>
 	            	
-	        <c:out value="${relacionado.marca} ${relacionado.modelo}"/></a><br>
+	            <c:out value="${relacionado.marca} ${relacionado.modelo}"/></a><br>
+	            <c:if test="${relacionado.oferta.disponibilidad}" >
+                <span style="color: red; font-size: large"><fmt:formatNumber type="number" maxFractionDigits="2" 
+                    value="${relacionado.precio * (1 - relacionado.oferta.porcentaje/100)}"/> € </span>
+                <span style="font-size: small; padding: 0px 6px 0px 6px"><strike>${relacionado.precio} € </strike></span>
+                <span style="color: white; background-color: #f35a5a; border-radius: 3px">${relacionado.oferta.porcentaje}%</span>
+
+                </c:if>
+                <c:if test="${!relacionado.oferta.disponibilidad}" >
+                    <c:out value="${relacionado.precio} €"/>
+               </c:if>
 		</c:forEach>
+		</c:if>
 </dpc:layout>

@@ -23,7 +23,7 @@
  	<spring:url value="/resources/images/Logo.png" htmlEscape="true" var="logo"/>
 	<!--  <img style="height: 200px; width: 220px" src="${logo}"/>-->
 	
-    <form:form modelAttribute="articulo" action="/busqueda" class="form-horizontal" >
+    <form:form modelAttribute="query" action="/busqueda" class="form-horizontal" >
         <div class="form-group has-feedback">
             <dpc:inputField label="Busqueda" name="modelo"/>
             
@@ -43,6 +43,39 @@
             </div>
         </div>
     </form:form>
+    <c:if test="${mensaje == null}">
+    <h2><a href="/ofertas"> Ofertas destacadas</a></h2>
+    <fieldset>
+		 <c:forEach items="${ofertas}" var="oferta">
+            <div>
+	            <spring:url value="/articulos/{articuloId}" var="articuloUrl">
+	              		<spring:param name="articuloId" value="${oferta.id}"/>
+	            </spring:url>
+	            
+	            <a href="${fn:escapeXml(articuloUrl)}"><img style='width: 20%; height: 10%' alt='' 
+	            	onerror="this.src=''" src='${oferta.urlImagen}'/><br><br>
+	            	
+	            <c:out value="${oferta.marca} ${oferta.modelo}"/></a><br>
+	            
+				<span style="color: red; font-size: large"><fmt:formatNumber type="number" maxFractionDigits="2" 
+					value="${oferta.precio * (1 - oferta.oferta.porcentaje/100)}"/> € </span>
+				<span style="font-size: small; padding: 0px 6px 0px 6px"><strike>${oferta.precio} € </strike></span>
+				<span style="color: white; background-color: #f35a5a; border-radius: 3px">${oferta.oferta.porcentaje}%</span>
+				
+				<br><br>
+
+            </div>
+        </c:forEach> 
+	</fieldset>
+	<br>
+	<hr width =900>
+	<br>
+	<h2>Artículos destacados</h2>
+	</c:if>
+	<c:if test="${mensaje != null}">
+		<h2>${mensaje}</h2>
+	</c:if>
+	<c:if test="${articulos.size() == 0}"><p>No se ha encontrado ninguna coincidencia.</p></c:if>
     <fieldset>
 		 <c:forEach items="${articulos}" var="articulos">
             <div>
