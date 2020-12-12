@@ -32,8 +32,11 @@ private final VendedorService vendedorService;
 		String vista = "articulos/principal";
 
 		List<Articulo> articulos = articuloService.articulosDisponibles();
+		List<Articulo> ofertas = articuloService.ofertasRandomAcotada();
+			
 		modelMap.addAttribute("articulos", articulos);
-		modelMap.addAttribute("articulo", new Articulo());
+		modelMap.addAttribute("ofertas", ofertas);
+		modelMap.addAttribute("query", new Articulo());
 		return vista;
 	}
 	
@@ -44,6 +47,7 @@ private final VendedorService vendedorService;
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo.getGeneros(), articuloId);
 		modelMap.addAttribute("articulo", articulo);
+		modelMap.addAttribute("query", new Articulo());
 		modelMap.addAttribute("vendedor", vendedor);
 		modelMap.addAttribute("relacionados", relacionados);
 		return vista;
@@ -53,8 +57,17 @@ private final VendedorService vendedorService;
 	public String busqueda(Articulo articulo,ModelMap modelMap) {
 		String vista = "/articulos/principal";
 		List<Articulo> articulos= articuloService.busqueda(articulo);
-		modelMap.addAttribute("articulo", new Articulo());
+		modelMap.addAttribute("query", new Articulo());
 		modelMap.addAttribute("articulos", articulos);
+		modelMap.addAttribute("mensaje", "Resultados de '" + articulo.getModelo() + "':");
+		return vista;
+	}
+	
+	@GetMapping(value="/ofertas")
+	public String listadoArticulosEnOfertas(ModelMap modelMap) {
+		String vista = "/articulos/ofertas";
+		List<Articulo> ofertas = articuloService.articulosOfertados();
+		modelMap.addAttribute("ofertas", ofertas);
 		return vista;
 	}
 }
