@@ -83,7 +83,7 @@ public class SolicitudController {
 	
 	@PostMapping(path = "/save")
 	public String guardarSolicitud(@Valid Solicitud solicitud, BindingResult result,ModelMap modelMap) {
-		String vista = "welcome";
+		String vista = "redirect:/vendedores/listadoSolicitudes";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("solicitud",solicitud);
 			return "solicitudes/editarSolicitud";

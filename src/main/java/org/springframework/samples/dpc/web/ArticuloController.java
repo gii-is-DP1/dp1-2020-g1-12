@@ -54,7 +54,7 @@ private final ComentarioService comentarioService;
 		modelMap.addAttribute("relacionados", relacionados);
 		return vista;
 	}
-
+	
 	@PostMapping(value="/busqueda")
 	public String busqueda(Articulo articulo,ModelMap modelMap) {
 		String vista = "/articulos/principal";
