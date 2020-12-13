@@ -2,7 +2,7 @@ package org.springframework.samples.dpc.model;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -13,7 +13,7 @@ import lombok.Data;
 @Table(name = "authorities")
 public class Authorities extends BaseEntity{
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "username")
 	User user;
 	

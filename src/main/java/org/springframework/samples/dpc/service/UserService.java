@@ -21,6 +21,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.User;
+import org.springframework.samples.dpc.repository.AuthoritiesRepository;
 import org.springframework.samples.dpc.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,10 +38,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
 	private UserRepository userRepository;
+	private final AuthoritiesRepository authorityRepository;
 
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, AuthoritiesRepository authorityRepository) {
 		this.userRepository = userRepository;
+		this.authorityRepository = authorityRepository;
 	}
 
 	@Transactional
@@ -54,13 +57,21 @@ public class UserService {
 	}
 	
 	public String obtenerUsername() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = "";
+
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails) {
            username = ((UserDetails)principal).getUsername();
         } else {
            username = principal.toString();
         }
 		return username;
+	}
+	
+	public String getAuthority() {
+		if(obtenerUsername().equals("anonymousUser")) {
+			return "anonymous";
+		}
+		return authorityRepository.getAuthority(obtenerUsername());
 	}
 }

@@ -4,9 +4,7 @@ package org.springframework.samples.dpc.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.samples.dpc.model.Authorities;
 import org.springframework.samples.dpc.model.Moderador;
 import org.springframework.samples.dpc.model.User;
-import org.springframework.samples.dpc.service.ModeradorService;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -55,12 +52,10 @@ public class ModeradorServiceTest {
 		user.setPassword("moderador10");
 		user.setEnabled(true);
 		
-		Set<Authorities> authorities = new HashSet<Authorities>();
 		Authorities a = new Authorities();
 		a.setUser(user);
 		a.setAuthority("moderador");
 		a.setId(1);
-		user.setAuthorities(authorities);
 		
 		mod.setUser(user);
 		mod.setNombre("Pepe");

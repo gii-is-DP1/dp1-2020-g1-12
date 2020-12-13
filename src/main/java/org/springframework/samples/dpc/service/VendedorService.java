@@ -36,7 +36,12 @@ public class VendedorService {
 		Vendedor result = vendedorRepository.vendedorDeArticulo(articuloId);
 		return result;
 	}
-
+	
+	@Transactional
+	public Boolean esVendedorDelArticulo(Integer articuloId) {
+		return vendedorRepository.vendedorDeArticulo(articuloId).equals((findSellerById(obtenerIdSesion())));
+	}
+	
 	@Transactional
 	public Optional<Vendedor> datosPerfil(Integer vendedorId) {
 		Optional<Vendedor> result = vendedorRepository.findById(vendedorId);
@@ -72,5 +77,10 @@ public class VendedorService {
 	public Iterable<Vendedor> findAllSeller() {
 		Iterable<Vendedor> result = vendedorRepository.findAll();
 		return result;
+	}
+	
+	@Transactional(readOnly = true)
+	public Vendedor getVendedorDeSesion() throws DataAccessException {
+		return vendedorRepository.findById(obtenerIdSesion()).get();
 	}
 }

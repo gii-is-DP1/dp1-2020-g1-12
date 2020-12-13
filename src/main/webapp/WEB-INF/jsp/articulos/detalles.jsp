@@ -81,27 +81,48 @@
         </tr>
 		
         </table>
-
-		<spring:url value="/comentario/articulo/{articuloId}" var="comentarioUrl">
-	   		<spring:param name="articuloId" value="${articulo.id}"/>
-		</spring:url>
-
-		<a href="${fn:escapeXml(comentarioUrl)}">
-			<button class="btn btn-default" type="submit">Añadir un comentario</button>
-		</a>
 		
+		<c:if test="${puedeComentar}">
+			<spring:url value="/comentario/articulo/{articuloId}" var="comentarioUrl">
+		   		<spring:param name="articuloId" value="${articulo.id}"/>
+			</spring:url>
+	
+			<a href="${fn:escapeXml(comentarioUrl)}">
+				<button class="btn btn-default" type="submit">Añadir un comentario</button>
+			</a>
+			<br><br>
+		</c:if>
 		<h2>Comentarios:</h2>	
 		<c:if test="${articulo.comentarios.size() == 0}">
 			<p>Sé el primero en comentar.</p>
 		</c:if>
-		<c:forEach items="${articulo.comentarios}" var="comentario">
-			<div class="card">
-				<div class="card-body">
-					<c:out value="Valoración: ${comentario.valoracion}"></c:out>
-					<c:out value="Autor: ${comentario.cliente.nombre} ${comentario.cliente.apellido}"></c:out>
-					<c:out value="Opinión: ${comentario.descripcion}"></c:out>
-				</div>
-			</div>
+		<c:forEach items="${comentarios}" var="comentario">
+			<fieldset>
+				<c:if test="${comentario.cliente != null}">
+					<legend>		
+						<c:out value="Autor: ${comentario.cliente.nombre} ${comentario.cliente.apellido}"></c:out>
+					</legend>	
+					<p><c:out value="Valoración: "></c:out>
+						<c:forEach begin="1" end="${comentario.valoracion}">
+							<c:out value="★"></c:out>
+						</c:forEach>
+					</p>
+				<p><c:out value="Opinión: ${comentario.descripcion}"></c:out></p>
+				</c:if>
+				<c:if test="${comentario.moderador != null}">
+					<legend>		
+						<c:out value="Autor: ${comentario.moderador.nombre} ${comentario.moderador.apellido}"></c:out>
+					</legend>	
+				<p><c:out value="Comentario: ${comentario.descripcion}"></c:out></p>
+				</c:if>
+				<c:if test="${comentario.vendedor != null}">
+					<legend>		
+						<c:out value="Autor: ${comentario.vendedor.nombre} ${comentario.vendedor.apellido}"></c:out>
+					</legend>	
+					<p><c:out value="Respuesta: ${comentario.descripcion}"></c:out></p>
+				</c:if>
+			</fieldset>
+			<br>
 		</c:forEach>
 		<br>
 		<c:if test="${relacionados.size() != 0 }">
@@ -128,6 +149,7 @@
                 <c:if test="${!relacionado.oferta.disponibilidad}" >
                     <c:out value="${relacionado.precio} €"/>
                </c:if>
+               <br>
 		</c:forEach>
 		</c:if>
 </dpc:layout>
