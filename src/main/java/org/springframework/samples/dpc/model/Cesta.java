@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "cesta")
+@Table(name = "cestas")
 public class Cesta extends BaseEntity{
 	
 	@Column(name = "precioFinal")

@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "pedido")
+@Table(name = "pedidos")
 public class Pedido extends BaseEntity{
 
 	@Column(name = "precioTotal")

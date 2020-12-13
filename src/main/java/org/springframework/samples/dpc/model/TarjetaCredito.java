@@ -10,7 +10,7 @@ import javax.validation.constraints.Digits;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "tarjetaCredito")
+@Table(name = "tarjetasCreditos")
 public class TarjetaCredito extends BaseEntity{
 	
 	@Column(name = "titular")

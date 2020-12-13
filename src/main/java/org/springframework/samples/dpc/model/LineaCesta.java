@@ -9,7 +9,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Entity
-@Table(name = "lineaCesta")
+@Table(name = "lineasCestas")
 public class LineaCesta extends BaseEntity{
 
 	@ManyToOne(optional = false)

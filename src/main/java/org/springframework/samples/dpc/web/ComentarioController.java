@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Comentario;
-import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.ComentarioService;
 import org.springframework.samples.dpc.service.exceptions.ComentarioProhibidoException;
 import org.springframework.stereotype.Controller;
@@ -20,19 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ComentarioController {
 	
 	private final ComentarioService comentarioService;
-	private final ClienteService clienteService;
 
 
 	@Autowired
-	public ComentarioController(ComentarioService comentarioService, ClienteService clienteService) {
+	public ComentarioController(ComentarioService comentarioService) {
 		this.comentarioService= comentarioService;
-		this.clienteService = clienteService;
 	}
 	
 	@GetMapping(value = "/articulo/{articuloId}")
 	public String crearComentario(@PathVariable("articuloId") int articuloId, Model model) {
 		model.addAttribute("comentario", new Comentario());
-		model.addAttribute("clienteId", clienteService.obtenerIdSesion());
 		model.addAttribute("articulo", articuloId);
 		return "articulos/editarComentario";
 	}
