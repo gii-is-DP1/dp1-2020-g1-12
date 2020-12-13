@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.ComentarioService;
+import org.springframework.samples.dpc.service.exceptions.ComentarioProhibidoException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,13 +40,20 @@ public class ComentarioController {
 	@PostMapping(value = "/articulo/{articuloId}")
 	public String procesoComentar(@Valid Comentario comentario, BindingResult result,
 			@PathVariable("articuloId") int articuloId, Model model) {
-
+		String vista;
 		if (result.hasErrors()) {
 			model.addAttribute("comentario",comentario);
-			return "articulos/editarComentario";
+			vista = "articulos/editarComentario";
 		} else {
-			this.comentarioService.guardarComentario(comentario, clienteService.findClientById(clienteService.obtenerIdSesion()), articuloId);
-			return "redirect:/articulos/{articuloId}";
+			try {
+				this.comentarioService.guardarComentario(comentario, articuloId);
+			} catch (ComentarioProhibidoException e) {
+	            result.rejectValue("descripcion", "errónea", "No puedes publicar un comentario si no "
+	            		+ "eres el propietario del artículo");
+				return "articulos/editarComentario";
+			}
+			vista = "redirect:/articulos/{articuloId}";
 		}
+		return vista;
 	}
 }

@@ -19,6 +19,9 @@ public class Vendedor extends Persona {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vendedor")
+	private Collection<Comentario> comentarios;
 
 	@Column(name = "email")
 	@Email
@@ -60,6 +63,14 @@ public class Vendedor extends Persona {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public Collection<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(Collection<Comentario> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 	@Override

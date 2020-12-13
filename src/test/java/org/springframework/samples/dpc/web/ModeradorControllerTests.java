@@ -2,14 +2,9 @@ package org.springframework.samples.dpc.web;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +19,6 @@ import org.springframework.samples.dpc.model.Moderador;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.service.ModeradorService;
 import org.springframework.samples.dpc.service.UserService;
-import org.springframework.samples.dpc.web.ModeradorController;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -61,13 +55,10 @@ public class ModeradorControllerTests {
 		user.setUsername("moderador10");
 		user.setPassword("moderador10");
 		user.setEnabled(true);
-		Set<Authorities> authorities = new HashSet<Authorities>();
 		Authorities a = new Authorities();
 		a.setUser(user);
 		a.setAuthority("moderador");
 		a.setId(1);
-		authorities.add(a);
-		user.setAuthorities(authorities);
 		
 		moderador.setId(TEST_MODERADOR_ID);
 		moderador.setUser(user);

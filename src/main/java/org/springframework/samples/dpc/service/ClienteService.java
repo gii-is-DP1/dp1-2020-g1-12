@@ -68,4 +68,8 @@ public class ClienteService {
 		return clienteRepository.findByDni(dni);
 	}
 
+	@Transactional(readOnly = true)
+	public Cliente getClienteDeSesion() throws DataAccessException {
+		return clienteRepository.findById(obtenerIdSesion()).get();
+	}
 }

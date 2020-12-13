@@ -51,9 +51,14 @@ private final ComentarioService comentarioService;
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		List<Comentario> comentarios = comentarioService.getComentariosById(articuloId);
 		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo.getGeneros(), articuloId);
+		Boolean puedeComentar = comentarioService.puedeComentar(articuloId);
+		
+		System.out.println(articulo.getComentarios().size());
+		System.out.println(comentarios.size());
 		modelMap.addAttribute("articulo", articulo);
 		modelMap.addAttribute("query", new Articulo());
 		modelMap.addAttribute("vendedor", vendedor);
+		modelMap.addAttribute("puedeComentar", puedeComentar);
 		modelMap.addAttribute("comentarios", comentarios);
 		modelMap.addAttribute("relacionados", relacionados);
 		return vista;

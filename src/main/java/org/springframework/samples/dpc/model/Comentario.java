@@ -10,12 +10,20 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.samples.dpc.service.exceptions.ValoracionConstraint;
 
 @Entity
-@Table(name = "comentario")
+@Table(name = "comentarios")
 public class Comentario extends BaseEntity{
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "vendedor_id")
+	private Vendedor vendedor;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "moderador_id")
+	private Moderador moderador;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "articulo_id")
@@ -59,5 +67,21 @@ public class Comentario extends BaseEntity{
 
 	public void setArticulo(Articulo articulo) {
 		this.articulo = articulo;
+	}
+
+	public Vendedor getVendedor() {
+		return vendedor;
+	}
+
+	public void setVendedor(Vendedor vendedor) {
+		this.vendedor = vendedor;
+	}
+
+	public Moderador getModerador() {
+		return moderador;
+	}
+
+	public void setModerador(Moderador moderador) {
+		this.moderador = moderador;
 	}
 }

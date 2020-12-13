@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/articulosGenero/{generoId}").permitAll()
 				.antMatchers("/busqueda").permitAll()
 				.antMatchers("/ofertas").permitAll()
-				.antMatchers("/comentario/**").hasAnyAuthority("cliente")
+				.antMatchers("/comentario/**").hasAnyAuthority("cliente", "moderador", "vendedor")
 				.antMatchers("/articulos/{articuloId}").permitAll().anyRequest().denyAll().and()
 				.formLogin()
 				/* .loginPage("/login") */

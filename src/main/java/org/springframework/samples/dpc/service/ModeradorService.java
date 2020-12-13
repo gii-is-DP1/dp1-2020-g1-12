@@ -50,8 +50,8 @@ public class ModeradorService {
 		return moderadorRepository.findById(id).get();
 	}
 	
-
-	
-
-	
+	@Transactional(readOnly = true)
+	public Moderador getModeradorDeSesion() throws DataAccessException {
+		return moderadorRepository.findById(obtenerIdSesion()).get();
+	}
 }
