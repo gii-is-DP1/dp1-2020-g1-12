@@ -1,6 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -47,20 +48,25 @@ public class ComentarioService {
 						equals((vendedorService.findSellerById(vendedorService.obtenerIdSesion())))));
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = ComentarioProhibidoException.class)
 	public void guardarComentario(Comentario comentario, Integer articuloId) 
 				throws ComentarioProhibidoException {
 		String autoridad = userService.getAuthority();
 		if(autoridad.equals("moderador")) {
+			comentario.setValoracion(0);
 			comentario.setArticulo(articuloService.findArticuloById(articuloId));
 			comentario.setModerador(moderadorService.getModeradorDeSesion());
 		}
 		else if(autoridad.equals("cliente")) {
+			if(comentario.getValoracion() == 0) {			// Poner a 1 el comentario si envía un 0 al
+				comentario.setValoracion(1);				// inspeccionar elemento con el navegador
+			}
 			comentario.setArticulo(articuloService.findArticuloById(articuloId));
 			comentario.setCliente(clienteService.getClienteDeSesion());			
 		}
 		else {
 			if(vendedorService.esVendedorDelArticulo(articuloId)) {
+				comentario.setValoracion(0);
 				comentario.setArticulo(articuloService.findArticuloById(articuloId));
 				comentario.setVendedor(vendedorService.getVendedorDeSesion());
 			}
@@ -72,8 +78,14 @@ public class ComentarioService {
 	}
 	
 	@Transactional
-	public List<Comentario> getComentariosById(Integer articuloId) {
+	public List<Comentario> getComentariosDeUnArticulo(Integer articuloId) {
 		return comentarioRepository.findByArticulo(articuloId);
+	}
+	
+	@Transactional
+	public Double getValoracionDeUnArticulo(Integer articuloId) {
+		return getComentariosDeUnArticulo(articuloId).stream().filter(x -> x.getValoracion() != 0)
+				.collect(Collectors.averagingDouble(x -> x.getValoracion()));
 	}
 	
 }

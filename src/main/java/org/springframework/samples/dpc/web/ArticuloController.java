@@ -49,15 +49,15 @@ private final ComentarioService comentarioService;
 		String vista = "articulos/detalles";
 		Articulo articulo = articuloService.findArticuloById(articuloId);
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
-		List<Comentario> comentarios = comentarioService.getComentariosById(articuloId);
+		List<Comentario> comentarios = comentarioService.getComentariosDeUnArticulo(articuloId);
 		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo.getGeneros(), articuloId);
 		Boolean puedeComentar = comentarioService.puedeComentar(articuloId);
+		Double valoracion = comentarioService.getValoracionDeUnArticulo(articuloId);
 		
-		System.out.println(articulo.getComentarios().size());
-		System.out.println(comentarios.size());
 		modelMap.addAttribute("articulo", articulo);
 		modelMap.addAttribute("query", new Articulo());
 		modelMap.addAttribute("vendedor", vendedor);
+		modelMap.addAttribute("valoracion", valoracion);
 		modelMap.addAttribute("puedeComentar", puedeComentar);
 		modelMap.addAttribute("comentarios", comentarios);
 		modelMap.addAttribute("relacionados", relacionados);

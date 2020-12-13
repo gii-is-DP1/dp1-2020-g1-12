@@ -8,10 +8,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <dpc:layout pageName="articulos">
-
-    
- 
-
     <form:form modelAttribute="query" action="/busqueda" class="form-horizontal" >
         <div class="form-group has-feedback">
             <dpc:inputField label="Busqueda" name="modelo"/>
@@ -72,6 +68,17 @@
         <tr>
             <th>Tiempo de Entrega</th>
             <td>${articulo.tiempoEntrega} días</td>
+        </tr>
+        <tr>
+            <th>Valoración media</th>
+            <td>
+            	<c:if test="${valoracion == 0}">
+            		Sin valoraciones
+            	</c:if>
+            	<c:if test="${valoracion != 0}">
+            		<c:out value="${valoracion} ★"></c:out>
+            	</c:if>
+            </td>
         </tr>
 		 <tr>
             <th>Géneros</th>
