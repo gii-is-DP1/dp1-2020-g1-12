@@ -90,7 +90,32 @@
 								</a>
 					        </td>
 		                </c:otherwise>               		
-	               	</c:choose>                     
+	               	</c:choose>           	                  
+	        </tr>
+	       
+	        <tr>
+	            <th>Géneros</th>
+	            <td>
+		            <c:forEach items="${articulo.generos}" var="genero">
+		            <spring:url value="/generos/{articuloId}/{generoId}/remove" var="eliminarGeneroUrl">
+						<spring:param name="articuloId" value="${articulo.id}"/>
+						<spring:param name="generoId" value="${genero.id}"/>
+					</spring:url>
+					<span class="badge badge-pill badge-success">${genero.nombre} ${' '}
+						<a class="glyphicon glyphicon-remove-circle" style="color: white; text-decoration: none" 
+						href="${fn:escapeXml(eliminarGeneroUrl)}">
+						</a>
+					</span>
+					</c:forEach>
+				</td>
+				<td>
+					<spring:url value="/generos/{articuloId}" var="generoUrl">
+						<spring:param name="articuloId" value="${articulo.id}"/>
+			        </spring:url>
+			        <a href="${fn:escapeXml(generoUrl)}">
+						<button class="btn btn-default" type="submit">Añadir</button>
+					</a>
+				</td>
 	        </tr>
 		</table>
 		<c:if test="${articulo.stock != 0}" >

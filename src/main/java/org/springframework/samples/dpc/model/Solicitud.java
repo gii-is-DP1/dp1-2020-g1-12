@@ -10,6 +10,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
@@ -30,25 +32,28 @@ public class Solicitud extends BaseEntity {
 	private String descripcion;
 
 	@Column(name = "modelo")
-	@Length(min = 3, max = 200, message = "El modelo debe de contener entre 3 y 200 caracteres.")
+	@Length(min = 3, max = 200, message = "El modelo debe contener entre 3 y 200 caracteres.")
 	private String modelo;
 
 	@Column(name = "marca")
-	@Length(min = 3, max = 50, message = "El modelo debe de contener entre 3 y 200 caracteres.")
+	@Length(min = 3, max = 50, message = "La marca debe contener entre 3 y 50 caracteres.")
 	private String marca;
 
 	@Column(name = "urlImagen")
 	@URL
+	@NotEmpty(message="La Url no puede estar vacía")
 	private String urlImagen;
 
 	@Column(name = "precio")
 	@Min(1)
 	@Max(10000)
+	@NotNull(message="El precio no puede estar vacío")
 	private Double precio;
 
 	@Column(name = "stock")
 	@Min(1)
 	@Max(500)
+	@NotNull(message="El stock no puede estar vacío")
 	private Integer stock;
 
 	@Column(name = "tipo")
@@ -58,10 +63,12 @@ public class Solicitud extends BaseEntity {
 	@Column(name = "tiempoEntrega")
 	@Min(1)
 	@Max(30)
+	@NotNull(message="El tiempo de entrega no puede estar vacío")
 	private Integer tiempoEntrega;
 
 	@Column(name = "gastoEnvio")
 	@Min(0)
+	@NotNull(message="El gasto de envío no puede estar vacío")
 	private Double gastoEnvio;
 
 	@Column(name = "situacion")

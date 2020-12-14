@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 @Table(name = "bloqueos")
 public class Bloqueo extends BaseEntity {
@@ -12,6 +14,7 @@ public class Bloqueo extends BaseEntity {
 	private boolean bloqueado;
 
 	@Column(name = "descripcion")
+	@Length(min = 10, max = 200)
 	private String descripcion;
 
 	public boolean isBloqueado() {

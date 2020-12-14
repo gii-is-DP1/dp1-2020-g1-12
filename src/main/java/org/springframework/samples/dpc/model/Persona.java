@@ -11,7 +11,7 @@ public class Persona extends BaseEntity {
 
 	@Column(name = "dni")
 	@Digits(fraction = 0, integer = 8, message = "Debe de estar formado solo por números")
-	@Length(min = 8, max = 8, message = "El número de teléfono debe estar formado por 9 dígitos")
+	@Length(min = 8, max = 8, message = "El número de DNI debe estar formado por 8 dígitos")
 	protected String dni;
 
 	@Column(name = "telefono")
@@ -20,15 +20,15 @@ public class Persona extends BaseEntity {
 	protected String telefono;
 
 	@Column(name = "direccion")
-	@Length(min = 3, max = 20)
+	@Length(min = 3, max = 50, message = "La dirección debe estar comprendida entre 3 y 50 caracteres")
 	protected String direccion;
 
 	@Column(name = "nombre")
-	@Length(min = 3, max = 20)
+	@Length(min = 3, max = 20, message = "El nombre debe estar comprendido entre 3 y 20 caracteres")
 	protected String nombre;
 
 	@Column(name = "apellido")
-	@Length(min = 3, max = 20)
+	@Length(min = 3, max = 20, message = "El nombre debe estar comprendido entre 3 y 20 caracteres")
 	protected String apellido;
 
 	public String getDni() {
