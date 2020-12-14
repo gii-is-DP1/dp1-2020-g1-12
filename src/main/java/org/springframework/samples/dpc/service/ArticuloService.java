@@ -31,7 +31,6 @@ public class ArticuloService {
 		articuloRepository.save(articulo);
 	}
 	
-
 	@Transactional
 	public void eliminarArticulo(Integer articuloId) {
 		Optional<Articulo> articulo = articuloRepository.findById(articuloId);
@@ -84,10 +83,7 @@ public class ArticuloService {
 	@Transactional(readOnly = true)
 	public List<Articulo> busqueda(Articulo articulo) {
 		String busqueda = articulo.getModelo();
-//		List<Articulo> result = new ArrayList<>();
-		if(busqueda.isEmpty() && articulo.getGeneros()==null) {
-			return articulosDisponibles();
-		}else if(articulo.getGeneros()==null) {
+		if(articulo.getGeneros()==null) {
 			return articuloRepository.articulosPorNombre(busqueda);
 		}else if(busqueda.isEmpty()) {
 			return articuloRepository.articulosPorGenero(articulo.getGeneros().stream().map(x->x.getId()).collect(Collectors.toList()));	
@@ -97,6 +93,18 @@ public class ArticuloService {
 
 	}
 	
+	@Transactional(readOnly = true)
+	public String mensajeDeBusqueda(Articulo articulo) {
+		String mensaje = "Resultados de la búsqueda ";
+		if(articulo.getGeneros()==null) {
+			mensaje += "'" + articulo.getModelo() + "':";
+		}else if(articulo.getModelo().isEmpty()) {
+			mensaje += "con los géneros seleccionados:";
+		} else {
+			mensaje += "'" + articulo.getModelo() + "'" + " con los géneros seleccionados:";
+		}
+		return mensaje;
+	}
 	
 	
 }

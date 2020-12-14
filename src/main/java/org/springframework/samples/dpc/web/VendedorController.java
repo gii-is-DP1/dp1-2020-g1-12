@@ -156,4 +156,5 @@ public class VendedorController {
 		}
 		return "redirect:/vendedores/listadoSolicitudes";
 	}
+	
 }

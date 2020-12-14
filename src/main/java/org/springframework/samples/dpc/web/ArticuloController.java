@@ -67,10 +67,13 @@ private final ComentarioService comentarioService;
 	@PostMapping(value="/busqueda")
 	public String busqueda(Articulo articulo,ModelMap modelMap) {
 		String vista = "/articulos/principal";
+		if(articulo.getModelo().isEmpty() && articulo.getGeneros() == null) {
+			return listadoArticulos(modelMap);
+		}
 		List<Articulo> articulos= articuloService.busqueda(articulo);
 		modelMap.addAttribute("query", new Articulo());
 		modelMap.addAttribute("articulos", articulos);
-		modelMap.addAttribute("mensaje", "Resultados de '" + articulo.getModelo() + "':");
+		modelMap.addAttribute("mensaje", articuloService.mensajeDeBusqueda(articulo));
 		return vista;
 	}
 	

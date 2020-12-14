@@ -30,7 +30,7 @@ public class Comentario extends BaseEntity{
 	private Articulo articulo;
 	
 	@Column(name = "descripcion")
-	@Length(min = 50, max = 200)
+	@Length(min = 10, max = 200)
 	private String descripcion;
 	
 	@Column(name = "valoracion")

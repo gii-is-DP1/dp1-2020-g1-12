@@ -90,8 +90,7 @@
 		 <tr>
             <th>Géneros</th>
             <td><c:forEach items="${articulo.generos}" var="genero">
-				<span>${genero.nombre}</span>
-		</c:forEach></td>
+				<span class="badge badge-pill badge-success">${genero.nombre}</span></c:forEach></td>
         </tr>
 		
         </table>
