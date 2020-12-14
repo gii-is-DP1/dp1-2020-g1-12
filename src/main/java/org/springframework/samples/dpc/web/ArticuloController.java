@@ -8,6 +8,7 @@ import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.ComentarioService;
+import org.springframework.samples.dpc.service.GeneroService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,12 +24,16 @@ public class ArticuloController {
 private final ArticuloService articuloService;
 private final VendedorService vendedorService;
 private final ComentarioService comentarioService;
+private final GeneroService generoService;
+
 	
 	@Autowired
-	public ArticuloController(ArticuloService articuloService, VendedorService vendedorService, ComentarioService comentarioService) {
+	public ArticuloController(ArticuloService articuloService, VendedorService vendedorService, 
+			ComentarioService comentarioService, GeneroService generoService) {
 		this.articuloService = articuloService;
 		this.vendedorService = vendedorService;
 		this.comentarioService = comentarioService;
+		this.generoService = generoService;
 	}
 	
 	@GetMapping()
@@ -37,7 +42,7 @@ private final ComentarioService comentarioService;
 
 		List<Articulo> articulos = articuloService.articulosDisponibles();
 		List<Articulo> ofertas = articuloService.ofertasRandomAcotada();
-			
+		modelMap.addAttribute("generos", generoService.findAllGeneros());
 		modelMap.addAttribute("articulos", articulos);
 		modelMap.addAttribute("ofertas", ofertas);
 		modelMap.addAttribute("query", new Articulo());
@@ -54,6 +59,7 @@ private final ComentarioService comentarioService;
 		Boolean puedeComentar = comentarioService.puedeComentar(articuloId);
 		Double valoracion = comentarioService.getValoracionDeUnArticulo(articuloId);
 		
+		modelMap.addAttribute("generos", generoService.findAllGeneros());
 		modelMap.addAttribute("articulo", articulo);
 		modelMap.addAttribute("query", new Articulo());
 		modelMap.addAttribute("vendedor", vendedor);
@@ -71,6 +77,7 @@ private final ComentarioService comentarioService;
 			return listadoArticulos(modelMap);
 		}
 		List<Articulo> articulos= articuloService.busqueda(articulo);
+		modelMap.addAttribute("generos", generoService.findAllGeneros());
 		modelMap.addAttribute("query", new Articulo());
 		modelMap.addAttribute("articulos", articulos);
 		modelMap.addAttribute("mensaje", articuloService.mensajeDeBusqueda(articulo));

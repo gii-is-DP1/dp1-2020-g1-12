@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SolicitudServiceTest {
 	
 	private static final int SOLICITUD_ACEPTADA_ID = 1;
-	private static final int SOLICITUD_PENDIENTE_ID = 4;
+	private static final int SOLICITUD_PENDIENTE_ID = 11;
 	private static final int VENDEDOR_ID = 1;
 	
 	@Autowired
@@ -133,7 +133,7 @@ public class SolicitudServiceTest {
 	@Test
 	void testBuscarSolicitudPorProveedorId() {
 		List<Solicitud> solicitud = this.solicitudService.getsolicitudesByProvider(VENDEDOR_ID);
-		assertThat(solicitud.size()).isEqualTo(2);
+		assertThat(solicitud.size()).isEqualTo(5);
 		assertThat(solicitud.get(0).getId()).isEqualTo(1);
 		assertThat(solicitud.get(1).getId()).isEqualTo(2);
 		assertThat(solicitud.get(0).getMarca()).isEqualTo("MSI");

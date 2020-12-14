@@ -29,12 +29,9 @@
             
             <select class="selectpicker" name="generos" multiple>
             	<option value="" disabled selected>Seleccione géneros a buscar</option>
-    			<option value="1">Smartphones</option>
-    			<option value="2">Ordenadores</option>
-    			<option value="3">Electrodomésticos</option>
-    			<option value="4">Multimedia</option>
-    			<option value="5">Entretenimiento</option>
-    			<option value="6">Videojuegos</option>
+            	<c:forEach items="${generos}" var="genero">
+    				<option value="${genero.id}">${genero.nombre}</option>
+    			</c:forEach>
   			</select>
         </div>
         <div class="form-group">
