@@ -17,7 +17,7 @@ public interface ArticuloRepository extends CrudRepository<Articulo, Integer> {
 	@Query("select u from Articulo u where u.stock > 0")
 	List<Articulo> articulosDisponibles() throws DataAccessException;
 	
-	@Query("select u from Articulo u where u.oferta.disponibilidad = true")
+	@Query("select u from Articulo u where u.oferta.disponibilidad = true and u.stock > 0")
 	List<Articulo> articulosOfert() throws DataAccessException;
 	
 	@Query(value = "SELECT * FROM ARTICULOS WHERE UPPER(ARTICULOS.marca || ' ' || ARTICULOS.modelo) LIKE '%' || UPPER(:nombre) || '%' ", nativeQuery = true)
