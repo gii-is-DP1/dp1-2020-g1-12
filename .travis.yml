@@ -12,6 +12,6 @@ addons:
     organization: "gii-is-dp1" # the key of the org you chose at step #3
     token:
       secure: "BHl6iH/axW/WyCAAWVrXLS6VKGO46nKWYxOEtvTLbkPh9hCqKKxvLPbjhbLgh9QYtxAtgNgtdnd7KRYg4y1Y8IZrhhXL4rhZHlI9lb5783JnV8LAPepqXQEmVTeN+KDkJC7/NQ6THvyr3nkY2Ff8IFP7O75HG/jm6WoS3LGUJhVJT4IK0H3C48N0DyjLdbbzCPTSAgU9JRol3oKEyQtW/uamMzvenhPZO0sDdGfllUd28Ph1zs3+wTO2LP1zYE4rNZPXZJnkzAkyZoYhXfPzCw1xbCgr9k7A3x5cJWQgLTF2MXI+R06dR9ArjrChd45mb455qb52TzScB0kfNThSLPBgQmDMHMr91O3/naAyEgi56mzjBpMmKS4mHhRqoE1HYWEHMdT8z9yf5MAfJa/kWdO7zaTsS6IaA73Y95BOWzWfA6K6TjoJ6VESlwzMmoDvgzkKU7coW0mg6MCc/sxY1yeMoUQz9GGEZmrlcXOH8bufHdT4eQJL15kcnTCrTchMGmS/tjZT10eiwzcHtSPdJFK9bxekP4Q4lOHDqFbcGl03thnVzK1xvvDLE9vLVXPAyufs2/ALQypdvl/RVlHeC8cQsVi3VJo0dwWYaZTCNF9kKIi9eeQO+i84+8t7DDrdXM/QmN1MCYl6Qb/zdnvCRS5n6ZWVbBoR53a2z1aBEao="
-  script:
+script:
   - mvn test -Dspring-boot.run.profiles=mysql-travis
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=gii-is-DP1_dp1-2020-g1-12
