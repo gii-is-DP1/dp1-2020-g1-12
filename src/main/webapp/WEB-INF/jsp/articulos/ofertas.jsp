@@ -15,6 +15,10 @@
 	
     
     <h2>Ofertas destacadas</h2>
+    <c:if test="${ofertas.size() == 0}">
+    	<p>No existen ofertas actualmente.</p>
+    </c:if>
+    
     <fieldset>
 		 <c:forEach items="${ofertas}" var="oferta">
             <div>

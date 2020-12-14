@@ -55,7 +55,6 @@ public class ArticuloService {
 	
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosOfertados() {
-		
 		return articuloRepository.articulosOfert();
 	}
 	

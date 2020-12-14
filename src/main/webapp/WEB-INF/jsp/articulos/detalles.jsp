@@ -1,11 +1,13 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
 
 <dpc:layout pageName="articulos">
     <form:form modelAttribute="query" action="/busqueda" class="form-horizontal" >
@@ -29,9 +31,14 @@
         </div>
     </form:form>
     <h1>${articulo.marca} ${' '} ${articulo.modelo}</h1>
+    
     <img style='width: 40%; height: 20%' alt='' 
 	            	onerror="this.src=''" src='${articulo.urlImagen}'/>
-	<br><a style="width:22%;float:right" class="btn btn-primary btn-lg btn-block" role="button" href="#">Añadir al carrito</a>
+	<sec:authorize access="hasAuthority('cliente')">
+		<c:if test="${articulo.stock > 0}" >				
+			<br><a style="width:22%;float:right" class="btn btn-primary btn-lg btn-block" role="button" href="#">Añadir al carrito</a>
+		</c:if>
+	</sec:authorize>
 	
 <table class="table table-borderless">
         <tr>
