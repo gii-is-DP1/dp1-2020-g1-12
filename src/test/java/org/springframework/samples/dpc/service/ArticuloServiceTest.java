@@ -1,7 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Oferta;
 import org.springframework.samples.dpc.model.Tipo;
-import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -50,7 +49,7 @@ public class ArticuloServiceTest {
 	@Test
 	void testArticulosEnVentaByProvider() {
 		List<Articulo> articulos1 = this.articuloService.articulosEnVentaByProvider(ARTICULO_ID);
-		assertThat(articulos1.size()).isEqualTo(2);
+		assertThat(articulos1.size()).isEqualTo(5);
 		
 		List<Articulo> articulos2 = this.articuloService.articulosEnVentaByProvider(10);
 		assertThat(articulos2.isEmpty());

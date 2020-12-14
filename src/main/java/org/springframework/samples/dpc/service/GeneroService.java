@@ -28,6 +28,11 @@ public class GeneroService {
 	}
 	
 	@Transactional(readOnly = true)
+	public Iterable<Genero> findAllGeneros() throws DataAccessException {
+		return generoRepository.findAll();
+	}
+	
+	@Transactional(readOnly = true)
 	public List<Genero> generosRestantes(int articuloId) throws DataAccessException {
 		Set<Genero> generosActuales = articuloService.findArticuloById(articuloId).getGeneros();
 		return generoRepository.generosRestantes(generosActuales);
