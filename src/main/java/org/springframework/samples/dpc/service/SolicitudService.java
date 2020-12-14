@@ -30,6 +30,7 @@ public class SolicitudService {
 		this.ofertaService = ofertaService;
 	}
 	
+	
 	@Transactional
 	public List<Solicitud> solicitudesPendientes() {
 		return solicitudRepository.solicitudesPendientes();
