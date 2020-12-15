@@ -31,8 +31,6 @@ public class ModeradorControllerTests {
 	
 	private static final int TEST_MODERADOR_ID = 1;
 
-	@Autowired(required=true)
-	private ModeradorController moderadorController;
 	
 	@MockBean 
 	private ModeradorService moderadorService;

@@ -1,6 +1,7 @@
 package org.springframework.samples.dpc.web;
 
 import static org.mockito.BDDMockito.given;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,7 +23,6 @@ import org.springframework.samples.dpc.model.Tipo;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.VendedorService;
-import org.springframework.samples.dpc.web.SolicitudController;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
