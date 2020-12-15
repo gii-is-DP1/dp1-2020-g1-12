@@ -19,9 +19,6 @@ public class Vendedor extends Persona {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vendedor")
-	private Collection<Comentario> comentarios;
 
 	@Column(name = "email")
 	@Email
@@ -65,14 +62,6 @@ public class Vendedor extends Persona {
 		this.user = user;
 	}
 	
-	public Collection<Comentario> getComentarios() {
-		return comentarios;
-	}
-
-	public void setComentarios(Collection<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
-
 	@Override
 	public String toString() {
 		return "Vendedor [user=" + user + ", email=" + email + ", bloqueo=" + bloqueo + ", solicitudes=" + solicitudes

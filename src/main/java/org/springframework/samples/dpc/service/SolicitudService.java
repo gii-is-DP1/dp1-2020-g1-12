@@ -21,13 +21,15 @@ public class SolicitudService {
 	private final SolicitudRepository solicitudRepository;
 	private final ArticuloService articuloService;
 	private final OfertaService ofertaService;
+	private final VendedorService vendedorService;
 	
 	@Autowired
 	public SolicitudService(SolicitudRepository solicitudRepository, OfertaService ofertaService, 
-			ArticuloService articuloService) {
+			ArticuloService articuloService, VendedorService vendedorService) {
 		this.solicitudRepository = solicitudRepository;
 		this.articuloService = articuloService;
 		this.ofertaService = ofertaService;
+		this.vendedorService = vendedorService;
 	}
 	
 	
@@ -48,8 +50,9 @@ public class SolicitudService {
 	}
 	
 	@Transactional
-	public void eliminarSolicitud(Integer solicitudId) {
-		solicitudRepository.deleteById(solicitudId);
+	public void eliminarSolicitud(Solicitud solicitud) {
+		vendedorService.eliminarSolicitud(solicitud, solicitud.getVendedor());
+		solicitudRepository.delete(solicitud);
 	}
 
 

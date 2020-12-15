@@ -20,7 +20,7 @@ public class ComentarioController {
 	
 	private final ComentarioService comentarioService;
 
-
+	
 	@Autowired
 	public ComentarioController(ComentarioService comentarioService) {
 		this.comentarioService= comentarioService;
@@ -51,5 +51,15 @@ public class ComentarioController {
 			vista = "redirect:/articulos/{articuloId}";
 		}
 		return vista;
+	}
+	
+	@GetMapping(value = "/eliminar/{comentarioId}/articulo/{articuloId}")
+	public String borrarGenero(@PathVariable("comentarioId") int comentarioId, 
+			@PathVariable("articuloId") int articuloId, Model model) {
+		Comentario comentario =  comentarioService.findCommentById(comentarioId);
+		if(comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
+			comentarioService.eliminarComentario(comentario);
+		}
+		return "redirect:/articulos/{articuloId}";
 	}
 }

@@ -10,6 +10,16 @@
 
 
 <dpc:layout pageName="articulos">
+    <jsp:attribute name="customScript">
+        <script>
+	        function alerta() {
+	        	var opcion = confirm('¿Seguro que desea eliminar el comentario del artículo?');
+	        	return opcion;
+	        }
+        </script>
+    </jsp:attribute>
+    
+    <jsp:body>
     <form:form modelAttribute="query" action="/busqueda" class="form-horizontal" >
         <div class="form-group has-feedback">
             <dpc:inputField label="Busqueda" name="modelo"/>
@@ -37,7 +47,7 @@
 		</c:if>
 	</sec:authorize>
 	
-<table class="table table-borderless">
+	<table class="table table-borderless">
         <tr>
             <th style="width: 600px;">Vendedor</th>
             <td>${vendedor.nombre} ${' '} ${vendedor.apellido}</td>
@@ -109,8 +119,18 @@
 		<c:forEach items="${comentarios}" var="comentario">
 			<fieldset>
 				<c:if test="${comentario.cliente != null}">
-					<legend>		
-						<c:out value="Autor: ${comentario.cliente.nombre} ${comentario.cliente.apellido}"></c:out>
+					<legend><span class="badge badge-pill badge-success">Cliente</span>
+						<c:out value=" ${comentario.cliente.nombre} ${comentario.cliente.apellido}		"></c:out>
+						<sec:authorize access="hasAuthority('moderador')">
+							<spring:url value="/comentario/eliminar/{comentarioId}/articulo/{articuloId}" 
+							var="eliminarComentarioUrl">
+								<spring:param name="comentarioId" value="${comentario.id}"/>
+								<spring:param name="articuloId" value="${articulo.id}"/>
+							</spring:url>
+							<a onclick="return alerta()" class="glyphicon glyphicon-remove-circle" 
+							style="color: #F03232; text-decoration: none" href="${fn:escapeXml(eliminarComentarioUrl)}">
+							</a>
+						</sec:authorize>
 					</legend>	
 					<p><c:out value="Valoración: "></c:out>
 						<c:forEach begin="1" end="${comentario.valoracion}">
@@ -120,14 +140,34 @@
 				<p><c:out value="Opinión: ${comentario.descripcion}"></c:out></p>
 				</c:if>
 				<c:if test="${comentario.moderador != null}">
-					<legend>		
-						<c:out value="Autor: ${comentario.moderador.nombre} ${comentario.moderador.apellido}"></c:out>
+					<legend><span class="badge badge-pill badge-danger">Administrador</span>		
+						<c:out value=" ${comentario.moderador.nombre} ${comentario.moderador.apellido}		"></c:out>
+						<sec:authorize access="hasAuthority('moderador')">
+							<spring:url value="/comentario/eliminar/{comentarioId}/articulo/{articuloId}" 
+							var="eliminarComentarioUrl">
+								<spring:param name="comentarioId" value="${comentario.id}"/>
+								<spring:param name="articuloId" value="${articulo.id}"/>
+							</spring:url>
+							<a onclick="return alerta()" class="glyphicon glyphicon-remove-circle" 
+							style="color: #F03232; text-decoration: none" href="${fn:escapeXml(eliminarComentarioUrl)}">
+							</a>
+						</sec:authorize>
 					</legend>	
 				<p><c:out value="Comentario: ${comentario.descripcion}"></c:out></p>
 				</c:if>
 				<c:if test="${comentario.vendedor != null}">
-					<legend>		
-						<c:out value="Autor: ${comentario.vendedor.nombre} ${comentario.vendedor.apellido}"></c:out>
+					<legend><span class="badge badge-pill badge-info">Vendedor</span>
+						<c:out value=" ${comentario.vendedor.nombre} ${comentario.vendedor.apellido}		"></c:out>
+						<sec:authorize access="hasAuthority('moderador')">
+							<spring:url value="/comentario/eliminar/{comentarioId}/articulo/{articuloId}" 
+							var="eliminarComentarioUrl">
+								<spring:param name="comentarioId" value="${comentario.id}"/>
+								<spring:param name="articuloId" value="${articulo.id}"/>
+							</spring:url>
+							<a onclick="return alerta()" class="glyphicon glyphicon-remove-circle" 
+							style="color: #F03232; text-decoration: none" href="${fn:escapeXml(eliminarComentarioUrl)}">
+							</a>
+						</sec:authorize>
 					</legend>	
 					<p><c:out value="Respuesta: ${comentario.descripcion}"></c:out></p>
 				</c:if>
@@ -162,4 +202,5 @@
                <br>
 		</c:forEach>
 		</c:if>
+	</jsp:body>
 </dpc:layout>
