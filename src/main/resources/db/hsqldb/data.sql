@@ -135,3 +135,16 @@ INSERT INTO solicitudes VALUES (10, 'Solicitud de venta de Acer Aspire One',5,'A
 									'','Denegada',50,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/31MpIy75yyL._AC_.jpg', 3, 2);
 INSERT INTO solicitudes VALUES (11, 'Solicitud de venta de Apple Macbook Pro',5,'Apple','Macbook Pro',1000.99,
 									'','Pendiente',50,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71VHEQqByPL._AC_SL1500_.jpg', null, 2);
+
+-- Introducimos una solicitud.
+
+INSERT INTO comentarios VALUES (1,'Lo compré hará 1 año y todo va fenomenal, pero a veces noto que la batería se agota demasiado rápdio',3,1,1,null,null);
+INSERT INTO comentarios VALUES (2,'Funciona perfectamente y es muy fácil de usar ',5,6,1,null,null);
+INSERT INTO comentarios VALUES (3,'No recomendado para nada, se ha necesitado más de 5 reparaciones en 1 año.',5,1,1,null,null);
+INSERT INTO comentarios VALUES (4,'Estaba deseando comprarla :-)',5,10,2,null,null);
+INSERT INTO comentarios VALUES (5,'Pronto aumentaremos el stock de este producto para que no te quedes sin ninguno',0,3,null,null,1);
+INSERT INTO comentarios VALUES (6,'Estamos viendo varios insultos en los comentarios de estos artículos, todo aquel que insulte se le bloqueará',0,5,null,1,null);
+INSERT INTO comentarios VALUES (7,'¿Sabéis si este ordenador corre el fortnite?',5,1,2,null,null);
+INSERT INTO comentarios VALUES (8,'Pronto se vendrá una nueva oferta de este producto.',0,1,null,null,1);
+INSERT INTO comentarios VALUES (9,'Está chida esta lavadora',4,6,2,null,null);
+

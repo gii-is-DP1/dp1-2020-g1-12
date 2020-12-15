@@ -18,7 +18,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
 import org.springframework.samples.dpc.model.Oferta;
 import org.springframework.samples.dpc.service.OfertaService;
-import org.springframework.samples.dpc.web.OfertaController;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,10 +30,6 @@ public class OfertaControllerTest {
 	
 	private static final int TEST_OFERTA_ID = 1;
 	private static final int TEST_ARTICULO_ID = 1;
-
-
-	@Autowired(required=true)
-	private OfertaController ofertaController;
 	
 	@MockBean 
 	private OfertaService ofertaService;
