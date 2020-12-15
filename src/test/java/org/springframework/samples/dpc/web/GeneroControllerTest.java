@@ -1,7 +1,9 @@
 package org.springframework.samples.dpc.web;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -60,6 +62,20 @@ public class GeneroControllerTest {
 		mockMvc.perform(get("/generos/"+TEST_ARTICULO_ID )).andExpect(status().isOk())
 		.andExpect(model().attributeExists("genero","articuloId","generosDisponibles")).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("vendedores/nuevoGenero"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testGuardarGenero() throws Exception {
+	mockMvc.perform(post("/generos/"+TEST_ARTICULO_ID +"/save").param("nombre", "Smartphone").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testBorrarGenero() throws Exception{
+		mockMvc.perform(get("/generos/"+TEST_ARTICULO_ID +"/"+TEST_GENERO_ID+"/remove")).
+			andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
 	}
 
 }
