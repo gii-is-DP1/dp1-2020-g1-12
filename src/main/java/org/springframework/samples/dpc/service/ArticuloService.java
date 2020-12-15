@@ -5,13 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.Articulo;
-import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.repository.ArticuloRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,12 +67,13 @@ public class ArticuloService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<Articulo> articulosRelacionados(Set<Genero> generos, int articuloId) {
+	public List<Articulo> articulosRelacionados(Articulo articulo) {
 		List<Articulo> relacionados = new ArrayList<>();
 		List<Articulo> articulos = articuloRepository.articulosDisponibles();
 		articulos.sort(Comparator.comparing(Articulo::getId).reversed());
-		for(Articulo articulo:articulos) {
-			if(relacionados.size() < 6 && articulo.getId() != articuloId && articulo.getGeneros().containsAll(generos))
+		for(Articulo art:articulos) {
+			if(relacionados.size() < 6 && !(art.getId().equals(articulo.getId())) 
+					&& articulo.getGeneros().containsAll(articulo.getGeneros()))
 				relacionados.add(articulo);
 		}
 		return relacionados;

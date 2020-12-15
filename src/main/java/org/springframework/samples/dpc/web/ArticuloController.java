@@ -55,7 +55,7 @@ private final GeneroService generoService;
 		Articulo articulo = articuloService.findArticuloById(articuloId);
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		List<Comentario> comentarios = comentarioService.getComentariosDeUnArticulo(articuloId);
-		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo.getGeneros(), articuloId);
+		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo);
 		Boolean puedeComentar = comentarioService.puedeComentar(articuloId);
 		Double valoracion = comentarioService.getValoracionDeUnArticulo(articuloId);
 		
