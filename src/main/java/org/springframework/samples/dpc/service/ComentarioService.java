@@ -39,6 +39,12 @@ public class ComentarioService {
 		return comentarioRepository.findById(id).get();
 	}
 	
+	@Transactional()
+	public void eliminarComentario(Comentario comentario) throws DataAccessException {
+		articuloService.eliminarComentario(comentario.getArticulo(), comentario);
+		comentarioRepository.delete(comentario);
+	}
+	
 	@Transactional
 	public Boolean puedeComentar(Integer articuloId) {
 		String autoridad = userService.getAuthority();

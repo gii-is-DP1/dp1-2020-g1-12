@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.Articulo;
+import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.repository.ArticuloRepository;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,11 @@ public class ArticuloService {
 	public void eliminarArticulo(Integer articuloId) {
 		Optional<Articulo> articulo = articuloRepository.findById(articuloId);
 		articulo.get().setStock(0);
+	}
+	
+	@Transactional
+	public void eliminarComentario(Articulo articulo, Comentario comentario) {
+		articulo.getComentarios().remove(comentario);
 	}
 
 	@Transactional

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.repository.VendedorRepository;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,11 @@ public class VendedorService {
 	public Vendedor vendedorDeUnArticulo(Integer articuloId) {
 		Vendedor result = vendedorRepository.vendedorDeArticulo(articuloId);
 		return result;
+	}
+	
+	@Transactional
+	public void eliminarSolicitud(Solicitud solicitud, Vendedor vendedor) {
+		vendedor.getSolicitudes().remove(solicitud);
 	}
 	
 	@Transactional

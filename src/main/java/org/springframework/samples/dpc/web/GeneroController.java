@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.service.GeneroService;
+import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -21,10 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class GeneroController {
 
 	private final GeneroService generoService;
+	private final VendedorService vendedorService;
+
 	
 	@Autowired
-	public GeneroController(GeneroService generoService) {
+	public GeneroController(GeneroService generoService, VendedorService vendedorService) {
 		this.generoService = generoService;
+		this.vendedorService = vendedorService;
 	}
 	
 	@GetMapping(value = "/{articuloId}")
@@ -52,9 +56,8 @@ public class GeneroController {
 	@GetMapping(value = "/{articuloId}/{generoId}/remove")
 	public String borrarGenero(@PathVariable("articuloId") int articuloId,
 			@PathVariable("generoId") int generoId ,Model model) {
-		System.out.println(generoId);
 		String vista = "redirect:/vendedores/articulo/{articuloId}";
-		if(generoService.findGeneroById(generoId) != null) {
+		if(generoService.findGeneroById(generoId) != null && vendedorService.esVendedorDelArticulo(articuloId)) {
 			generoService.eliminarGenero(articuloId, generoId);
 		}
 		return vista;

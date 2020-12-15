@@ -15,6 +15,12 @@
 	        	return opcion;
 	        }
         </script>
+        <script>
+	        function alertaGenero() {
+	        	var opcion = confirm('¿Seguro que desea eliminar el género?');
+	        	return opcion;
+	        }
+        </script>
     </jsp:attribute>
     <jsp:body>
 	    <h2>Artículo <c:out value="${articulo.marca} ${articulo.modelo}"></c:out></h2>
@@ -102,8 +108,8 @@
 						<spring:param name="generoId" value="${genero.id}"/>
 					</spring:url>
 					<span class="badge badge-pill badge-success">${genero.nombre} ${' '}
-						<a class="glyphicon glyphicon-remove-circle" style="color: white; text-decoration: none" 
-						href="${fn:escapeXml(eliminarGeneroUrl)}">
+						<a onclick="return alertaGenero()" class="glyphicon glyphicon-remove-circle" 
+							style="color: white; text-decoration: none" href="${fn:escapeXml(eliminarGeneroUrl)}">
 						</a>
 					</span>
 					</c:forEach>
