@@ -99,13 +99,34 @@ public class ArticuloServiceTest {
 	}
 	
 	@Test
+	void testAcotarOfertas() {
+		List<Articulo> articulos = articuloService.articulosDisponibles();
+		for(int i = 0; i < 6; i++) 
+			articulos.get(i).getOferta().setDisponibilidad(true);
+		
+		List<Articulo> ofertasRandom = articuloService.ofertasRandomAcotada();
+		
+		assertThat(ofertasRandom.size()).isEqualTo(5);
+	
+	}
+	
+	@Test
 	void testArticulosRelacionados() {
 		Articulo articulo = articuloService.findArticuloById(ARTICULO_ID);
 		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo);
 		assertThat(relacionados.size()).isPositive();
 		
 		assertThat(relacionados.get(0).getGeneros()).containsAnyElementsOf(articulo.getGeneros());
-
+	}
+	
+	@Test
+	void testAcotarRelacionados() {
+		Articulo articulo = articuloService.findArticuloById(ARTICULO_ID);
+		articulo.setGeneros(new HashSet<>());
+		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo);
+		assertThat(relacionados.size()).isEqualTo(6);
+		
+		assertThat(relacionados.get(0).getGeneros()).containsAnyElementsOf(articulo.getGeneros());
 	}
 	
 	@Test
