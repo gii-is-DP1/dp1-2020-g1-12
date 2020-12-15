@@ -7,11 +7,12 @@ services:
 before_install:
   - mysql -e 'CREATE DATABASE petclinic;'
 
-#addons:
-#  sonarcloud:
-#    organization: "gii-is-dp1" # the key of the org you chose at step #3
-#    token:
-#      secure: "lytwoo9R/nQswq8W33g+ymJLKDAj6p9nYzYmkGIaDrK9b/uh6CZRhRQ/7JaD2zTCX1hUyB1iP4bGP88Ai4o+hpdpyBiAEE9ZGUM8S8pcySIm3Q1lkJpVtpH1bRcm4hdSpcyPpKNZj2RyXlq6DF0j7nY6Zhoph4zx+XjS3kx511KfiNM2UnNP8DyeWg3vaK29XKsXkSdAF0pFAD6cjCb6QATJCWIHDCdPrF+UK9JlHKlNekHwdSbXK2oYHaV4BSVqsnuYiiM/ToEJPWbt+5Kq/OlnAnHeKkcvoPlIU3y0QqDyuvdRGtvNUzGcxZ0oH1DU2u3P1G7Rwc1JcoHU2R8M/ln0Z8BkC5an6iXQ7tpqYqBMEe5yi1DYXPAzYWLwSWm+sUjgnhKr4IMBASIXgCr2GlQ83YCp0lT4ysHHETYaYHpyVO/2DZ3H9fXDWbx1EkAAlcwEGGRTi3nmWI3o8o1jktjDiloayxDFNF53vRnSBdOuEZ5fSTS7M1J/8+fkPXfT7k+Xy3stfbVeo0kjbjuTEFj6zWsAdEbOLld9pGWg8nh0ZwpQ0qs5qaYEZNiRZgmHSAnLHgSQt3HJ+LiUdzqWhrV1e2jmkofKIfnYfn2IcTbjT4AfpCwBwSlgkaLXPyRdH1wVJRnB8QMFRi3AtCPoO0wxl7xtnbOhl1Vg33Gxm40="
+addons:
+  sonarcloud:
+    organization: "gii-is-dp1" # the key of the org you chose at step #3
+    token:
+      secure: "5MTqkeqcYGC5OorD2U1DgpZL9C6Sk5dAcqGpY9iylsxboiU/BbLkjFLrKsB2GyfbgsRP/rqfyGzOGpF9OzMYaZQSez7nHNG0sQm2DE7a7hqn2opK7ZO1YlApAmQ3NxSab11S7/iJe2riJM07gLWeGjqa/Jjih9YqmqxPJG5GiQ2Iu3Q6zkIzh2zbzeK/NJVMBhCD0FW/zr7VdFiyoUlYWpB813zSBrhofOdOcYikyFnxe9UFblq4QwrFJh+8A017x++RaoBQli8jtppEwoqpoNfhacAW3By2kZ178Q3Lgip6Z5DEqZYTjk/fvqalB8jpk9Si2a4VyOTz8rpwvRg5BKZAde/YIxYuESnvRulbfNlkpZsXnsvCBMp8VNJkg5UkkVE4zK1+4I0x2fCgDSXE/prrBYISOTZ8JnE1NldxoT7dTrGwtp5mGO/wc+Vnh8ayd6czBVHvNf4AwNQa8hNbM2lpUruY7oGCTvbdY+JAoZ9dttF73KFxtMqF+oWqRfbzoUwbp5tT2OD9w0/60wEc8siNnM3HjuPXxb/MqL9R7/Q7NRk7fjaOPPZKQJ80ZC+gZ0oSmtFbKbB5OqbEr3ATCBknm6SoMoVtCO9jrJ6FT6jwExKXGs4LAIxdLHKYzvD3XkPINnWAOySf4d/2t98NxHD38PQrGPP047/LhMkZvfE="
+
 script:
   - mvn test -Dspring-boot.run.profiles=mysql-travis
-#  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=gii-is-DP1_dp1-2020-g1-12
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=gii-is-DP1_dp1-2020-g1-12
