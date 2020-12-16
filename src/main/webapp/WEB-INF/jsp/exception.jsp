@@ -4,11 +4,10 @@
 
 <dpc:layout pageName="error">
 
-    <spring:url value="/resources/images/pets.png" var="petsImage"/>
-    <img src="${petsImage}"/>
+    <spring:url value="/resources/images/error.gif" var="petsImage"/>
+    	<img src="${petsImage}"/>
 
-    <h2>¡Vaya! Ha ocurrido un error...</h2>
+    	<h2>¡Vaya! Ha ocurrido un error...</h2>
 
-    <p>${exception.message}</p>
-
+    	<p>${exception.message}</p>
 </dpc:layout>
