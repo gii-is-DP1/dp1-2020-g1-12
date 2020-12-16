@@ -50,8 +50,7 @@ public class ComentarioService {
 		String autoridad = userService.getAuthority();
 
 		return !autoridad.equals("anonymous") && (autoridad.equals("cliente") || autoridad.equals("moderador") || 
-				(autoridad.equals("vendedor") && vendedorService.vendedorDeUnArticulo(articuloId).
-						equals((vendedorService.findSellerById(vendedorService.obtenerIdSesion())))));
+				(autoridad.equals("vendedor") && vendedorService.esVendedorDelArticulo(articuloId)));
 	}
 	
 	@Transactional(rollbackFor = ComentarioProhibidoException.class)

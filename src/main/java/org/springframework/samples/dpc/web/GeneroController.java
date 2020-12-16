@@ -56,11 +56,11 @@ public class GeneroController {
 	@GetMapping(value = "/{articuloId}/{generoId}/remove")
 	public String borrarGenero(@PathVariable("articuloId") int articuloId,
 			@PathVariable("generoId") int generoId ,Model model) {
-		String vista = "redirect:/vendedores/articulo/{articuloId}";
+		
 		if(generoService.findGeneroById(generoId) != null && vendedorService.esVendedorDelArticulo(articuloId)) {
 			generoService.eliminarGenero(articuloId, generoId);
 		}
-		return vista;
+		return "redirect:/vendedores/articulo/{articuloId}";
 	}
 	
 }
