@@ -97,6 +97,13 @@ class ArticuloControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    void testBusquedaIf() throws Exception {
+		mockMvc.perform(post("/busqueda").param("modelo","").with(csrf())).andExpect(status().is2xxSuccessful())
+			.andExpect(view().name("articulos/principal"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
     void testArtículosEnOferta() throws Exception {
 		mockMvc.perform(get("/ofertas")).andExpect(status().isOk()).andExpect(model().attributeExists("ofertas"))
 		.andExpect(view().name("/articulos/ofertas"));
