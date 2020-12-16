@@ -75,7 +75,6 @@ public class UserController {
 		} else {
 			Bloqueo b = new Bloqueo();
 			b.setBloqueado(false);
-			b.setDescripcion("");
 			bloqueoService.guardar(b);
 			vendedor.getUser().setEnabled(true);
 			vendedor.setBloqueo(b);

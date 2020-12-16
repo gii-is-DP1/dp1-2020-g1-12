@@ -40,7 +40,7 @@ public class BloqueoController {
 			this.bloqueoService.editar(bloqueo, bloqueoId, true);
 			vista = "redirect:/clientes";
 		} catch (BloquearSinDescripcionException e) {
-            result.rejectValue("descripcion", "errónea", "La descripción debe estar entre 20 y 250 caractéres");
+            result.rejectValue("descripcion", "errónea", "La descripción debe estar entre 10 y 200 caractéres");
 			vista = "moderadores/editarBloqueo";
 		}
 		return vista;
