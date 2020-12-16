@@ -45,7 +45,7 @@ public class VendedorService {
 	
 	@Transactional
 	public Boolean esVendedorDelArticulo(Integer articuloId) {
-		return vendedorRepository.vendedorDeArticulo(articuloId).equals((findSellerById(obtenerIdSesion())));
+		return vendedorRepository.vendedorDeArticulo(articuloId).equals(getVendedorDeSesion());
 	}
 	
 	@Transactional

@@ -151,7 +151,9 @@ public class VendedorController {
 	@GetMapping(value = "/eliminarSolicitud/{solicitudId}")
 	public String eliminarSolicitud(@PathVariable("solicitudId") int solicitudId) {
 		Optional<Solicitud> solicitud = solicitudService.detallesSolicitud(solicitudId);
-		if(solicitud.isPresent() && solicitud.get().getSituacion().equals(Situacion.Pendiente) && solicitud.get().getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
+		
+		if(solicitud.isPresent() && solicitud.get().getSituacion().equals(Situacion.Pendiente) && 
+				solicitud.get().getVendedor().equals(vendedorService.getVendedorDeSesion())) {
 			solicitudService.eliminarSolicitud(solicitud.get());
 		}
 		return "redirect:/vendedores/listadoSolicitudes";
