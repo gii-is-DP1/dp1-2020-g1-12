@@ -14,7 +14,7 @@ public class Bloqueo extends BaseEntity {
 	private boolean bloqueado;
 
 	@Column(name = "descripcion")
-	@Length(min = 10, max = 200)
+	@Length(min = 0, max = 200)
 	private String descripcion;
 
 	public boolean isBloqueado() {
