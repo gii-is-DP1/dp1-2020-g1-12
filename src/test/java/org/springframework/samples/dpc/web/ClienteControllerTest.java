@@ -23,7 +23,6 @@ import org.springframework.samples.dpc.service.AuthoritiesService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.UserService;
 import org.springframework.samples.dpc.service.VendedorService;
-import org.springframework.samples.dpc.web.ClienteController;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;

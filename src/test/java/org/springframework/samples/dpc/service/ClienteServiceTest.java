@@ -10,7 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.User;
-import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

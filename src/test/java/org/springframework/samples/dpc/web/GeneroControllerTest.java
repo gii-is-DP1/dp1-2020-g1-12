@@ -16,59 +16,66 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
-import org.springframework.samples.dpc.model.Oferta;
-import org.springframework.samples.dpc.service.OfertaService;
+import org.springframework.samples.dpc.model.Genero;
+import org.springframework.samples.dpc.service.ArticuloService;
+import org.springframework.samples.dpc.service.GeneroService;
+import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers=OfertaController.class,
+@WebMvcTest(controllers=GeneroController.class,
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 excludeAutoConfiguration= SecurityConfiguration.class)
 
-public class OfertaControllerTest {
+public class GeneroControllerTest {
 	
-	private static final int TEST_OFERTA_ID = 1;
+	private static final int TEST_GENERO_ID = 1;
 	private static final int TEST_ARTICULO_ID = 1;
+
+	@MockBean 
+	private ArticuloService articuloService;
 	
 	@MockBean 
-	private OfertaService ofertaService;
+	private VendedorService vendedorService;
+	
+	@MockBean 
+	private GeneroService generoService;
 	
 	@Autowired
 	private MockMvc mockMvc;
 	
-	private Oferta oferta;
+	private Genero genero;
 	
 	@BeforeEach
 	void setup() {
-		oferta = new Oferta();
-		oferta.setId(TEST_OFERTA_ID);
-		oferta.setDisponibilidad(true);
-		oferta.setPorcentaje(10);
-		given(this.ofertaService.findOfertById(TEST_OFERTA_ID)).willReturn(oferta);
+		
+		genero = new Genero();
+		genero.setId(TEST_GENERO_ID);
+		genero.setNombre("Smartphone");
+		given(this.generoService.findGeneroById(TEST_GENERO_ID)).willReturn(genero);
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testEdit() throws Exception {
-		mockMvc.perform(get("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID)).
-			andExpect(model().attributeExists("oferta")).andExpect(view().name("vendedores/editarOferta"));
+    void testIniciarFormulario() throws Exception {
+		mockMvc.perform(get("/generos/"+TEST_ARTICULO_ID )).andExpect(status().isOk())
+		.andExpect(model().attributeExists("genero","articuloId","generosDisponibles")).andExpect(status().is2xxSuccessful())
+		.andExpect(view().name("vendedores/nuevoGenero"));
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
-    void testProcesoOfertar() throws Exception{
-		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).
-				param("disponibilidad", "true").param("porcentaje", "10").with(csrf())).andExpect(status().
-						is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
+    void testGuardarGenero() throws Exception {
+	mockMvc.perform(post("/generos/"+TEST_ARTICULO_ID +"/save").param("nombre", "Smartphone").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
 	}
-	
 	
 	@WithMockUser(value = "spring")
 	@Test
-	void testProcesoDesofertar() throws Exception{
-		mockMvc.perform(get("/vendedores/ofertas/desofertar/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID)).
+	void testBorrarGenero() throws Exception{
+		mockMvc.perform(get("/generos/"+TEST_ARTICULO_ID +"/"+TEST_GENERO_ID+"/remove")).
 			andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
 	}
-	
+
 }
