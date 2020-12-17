@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,20 +16,24 @@ import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.model.Oferta;
 import org.springframework.samples.dpc.model.Tipo;
+import org.springframework.samples.dpc.repository.ArticuloRepository;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class ArticuloServiceTest {
 
 	private final Integer ARTICULO_ID = 1;
+	private final Integer VENDEDOR_ID = 1;
 	
 	private ArticuloService articuloService;
+	private ArticuloRepository articuloRepository;
 	private GeneroService generoService;
 	
 	@Autowired
-	public ArticuloServiceTest(ArticuloService articuloService, GeneroService generoService) {
+	public ArticuloServiceTest(ArticuloService articuloService, GeneroService generoService,ArticuloRepository articuloRepository) {
 		this.articuloService = articuloService;
 		this.generoService = generoService;
+		this.articuloRepository = articuloRepository;
 	}
 	
 	@Test
@@ -52,7 +57,7 @@ public class ArticuloServiceTest {
 		
 		Integer id = a.getId();
 		Articulo articulo = this.articuloService.findArticuloById(id);
-		assertEquals(a, articulo);
+		assertThat(a).isEqualTo(articulo);
 	}
 
 	@Test
@@ -223,6 +228,48 @@ public class ArticuloServiceTest {
 		
 		assertThat(mensaje).contains("con los géneros seleccionados").contains(cadena);
 		
+	}
+	
+	@Test
+	void testArticuloDisponibleRepository() {
+		
+		assertThat(articuloRepository.articulosDisponibles()).hasSize(10);
+	}
+	
+	@Test
+	void testArticuloEnOfertaRepository() {
+		
+		assertThat(articuloRepository.articulosOfert()).hasSize(2);
+	}
+	
+	@Test
+	void testArticuloEnVentaIdRepository() {
+		
+		assertThat(articuloRepository.articulosEnVentaPorId(VENDEDOR_ID)).hasSize(5);
+	}
+	
+	@Test
+	void testArticuloPorNombreRepository() {
+		
+		assertThat(articuloRepository.articulosPorNombre("msi")).hasSize(1);
+
+	}
+	
+	
+	@Test
+	void testArticuloPorGeneroRepository() {
+		List<Integer> generoId = new ArrayList<>();
+		generoId.add(1);generoId.add(2);generoId.add(3);
+		assertThat(articuloRepository.articulosPorGenero(new ArrayList<>(15))).isEmpty();
+		assertThat(articuloRepository.articulosPorGenero(generoId)).hasSize(4);
+	}
+	
+	@Test
+	void testArticuloPorGeneroNombreRepository() {
+		List<Integer> generoId = new ArrayList<>();
+		generoId.add(1);generoId.add(2);generoId.add(3);
+		assertThat(articuloRepository.articulosPorGeneroNombre(new ArrayList<>(), "kjhlh")).isEmpty();
+		assertThat(articuloRepository.articulosPorGeneroNombre(generoId, "msi")).hasSize(1);
 	}
 	
 }
