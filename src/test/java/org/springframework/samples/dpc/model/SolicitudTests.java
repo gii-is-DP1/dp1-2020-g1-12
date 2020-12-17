@@ -48,9 +48,176 @@ public class SolicitudTests {
 
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
-		assertThat(violation.getPropertyPath().toString()).isEqualTo("descripcion");
+		assertThat(violation.getPropertyPath().toString()).hasToString("descripcion");
 		assertThat(violation.getMessage()).contains("La descripción debe contener entre 3 y 250 caracteres.");
 	}
+	
+	@Test
+	void modeloValidacion() {
 
+		this.solicitud.setModelo("");
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("modelo");
+		assertThat(violation.getMessage()).contains("El modelo debe contener entre 3 y 200 caracteres.");
+	}
+	
+	@Test
+	void marcaValidacion() {
+
+		this.solicitud.setMarca("");
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("marca");
+		assertThat(violation.getMessage()).contains("La marca debe contener entre 3 y 50 caracteres.");
+	}
+
+	@Test
+	void UrlVacíaValidacion() {
+
+		this.solicitud.setUrlImagen("");
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("urlImagen");
+		assertThat(violation.getMessage()).contains("La Url no puede estar vacía.");
+	}
+	
+	@Test
+	void UrlNoVálidaValidacion() {
+
+		this.solicitud.setUrlImagen("esto no es una url");
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("urlImagen");
+		assertThat(violation.getMessage()).contains("tiene que ser una URL válida");
+	}
+	
+	@Test
+	void precioNullValidacion() {
+
+		this.solicitud.setPrecio(null);
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("precio");
+		assertThat(violation.getMessage()).contains("El precio no puede estar vacío.");
+	}
+	
+	@Test
+	void precioFueraDeRangoValidacion() {
+
+		this.solicitud.setPrecio(10001.);
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("precio");
+		assertThat(violation.getMessage()).contains("tiene que ser menor o igual que 10000");
+	}
+
+	@Test
+	void stockNullValidacion() {
+
+		this.solicitud.setStock(null);
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("stock");
+		assertThat(violation.getMessage()).contains("El stock no puede estar vacío.");
+	}
+	
+	@Test
+	void stockFueraDeRangoValidacion() {
+
+		this.solicitud.setStock(0);
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("stock");
+		assertThat(violation.getMessage()).contains("tiene que ser mayor o igual que 1");
+	}
+	
+	@Test
+	void TipoValidacion() {
+
+		this.solicitud.setTipo(null);
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("tipo");
+		assertThat(violation.getMessage()).contains("El tipo no puede estar vacío.");
+	}
+	
+	@Test
+	void tiempoEntregaValidacion() {
+
+		this.solicitud.setTiempoEntrega(40);
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("tiempoEntrega");
+		assertThat(violation.getMessage()).contains("tiene que ser menor o igual que 30");
+	}
+	
+	@Test
+	void gastoEnvioValidacion() {
+
+		this.solicitud.setGastoEnvio(-1.);
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("gastoEnvio");
+		assertThat(violation.getMessage()).contains("tiene que ser mayor o igual que 0");
+	}
+	
+	@Test
+	void respuestaValidacion() {
+
+		this.solicitud.setRespuesta("Mensaje demasiado extenso.Mensaje demasiado extenso.Mensaje demasiado extenso.Mensaje demasiado extenso.");
+
+		Validator validator = createValidator();
+		Set<ConstraintViolation<Solicitud>> constraintViolations = validator.validate(solicitud);
+
+		assertThat(constraintViolations.size()).isEqualTo(1);
+		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
+		assertThat(violation.getPropertyPath().toString()).hasToString("respuesta");
+		assertThat(violation.getMessage()).contains("la longitud tiene que estar entre 0 y 100");
+	}
 
 }

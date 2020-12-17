@@ -40,7 +40,8 @@ public class GeneroService {
 	
 	@Transactional
 	public void añadirGenero(int articuloId, Genero genero) {
-		articuloService.findArticuloById(articuloId).getGeneros().add(genero);
+		if(genero.getId() != null)
+			articuloService.findArticuloById(articuloId).getGeneros().add(genero);
 	}
 	
 	@Transactional

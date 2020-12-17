@@ -41,34 +41,35 @@ public class Solicitud extends BaseEntity {
 
 	@Column(name = "urlImagen")
 	@URL
-	@NotEmpty(message="La Url no puede estar vacía")
+	@NotEmpty(message="La Url no puede estar vacía.")
 	private String urlImagen;
 
 	@Column(name = "precio")
 	@Min(1)
 	@Max(10000)
-	@NotNull(message="El precio no puede estar vacío")
+	@NotNull(message="El precio no puede estar vacío.")
 	private Double precio;
 
 	@Column(name = "stock")
 	@Min(1)
 	@Max(500)
-	@NotNull(message="El stock no puede estar vacío")
+	@NotNull(message="El stock no puede estar vacío.")
 	private Integer stock;
 
 	@Column(name = "tipo")
 	@Enumerated(EnumType.STRING)
+	@NotNull(message="El tipo no puede estar vacío.")
 	private Tipo tipo;
 
 	@Column(name = "tiempoEntrega")
 	@Min(1)
 	@Max(30)
-	@NotNull(message="El tiempo de entrega no puede estar vacío")
+	@NotNull(message="El tiempo de entrega no puede estar vacío.")
 	private Integer tiempoEntrega;
 
 	@Column(name = "gastoEnvio")
 	@Min(0)
-	@NotNull(message="El gasto de envío no puede estar vacío")
+	@NotNull(message="El gasto de envío no puede estar vacío.")
 	private Double gastoEnvio;
 
 	@Column(name = "situacion")
