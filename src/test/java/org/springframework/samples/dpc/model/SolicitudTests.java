@@ -105,7 +105,7 @@ public class SolicitudTests {
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).hasToString("urlImagen");
-		assertThat(violation.getMessage()).contains("tiene que ser una URL válida");
+		assertThat(violation.getMessage()).contains("URL");
 	}
 	
 	@Test
@@ -133,7 +133,7 @@ public class SolicitudTests {
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).hasToString("precio");
-		assertThat(violation.getMessage()).contains("tiene que ser menor o igual que 10000");
+		assertThat(violation.getMessage()).contains("10000");
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class SolicitudTests {
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).hasToString("stock");
-		assertThat(violation.getMessage()).contains("tiene que ser mayor o igual que 1");
+		assertThat(violation.getMessage()).contains("1");
 	}
 	
 	@Test
@@ -189,7 +189,7 @@ public class SolicitudTests {
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).hasToString("tiempoEntrega");
-		assertThat(violation.getMessage()).contains("tiene que ser menor o igual que 30");
+		assertThat(violation.getMessage()).contains("30");
 	}
 	
 	@Test
@@ -203,7 +203,7 @@ public class SolicitudTests {
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).hasToString("gastoEnvio");
-		assertThat(violation.getMessage()).contains("tiene que ser mayor o igual que 0");
+		assertThat(violation.getMessage()).contains("0");
 	}
 	
 	@Test
@@ -217,7 +217,7 @@ public class SolicitudTests {
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).hasToString("respuesta");
-		assertThat(violation.getMessage()).contains("la longitud tiene que estar entre 0 y 100");
+		assertThat(violation.getMessage()).contains("100");
 	}
 
 }
