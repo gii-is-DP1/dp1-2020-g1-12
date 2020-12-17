@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.URL;
 
@@ -38,6 +39,8 @@ public class Articulo extends Producto{
 	@Column(name = "stock")
 	@Min(0)
 	@Max(500)
+	@NotNull(message="El stock no puede estar vacío.")
+
 	private Integer stock;
 	
 	@Column(name = "tipo")

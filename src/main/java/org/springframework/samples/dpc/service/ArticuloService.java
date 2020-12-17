@@ -79,8 +79,8 @@ public class ArticuloService {
 		articulos.sort(Comparator.comparing(Articulo::getId).reversed());
 		for(Articulo art:articulos) {
 			if(relacionados.size() < 6 && !(art.getId().equals(articulo.getId())) 
-					&& articulo.getGeneros().containsAll(articulo.getGeneros()))
-				relacionados.add(articulo);
+					&& articulo.getGeneros().containsAll(art.getGeneros()))
+				relacionados.add(art);
 		}
 		return relacionados;
 	}
