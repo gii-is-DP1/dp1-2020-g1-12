@@ -125,16 +125,6 @@ public class ArticuloServiceTest {
 	}
 	
 	@Test
-	void testAcotarRelacionados() {
-		Articulo articulo = articuloService.findArticuloById(ARTICULO_ID);
-		articulo.setGeneros(new HashSet<>());
-		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo);
-		assertThat(relacionados.size()).isEqualTo(6);
-		
-		assertThat(relacionados.get(0).getGeneros()).containsAnyElementsOf(articulo.getGeneros());
-	}
-	
-	@Test
 	void testBusquedaCadena() {
 		Articulo articulo = new Articulo();
 		String cadena = "MSI";

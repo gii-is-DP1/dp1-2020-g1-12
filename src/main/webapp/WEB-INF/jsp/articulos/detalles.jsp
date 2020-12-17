@@ -90,7 +90,8 @@
             		Sin valoraciones
             	</c:if>
             	<c:if test="${valoracion != 0}">
-            		<c:out value="${valoracion} ★"></c:out>
+            	<fmt:formatNumber  type="number" maxFractionDigits="1" 
+					value="${valoracion}"/> ★
             	</c:if>
             </td>
         </tr>
