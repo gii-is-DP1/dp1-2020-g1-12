@@ -101,7 +101,6 @@ public class VendedorController {
 		return vista;
 	}
 
-<<<<<<< HEAD:src/main/java/org/springframework/samples/dpc/web/VendedorController.java
 	@GetMapping(value = "/listadoSolicitudes")
 	public String mostrarListadoSolicitudes(ModelMap modelMap) {
 		String vista = "vendedores/listadoSolicitudes";
@@ -109,53 +108,51 @@ public class VendedorController {
 		modelMap.addAttribute("solicitudes", solicitudes);
 		return vista;
 	}
-	
+
 	@GetMapping(value = "/articulo/{articuloId}")
 	public String mostrarArticuloDetallado(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
 		String vista;
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
-		if(vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
+		if (vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
 			vista = "vendedores/articulo";
 			Articulo articulo = articuloService.findArticuloById(articuloId);
 			modelMap.addAttribute("articulo", articulo);
-		}
-		else {
+		} else {
 			vista = "redirect:/vendedores/articulosEnVenta";
 		}
 		return vista;
 	}
-	
+
 	@GetMapping(value = "/solicitud/{solicitudId}")
 	public String mostrarSolicitudDetallada(@PathVariable("solicitudId") int solicitudId, ModelMap modelMap) {
 		String vista;
 		Optional<Solicitud> solicitud = solicitudService.detallesSolicitud(solicitudId);
-		if(solicitud.isPresent() && solicitud.get().getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
+		if (solicitud.isPresent() && solicitud.get().getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
 			vista = "vendedores/solicitud";
 			modelMap.addAttribute("solicitud", solicitud.get());
-		}
-		else {
+		} else {
 			vista = "redirect:/vendedores/listadoSolicitudes";
 		}
 		return vista;
 	}
-	
+
 	@GetMapping(value = "/eliminarArticulo/{articuloId}")
 	public String eliminarArticulo(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
-		if(vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
+		if (vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
 			articuloService.eliminarArticulo(articuloId);
 			Articulo articulo = articuloService.findArticuloById(articuloId);
 			modelMap.addAttribute("articulo", articulo);
 		}
 		return "redirect:/vendedores/articulosEnVenta";
 	}
-	
+
 	@GetMapping(value = "/eliminarSolicitud/{solicitudId}")
 	public String eliminarSolicitud(@PathVariable("solicitudId") int solicitudId) {
 		Optional<Solicitud> solicitud = solicitudService.detallesSolicitud(solicitudId);
-		
-		if(solicitud.isPresent() && solicitud.get().getSituacion().equals(Situacion.Pendiente) && 
-				solicitud.get().getVendedor().equals(vendedorService.getVendedorDeSesion())) {
+
+		if (solicitud.isPresent() && solicitud.get().getSituacion().equals(Situacion.Pendiente)
+				&& solicitud.get().getVendedor().equals(vendedorService.getVendedorDeSesion())) {
 			solicitudService.eliminarSolicitud(solicitud.get());
 		}
 		return "redirect:/vendedores/listadoSolicitudes";
