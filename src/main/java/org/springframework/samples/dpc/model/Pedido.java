@@ -1,0 +1,49 @@
+package org.springframework.samples.dpc.model;
+
+import java.time.LocalDate;
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "pedidos")
+public class Pedido extends BaseEntity{
+
+	@Column(name = "precioTotal")
+	private Double precioTotal;
+	
+	@Column(name = "fecha")
+	private LocalDate fecha;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido", fetch = FetchType.EAGER)
+	private Collection<LineaPedido> lineas;
+
+	public Double getPrecioTotal() {
+		return precioTotal;
+	}
+
+	public void setPrecioTotal(Double precioTotal) {
+		this.precioTotal = precioTotal;
+	}
+
+	public LocalDate getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
+
+	public Collection<LineaPedido> getLineas() {
+		return lineas;
+	}
+
+	public void setLineas(Collection<LineaPedido> lineas) {
+		this.lineas = lineas;
+	}
+}

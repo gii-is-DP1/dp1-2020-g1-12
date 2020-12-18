@@ -14,12 +14,12 @@
         <div class="form-group has-feedback">
             <petclinic:inputField label="Nombre" name="nombre"/>
             <petclinic:inputField label="Apellido" name="apellido"/>
-            <petclinic:inputField label="Direcciï¿½n" name="direccion"/>
+            <petclinic:inputField label="Dirección" name="direccion"/>
             <petclinic:inputField label="Dni" name="dni"/>
-            <petclinic:inputField label="Telï¿½fono" name="telefono"/>
+            <petclinic:inputField label="Teléfono" name="telefono"/>
             <petclinic:inputField label="Email" name="email"/>
             <petclinic:inputField label="Usuario" name="user.username"/>
-            <petclinic:inputField label="ContraseÃ±a" name="user.password"/>
+            <petclinic:inputField label="Contraseña" name="user.password"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

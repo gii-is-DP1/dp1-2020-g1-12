@@ -1,8 +1,18 @@
 dist: trusty
 language: java
-jdk: oraclejdk8
+jdk: oraclejdk11
+
 services:
   - mysql
 before_install:
   - mysql -e 'CREATE DATABASE petclinic;'
-script: mvn test -Dspring-boot.run.profiles=mysql-travis
+
+addons:
+  sonarcloud:
+    organization: "gii-is-dp1" # the key of the org you chose at step #3
+    token:
+      secure: "5MTqkeqcYGC5OorD2U1DgpZL9C6Sk5dAcqGpY9iylsxboiU/BbLkjFLrKsB2GyfbgsRP/rqfyGzOGpF9OzMYaZQSez7nHNG0sQm2DE7a7hqn2opK7ZO1YlApAmQ3NxSab11S7/iJe2riJM07gLWeGjqa/Jjih9YqmqxPJG5GiQ2Iu3Q6zkIzh2zbzeK/NJVMBhCD0FW/zr7VdFiyoUlYWpB813zSBrhofOdOcYikyFnxe9UFblq4QwrFJh+8A017x++RaoBQli8jtppEwoqpoNfhacAW3By2kZ178Q3Lgip6Z5DEqZYTjk/fvqalB8jpk9Si2a4VyOTz8rpwvRg5BKZAde/YIxYuESnvRulbfNlkpZsXnsvCBMp8VNJkg5UkkVE4zK1+4I0x2fCgDSXE/prrBYISOTZ8JnE1NldxoT7dTrGwtp5mGO/wc+Vnh8ayd6czBVHvNf4AwNQa8hNbM2lpUruY7oGCTvbdY+JAoZ9dttF73KFxtMqF+oWqRfbzoUwbp5tT2OD9w0/60wEc8siNnM3HjuPXxb/MqL9R7/Q7NRk7fjaOPPZKQJ80ZC+gZ0oSmtFbKbB5OqbEr3ATCBknm6SoMoVtCO9jrJ6FT6jwExKXGs4LAIxdLHKYzvD3XkPINnWAOySf4d/2t98NxHD38PQrGPP047/LhMkZvfE="
+
+script:
+  - mvn test -Dspring-boot.run.profiles=mysql-travis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=gii-is-DP1_dp1-2020-g1-12
