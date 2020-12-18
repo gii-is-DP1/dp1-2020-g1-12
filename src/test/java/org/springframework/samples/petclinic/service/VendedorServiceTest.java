@@ -3,18 +3,11 @@ package org.springframework.samples.petclinic.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Bloqueo;
-import org.springframework.samples.petclinic.model.Situacion;
-import org.springframework.samples.petclinic.model.Solicitud;
-import org.springframework.samples.petclinic.model.Tipo;
 import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.model.Vendedor;
 import org.springframework.stereotype.Service;
@@ -77,8 +70,4 @@ public class VendedorServiceTest {
 		assertThat(vend.getApellido()).isEqualTo(newLastName);
 	}
 
-//	@Test
-//	public void shouldFindCliente() {
-//
-//	}
 }
