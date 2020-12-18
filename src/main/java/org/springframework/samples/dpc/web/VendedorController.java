@@ -45,7 +45,8 @@ public class VendedorController {
 	@GetMapping(value = "/perfil")
 	public String mostrarPerfil(ModelMap modelMap) {
 		String perfil = "vendedores/perfil";
-		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorService.obtenerIdSesion()); // Quitar optional
+		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorService.obtenerIdSesion()); // Quitar
+																										// optional
 		modelMap.addAttribute("vendedor", optperfil.get());
 		return perfil;
 	}
@@ -87,7 +88,7 @@ public class VendedorController {
 	@GetMapping(value = "/perfilCliente/{clienteId}")
 	public String mostrarPerfilCliente(@PathVariable("clienteId") int clienteId, ModelMap modelMap) {
 		Cliente cliente = this.clienteService.findClientById(clienteId);
-		modelMap.addAttribute("cliente",cliente);
+		modelMap.addAttribute("cliente", cliente);
 		modelMap.remove(cliente.getDni());
 		return "vendedores/perfilCliente";
 	}
@@ -100,6 +101,7 @@ public class VendedorController {
 		return vista;
 	}
 
+<<<<<<< HEAD:src/main/java/org/springframework/samples/dpc/web/VendedorController.java
 	@GetMapping(value = "/listadoSolicitudes")
 	public String mostrarListadoSolicitudes(ModelMap modelMap) {
 		String vista = "vendedores/listadoSolicitudes";
@@ -158,5 +160,14 @@ public class VendedorController {
 		}
 		return "redirect:/vendedores/listadoSolicitudes";
 	}
-	
+
+	@GetMapping(value = "/articulosVendidos")
+	public String mostrarArticulosVendidos(ModelMap modelMap) {
+		String vista = "vendedores/listadoArticulos";
+		Iterable<Articulo> optarticulos = articuloService
+				.articulosVendidosByProvider(vendedorService.obtenerIdSesion());
+		modelMap.addAttribute("articulos", optarticulos);
+		return vista;
+	}
+
 }
