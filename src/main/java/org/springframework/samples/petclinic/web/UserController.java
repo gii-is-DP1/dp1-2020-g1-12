@@ -31,6 +31,7 @@ import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.samples.petclinic.service.VendedorService;
+import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -52,13 +53,15 @@ public class UserController {
 	private final VendedorService vendedorService;
 	private final ClienteService clienteService;
 	private final BloqueoService bloqueoService;
+	private final AuthoritiesService authoritiesService;
 
 	@Autowired
-	public UserController(VendedorService vendedorService, ClienteService clienteService,
-			BloqueoService bloqueoService) {
+	public UserController(VendedorService vendedorService, ClienteService clienteService, BloqueoService bloqueoService,
+			AuthoritiesService authoritiesService) {
 		this.vendedorService = vendedorService;
 		this.clienteService = clienteService;
 		this.bloqueoService = bloqueoService;
+		this.authoritiesService = authoritiesService;
 	}
 
 	@InitBinder
@@ -74,10 +77,6 @@ public class UserController {
 	@GetMapping(value = "/registro/vendedor")
 	public String initCreationFormVendedor(Map<String, Object> model) {
 		Vendedor vendedor = new Vendedor();
-//		Bloqueo b = new Bloqueo();
-//		b.setBloqueado(false);
-//		bloqueoService.guardar(b);
-//		vendedor.getUser().setEnabled(true);
 		model.put("vendedor", vendedor);
 		return VIEWS_CREATE_FORM_VENDEDOR;
 	}
@@ -91,8 +90,10 @@ public class UserController {
 			Bloqueo b = new Bloqueo();
 			b.setBloqueado(false);
 			bloqueoService.guardar(b);
+			vendedor.setBloqueo(b);
 			vendedor.getUser().setEnabled(true);
 			this.vendedorService.guardar(vendedor);
+			this.authoritiesService.saveAuthorities(vendedor.getUser().getUsername(), "vendedor");
 			return "redirect:/registro";
 		}
 	}
@@ -100,11 +101,6 @@ public class UserController {
 	@GetMapping(value = "/registro/cliente")
 	public String initCreationFormCliente(Map<String, Object> model) {
 		Cliente cliente = new Cliente();
-//		Bloqueo b = new Bloqueo();
-//		b.setBloqueado(false);
-//		bloqueoService.guardar(b);
-//		cliente.setBloqueo(b);
-//		cliente.getUser().setEnabled(true);
 		model.put("cliente", cliente);
 		return VIEWS_CREATE_FORM_CLIENTE;
 	}
@@ -121,6 +117,7 @@ public class UserController {
 			cliente.setBloqueo(b);
 			cliente.getUser().setEnabled(true);
 			this.clienteService.guardar(cliente);
+			this.authoritiesService.saveAuthorities(cliente.getUser().getUsername(), "cliente");
 			return "redirect:/registro";
 		}
 	}
