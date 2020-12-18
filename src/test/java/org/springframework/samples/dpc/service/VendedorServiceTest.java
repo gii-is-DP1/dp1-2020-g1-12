@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.petclinic.model.Bloqueo;
-import org.springframework.samples.petclinic.model.User;
-import org.springframework.samples.petclinic.model.Vendedor;
+import org.springframework.samples.dpc.model.Bloqueo;
+import org.springframework.samples.dpc.model.User;
+import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class VendedorServiceTest {
 
 	public final Integer ARTICULO_ID = 1;
-	
+
 	@Autowired
 	private VendedorService vendedorService;
 
@@ -72,7 +72,7 @@ public class VendedorServiceTest {
 		vend = this.vendedorService.findSellerById(1);
 		assertThat(vend.getApellido()).isEqualTo(newLastName);
 	}
-	
+
 	@Test
 	void testVendedorArticulo() {
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(ARTICULO_ID);

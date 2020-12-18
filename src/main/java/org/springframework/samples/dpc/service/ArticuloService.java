@@ -29,13 +29,13 @@ public class ArticuloService {
 	public void guardarArticulo(Articulo articulo) {
 		articuloRepository.save(articulo);
 	}
-	
+
 	@Transactional
 	public void eliminarArticulo(Integer articuloId) {
 		Optional<Articulo> articulo = articuloRepository.findById(articuloId);
 		articulo.get().setStock(0);
 	}
-	
+
 	@Transactional
 	public void eliminarComentario(Articulo articulo, Comentario comentario) {
 		articulo.getComentarios().remove(comentario);
@@ -50,66 +50,72 @@ public class ArticuloService {
 	public Articulo findArticuloById(int id) throws DataAccessException {
 		return articuloRepository.findById(id).get();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosDisponibles() {
 		return articuloRepository.articulosDisponibles();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosOfertados() {
 		return articuloRepository.articulosOfert();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<Articulo> ofertasRandomAcotada() {
-		List<Articulo>  ofertas =articulosOfertados(); 
+		List<Articulo> ofertas = articulosOfertados();
 		Collections.shuffle(ofertas);
-		if(ofertas.size() > 5) {
+		if (ofertas.size() > 5) {
 			ofertas = ofertas.subList(0, 5);
 		}
-		
+
 		return ofertas;
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosRelacionados(Articulo articulo) {
 		List<Articulo> relacionados = new ArrayList<>();
 		List<Articulo> articulos = articuloRepository.articulosDisponibles();
 		articulos.sort(Comparator.comparing(Articulo::getId).reversed());
-		for(Articulo art:articulos) {
-			if(relacionados.size() < 6 && !(art.getId().equals(articulo.getId())) 
+		for (Articulo art : articulos) {
+			if (relacionados.size() < 6 && !(art.getId().equals(articulo.getId()))
 					&& articulo.getGeneros().containsAll(art.getGeneros()))
 				relacionados.add(art);
 		}
 		return relacionados;
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<Articulo> busqueda(Articulo articulo) {
 		String busqueda = articulo.getModelo();
-		if(articulo.getGeneros()==null) {
+		if (articulo.getGeneros() == null) {
 			return articuloRepository.articulosPorNombre(busqueda);
-		}else if(busqueda.isEmpty()) {
-			return articuloRepository.articulosPorGenero(articulo.getGeneros().stream().map(x->x.getId()).collect(Collectors.toList()));	
-		}else {
-			return articuloRepository.articulosPorGeneroNombre(articulo.getGeneros().stream().map(x->x.getId()).collect(Collectors.toList()), busqueda);
+		} else if (busqueda.isEmpty()) {
+			return articuloRepository.articulosPorGenero(
+					articulo.getGeneros().stream().map(x -> x.getId()).collect(Collectors.toList()));
+		} else {
+			return articuloRepository.articulosPorGeneroNombre(
+					articulo.getGeneros().stream().map(x -> x.getId()).collect(Collectors.toList()), busqueda);
 		}
 
 	}
-	
+
 	@Transactional(readOnly = true)
 	public String mensajeDeBusqueda(Articulo articulo) {
 		String mensaje = "Resultados de la búsqueda ";
-		if(articulo.getGeneros()==null) {
+		if (articulo.getGeneros() == null) {
 			mensaje += "'" + articulo.getModelo() + "':";
-		}else if(articulo.getModelo().isEmpty()) {
+		} else if (articulo.getModelo().isEmpty()) {
 			mensaje += "con los géneros seleccionados:";
 		} else {
 			mensaje += "'" + articulo.getModelo() + "'" + " con los géneros seleccionados:";
 		}
 		return mensaje;
 	}
-	
-	
+
+	@Transactional(readOnly = true)
+	public List<Articulo> articulosVendidosByProvider(Integer id) {
+		return null;
+	}
+
 }
