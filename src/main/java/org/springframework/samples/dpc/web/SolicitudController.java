@@ -1,7 +1,5 @@
 package org.springframework.samples.dpc.web;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +43,10 @@ public class SolicitudController {
 	
 	@GetMapping(value="/{solicitudId}")
 	public String mostrarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
-		String solicitud="solicitudes/detalles";
-		Optional<Solicitud> optsolicitud = solicitudService.detallesSolicitud(solicitudId);
-		modelMap.addAttribute("solicitud", optsolicitud.get());
-		return solicitud;
+		String vista="solicitudes/detalles";
+		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
+		modelMap.addAttribute("solicitud", solicitud);
+		return vista;
 	}
 	
 	@GetMapping(value="/{solicitudId}/aceptar")
@@ -91,7 +89,6 @@ public class SolicitudController {
 			try {
 			solicitudService.guardar(solicitud, vendedorService.findSellerById(vendedorService.obtenerIdSesion()));
 			modelMap.addAttribute("mensaje", "Se ha guardado correctamente.");
-			// vista = ...
 			} catch(PrecioMenorAlEnvioException ex) {
 				result.rejectValue("gastoEnvio", "error", 
 						"Los gastos de envío deben ser inferiores al precio del artículo");

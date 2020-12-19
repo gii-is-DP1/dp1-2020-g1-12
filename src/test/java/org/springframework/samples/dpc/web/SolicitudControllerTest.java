@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.web;
 
 import static org.mockito.BDDMockito.given;
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,7 +26,7 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers=SolicitudController.class,
+@WebMvcTest(value=SolicitudController.class,
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 excludeAutoConfiguration= SecurityConfiguration.class)
 
@@ -48,6 +47,7 @@ public class SolicitudControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
+	
 	private Solicitud solicitud;
 	
 	@BeforeEach
@@ -66,7 +66,7 @@ public class SolicitudControllerTest {
 		solicitud.setTiempoEntrega(8);
 		solicitud.setTipo(Tipo.Nuevo);
 		solicitud.setUrlImagen("vacia");
-		given(this.solicitudService.findById(TEST_SOLICITUD_ID)).willReturn(solicitud);
+		given(this.solicitudService.detallesSolicitud(TEST_SOLICITUD_ID)).willReturn(solicitud);
 	}
 	
 	@WithMockUser(value = "spring")
@@ -97,12 +97,12 @@ public class SolicitudControllerTest {
 		.andExpect(view().name("solicitudes/listadoSolicitudes"));
 	}
 
-//	@WithMockUser(value = "spring")
-//    @Test
-//    void testProcesoSolicitud() throws Exception {
-//		mockMvc.perform(get("/solicitudes/"+TEST_SOLICITUD_ID)).andExpect(status().isOk())
-//		.andExpect(view().name("solicitudes/detalles"));
-//	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoSolicitud() throws Exception {
+		mockMvc.perform(get("/solicitudes/"+TEST_SOLICITUD_ID)).andExpect(status().isOk())
+		.andExpect(view().name("solicitudes/detalles"));
+	}
 	
 	@WithMockUser(value = "spring")
     @Test
@@ -114,7 +114,7 @@ public class SolicitudControllerTest {
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoDenegarSolicitud() throws Exception {
-		mockMvc.perform(post("/solicitudes/"+TEST_SOLICITUD_ID+"/denegar").param("respuesta", "En esta página no vendemos armas.").with(csrf()))
+		mockMvc.perform(post("/solicitudes/{solicitudId}/denegar",TEST_SOLICITUD_ID).with(csrf()).param("respuesta", "No se permite la venta de este producto."))
 		.andExpect(status().isOk()).andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/listadoSolicitudes"));
 	}
 	
@@ -124,7 +124,5 @@ public class SolicitudControllerTest {
 		mockMvc.perform(get("/solicitudes/"+TEST_SOLICITUD_ID+"/solicitante/"+TEST_VENDEDOR_ID))
 		.andExpect(status().isOk()).andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/solicitante"));
 	}
-
-	
 
 }
