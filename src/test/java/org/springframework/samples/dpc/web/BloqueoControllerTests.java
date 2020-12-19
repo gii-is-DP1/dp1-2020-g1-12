@@ -45,7 +45,7 @@ public class BloqueoControllerTests {
 		bloqueo = new Bloqueo();
 		bloqueo.setId(TEST_BLOQUEO_ID);
 		bloqueo.setBloqueado(true);
-		bloqueo.setDescripcion("Bloqueado por lenguaje inapropiado.");
+		bloqueo.setDescripcion("Bloqueo por lenguaje inapropiado.");
 		given(this.bloqueoService.findBlockById(TEST_BLOQUEO_ID)).willReturn(bloqueo);
 	}
 	
@@ -62,6 +62,14 @@ public class BloqueoControllerTests {
 		mockMvc.perform(post("/bloqueos/"+TEST_BLOQUEO_ID).param("bloqueado", "true").param("descripcion", "Está bloqueado por incumplir normas.").with(csrf()))
 		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/clientes"));
 	}
+	
+//	@WithMockUser(value = "spring")
+//    @Test
+//    void testBloquearConExcepcion() throws Exception{
+//		mockMvc.perform(post("/bloqueos/"+TEST_BLOQUEO_ID).param("bloqueado", "true").param("descripcion", "Es").with(csrf()))
+//		.andExpect(status().isOk()).andExpect(view().name("moderadores/editarBloqueo"));
+//	}
+	
 	
 	@WithMockUser(value = "spring")
     @Test

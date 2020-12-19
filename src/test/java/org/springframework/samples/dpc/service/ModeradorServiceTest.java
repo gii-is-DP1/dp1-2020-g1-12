@@ -25,11 +25,8 @@ public class ModeradorServiceTest {
 	
 	@Test
 	void testDatosPerfil() {
-		Optional<Moderador> moderador = this.moderadorService.datosPerfil(1);
-		assertEquals(moderador.get().getNombre() , "Pedro" );
-		
-		assertThrows(InvalidDataAccessApiUsageException.class, () -> this.moderadorService.datosPerfil(null)); 
-		
+		Moderador moderador = this.moderadorService.findModeradorById(1);
+		assertEquals(moderador.getNombre() , "Pedro" );
 	}
 	
 	@Test

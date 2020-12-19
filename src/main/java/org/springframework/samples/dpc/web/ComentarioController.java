@@ -54,7 +54,7 @@ public class ComentarioController {
 	}
 	
 	@GetMapping(value = "/eliminar/{comentarioId}/articulo/{articuloId}")
-	public String borrarGenero(@PathVariable("comentarioId") int comentarioId, 
+	public String borrarComentario(@PathVariable("comentarioId") int comentarioId, 
 			@PathVariable("articuloId") int articuloId, Model model) {
 		Comentario comentario =  comentarioService.findCommentById(comentarioId);
 		if(comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
