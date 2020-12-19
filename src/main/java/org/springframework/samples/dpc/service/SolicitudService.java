@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Articulo;
@@ -44,9 +43,8 @@ public class SolicitudService {
 	}
 
 	@Transactional
-	public Optional<Solicitud> detallesSolicitud(Integer solicitudId) {
-		Optional<Solicitud> result = solicitudRepository.findById(solicitudId);
-		return result;
+	public Solicitud detallesSolicitud(Integer id) {
+		return solicitudRepository.findById(id).get();
 	}
 	
 	@Transactional
@@ -83,9 +81,9 @@ public class SolicitudService {
 		if(respuesta.isEmpty() || (respuesta.length() < 15)) {
 			throw new SolicitudRechazadaSinRespuestaException();
 		} else {
-			Optional<Solicitud> solicitud = solicitudRepository.findById(solicitudId);
-			solicitud.get().setRespuesta(respuesta);
-			solicitud.get().setSituacion(Situacion.Denegada);
+			Solicitud solicitud = detallesSolicitud(solicitudId);
+			solicitud.setRespuesta(respuesta);
+			solicitud.setSituacion(Situacion.Denegada);
 		}
 	}
 
@@ -99,11 +97,6 @@ public class SolicitudService {
 			solicitud.setRespuesta(""); // Por defecto, la solicitud no tiene una respuesta.
 			solicitudRepository.save(solicitud);
 		}
-	}
-	
-	@Transactional
-	public Solicitud findById(Integer id) {
-		return solicitudRepository.findById(id).get();
 	}
 	
 }
