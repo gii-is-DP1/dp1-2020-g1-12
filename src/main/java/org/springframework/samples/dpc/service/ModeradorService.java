@@ -23,12 +23,6 @@ public class ModeradorService {
 	public Integer obtenerIdSesion() {
 		return moderadorRepository.moderadorId(userService.obtenerUsername());
 	}
-
-	@Transactional
-	public Optional<Moderador> datosPerfil(Integer moderadorId) {
-		Optional<Moderador> result = moderadorRepository.findById(moderadorId);
-		return result;
-	}
 	
 	@Transactional
 	public void guardar(Moderador moderador) {

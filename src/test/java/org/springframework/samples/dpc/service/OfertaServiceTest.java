@@ -32,10 +32,8 @@ public class OfertaServiceTest {
 	void testEdit() {
 		Oferta oferta = this.ofertaService.findOfertById(1);
 		oferta.setPorcentaje(10);
+		this.ofertaService.editar(oferta, oferta.getId(), true);
 		assertThat(oferta.getPorcentaje()).isEqualTo(10);
-		
-		oferta.setDisponibilidad(true);
-		assertTrue(oferta.isDisponibilidad());
 	}
 	
 }

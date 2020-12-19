@@ -63,6 +63,14 @@ public class OfertaControllerTest {
 						is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
 	}
 	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoOfertarConErrores() throws Exception{
+		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).
+				param("disponibilidad", "true").param("porcentaje", "1").with(csrf()))
+				.andExpect(status().isOk()).andExpect(view().name("vendedores/editarOferta"));
+	}
+	
 	
 	@WithMockUser(value = "spring")
 	@Test
