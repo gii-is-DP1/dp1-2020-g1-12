@@ -1,7 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -50,6 +50,18 @@ public class GeneroServiceTest {
 	}
 	
 	@Test
+	void testAnyadirGeneroNull() {
+		
+		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
+		Genero genero = new Genero();
+		genero.setId(null);
+		Set<Genero> generosAntes = art.getGeneros();
+		this.generoService.añadirGenero(ARTICULO_ID, genero);
+		Set<Genero> generosAhora = art.getGeneros();
+		assertSame(generosAntes, generosAhora);
+	}
+	
+	@Test
 	void testEliminarGenero() {
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = generoService.findGeneroById(GENERO_ID);
@@ -59,6 +71,15 @@ public class GeneroServiceTest {
 		
 	}
 
+	@Test
+	void testGenerosRestantes() {
+		Set<Genero> todosGeneros = ((Collection<Genero>) generoService.findAllGeneros()).stream().collect(Collectors.toSet());
+		Set<Genero> generosArticulo = articuloService.findArticuloById(ARTICULO_ID).getGeneros();
+		List<Genero> generosRestantes = generoService.generosRestantes(ARTICULO_ID);
+		assertThat(generosRestantes.size() + generosArticulo.size()).isEqualTo(todosGeneros.size());
+		assertThat(generosRestantes).doesNotContainAnyElementsOf(generosArticulo);
+	}
+	
 	@Test
 	void testGenerosRestantesRepository() {
 		Set<Genero> generosActuales = ((Collection<Genero>) generoService.findAllGeneros()).stream().collect(Collectors.toSet());
@@ -71,4 +92,5 @@ public class GeneroServiceTest {
 		assertThat(generoRepository.generosRestantes(generosActuales)).isEmpty();
 		assertThat(generoRepository.generosRestantes(gLista)).hasSize(generosActuales.size()-1);
 	}
+	
 }
