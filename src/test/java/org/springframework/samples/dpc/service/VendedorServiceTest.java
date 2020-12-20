@@ -80,7 +80,7 @@ class VendedorServiceTest {
 		assertThat(vendedor.getId()).isEqualTo(1);
 		assertThat(vendedor.getApellido()).isEqualTo("Lorca");
 		assertThat(vendedor2).isNull();
-		assertNotEquals("2", vendedor.getId());
+		assertNotEquals("2", vendedor.getId().toString());
 	}
 
 }
