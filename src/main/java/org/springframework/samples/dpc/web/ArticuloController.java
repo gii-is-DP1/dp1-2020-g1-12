@@ -25,8 +25,8 @@ public class ArticuloController {
 	private final VendedorService vendedorService;
 	private final ComentarioService comentarioService;
 	private final GeneroService generoService;
-	private final String generos = "generos";
-	private final String query = "query";
+	private static final String generos = "generos";
+	private static final String query = "query";
 
 	@Autowired
 	public ArticuloController(ArticuloService articuloService, VendedorService vendedorService,

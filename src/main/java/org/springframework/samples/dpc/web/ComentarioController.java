@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ComentarioController {
 	
 	private final ComentarioService comentarioService;
-	private final String EDIT_COMMENT_VIEW = "articulos/editarComentario";
+	private static final String editCommentView = "articulos/editarComentario";
 	
 	@Autowired
 	public ComentarioController(ComentarioService comentarioService) {
@@ -30,7 +30,7 @@ public class ComentarioController {
 	public String crearComentario(@PathVariable("articuloId") int articuloId, Model model) {
 		model.addAttribute("comentario", new Comentario());
 		model.addAttribute("articulo", articuloId);
-		return EDIT_COMMENT_VIEW;
+		return editCommentView;
 	}
 
 	@PostMapping(value = "/articulo/{articuloId}")
@@ -39,14 +39,14 @@ public class ComentarioController {
 		String vista;
 		if (result.hasErrors()) {
 			model.addAttribute("comentario",comentario);
-			vista = EDIT_COMMENT_VIEW;
+			vista = editCommentView;
 		} else {
 			try {
 				this.comentarioService.guardarComentario(comentario, articuloId);
 			} catch (ComentarioProhibidoException e) {
 	            result.rejectValue("descripcion", "errónea", "No puedes publicar un comentario si no "
 	            		+ "eres el propietario del artículo");
-				return EDIT_COMMENT_VIEW;
+				return editCommentView;
 			}
 			vista = "redirect:/articulos/{articuloId}";
 		}

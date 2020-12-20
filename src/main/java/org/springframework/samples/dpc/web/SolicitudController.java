@@ -24,9 +24,9 @@ public class SolicitudController {
 	
 	private final SolicitudService solicitudService;
 	private final VendedorService vendedorService;
-	private final String sol = "solicitud";
-	private final String mensaje = "mensaje";
-	private final String EDIT_APPLICATION_VIEW = "solicitudes/editarSolicitud";
+	private static final String sol = "solicitud";
+	private static final String mensaje = "mensaje";
+	private static final String editApplicationView = "solicitudes/editarSolicitud";
 	
 	@Autowired
 	public SolicitudController(SolicitudService solicitudService, VendedorService vendedorService) {
@@ -77,7 +77,7 @@ public class SolicitudController {
 	public String crearSolicutud(ModelMap modelMap) {
 		modelMap.addAttribute(sol, new Solicitud());
 		modelMap.addAttribute("vendedorId", vendedorService.obtenerIdSesion());
-		return EDIT_APPLICATION_VIEW;
+		return editApplicationView;
 	}
 	
 	@PostMapping(path = "/save")
@@ -85,7 +85,7 @@ public class SolicitudController {
 		String vista = "redirect:/vendedores/listadoSolicitudes";
 		if(result.hasErrors()) {
 			modelMap.addAttribute(sol,solicitud);
-			return EDIT_APPLICATION_VIEW;
+			return editApplicationView;
 		} else {
 			try {
 			solicitudService.guardar(solicitud, vendedorService.findSellerById(vendedorService.obtenerIdSesion()));
@@ -93,7 +93,7 @@ public class SolicitudController {
 			} catch(PrecioMenorAlEnvioException ex) {
 				result.rejectValue("gastoEnvio", "error", 
 						"Los gastos de envío deben ser inferiores al precio del artículo");
-				return EDIT_APPLICATION_VIEW;
+				return editApplicationView;
 			}
 		}
 		return vista;
