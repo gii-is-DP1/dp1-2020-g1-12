@@ -81,14 +81,42 @@ public class SolicitudControllerTest {
     void testCreacion() throws Exception {
 	mockMvc.perform(post("/solicitudes/save").param("descripcion", "Laptop ultima generación").param("modelo", "14 Evo A11M-003ES")
 						.param("marca", "MSI-Persisten")
+						.param("urlImagen", "https://imagen.png")
+						.param("precio", "949.99")
+						.param("stock", "30")
+						.param("tiempoEntrega", "3")
+						.param("gastoEnvio", "7")
+						.param("tipo","Nuevo").with(csrf()))
+			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/listadoSolicitudes"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testCreacionConErrores() throws Exception {
+	mockMvc.perform(post("/solicitudes/save").param("descripcion", "Laptop ultima generación").param("modelo", "14 Evo A11M-003ES")
+						.param("marca", "MSI-Persisten")
 						.param("urlImagen", "vacia")
 						.param("precio", "949.99")
 						.param("stock", "30")
 						.param("tiempoEntrega", "3")
 						.param("gastoEnvio", "7")
 						.param("tipo","Nuevo").with(csrf()))
-			.andExpect(status().is2xxSuccessful());
+			.andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/editarSolicitud"));
 	}
+	
+//	@WithMockUser(value = "spring")
+//    @Test
+//    void testCreacionConExcepcion() throws Exception {
+//	mockMvc.perform(post("/solicitudes/save").param("descripcion", "Laptop ultima generación").param("modelo", "14 Evo A11M-003ES")
+//						.param("marca", "MSI-Persisten")
+//						.param("urlImagen", "https://imagen.png")
+//						.param("precio", "500")
+//						.param("stock", "30")
+//						.param("tiempoEntrega", "3")
+//						.param("gastoEnvio", "800")
+//						.param("tipo","Nuevo").with(csrf()))
+//			.andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/editarSolicitud"));
+//	}
 	
 	@WithMockUser(value = "spring")
     @Test

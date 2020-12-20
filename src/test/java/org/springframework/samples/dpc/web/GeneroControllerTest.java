@@ -54,6 +54,8 @@ public class GeneroControllerTest {
 		genero.setId(TEST_GENERO_ID);
 		genero.setNombre("Smartphone");
 		given(this.generoService.findGeneroById(TEST_GENERO_ID)).willReturn(genero);
+		given(this.vendedorService.esVendedorDelArticulo(TEST_ARTICULO_ID)).willReturn(true);
+		
 	}
 	
 	@WithMockUser(value = "spring")
@@ -69,6 +71,13 @@ public class GeneroControllerTest {
     void testGuardarGenero() throws Exception {
 	mockMvc.perform(post("/generos/"+TEST_ARTICULO_ID +"/save").param("nombre", "Smartphone").with(csrf()))
 		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testGuardarGeneroConErrores() throws Exception {
+	mockMvc.perform(post("/generos/"+TEST_ARTICULO_ID +"/save").param("nombre", "").with(csrf()))
+		.andExpect(status().is2xxSuccessful()).andExpect(view().name("/generos/{articuloId}"));
 	}
 	
 	@WithMockUser(value = "spring")

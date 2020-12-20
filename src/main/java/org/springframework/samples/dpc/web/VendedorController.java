@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.web;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -45,27 +44,10 @@ public class VendedorController {
 	@GetMapping(value = "/perfil")
 	public String mostrarPerfil(ModelMap modelMap) {
 		String perfil = "vendedores/perfil";
-		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorService.obtenerIdSesion()); // Quitar
-																										// optional
-		modelMap.addAttribute("vendedor", optperfil.get());
+		Vendedor optperfil = vendedorService.findSellerById(vendedorService.obtenerIdSesion()); 
+																										
+		modelMap.addAttribute("vendedor", optperfil);
 		return perfil;
-	}
-
-	public String salvarPerfil() {
-		String perfil = "vendedores/salvarPerfil";
-		return perfil;
-	}
-
-	public String guardarPerfil(@Valid Vendedor vendedor, BindingResult result, ModelMap modelMap) {
-		String vista = "vendedores/perfil";
-		if (result.hasErrors()) {
-			modelMap.addAttribute("vendedor", vendedor);
-			return "vendedor/editarPerfil";
-		} else {
-			vendedorService.guardar(vendedor);
-			modelMap.addAttribute("mensage", "El vendedor ha sido guardado con éxito.");
-		}
-		return vista;
 	}
 
 	@GetMapping(value = "/editar")

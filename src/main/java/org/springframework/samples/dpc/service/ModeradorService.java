@@ -1,7 +1,5 @@
 package org.springframework.samples.dpc.service;
 
-import java.util.Optional;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.Moderador;
 import org.springframework.samples.dpc.repository.ModeradorRepository;

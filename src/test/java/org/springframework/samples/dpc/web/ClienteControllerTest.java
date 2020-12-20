@@ -93,12 +93,11 @@ public class ClienteControllerTest {
 				.andExpect(view().name("moderadores/listadoClientes"));
 	}
 
-//	@WithMockUser(value = "spring")
-//	@Test
-//	void testInitCreationForm() throws Exception {
-//		mockMvc.perform(get("/clientes/perfil")).andExpect(status().isOk())
-//				.andExpect(model().attributeExists("cliente")).andExpect(view().name("clientes/editarPerfil"));
-//	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testInitCreationForm() throws Exception {
+		mockMvc.perform(get("/clientes/perfil")).andExpect(status().isOk()).andExpect(view().name("clientes/perfil"));
+	}
 
 	@WithMockUser(value = "spring")
 	@Test
