@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/solicitudes")
 public class SolicitudController {
 	
-	
 	private final SolicitudService solicitudService;
 	private final VendedorService vendedorService;
+	private static final String sol = "solicitud";
+	private static final String mensaje = "mensaje";
+	private static final String editApplicationView = "solicitudes/editarSolicitud";
 	
 	@Autowired
 	public SolicitudController(SolicitudService solicitudService, VendedorService vendedorService) {
@@ -45,14 +47,14 @@ public class SolicitudController {
 	public String mostrarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
 		String vista="solicitudes/detalles";
 		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
-		modelMap.addAttribute("solicitud", solicitud);
+		modelMap.addAttribute(sol, solicitud);
 		return vista;
 	}
 	
 	@GetMapping(value="/{solicitudId}/aceptar")
 	public String aceptarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
 		solicitudService.aceptarSolicitud(solicitudId);
-		modelMap.addAttribute("mensaje", "La solicitud ha sido aceptada correctamente");
+		modelMap.addAttribute(mensaje, "La solicitud ha sido aceptada correctamente");
 		return listadoSolicitud(modelMap);
 	}
 	
@@ -61,11 +63,11 @@ public class SolicitudController {
 			ModelMap modelMap, BindingResult result) {
 		try {
 			solicitudService.denegarSolicitud(solicitudId,solicitud.getRespuesta());
-			modelMap.addAttribute("mensaje", "La solicitud ha sido denegada correctamente");
+			modelMap.addAttribute(mensaje, "La solicitud ha sido denegada correctamente");
 		} catch(SolicitudRechazadaSinRespuestaException ex) {
 			result.rejectValue("respuesta", "error", 
 					"La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
-			modelMap.addAttribute("mensaje", "La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
+			modelMap.addAttribute(mensaje, "La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
 			return mostrarSolicitud(solicitudId, modelMap);
 		}
 		return listadoSolicitud(modelMap);
@@ -73,26 +75,25 @@ public class SolicitudController {
 	
 	@GetMapping(path="/new")
 	public String crearSolicutud(ModelMap modelMap) {
-		String vista = "solicitudes/editarSolicitud";
-		modelMap.addAttribute("solicitud", new Solicitud());
+		modelMap.addAttribute(sol, new Solicitud());
 		modelMap.addAttribute("vendedorId", vendedorService.obtenerIdSesion());
-		return vista;
+		return editApplicationView;
 	}
 	
 	@PostMapping(path = "/save")
 	public String guardarSolicitud(@Valid Solicitud solicitud, BindingResult result,ModelMap modelMap) {
 		String vista = "redirect:/vendedores/listadoSolicitudes";
 		if(result.hasErrors()) {
-			modelMap.addAttribute("solicitud",solicitud);
-			return "solicitudes/editarSolicitud";
+			modelMap.addAttribute(sol,solicitud);
+			return editApplicationView;
 		} else {
 			try {
 			solicitudService.guardar(solicitud, vendedorService.findSellerById(vendedorService.obtenerIdSesion()));
-			modelMap.addAttribute("mensaje", "Se ha guardado correctamente.");
+			modelMap.addAttribute(mensaje, "Se ha guardado correctamente.");
 			} catch(PrecioMenorAlEnvioException ex) {
 				result.rejectValue("gastoEnvio", "error", 
 						"Los gastos de envío deben ser inferiores al precio del artículo");
-				return "solicitudes/editarSolicitud";
+				return editApplicationView;
 			}
 		}
 		return vista;

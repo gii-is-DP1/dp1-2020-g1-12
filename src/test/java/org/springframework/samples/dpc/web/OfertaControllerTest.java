@@ -25,8 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers=OfertaController.class,
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 excludeAutoConfiguration= SecurityConfiguration.class)
-
-public class OfertaControllerTest {
+class OfertaControllerTest {
 	
 	private static final int TEST_OFERTA_ID = 1;
 	private static final int TEST_ARTICULO_ID = 1;

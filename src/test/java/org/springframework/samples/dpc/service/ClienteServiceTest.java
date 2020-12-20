@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-
-public class ClienteServiceTest {
+class ClienteServiceTest {
 
 	@Autowired
 	private ClienteService clienteService;

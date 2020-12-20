@@ -42,12 +42,11 @@ public class ClienteService {
 
 	@Transactional(readOnly = true)
 	public Cliente findClientById(int id) throws DataAccessException {
-		return clienteRepository.findById(id).get();
+		return (clienteRepository.findById(id).isPresent()) ? clienteRepository.findById(id).get() : null;
 	}
 
 	public Iterable<Cliente> findAllClient() {
-		Iterable<Cliente> result = clienteRepository.findAll();
-		return result;
+		return clienteRepository.findAll();
 	}
 
 	@Transactional(readOnly = true)
@@ -57,6 +56,6 @@ public class ClienteService {
 
 	@Transactional(readOnly = true)
 	public Cliente getClienteDeSesion() throws DataAccessException {
-		return clienteRepository.findById(obtenerIdSesion()).get();
+		return findClientById(obtenerIdSesion());
 	}
 }

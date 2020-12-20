@@ -25,7 +25,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+	
+	private String moderador = "moderador";
+	private String vendedor = "vendedor";
+	private String cliente = "cliente";
+	
 	@Autowired
 	DataSource dataSource;
 
@@ -35,23 +39,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
 				.antMatchers("/registro/**").permitAll()
 				.antMatchers("/users/**").permitAll()
-				.antMatchers("/clientes").hasAnyAuthority("moderador")
-				.antMatchers("/clientes/**").hasAnyAuthority("cliente")
-				.antMatchers("/vendedores/**").hasAnyAuthority("vendedor")
-				.antMatchers("/solicitudes/new").hasAnyAuthority("vendedor")
-				.antMatchers("/solicitudes/save").hasAnyAuthority("vendedor")
-				.antMatchers("/solicitudes").hasAnyAuthority("moderador")
-				.antMatchers("/solicitudes/{solicitudId}/**").hasAnyAuthority("moderador")
-				.antMatchers("/solicitudes/solicitante/**").hasAnyAuthority("moderador")
-				.antMatchers("/bloqueos/**").hasAnyAuthority("moderador")
-				.antMatchers("/moderadores/**").hasAnyAuthority("moderador")
+				.antMatchers("/clientes").hasAnyAuthority(moderador)
+				.antMatchers("/clientes/**").hasAnyAuthority(cliente)
+				.antMatchers("/vendedores/**").hasAnyAuthority(vendedor)
+				.antMatchers("/solicitudes/new").hasAnyAuthority(vendedor)
+				.antMatchers("/solicitudes/save").hasAnyAuthority(vendedor)
+				.antMatchers("/solicitudes").hasAnyAuthority(moderador)
+				.antMatchers("/solicitudes/{solicitudId}/**").hasAnyAuthority(moderador)
+				.antMatchers("/solicitudes/solicitante/**").hasAnyAuthority(moderador)
+				.antMatchers("/bloqueos/**").hasAnyAuthority(moderador)
+				.antMatchers("/moderadores/**").hasAnyAuthority(moderador)
 				.antMatchers("/articulosGenero/{generoId}").permitAll()
 				.antMatchers("/busqueda").permitAll()
 				.antMatchers("/ofertas").permitAll()
-				.antMatchers("/tarjetas/**").hasAnyAuthority("cliente")
-				.antMatchers("/generos/**").hasAnyAuthority("vendedor")
-				.antMatchers("/comentario/eliminar/**").hasAnyAuthority("moderador")
-				.antMatchers("/comentario/**").hasAnyAuthority("cliente", "moderador", "vendedor")
+				.antMatchers("/tarjetas/**").hasAnyAuthority(cliente)
+				.antMatchers("/generos/**").hasAnyAuthority(vendedor)
+				.antMatchers("/comentario/eliminar/**").hasAnyAuthority(moderador)
+				.antMatchers("/comentario/**").hasAnyAuthority(cliente, moderador, vendedor)
 				.antMatchers("/articulos/{articuloId}").permitAll().anyRequest().denyAll().and()
 				.formLogin()
 				/* .loginPage("/login") */

@@ -1,7 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class VendedorServiceTest {
+class VendedorServiceTest {
 
 	public final Integer ARTICULO_ID = 1;
 
@@ -23,20 +23,20 @@ public class VendedorServiceTest {
 	private VendedorService vendedorService;
 
 	@Test
-	public void shouldFindVendedorById() {
+	void shouldFindVendedorById() {
 		Vendedor optperfil = this.vendedorService.findSellerById(1);
-		assertEquals(optperfil.getNombre(), "Pepe");
+		assertEquals("Pepe", optperfil.getNombre());
 	}
 
 	@Test
-	public void shouldFindVendedorByDni() {
+	void shouldFindVendedorByDni() {
 		Vendedor optperfil = this.vendedorService.findSellerByDni("29976789");
-		assertEquals(optperfil.getNombre(), "Pepe");
+		assertEquals("Pepe", optperfil.getNombre());
 	}
 
 	@Test
 	@Transactional
-	public void shouldInsertVendedor() {
+	void shouldInsertVendedor() {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
 		vend.setNombre("Quique");
@@ -61,7 +61,7 @@ public class VendedorServiceTest {
 
 	@Test
 	@Transactional
-	public void shouldUpdateVendedor() {
+	void shouldUpdateVendedor() {
 		Vendedor vend = this.vendedorService.findSellerById(1);
 		String oldLastName = vend.getApellido();
 		String newLastName = oldLastName + "X";
@@ -80,7 +80,7 @@ public class VendedorServiceTest {
 		assertThat(vendedor.getId()).isEqualTo(1);
 		assertThat(vendedor.getApellido()).isEqualTo("Lorca");
 		assertThat(vendedor2).isNull();
-		assertFalse(vendedor.getId().equals(2));
+		assertNotEquals("2", vendedor.getId().toString());
 	}
 
 }

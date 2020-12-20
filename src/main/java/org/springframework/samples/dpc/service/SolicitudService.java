@@ -44,7 +44,7 @@ public class SolicitudService {
 
 	@Transactional
 	public Solicitud detallesSolicitud(Integer id) {
-		return solicitudRepository.findById(id).get();
+		return (solicitudRepository.findById(id).isPresent()) ? solicitudRepository.findById(id).get() : null;
 	}
 	
 	@Transactional

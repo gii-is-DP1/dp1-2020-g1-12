@@ -27,8 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers=GeneroController.class,
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 excludeAutoConfiguration= SecurityConfiguration.class)
-
-public class GeneroControllerTest {
+class GeneroControllerTest {
 	
 	private static final int TEST_GENERO_ID = 1;
 	private static final int TEST_ARTICULO_ID = 1;

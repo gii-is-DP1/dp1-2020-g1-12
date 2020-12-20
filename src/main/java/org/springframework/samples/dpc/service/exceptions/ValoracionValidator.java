@@ -6,8 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 public class ValoracionValidator implements ConstraintValidator<ValoracionConstraint, Integer>{
 	
 	@Override
-	public
-	void initialize(ValoracionConstraint valoracion) {
+	public void initialize(ValoracionConstraint valoracion) {
 	}
 	
 	@Override

@@ -27,8 +27,7 @@ public class VendedorService {
 	
 	@Transactional
 	public Vendedor vendedorDeUnArticulo(Integer articuloId) {
-		Vendedor result = vendedorRepository.vendedorDeArticulo(articuloId);
-		return result;
+		return vendedorRepository.vendedorDeArticulo(articuloId);
 	}
 	
 	@Transactional
@@ -59,7 +58,7 @@ public class VendedorService {
 
 	@Transactional(readOnly = true)
 	public Vendedor findSellerById(int id) throws DataAccessException {
-		return vendedorRepository.findById(id).get();
+		return (vendedorRepository.findById(id).isPresent()) ? vendedorRepository.findById(id).get() : null;
 	}
 
 	@Transactional(readOnly = true)
@@ -68,12 +67,11 @@ public class VendedorService {
 	}
 
 	public Iterable<Vendedor> findAllSeller() {
-		Iterable<Vendedor> result = vendedorRepository.findAll();
-		return result;
+		return vendedorRepository.findAll();
 	}
 	
 	@Transactional(readOnly = true)
 	public Vendedor getVendedorDeSesion() throws DataAccessException {
-		return vendedorRepository.findById(obtenerIdSesion()).get();
+		return findSellerById(obtenerIdSesion());
 	}
 }

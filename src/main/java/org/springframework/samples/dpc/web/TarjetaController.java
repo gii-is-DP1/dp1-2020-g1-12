@@ -37,7 +37,7 @@ public class TarjetaController {
 			modelMap.addAttribute("tarjeta", tarjeta);
 			return "clientes/editarTarjeta";
 		} else {
-			tarjetaService.añadirTarjeta(tarjeta);
+			tarjetaService.anyadirTarjeta(tarjeta);
 			return vista;
 		}
 	}

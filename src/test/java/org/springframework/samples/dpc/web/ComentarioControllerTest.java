@@ -32,8 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers=ComentarioController.class,
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 excludeAutoConfiguration= SecurityConfiguration.class)
-
-public class ComentarioControllerTest {
+class ComentarioControllerTest {
 
 	private static final int TEST_COMENTARIO_ID = 1;
 	private static final int TEST_VENDEDOR_ID = 1;
