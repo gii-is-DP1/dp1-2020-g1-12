@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,7 +19,7 @@ import org.springframework.samples.dpc.repository.ArticuloRepository;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class ArticuloServiceTest {
+class ArticuloServiceTest {
 
 	private final Integer ARTICULO_ID = 1;
 	private final Integer VENDEDOR_ID = 1;

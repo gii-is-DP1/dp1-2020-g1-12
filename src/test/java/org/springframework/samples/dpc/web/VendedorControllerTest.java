@@ -35,8 +35,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = VendedorController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
-
-public class VendedorControllerTest {
+class VendedorControllerTest {
 
 	private static final int TEST_VENDEDOR_ID = 2;
 	private static final int TEST_CLIENTE_ID = 1;

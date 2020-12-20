@@ -39,11 +39,11 @@ public class ModeradorService {
 	
 	@Transactional(readOnly = true)
 	public Moderador findModeradorById(int id) throws DataAccessException {
-		return moderadorRepository.findById(id).get();
+		return (moderadorRepository.findById(id).isPresent()) ? moderadorRepository.findById(id).get() : null;
 	}
 	
 	@Transactional(readOnly = true)
 	public Moderador getModeradorDeSesion() throws DataAccessException {
-		return moderadorRepository.findById(obtenerIdSesion()).get();
+		return findModeradorById(obtenerIdSesion());
 	}
 }

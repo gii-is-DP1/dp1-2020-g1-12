@@ -21,7 +21,7 @@ public class TarjetaService {
 	}
 	
 	@Transactional
-	public void añadirTarjeta(TarjetaCredito tarjeta) {
+	public void anyadirTarjeta(TarjetaCredito tarjeta) {
 		Integer existe = tarjetaRepository.existeTarjeta(tarjeta.getNumero());
 		Cliente cliente = clienteService.getClienteDeSesion();
 		if(existe == 1) {

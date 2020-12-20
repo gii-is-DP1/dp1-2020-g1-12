@@ -13,7 +13,7 @@ import org.springframework.samples.dpc.service.exceptions.BloquearSinDescripcion
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class BloqueoServiceTest {
+class BloqueoServiceTest {
 
 	private BloqueoService bloqueoService;
 

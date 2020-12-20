@@ -19,8 +19,7 @@ import org.springframework.samples.dpc.repository.GeneroRepository;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-
-public class GeneroServiceTest {
+class GeneroServiceTest {
 	
 	private final Integer ARTICULO_ID = 1;
 	private final Integer GENERO_ID2 = 1;
@@ -44,7 +43,7 @@ public class GeneroServiceTest {
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = generoService.findGeneroById(GENERO_ID2);
 		assertThat(art.getGeneros()).doesNotContain(genero);
-		this.generoService.añadirGenero(ARTICULO_ID, genero);
+		this.generoService.anyadirGenero(ARTICULO_ID, genero);
 		assertThat(art.getGeneros()).contains(genero);
 
 	}
@@ -56,7 +55,7 @@ public class GeneroServiceTest {
 		Genero genero = new Genero();
 		genero.setId(null);
 		Set<Genero> generosAntes = art.getGeneros();
-		this.generoService.añadirGenero(ARTICULO_ID, genero);
+		this.generoService.anyadirGenero(ARTICULO_ID, genero);
 		Set<Genero> generosAhora = art.getGeneros();
 		assertSame(generosAntes, generosAhora);
 	}

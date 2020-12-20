@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
+import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.repository.ArticuloRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +32,8 @@ public class ArticuloService {
 
 	@Transactional
 	public void eliminarArticulo(Integer articuloId) {
-		Optional<Articulo> articulo = articuloRepository.findById(articuloId);
-		articulo.get().setStock(0);
+		Articulo articulo = findArticuloById(articuloId);
+		articulo.setStock(0);
 	}
 
 	@Transactional
@@ -48,7 +48,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Articulo findArticuloById(int id) throws DataAccessException {
-		return articuloRepository.findById(id).get();
+		return (articuloRepository.findById(id).isPresent()) ? articuloRepository.findById(id).get() : null;
 	}
 
 	@Transactional(readOnly = true)
@@ -92,10 +92,10 @@ public class ArticuloService {
 			return articuloRepository.articulosPorNombre(busqueda);
 		} else if (busqueda.isEmpty()) {
 			return articuloRepository.articulosPorGenero(
-					articulo.getGeneros().stream().map(x -> x.getId()).collect(Collectors.toList()));
+					articulo.getGeneros().stream().map(Genero::getId).collect(Collectors.toList()));
 		} else {
 			return articuloRepository.articulosPorGeneroNombre(
-					articulo.getGeneros().stream().map(x -> x.getId()).collect(Collectors.toList()), busqueda);
+					articulo.getGeneros().stream().map(Genero::getId).collect(Collectors.toList()), busqueda);
 		}
 
 	}

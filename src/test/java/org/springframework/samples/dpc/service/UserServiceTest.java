@@ -11,20 +11,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.Test;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class UserServiceTest {
+class UserServiceTest {
 
 	@Autowired
 	private UserService userService;
 
 	@Test
-	public void shouldFindUser() {
+	void shouldFindUser() {
 		User optperfil = this.userService.findUser("cliente1");
-		assertEquals(optperfil.getPassword(), "cliente1");
+		assertEquals("cliente1", optperfil.getPassword());
 	}
 
 	@Test
 	@Transactional
-	public void shouldSaveUser() {
+	void shouldSaveUser() {
 		User u = new User();
 		u.setUsername("user");
 		u.setPassword("cont");

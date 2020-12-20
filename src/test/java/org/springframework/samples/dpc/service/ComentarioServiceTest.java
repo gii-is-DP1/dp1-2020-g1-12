@@ -1,8 +1,6 @@
 package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
@@ -12,12 +10,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
-import org.springframework.samples.dpc.model.Moderador;
-import org.springframework.samples.dpc.service.exceptions.ComentarioProhibidoException;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class ComentarioServiceTest {
+class ComentarioServiceTest {
 	
 	private final Integer TEST_COMENTARIO_ID = 1;
 	private final Integer TEST_CLIENTE_ID = 1;

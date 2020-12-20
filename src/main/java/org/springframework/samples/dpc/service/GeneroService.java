@@ -24,7 +24,7 @@ public class GeneroService {
 	
 	@Transactional(readOnly = true)
 	public Genero findGeneroById(int id) throws DataAccessException {
-		return generoRepository.findById(id).get();
+		return (generoRepository.findById(id).isPresent()) ? generoRepository.findById(id).get() : null;
 	}
 	
 	@Transactional(readOnly = true)
@@ -39,7 +39,7 @@ public class GeneroService {
 	}
 	
 	@Transactional
-	public void añadirGenero(int articuloId, Genero genero) {
+	public void anyadirGenero(int articuloId, Genero genero) {
 		if(genero.getId() != null)
 			articuloService.findArticuloById(articuloId).getGeneros().add(genero);
 	}

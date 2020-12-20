@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-public class SolicitudTests {
+class SolicitudTests {
 	
 	private static final int TEST_SOLICITUD_ID = 1;
 	private Solicitud solicitud;
