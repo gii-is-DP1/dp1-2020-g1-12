@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 public class TarjetaCredito extends BaseEntity{
 	
 	@Column(name = "titular")
-	@Length(min = 20, max = 250)
+	@Length(min = 8, max = 50)
 	private String titular;
 	
 	@Column(name = "numero")

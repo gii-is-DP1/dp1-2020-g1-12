@@ -13,4 +13,7 @@ public interface TarjetaRepository extends CrudRepository<TarjetaCredito, Intege
 	
 	@Query("select u from TarjetaCredito u where u.numero = :numero")
 	TarjetaCredito findTarjetaByNumber(@Param("numero") String numero) throws DataAccessException;
+	
+	@Query(value="SELECT COUNT(*) FROM CLIENTES_TARJETAS WHERE CLIENTES_TARJETAS.tarjetas_id= :tarjetaId", nativeQuery=true)
+	Integer tarjetaCompartida(@Param("tarjetaId") int tarjetaId) throws DataAccessException;
 }
