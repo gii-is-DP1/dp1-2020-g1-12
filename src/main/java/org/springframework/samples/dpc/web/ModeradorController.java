@@ -1,7 +1,5 @@
 package org.springframework.samples.dpc.web;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;

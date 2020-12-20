@@ -74,7 +74,7 @@ public class ComentarioControllerTest {
 		b.setDescripcion("");
 		vend.setBloqueo(b);
 		comentario.setVendedor(vend);
-		Articulo articulo = new Articulo();
+		articulo = new Articulo();
 		articulo.setId(TEST_ARTICULO_ID);
 		articulo.setMarca("MSI");
 		articulo.setModelo("Prestige Evo A11M-003ES");
@@ -93,6 +93,7 @@ public class ComentarioControllerTest {
 		comentario.setDescripcion("asdfghjklñpoiuytr");
 		comentario.setValoracion(4);
 		comentario.setId(TEST_COMENTARIO_ID);
+		
 		given(this.comentarioService.findCommentById(TEST_COMENTARIO_ID)).willReturn(comentario);
 		given(this.articuloService.findArticuloById(TEST_ARTICULO_ID)).willReturn(articulo);
 		given(this.vendedorService.findSellerById(TEST_VENDEDOR_ID)).willReturn(vendedor);

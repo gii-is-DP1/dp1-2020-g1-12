@@ -1,7 +1,5 @@
 package org.springframework.samples.dpc.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.Solicitud;
@@ -23,11 +21,6 @@ public class VendedorService {
 	}
 
 	@Transactional
-	public int vendedorCount() {
-		return (int) vendedorRepository.count();
-	}
-
-	@Transactional
 	public Integer obtenerIdSesion() {
 		return vendedorRepository.vendedorId(userService.obtenerUsername());
 	}
@@ -46,12 +39,6 @@ public class VendedorService {
 	@Transactional
 	public Boolean esVendedorDelArticulo(Integer articuloId) {
 		return vendedorRepository.vendedorDeArticulo(articuloId).equals(getVendedorDeSesion());
-	}
-	
-	@Transactional
-	public Optional<Vendedor> datosPerfil(Integer vendedorId) {
-		Optional<Vendedor> result = vendedorRepository.findById(vendedorId);
-		return result;
 	}
 
 	@Transactional
