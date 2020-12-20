@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.TarjetaCredito;
 import org.springframework.samples.dpc.service.TarjetaService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -40,5 +42,14 @@ public class TarjetaController {
 			tarjetaService.anyadirTarjeta(tarjeta);
 			return vista;
 		}
+	}
+	
+	@GetMapping(value = "/{tarjetaId}/delete")
+	public String borrarTarjetaPersona(@PathVariable("tarjetaId") int tarjetaId,Model model) {
+		
+		if(tarjetaService.findTarjetaById(tarjetaId) != null) {
+			tarjetaService.eliminarTarjetaPersona(tarjetaId);
+		}
+		return "redirect:/clientes/perfil";
 	}
 }

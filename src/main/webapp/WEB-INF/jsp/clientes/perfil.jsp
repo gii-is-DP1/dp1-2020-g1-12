@@ -51,6 +51,10 @@
     <c:forEach items="${cliente.tarjetas}" var="tarjeta">
     	<table class="table table-bordered">
         <tr>
+			<spring:url value="/tarjetas/{tarjetaId}/delete" var="tarjetaUrl">
+	            <spring:param name="tarjetaId" value="${tarjeta.id}"/>
+	        </spring:url> 
+	        <a href="${fn:escapeXml(tarjetaUrl)}"><button class="btn btn-default" type="submit">Eliminar</button></a>       	
             <th>Titular</th>
             <td>${tarjeta.titular}</td>
         </tr>
