@@ -18,7 +18,7 @@ public class BloqueoService {
 	
 	@Transactional(readOnly = true)
 	public Bloqueo findBlockById(int id) throws DataAccessException {
-		return bloqueoRepository.findById(id).get();
+		return (bloqueoRepository.findById(id).isPresent()) ? bloqueoRepository.findById(id).get() : null;
 	}
 	
 	@Transactional

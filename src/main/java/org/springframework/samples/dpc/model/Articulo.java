@@ -56,19 +56,22 @@ public class Articulo extends Producto{
 	@Max(30)
 	private Integer tiempoEntrega;
 	
-
+	@Override
 	public String getModelo() {
 		return modelo;
 	}
 
+	@Override
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
 
+	@Override
 	public String getMarca() {
 		return marca;
 	}
 
+	@Override
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}

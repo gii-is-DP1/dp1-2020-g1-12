@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.web;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -45,27 +44,10 @@ public class VendedorController {
 	@GetMapping(value = "/perfil")
 	public String mostrarPerfil(ModelMap modelMap) {
 		String perfil = "vendedores/perfil";
-		Optional<Vendedor> optperfil = vendedorService.datosPerfil(vendedorService.obtenerIdSesion()); // Quitar
-																										// optional
-		modelMap.addAttribute("vendedor", optperfil.get());
+		Vendedor optperfil = vendedorService.findSellerById(vendedorService.obtenerIdSesion()); 
+																										
+		modelMap.addAttribute("vendedor", optperfil);
 		return perfil;
-	}
-
-	public String salvarPerfil() {
-		String perfil = "vendedores/salvarPerfil";
-		return perfil;
-	}
-
-	public String guardarPerfil(@Valid Vendedor vendedor, BindingResult result, ModelMap modelMap) {
-		String vista = "vendedores/perfil";
-		if (result.hasErrors()) {
-			modelMap.addAttribute("vendedor", vendedor);
-			return "vendedor/editarPerfil";
-		} else {
-			vendedorService.guardar(vendedor);
-			modelMap.addAttribute("mensage", "El vendedor ha sido guardado con éxito.");
-		}
-		return vista;
 	}
 
 	@GetMapping(value = "/editar")
@@ -126,10 +108,10 @@ public class VendedorController {
 	@GetMapping(value = "/solicitud/{solicitudId}")
 	public String mostrarSolicitudDetallada(@PathVariable("solicitudId") int solicitudId, ModelMap modelMap) {
 		String vista;
-		Optional<Solicitud> solicitud = solicitudService.detallesSolicitud(solicitudId);
-		if (solicitud.isPresent() && solicitud.get().getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
+		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
+		if (solicitud != null && solicitud.getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
 			vista = "vendedores/solicitud";
-			modelMap.addAttribute("solicitud", solicitud.get());
+			modelMap.addAttribute("solicitud", solicitud);
 		} else {
 			vista = "redirect:/vendedores/listadoSolicitudes";
 		}
@@ -149,11 +131,11 @@ public class VendedorController {
 
 	@GetMapping(value = "/eliminarSolicitud/{solicitudId}")
 	public String eliminarSolicitud(@PathVariable("solicitudId") int solicitudId) {
-		Optional<Solicitud> solicitud = solicitudService.detallesSolicitud(solicitudId);
+		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
 
-		if (solicitud.isPresent() && solicitud.get().getSituacion().equals(Situacion.Pendiente)
-				&& solicitud.get().getVendedor().equals(vendedorService.getVendedorDeSesion())) {
-			solicitudService.eliminarSolicitud(solicitud.get());
+		if (solicitud != null && solicitud.getSituacion().equals(Situacion.Pendiente)
+				&& solicitud.getVendedor().equals(vendedorService.getVendedorDeSesion())) {
+			solicitudService.eliminarSolicitud(solicitud);
 		}
 		return "redirect:/vendedores/listadoSolicitudes";
 	}

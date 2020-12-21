@@ -20,6 +20,8 @@ import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.Oferta;
+import org.springframework.samples.dpc.model.Situacion;
+import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Tipo;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
@@ -33,13 +35,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = VendedorController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
+class VendedorControllerTest {
 
-public class VendedorControllerTest {
-
-	private static final int TEST_VENDEDOR_ID = 1;
+	private static final int TEST_VENDEDOR_ID = 2;
 	private static final int TEST_CLIENTE_ID = 1;
 	private static final int TEST_ARTICULO_ID = 1;
-	private static final int TEST_SOLICITUD_ID = 1;
+	private static final int TEST_ARTICULO_FALLO_ID = 100;
+	private static final int TEST_SOLICITUD_ID = 2;
+	private static final int TEST_SOLICITUD_FALLO_ID = 100;
 
 	@MockBean
 	private VendedorService vendedorService;
@@ -65,6 +68,7 @@ public class VendedorControllerTest {
 	private Vendedor vend;
 	private Articulo art;
 	private Cliente c;
+	private Solicitud sol;
 
 	@BeforeEach
 	void setup() {
@@ -105,18 +109,37 @@ public class VendedorControllerTest {
 		c.setTelefono("615067389");
 		c.setEmail("mail@mail.com");
 		c.setBloqueo(b);
-
+		sol = new Solicitud();
+		sol.setId(TEST_SOLICITUD_ID);
+		sol.setDescripcion("Solicitud de venta de MSI Prestige 14 Evo A11M-003ES");
+		sol.setGastoEnvio(5.0);
+		sol.setMarca("MSI Prestige");
+		sol.setModelo("14 Evo A11M-003ES");
+		sol.setPrecio(988.99);
+		sol.setRespuesta("");
+		sol.setSituacion(Situacion.Pendiente);
+		sol.setStock(5);
+		sol.setTiempoEntrega(8);
+		sol.setTipo(Tipo.Nuevo);
+		sol.setUrlImagen("vacia");
+		sol.setVendedor(vend);
+		
+		given(this.solicitudService.detallesSolicitud(TEST_SOLICITUD_ID)).willReturn(sol);
 		given(this.vendedorService.findSellerById(TEST_VENDEDOR_ID)).willReturn(vend);
+		given(this.vendedorService.obtenerIdSesion()).willReturn(TEST_VENDEDOR_ID);
+		given(this.vendedorService.getVendedorDeSesion()).willReturn(vend);		
+		given(this.vendedorService.vendedorDeUnArticulo(TEST_ARTICULO_ID)).willReturn(vend);
+		given(this.vendedorService.vendedorDeUnArticulo(TEST_ARTICULO_FALLO_ID)).willReturn(null);				
 		given(this.articuloService.findArticuloById(TEST_ARTICULO_ID)).willReturn(art);
 		given(this.clienteService.findClientById(TEST_CLIENTE_ID)).willReturn(c);
 	}
 
-//	@WithMockUser(value = "spring")
-//	@Test
-//	void testInitCreationForm() throws Exception {
-//		mockMvc.perform(get("/vendedores/perfil")).andExpect(status().isOk())
-//				.andExpect(model().attributeExists("vendedor")).andExpect(view().name("vendedores/perfil"));
-//	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testInitCreationForm() throws Exception {
+		mockMvc.perform(get("/vendedores/perfil")).andExpect(status().isOk())
+				.andExpect(model().attributeExists("vendedor")).andExpect(view().name("vendedores/perfil"));
+	}
 
 	@WithMockUser(value = "spring")
 	@Test
@@ -124,6 +147,15 @@ public class VendedorControllerTest {
 		mockMvc.perform(post("/vendedores/editar").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
 				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is3xxRedirection());
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testCreacionConErrores() throws Exception {
+		mockMvc.perform(post("/vendedores/editar").param("dni", "").param("nombre", "Quique")
+				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
+				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name("vendedores/editarPerfil"));
 	}
 
 	@WithMockUser(value = "spring")
@@ -150,14 +182,28 @@ public class VendedorControllerTest {
 	@WithMockUser(value = "spring")
 	@Test
 	void testMostrarArticuloDetallado() throws Exception {
-		mockMvc.perform(get("/vendedores/articulo/" + TEST_ARTICULO_ID)).andExpect(status().is3xxRedirection())
+		mockMvc.perform(get("/vendedores/articulo/" + TEST_ARTICULO_ID)).andExpect(status().is2xxSuccessful())
+					.andExpect(view().name("vendedores/articulo"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testMostrarArticuloDetalladoConErrores() throws Exception {
+		mockMvc.perform(get("/vendedores/articulo/" + TEST_ARTICULO_FALLO_ID)).andExpect(status().is3xxRedirection())
 					.andExpect(view().name("redirect:/vendedores/articulosEnVenta"));
 	}
 	
 	@WithMockUser(value = "spring")
 	@Test
 	void testMostrarSolicitudDetallada() throws Exception {
-		mockMvc.perform(get("/vendedores/solicitud/" + TEST_SOLICITUD_ID)).andExpect(status().is3xxRedirection())
+		mockMvc.perform(get("/vendedores/solicitud/" + TEST_SOLICITUD_ID)).andExpect(status().is2xxSuccessful())
+					.andExpect(view().name("vendedores/solicitud"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testMostrarSolicitudDetalladaConErrores() throws Exception {
+		mockMvc.perform(get("/vendedores/solicitud/" + TEST_SOLICITUD_FALLO_ID)).andExpect(status().is3xxRedirection())
 					.andExpect(view().name("redirect:/vendedores/listadoSolicitudes"));
 	}
 	

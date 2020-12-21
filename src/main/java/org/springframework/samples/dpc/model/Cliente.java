@@ -1,9 +1,12 @@
 package org.springframework.samples.dpc.model;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -12,6 +15,13 @@ import javax.validation.constraints.Email;
 @Table(name = "clientes")
 public class Cliente extends Persona{
 	
+	@ManyToMany(cascade =
+		{CascadeType.PERSIST,
+		CascadeType.MERGE,
+		CascadeType.DETACH,
+		CascadeType.REFRESH})
+		private Set<TarjetaCredito> tarjetas;
+
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
@@ -47,4 +57,11 @@ public class Cliente extends Persona{
 		this.user = user;
 	}
 	
+	public Set<TarjetaCredito> getTarjetas() {
+		return tarjetas;
+	}
+
+	public void setTarjetas(Set<TarjetaCredito> tarjetas) {
+		this.tarjetas = tarjetas;
+	}
 }

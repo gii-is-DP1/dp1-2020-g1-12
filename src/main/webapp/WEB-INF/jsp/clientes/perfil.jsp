@@ -3,6 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 
 <dpc:layout pageName="clientes">
 
@@ -19,7 +21,7 @@
             <td>${cliente.apellido}</td>
         </tr>
           <tr>
-            <th>Direcci�n</th>
+            <th>Dirección</th>
             <td>${cliente.direccion}</td>
         </tr>
         <tr>
@@ -27,7 +29,7 @@
             <td>${cliente.dni}</td>
         </tr>
         <tr>
-            <th>Tel�fono</th>
+            <th>Teléfono</th>
             <td>${cliente.telefono}</td>
         </tr>
         <tr>
@@ -38,7 +40,36 @@
     </table>
 
 	<a href="/clientes/editar"><button class="btn btn-default" type="submit">Editar</button></a>
-
     
-
+    <h2><br>Tarjetas de crédito</h2>
+    
+    <c:if test="${cliente.tarjetas.size() == 0}">
+    	<p>No tienes ninguna tarjeta asociada a esta cuenta</p>
+    </c:if>
+    
+    
+    <c:forEach items="${cliente.tarjetas}" var="tarjeta">
+    	<table class="table table-bordered">
+        <tr>
+			<spring:url value="/tarjetas/{tarjetaId}/delete" var="tarjetaUrl">
+	            <spring:param name="tarjetaId" value="${tarjeta.id}"/>
+	        </spring:url> 
+	        <a href="${fn:escapeXml(tarjetaUrl)}"><button class="btn btn-default" type="submit">Eliminar</button></a>       	
+            <th>Titular</th>
+            <td>${tarjeta.titular}</td>
+        </tr>
+        <tr>
+            <th>Numero de tarjeta</th>
+            <td>✱✱✱✱✱✱✱✱✱✱✱✱ ${tarjeta.numero.substring(12)}</td>
+        </tr>
+        <tr>
+            <th>Fecha de caducidad</th>
+            <td>${tarjeta.mesCaducidad}/${tarjeta.anyoCaducidad}</td>
+        </tr>
+    	</table>
+    </c:forEach>
+            
+	
+	<a href="/tarjetas/new"><button class="btn btn-default" type="submit">Añadir</button></a>
+	
 </dpc:layout>

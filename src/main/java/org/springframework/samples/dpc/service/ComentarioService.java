@@ -36,7 +36,7 @@ public class ComentarioService {
 	
 	@Transactional(readOnly = true)
 	public Comentario findCommentById(int id) throws DataAccessException {
-		return comentarioRepository.findById(id).get();
+		return (comentarioRepository.findById(id).isPresent()) ? comentarioRepository.findById(id).get() : null;
 	}
 	
 	@Transactional()
@@ -87,10 +87,11 @@ public class ComentarioService {
 		return comentarioRepository.findByArticulo(articuloId);
 	}
 	
+	
 	@Transactional
 	public Double getValoracionDeUnArticulo(Integer articuloId) {
 		return getComentariosDeUnArticulo(articuloId).stream().filter(x -> x.getValoracion() != 0)
-				.collect(Collectors.averagingDouble(x -> x.getValoracion()));
+				.collect(Collectors.averagingDouble(Comentario::getValoracion));
 	}
 	
 }

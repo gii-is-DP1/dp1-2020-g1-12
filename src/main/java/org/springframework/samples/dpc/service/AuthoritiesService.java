@@ -52,7 +52,6 @@ public class AuthoritiesService {
 		User user = userService.findUser(username);
 		authority.setUser(user);
 		authority.setAuthority(role);
-		// user.get().getAuthorities().add(authority);
 		authoritiesRepository.save(authority);
 	}
 

@@ -2,6 +2,7 @@ package org.springframework.samples.dpc.web;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -26,8 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers=ModeradorController.class,
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 excludeAutoConfiguration= SecurityConfiguration.class)
-
-public class ModeradorControllerTests {
+class ModeradorControllerTests {
 	
 	private static final int TEST_MODERADOR_ID = 1;
 
@@ -70,30 +70,35 @@ public class ModeradorControllerTests {
 	
 	}
 	
-//	@WithMockUser(value = "spring")
-//    @Test
-//    void testMostrarPerfil() throws Exception {
-//		mockMvc.perform(get("/moderadores/perfil")).andExpect(status().is2xxSuccessful())
-//		.andExpect(model().attributeExists("moderador"))
-//		.andExpect(view().name("/moderadores/perfil"));
-//	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testMostrarPerfil() throws Exception {
+		mockMvc.perform(get("/moderadores/perfil")).andExpect(status().is2xxSuccessful())
+		.andExpect(view().name("moderadores/perfil"));
+	}
 	
-//	@WithMockUser(value = "spring")
-//    @Test
-//    void testEdit() throws Exception {
-//		mockMvc.perform(get("/moderadores/editar")).andExpect(status().is2xxSuccessful())
-//		.andExpect(model().attributeExists("moderador"))
-//		.andExpect(view().name("redirect:/moderadores/perfil"));
-//	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testEdit() throws Exception {
+		mockMvc.perform(get("/moderadores/editar")).andExpect(status().is2xxSuccessful())
+		.andExpect(view().name("moderadores/editarPerfil"));
+	}
 	
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoEditar() throws Exception {
-		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("user", "moderador10")
-		.param("nombre", "Pepe").param("apellido", "López").param("direccion", "C/Real 10")
+		mockMvc.perform(post("/moderadores/editar").param("nombre", "Pepe")
+		.param("apellido", "López").param("direccion", "C/Real 10")
+		.param("dni", "12345678").param("telefono", "678901234").with(csrf())).andExpect(status().is3xxRedirection())
+		.andExpect(view().name("redirect:/moderadores/perfil"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoEditarConErrores() throws Exception {
+		mockMvc.perform(post("/moderadores/editar").param("nombre", "")
+		.param("apellido", "López").param("direccion", "C/Real 10")
 		.param("dni", "12345678").param("telefono", "678901234").with(csrf())).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("moderadores/editarPerfil"));
-
 	}
-
 }

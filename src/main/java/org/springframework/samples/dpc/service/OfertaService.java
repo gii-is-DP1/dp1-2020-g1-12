@@ -21,7 +21,7 @@ public class OfertaService {
 
 	@Transactional(readOnly = true)
 	public Oferta findOfertById(int id) throws DataAccessException {
-		return ofertaRepository.findById(id).get();
+		return (ofertaRepository.findById(id).isPresent()) ? ofertaRepository.findById(id).get() : null;
 	}
 
 	@Transactional

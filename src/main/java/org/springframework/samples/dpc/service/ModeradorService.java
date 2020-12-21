@@ -1,7 +1,5 @@
 package org.springframework.samples.dpc.service;
 
-import java.util.Optional;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.Moderador;
 import org.springframework.samples.dpc.repository.ModeradorRepository;
@@ -23,12 +21,6 @@ public class ModeradorService {
 	public Integer obtenerIdSesion() {
 		return moderadorRepository.moderadorId(userService.obtenerUsername());
 	}
-
-	@Transactional
-	public Optional<Moderador> datosPerfil(Integer moderadorId) {
-		Optional<Moderador> result = moderadorRepository.findById(moderadorId);
-		return result;
-	}
 	
 	@Transactional
 	public void guardar(Moderador moderador) {
@@ -47,11 +39,11 @@ public class ModeradorService {
 	
 	@Transactional(readOnly = true)
 	public Moderador findModeradorById(int id) throws DataAccessException {
-		return moderadorRepository.findById(id).get();
+		return (moderadorRepository.findById(id).isPresent()) ? moderadorRepository.findById(id).get() : null;
 	}
 	
 	@Transactional(readOnly = true)
 	public Moderador getModeradorDeSesion() throws DataAccessException {
-		return moderadorRepository.findById(obtenerIdSesion()).get();
+		return findModeradorById(obtenerIdSesion());
 	}
 }

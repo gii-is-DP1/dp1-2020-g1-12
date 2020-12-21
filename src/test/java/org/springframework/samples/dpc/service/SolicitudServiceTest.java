@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class SolicitudServiceTest {
+class SolicitudServiceTest {
 	
 	private static final int SOLICITUD_ACEPTADA_ID = 1;
 	private static final int SOLICITUD_PENDIENTE_ID = 11;
@@ -41,12 +41,12 @@ public class SolicitudServiceTest {
 
 	@Test
 	void testBuscarSolicitudPorId() {
-		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID).get();
+		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID);
 		assertThat(solicitud.getDescripcion()).isEqualTo("Solicitud de venta de MSI Prestige Evo A11M-003ES");
 		assertThat(solicitud.getPrecio()).isEqualTo(988.99);
 		assertThat(solicitud.getModelo()).isEqualTo("Prestige Evo A11M-003ES");
 		assertThat(solicitud.getArticulo().getMarca()).isEqualTo("MSI");
-		assertThat(solicitud.getStock()).isGreaterThan(0);
+		assertThat(solicitud.getStock()).isPositive();
 	}
 	
 	public Solicitud arrange() throws PrecioMenorAlEnvioException {
@@ -66,14 +66,14 @@ public class SolicitudServiceTest {
 	}
 	@Test
 	@Transactional
-	public void testInsertarSolicitud() throws PrecioMenorAlEnvioException {
+	void testInsertarSolicitud() throws PrecioMenorAlEnvioException {
 		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
 		int size = pendientes.size();
 
 		Solicitud sol = arrange();
 		Vendedor vendedor = vendedorService.findSellerById(VENDEDOR_ID);
         this.solicitudService.guardar(sol,vendedor);
-		assertThat(sol.getId().longValue()).isNotEqualTo(0);
+		assertThat(sol.getId().longValue()).isNotZero();
 
 		pendientes = this.solicitudService.solicitudesPendientes();
 		assertThat(pendientes.size()).isEqualTo(size + 1);
@@ -81,7 +81,7 @@ public class SolicitudServiceTest {
 	
 	@Test
 	@Transactional
-	public void testInsertarSolicitudFallida() throws PrecioMenorAlEnvioException {
+	void testInsertarSolicitudFallida() throws PrecioMenorAlEnvioException {
 		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
 		int size = pendientes.size();
 
@@ -97,7 +97,7 @@ public class SolicitudServiceTest {
 	
 	@Test
 	void testAceptarSolicitud() {
-		Solicitud solicitud = solicitudService.detallesSolicitud(SOLICITUD_PENDIENTE_ID).get();
+		Solicitud solicitud = solicitudService.detallesSolicitud(SOLICITUD_PENDIENTE_ID);
 		
 		assertThat(solicitud.getSituacion()).isEqualTo(Situacion.Pendiente);
 		
@@ -108,7 +108,7 @@ public class SolicitudServiceTest {
 	
 	@Test
 	void testDenegarSolicitud() throws SolicitudRechazadaSinRespuestaException {
-		Solicitud solicitud = solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID).get();
+		Solicitud solicitud = solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID);
 		
 		assertThat(solicitud.getSituacion()).isEqualTo(Situacion.Aceptada);
 			
@@ -143,11 +143,11 @@ public class SolicitudServiceTest {
 		assertTrue(solicitud.get(0).getRespuesta().isEmpty());
 	}
 	
-//	@Test
-//	void testEliminarSolicitud() {
-//		Solicitud solicitud = this.solicitudService.findById(SOLICITUD_PENDIENTE_ID);
-//		solicitudService.eliminarSolicitud(solicitud.getId());
-//		List<Solicitud> aux = solicitudService.solicitudesPendientes();
-//		assertFalse(aux.contains(solicitud));
-//	}
+	@Test
+	void testEliminarSolicitud() {
+		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_PENDIENTE_ID);
+		solicitudService.eliminarSolicitud(solicitud);
+		List<Solicitud> aux = solicitudService.solicitudesPendientes();
+		assertFalse(aux.contains(solicitud));
+	}
 }

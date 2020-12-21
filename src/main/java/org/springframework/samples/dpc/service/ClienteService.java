@@ -1,7 +1,5 @@
 package org.springframework.samples.dpc.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.Cliente;
@@ -15,11 +13,6 @@ public class ClienteService {
 	private final ClienteRepository clienteRepository;
 	private final UserService userService;
 
-	@Transactional
-	public int clienteCount() {
-		return (int) clienteRepository.count();
-	}
-
 	@Autowired
 	public ClienteService(ClienteRepository clienteRepository, UserService userService) {
 		this.clienteRepository = clienteRepository;
@@ -29,12 +22,6 @@ public class ClienteService {
 	@Transactional
 	public Integer obtenerIdSesion() {
 		return clienteRepository.clienteId(userService.obtenerUsername());
-	}
-
-	@Transactional
-	public Optional<Cliente> datosPerfil(Integer clienteId) {
-		Optional<Cliente> result = clienteRepository.findById(clienteId);
-		return result;
 	}
 
 	@Transactional
@@ -55,12 +42,11 @@ public class ClienteService {
 
 	@Transactional(readOnly = true)
 	public Cliente findClientById(int id) throws DataAccessException {
-		return clienteRepository.findById(id).get();
+		return (clienteRepository.findById(id).isPresent()) ? clienteRepository.findById(id).get() : null;
 	}
 
 	public Iterable<Cliente> findAllClient() {
-		Iterable<Cliente> result = clienteRepository.findAll();
-		return result;
+		return clienteRepository.findAll();
 	}
 
 	@Transactional(readOnly = true)
@@ -70,6 +56,6 @@ public class ClienteService {
 
 	@Transactional(readOnly = true)
 	public Cliente getClienteDeSesion() throws DataAccessException {
-		return clienteRepository.findById(obtenerIdSesion()).get();
+		return findClientById(obtenerIdSesion());
 	}
 }

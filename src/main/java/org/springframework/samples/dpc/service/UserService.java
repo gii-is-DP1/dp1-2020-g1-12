@@ -50,7 +50,7 @@ public class UserService {
 	}
 
 	public User findUser(String username) throws DataAccessException {
-		return userRepository.findById(username).get();
+		return (userRepository.findById(username).isPresent()) ? userRepository.findById(username).get() : null;
 	}
 
 	public String obtenerUsername() {

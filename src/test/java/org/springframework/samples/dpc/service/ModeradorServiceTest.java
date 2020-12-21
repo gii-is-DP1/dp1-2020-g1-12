@@ -2,22 +2,18 @@ package org.springframework.samples.dpc.service;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.samples.dpc.model.Authorities;
 import org.springframework.samples.dpc.model.Moderador;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class ModeradorServiceTest {
+class ModeradorServiceTest {
 	
 	@Autowired
 	private ModeradorService moderadorService;
@@ -25,11 +21,8 @@ public class ModeradorServiceTest {
 	
 	@Test
 	void testDatosPerfil() {
-		Optional<Moderador> moderador = this.moderadorService.datosPerfil(1);
-		assertEquals(moderador.get().getNombre() , "Pedro" );
-		
-		assertThrows(InvalidDataAccessApiUsageException.class, () -> this.moderadorService.datosPerfil(null)); 
-		
+		Moderador moderador = this.moderadorService.findModeradorById(1);
+		assertEquals("Pedro", moderador.getNombre());
 	}
 	
 	@Test

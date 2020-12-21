@@ -48,7 +48,7 @@ public class GeneroController {
 			modelMap.addAttribute("genero", new Genero());
 			return "/generos/{articuloId}";
 		} else {
-			generoService.añadirGenero(articuloId, genero);
+			generoService.anyadirGenero(articuloId, genero);
 			return vista;
 		}
 	}

@@ -1,7 +1,5 @@
 package org.springframework.samples.dpc.web;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,27 +31,10 @@ public class ClienteController {
 	@GetMapping(value="/perfil")
 	public String mostrarPerfil(ModelMap modelMap){
 		String  perfil="clientes/perfil";
-		Optional<Cliente> optperfil = clienteService.datosPerfil(clienteService.obtenerIdSesion());		
-		modelMap.addAttribute("cliente", optperfil.get());
+		Cliente optperfil = clienteService.findClientById(clienteService.obtenerIdSesion());		
+		modelMap.addAttribute("cliente", optperfil);
 		return perfil;
 	}
-	
-//	public String salvarPerfil() {
-//		String perfil = "clientes/salvarPerfil";
-//		return perfil;
-//	}
-    
-//	public String guardarPerfil(@Valid Cliente cliente,BindingResult result, ModelMap modelMap) {
-//		String vista="clientes/perfil";
-//		if(result.hasErrors()) {
-//			modelMap.addAttribute("cliente", cliente);
-//			return "cliente/editarPerfil";
-//		}else {
-//			clienteService.guardar(cliente);
-//			modelMap.addAttribute("mensage", "El cliente ha sido guardado con éxito.");			
-//		}
-//		return vista;
-//	}
 	
 	@GetMapping(value = "/editar")
 	public String editar(Model model) {

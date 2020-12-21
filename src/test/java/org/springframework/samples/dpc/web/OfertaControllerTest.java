@@ -25,8 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers=OfertaController.class,
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 excludeAutoConfiguration= SecurityConfiguration.class)
-
-public class OfertaControllerTest {
+class OfertaControllerTest {
 	
 	private static final int TEST_OFERTA_ID = 1;
 	private static final int TEST_ARTICULO_ID = 1;
@@ -61,6 +60,14 @@ public class OfertaControllerTest {
 		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).
 				param("disponibilidad", "true").param("porcentaje", "10").with(csrf())).andExpect(status().
 						is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoOfertarConErrores() throws Exception{
+		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).
+				param("disponibilidad", "true").param("porcentaje", "1").with(csrf()))
+				.andExpect(status().isOk()).andExpect(view().name("vendedores/editarOferta"));
 	}
 	
 	

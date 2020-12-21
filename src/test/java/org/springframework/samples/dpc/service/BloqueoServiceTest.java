@@ -2,31 +2,55 @@ package org.springframework.samples.dpc.service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Bloqueo;
+import org.springframework.samples.dpc.service.exceptions.BloquearSinDescripcionException;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class BloqueoServiceTest {
+class BloqueoServiceTest {
+
+	private BloqueoService bloqueoService;
 
 	@Autowired
-	private BloqueoService bloqueoService;
-	
-	@Test
-	void testEdit() {
-		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
-		bloqueo.setBloqueado(false);
-		assertTrue(bloqueo.getDescripcion().isEmpty());
-		
-		Bloqueo bloqueo2 = this.bloqueoService.findBlockById(2);
-		bloqueo2.setBloqueado(true);
-		bloqueo2.setDescripcion("Bloqueado por mal comportamiento.");
-		assertFalse(bloqueo2.getDescripcion().isEmpty());
-		
+	public BloqueoServiceTest(BloqueoService bloqueoService) {
+		this.bloqueoService = bloqueoService;
 	}
 	
+	@Test
+	void testEdit() throws BloquearSinDescripcionException{
+		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
+		bloqueo.setDescripcion("HOLA ME LLAMO PEPE");
+		this.bloqueoService.editar(bloqueo, bloqueo.getId(), true);
+		assertTrue(bloqueo.isBloqueado());	
+	}
+	
+	@Test
+	void testEditConExcepcion() throws BloquearSinDescripcionException{
+		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
+		bloqueo.setDescripcion("HOLA");
+		assertThrows(BloquearSinDescripcionException.class,
+				() -> this.bloqueoService.editar(bloqueo, bloqueo.getId(), true));	
+	}
+	
+	@Test
+	void testEditSinBloqueo() throws BloquearSinDescripcionException{
+		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
+		this.bloqueoService.editar(bloqueo, bloqueo.getId(), false);
+		assertFalse(bloqueo.isBloqueado());	
+	}
+	
+	@Test
+	void testSave() throws BloquearSinDescripcionException{
+		Bloqueo bloqueo = new Bloqueo();
+		bloqueo.setBloqueado(true);
+		bloqueo.setDescripcion("HOLA ME LLAMO PEPE");
+		this.bloqueoService.guardar(bloqueo);
+		assertTrue(bloqueo.isBloqueado());	
+	}
 }

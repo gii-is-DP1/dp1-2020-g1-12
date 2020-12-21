@@ -28,8 +28,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = ClienteController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
-
-public class ClienteControllerTest {
+class ClienteControllerTest {
 
 	private static final int TEST_VENDEDOR_ID = 1;
 	private static final int TEST_CLIENTE_ID = 4;
@@ -93,12 +92,11 @@ public class ClienteControllerTest {
 				.andExpect(view().name("moderadores/listadoClientes"));
 	}
 
-//	@WithMockUser(value = "spring")
-//	@Test
-//	void testInitCreationForm() throws Exception {
-//		mockMvc.perform(get("/clientes/perfil")).andExpect(status().isOk())
-//				.andExpect(model().attributeExists("cliente")).andExpect(view().name("clientes/editarPerfil"));
-//	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testInitCreationForm() throws Exception {
+		mockMvc.perform(get("/clientes/perfil")).andExpect(status().isOk()).andExpect(view().name("clientes/perfil"));
+	}
 
 	@WithMockUser(value = "spring")
 	@Test

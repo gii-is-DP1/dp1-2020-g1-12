@@ -1,10 +1,9 @@
--- Other owner user, named manu1 with passwor m4nu
 INSERT INTO users(username,password,enabled) VALUES ('cliente1','cliente1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'cliente1','cliente');
--- One owner user, named jesbarsig with passwor 0wn3r
+
 INSERT INTO users(username,password,enabled) VALUES ('cliente2','cliente2',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (5,'cliente2','cliente');
--- Other owner user, named fer1 with passwor f3r
+
 INSERT INTO users(username,password,enabled) VALUES ('vendedor1','vendedor1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'vendedor1','vendedor');
 
@@ -17,7 +16,7 @@ INSERT INTO authorities(id,username,authority) VALUES (8,'vendedor3','vendedor')
 INSERT INTO users(username,password,enabled) VALUES ('moderador1','moderador1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (9,'moderador1','moderador');
 
--- Introducimos un bloqueo.
+-- Introducimos bloqueos.
 
 INSERT INTO bloqueos VALUES (1, false, '');
 INSERT INTO bloqueos VALUES (2, false, '');
@@ -25,12 +24,12 @@ INSERT INTO bloqueos VALUES (3, false, '');
 INSERT INTO bloqueos VALUES (4, false, '');
 INSERT INTO bloqueos VALUES (5, false, '');
 
--- Introducimos a un cliente.
+-- Introducimos clientes.
 
 INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com', 1,'cliente1');
 INSERT INTO clientes VALUES (2, 'Martin', 'C/Konquero 4', '23456119', 'Francisco', '988733111', 'martin@gmail.com', 2,'cliente2');
 
--- Introducimos a un vendedor.
+-- Introducimos vendedores.
 
 INSERT INTO vendedores VALUES (1, 'Lorca', 'C/Galindo 96', '29976789', 'Pepe', '678733221', 'pepe200@gmail.com', 3,'vendedor1');
 INSERT INTO vendedores VALUES (2, 'Pérez', 'C/Real 2', '09456119', 'Lola', '688733111', 'lolaindigo@gmail.com', 4,'vendedor2');
@@ -74,7 +73,7 @@ INSERT INTO generos VALUES (15, 'Microondas');
 INSERT INTO generos VALUES (16, 'Cocina');
 
 
--- Introducimos un artículo.
+-- Introducimos artículos.
 
 INSERT INTO articulos VALUES (1, 'MSI', 'Prestige Evo A11M-003ES',5,988.99, 10,8,'Nuevo','https://storage-asset.msi.com/global/picture/image/feature/nb/Prestige/Prestige15//mobility-nb.png', 1);
 INSERT INTO articulos VALUES (2, 'Lenovo', 'Ideapad',2,500.99, 20,5,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71QQz9ZPLoL._AC_SL1500_.jpg', 2);
@@ -111,7 +110,7 @@ INSERT INTO articulos_generos VALUES (10,7);
 INSERT INTO articulos_generos VALUES (10,4);
 INSERT INTO articulos_generos VALUES (10,11);
 
--- Introducimos una solicitud.
+-- Introducimos solicitudes.
 
 INSERT INTO solicitudes VALUES (1, 'Solicitud de venta de MSI Prestige Evo A11M-003ES',5,'MSI','Prestige Evo A11M-003ES',988.99,
 									'','Aceptada',50,8,'Nuevo','https://storage-asset.msi.com/global/picture/image/feature/nb/Prestige/Prestige15//mobility-nb.png', 1, 1);
@@ -136,7 +135,7 @@ INSERT INTO solicitudes VALUES (10, 'Solicitud de venta de Acer Aspire One',5,'A
 INSERT INTO solicitudes VALUES (11, 'Solicitud de venta de Apple Macbook Pro',5,'Apple','Macbook Pro',1000.99,
 									'','Pendiente',50,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71VHEQqByPL._AC_SL1500_.jpg', null, 2);
 
--- Introducimos una solicitud.
+-- Introducimos comentarios.
 
 INSERT INTO comentarios VALUES (1,'Lo compré hará 1 año y todo va fenomenal, pero a veces noto que la batería se agota demasiado rápdio',3,1,1,null,null);
 INSERT INTO comentarios VALUES (2,'Funciona perfectamente y es muy fácil de usar ',5,6,1,null,null);
@@ -148,3 +147,10 @@ INSERT INTO comentarios VALUES (7,'¿Sabéis si este ordenador corre el fortnite
 INSERT INTO comentarios VALUES (8,'Pronto se vendrá una nueva oferta de este producto.',0,1,null,null,1);
 INSERT INTO comentarios VALUES (9,'Está chida esta lavadora',4,6,2,null,null);
 
+-- Introducimos tarjetas de crédito
+
+INSERT INTO tarjetas_credito VALUES (1,'22','442','03','1234567899876087','Juan Fernández Tirado');
+
+-- Introducimos relaciones tarjeta-cliente
+
+INSERT INTO clientes_tarjetas VALUES (1,1)

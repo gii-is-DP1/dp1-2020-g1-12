@@ -1,34 +1,38 @@
 package org.springframework.samples.dpc.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Digits;
 
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "tarjetasCreditos")
+@Table(name = "tarjetasCredito")
 public class TarjetaCredito extends BaseEntity{
 	
 	@Column(name = "titular")
-	@Length(min = 20, max = 250)
+	@Length(min = 8, max = 50)
 	private String titular;
 	
-	@Column(name = "bin")
-	@Digits(fraction = 0, integer = 9)
+	@Column(name = "numero")
+	//@Digits(fraction = 0, integer = 9)
 	@Length(min = 16, max = 16)
-	private String bin;
+	private String numero;
 	
 	@Column(name = "cvv")
-	@Digits(fraction = 0, integer = 9)
+	//@Digits(fraction = 0, integer = 9)
 	@Length(min = 3, max = 3)
 	private String cvv;
 
-	@Column(name = "fechaCaducidad")
-	private Date fechaCaducidad;
+	@Column(name = "mesCaducidad")
+	//@Digits(fraction = 0, integer = 9)
+	@Length(min = 2, max = 2)
+	private String mesCaducidad;
+	
+	@Column(name = "anyoCaducidad")
+	//@Digits(fraction = 0, integer = 9)
+	@Length(min = 2, max = 2)
+	private String anyoCaducidad;
 
 	public String getTitular() {
 		return titular;
@@ -38,12 +42,12 @@ public class TarjetaCredito extends BaseEntity{
 		this.titular = titular;
 	}
 
-	public String getBin() {
-		return bin;
+	public String getNumero() {
+		return numero;
 	}
 
-	public void setBin(String bin) {
-		this.bin = bin;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public String getCvv() {
@@ -54,11 +58,20 @@ public class TarjetaCredito extends BaseEntity{
 		this.cvv = cvv;
 	}
 
-	public Date getFechaCaducidad() {
-		return fechaCaducidad;
+	public String getMesCaducidad() {
+		return mesCaducidad;
 	}
 
-	public void setFechaCaducidad(Date fechaCaducidad) {
-		this.fechaCaducidad = fechaCaducidad;
+	public void setMesCaducidad(String mesCaducidad) {
+		this.mesCaducidad = mesCaducidad;
 	}
+
+	public String getAnyoCaducidad() {
+		return anyoCaducidad;
+	}
+
+	public void setAnyoCaducidad(String anyoCaducidad) {
+		this.anyoCaducidad = anyoCaducidad;
+	}
+
 }

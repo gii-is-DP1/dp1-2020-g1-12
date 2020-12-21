@@ -1,7 +1,5 @@
 package org.springframework.samples.dpc.web;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +27,17 @@ public class ModeradorController {
 	@GetMapping("/perfil")
 	public String mostrarPerfil(ModelMap modelMap){
 		
-		String  perfil="moderadores/perfil";
-		Optional<Moderador> optperfil = moderadorService.datosPerfil(moderadorService.obtenerIdSesion());
+		String vista ="moderadores/perfil";
+		Moderador perfil = moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
 		
-		modelMap.addAttribute("moderador",optperfil.get());
-		return perfil;
+		modelMap.addAttribute("moderador", perfil);
+		return vista;
 	}
 		
 	@GetMapping(value = "/editar")
 	public String editar(Model model) {
 		Moderador moderador = this.moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
-		model.addAttribute(moderador);
+		model.addAttribute("moderador", moderador);
 		return "moderadores/editarPerfil";
 	}
 

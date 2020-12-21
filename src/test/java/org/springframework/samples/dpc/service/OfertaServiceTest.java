@@ -2,7 +2,6 @@ package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.samples.dpc.model.Oferta;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class OfertaServiceTest {
+class OfertaServiceTest {
 	
 	@Autowired
 	private OfertaService ofertaService;
@@ -32,10 +31,8 @@ public class OfertaServiceTest {
 	void testEdit() {
 		Oferta oferta = this.ofertaService.findOfertById(1);
 		oferta.setPorcentaje(10);
+		this.ofertaService.editar(oferta, oferta.getId(), true);
 		assertThat(oferta.getPorcentaje()).isEqualTo(10);
-		
-		oferta.setDisponibilidad(true);
-		assertTrue(oferta.isDisponibilidad());
 	}
 	
 }
