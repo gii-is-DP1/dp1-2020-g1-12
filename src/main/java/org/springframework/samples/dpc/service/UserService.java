@@ -70,4 +70,8 @@ public class UserService {
 		}
 		return authorityRepository.getAuthority(obtenerUsername());
 	}
+	
+	public String getAuthority(String username) {
+		return authorityRepository.getAuthority(username);
+	}
 }
