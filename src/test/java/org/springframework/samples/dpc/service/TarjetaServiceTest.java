@@ -6,10 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.TarjetaCredito;
-import org.springframework.samples.dpc.model.Tipo;
-import org.springframework.samples.dpc.service.exceptions.PrecioMenorAlEnvioException;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -24,11 +21,11 @@ public class TarjetaServiceTest {
 	@Test
 	void testBuscarTarjetaId() {
 		TarjetaCredito tarjeta = tarjetaService.findTarjetaById(TARJETA_ID);
-		assertThat(tarjeta.getTitular()).isEqualTo("Juan Fernández Tirado");
+		assertThat(tarjeta.getTitular().split(" ")[0]).isEqualTo("Juan");
 		assertThat(tarjeta.getNumero()).isEqualTo("1234567899876087");
 		assertThat(tarjeta.getCvv()).isEqualTo("442");
-		assertThat(tarjeta.getMesCaducidad()).isEqualTo("03");
-		assertThat(tarjeta.getAnyoCaducidad()).isEqualTo("22");
+		assertThat(tarjeta.getFechaCaducidad().split("/")[0]).isEqualTo("03");
+		assertThat(tarjeta.getFechaCaducidad().split("/")[1]).isEqualTo("22");
 	}
 	
 	public TarjetaCredito arrange() throws Exception { //Todavía hay que crear la validación
@@ -38,8 +35,7 @@ public class TarjetaServiceTest {
 		tarjeta.setNumero("1234567899876087");
 		tarjeta.setTitular("Juan Fernández Tirado");
 		tarjeta.setCvv("442");
-		tarjeta.setAnyoCaducidad("22");
-		tarjeta.setMesCaducidad("03");
+		tarjeta.setFechaCaducidad("03/22");
         return tarjeta;
 
 	}

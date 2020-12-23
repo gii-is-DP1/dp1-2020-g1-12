@@ -149,7 +149,7 @@ INSERT INTO comentarios VALUES (9,'Está chida esta lavadora',4,6,2,null,null);
 
 -- Introducimos tarjetas de crédito
 
-INSERT INTO tarjetas_credito VALUES (1,'22','442','03','1234567899876087','Juan Fernández Tirado');
+INSERT INTO tarjetas_credito VALUES (1,'442','03/22','1234567899876087','Juan Fernández Tirado');
 
 -- Introducimos relaciones tarjeta-cliente
 

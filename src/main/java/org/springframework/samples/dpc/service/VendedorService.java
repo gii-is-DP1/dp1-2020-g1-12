@@ -2,6 +2,7 @@ package org.springframework.samples.dpc.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.repository.VendedorRepository;
@@ -73,5 +74,10 @@ public class VendedorService {
 	@Transactional(readOnly = true)
 	public Vendedor getVendedorDeSesion() throws DataAccessException {
 		return findSellerById(obtenerIdSesion());
+	}
+	
+	@Transactional(readOnly = true)
+	public Bloqueo getBloqueoVendedor(String username) throws DataAccessException {
+		return vendedorRepository.vendedorBloqueo(username);
 	}
 }

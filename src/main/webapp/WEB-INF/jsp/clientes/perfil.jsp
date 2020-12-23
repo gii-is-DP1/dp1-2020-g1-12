@@ -64,7 +64,7 @@
         </tr>
         <tr>
             <th>Fecha de caducidad</th>
-            <td>${tarjeta.mesCaducidad}/${tarjeta.anyoCaducidad}</td>
+            <td>${tarjeta.fechaCaducidad}</td>
         </tr>
     	</table>
     </c:forEach>

@@ -2,6 +2,7 @@ package org.springframework.samples.dpc.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,10 @@ public class ClienteService {
 	@Transactional(readOnly = true)
 	public Cliente getClienteDeSesion() throws DataAccessException {
 		return findClientById(obtenerIdSesion());
+	}
+	
+	@Transactional(readOnly = true)
+	public Bloqueo getBloqueoCliente(String username) throws DataAccessException {
+		return clienteRepository.clienteBloqueo(username);
 	}
 }

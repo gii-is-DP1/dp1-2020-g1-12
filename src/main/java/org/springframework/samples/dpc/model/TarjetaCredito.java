@@ -24,15 +24,8 @@ public class TarjetaCredito extends BaseEntity{
 	@Length(min = 3, max = 3)
 	private String cvv;
 
-	@Column(name = "mesCaducidad")
-	//@Digits(fraction = 0, integer = 9)
-	@Length(min = 2, max = 2)
-	private String mesCaducidad;
-	
-	@Column(name = "anyoCaducidad")
-	//@Digits(fraction = 0, integer = 9)
-	@Length(min = 2, max = 2)
-	private String anyoCaducidad;
+	@Column(name = "fechaCaducidad")
+	private String fechaCaducidad;
 
 	public String getTitular() {
 		return titular;
@@ -58,20 +51,11 @@ public class TarjetaCredito extends BaseEntity{
 		this.cvv = cvv;
 	}
 
-	public String getMesCaducidad() {
-		return mesCaducidad;
+	public String getFechaCaducidad() {
+		return fechaCaducidad;
 	}
 
-	public void setMesCaducidad(String mesCaducidad) {
-		this.mesCaducidad = mesCaducidad;
+	public void setFechaCaducidad(String fechaCaducidad) {
+		this.fechaCaducidad = fechaCaducidad;
 	}
-
-	public String getAnyoCaducidad() {
-		return anyoCaducidad;
-	}
-
-	public void setAnyoCaducidad(String anyoCaducidad) {
-		this.anyoCaducidad = anyoCaducidad;
-	}
-
 }
