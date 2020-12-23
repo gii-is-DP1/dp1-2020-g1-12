@@ -24,11 +24,6 @@ INSERT INTO bloqueos VALUES (3, false, '');
 INSERT INTO bloqueos VALUES (4, false, '');
 INSERT INTO bloqueos VALUES (5, false, '');
 
--- Introducimos clientes.
-
-INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com', 1,'cliente1');
-INSERT INTO clientes VALUES (2, 'Martin', 'C/Konquero 4', '23456119', 'Francisco', '988733111', 'martin@gmail.com', 2,'cliente2');
-
 -- Introducimos vendedores.
 
 INSERT INTO vendedores VALUES (1, 'Lorca', 'C/Galindo 96', '29976789', 'Pepe', '678733221', 'pepe200@gmail.com', 3,'vendedor1');
@@ -134,6 +129,21 @@ INSERT INTO solicitudes VALUES (10, 'Solicitud de venta de Acer Aspire One',5,'A
 									'','Denegada',50,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/31MpIy75yyL._AC_.jpg', 3, 2);
 INSERT INTO solicitudes VALUES (11, 'Solicitud de venta de Apple Macbook Pro',5,'Apple','Macbook Pro',1000.99,
 									'','Pendiente',50,8,'Nuevo','https://images-na.ssl-images-amazon.com/images/I/71VHEQqByPL._AC_SL1500_.jpg', null, 2);
+
+-- Introducimos cestas
+
+INSERT INTO cestas VALUES (1,1688.99);
+INSERT INTO cestas VALUES (2,0.0);
+
+-- Introducimos linea cestas
+
+INSERT INTO lineas_cestas VALUES (1,1,1,1);
+INSERT INTO lineas_cestas VALUES (2,2,6,1);
+
+-- Introducimos clientes.
+
+INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com', 1,1,'cliente1');
+INSERT INTO clientes VALUES (2, 'Martin', 'C/Konquero 4', '23456119', 'Francisco', '988733111', 'martin@gmail.com', 2,2,'cliente2');
 
 -- Introducimos comentarios.
 

@@ -18,7 +18,6 @@ import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.exceptions.PrecioMenorAlEnvioException;
 import org.springframework.samples.dpc.service.exceptions.SolicitudRechazadaSinRespuestaException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -65,7 +64,6 @@ class SolicitudServiceTest {
 
 	}
 	@Test
-	@Transactional
 	void testInsertarSolicitud() throws PrecioMenorAlEnvioException {
 		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
 		int size = pendientes.size();
@@ -80,7 +78,6 @@ class SolicitudServiceTest {
 	}
 	
 	@Test
-	@Transactional
 	void testInsertarSolicitudFallida() throws PrecioMenorAlEnvioException {
 		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
 		int size = pendientes.size();

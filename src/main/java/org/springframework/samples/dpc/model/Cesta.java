@@ -5,7 +5,6 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,7 +15,7 @@ public class Cesta extends BaseEntity{
 	@Column(name = "precioFinal")
 	private Double precioFinal;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cesta", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cesta")
 	private Collection<LineaCesta> lineas;
 
 	public Collection<LineaCesta> getLineas() {
@@ -33,10 +32,10 @@ public class Cesta extends BaseEntity{
 		for(LineaCesta linea: lineas) {
 			Articulo articulo = linea.getArticulo();
 			if(articulo.getOferta().isDisponibilidad()) {
-				result += (articulo.getPrecio() - (articulo.getOferta().getPorcentaje()*articulo.getPrecio())/100);
+				result += (articulo.getPrecio() - (articulo.getOferta().getPorcentaje()*articulo.getPrecio())/100) * linea.getCantidad();
 			}
 			else {
-				result += articulo.getPrecio();
+				result += articulo.getPrecio() * linea.getCantidad();
 			}
 			gastosEnvio += articulo.getGastoEnvio();
 		}
