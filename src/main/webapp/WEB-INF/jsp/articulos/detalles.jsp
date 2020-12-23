@@ -42,8 +42,14 @@
     <img style='width: 40%; height: 20%' alt='' 
 	            	onerror="this.src=''" src='${articulo.urlImagen}'/>
 	<sec:authorize access="hasAuthority('cliente')">
-		<c:if test="${articulo.stock > 0}" >				
-			<br><a style="width:22%;float:right" class="btn btn-primary btn-lg btn-block" role="button" href="#">Añadir al carrito</a>
+		<c:if test="${articulo.stock > 0}" >	
+			<spring:url value="/cesta/añadirArticulo/{articuloId}" var="añadirArticuloUrl">
+		   		<spring:param name="articuloId" value="${articulo.id}"/>
+			</spring:url>
+			<br>
+			<a href="${fn:escapeXml(añadirArticuloUrl)}">
+				<button style="width:22%;float:right" class="btn btn-primary btn-lg btn-block type="submit">Añadir al carrito</button>
+			</a>
 		</c:if>
 	</sec:authorize>
 	

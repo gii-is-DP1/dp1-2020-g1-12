@@ -26,6 +26,9 @@ public class Cliente extends Persona{
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
 	
+	@OneToOne(cascade = CascadeType.ALL,optional=false)
+	private Cesta cesta;
+	
 	@Column(name = "email")
 	@Email
 	private String email;
@@ -33,6 +36,14 @@ public class Cliente extends Persona{
 	@OneToOne(optional=false)
 	private Bloqueo bloqueo;
 
+	public Cesta getCesta() {
+		return cesta;
+	}
+
+	public void setCesta(Cesta cesta) {
+		this.cesta = cesta;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
