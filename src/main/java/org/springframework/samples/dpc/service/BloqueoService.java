@@ -37,10 +37,8 @@ public class BloqueoService {
 	public void usuarioBloqueado(String username) throws UsuarioBloqueadoException {
 		String autoridad = userService.getAuthority(username);
 
-		if (autoridad.equals("vendedor") && vendedorService.getBloqueoVendedor(username).isBloqueado()) {
-			throw new UsuarioBloqueadoException();
-		} 
-		else if (autoridad.equals("cliente") && clienteService.getBloqueoCliente(username).isBloqueado()) {
+		if ((autoridad.equals("vendedor") && vendedorService.getBloqueoVendedor(username).isBloqueado()) ||
+				(autoridad.equals("cliente") && clienteService.getBloqueoCliente(username).isBloqueado())) {
 			throw new UsuarioBloqueadoException();
 		}
 	}
@@ -65,7 +63,7 @@ public class BloqueoService {
 	}
 
 	@Transactional(rollbackFor = BloquearSinDescripcionException.class)
-	public void editar(@Valid Bloqueo bloqueo, Integer id, Boolean bloqueado) throws BloquearSinDescripcionException {
+	public void editar(@Valid Bloqueo bloqueo, Integer id, boolean bloqueado) throws BloquearSinDescripcionException {
 		Bloqueo bloqueoGuardado = findBlockById(id);
 		if (bloqueado) {
 			if (bloqueo.getDescripcion().length() > 10 && bloqueo.getDescripcion().length() < 200) {

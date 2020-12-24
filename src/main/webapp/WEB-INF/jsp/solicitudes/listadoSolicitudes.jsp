@@ -12,7 +12,7 @@
         <tr>
         	<th style="width: 100px;">Marca</th>
         	<th style="width: 200px;">Modelo</th>
-            <th style="width: 600px;">Descripción</th>
+            <th style="width: 1000px;">Descripción</th>
             <th style="width: 200px;">Solicitante</th>
   			<th>Acceso</th>
         </tr>
@@ -27,7 +27,7 @@
                     <c:out value="${solicitudes.modelo}"/>
                 </td>
                 <td>
-                    <c:out value="${solicitudes.descripcion}"/>
+                    <p align="justify">${solicitudes.descripcion}</p>
                 </td>
 				<td>
                     <c:out value="${solicitudes.vendedor.nombre} ${solicitudes.vendedor.apellido} "/>

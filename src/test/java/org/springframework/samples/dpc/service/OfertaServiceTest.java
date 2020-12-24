@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,12 +29,13 @@ class OfertaServiceTest {
 		assertEquals(o, oferta);
 	}
 	
-	@Test
-	void testEdit() {
+	@ParameterizedTest
+	@ValueSource(ints = {10, 30, 40, 60, 70})
+	void testEdit(Integer porcentaje) {
 		Oferta oferta = this.ofertaService.findOfertById(1);
-		oferta.setPorcentaje(10);
+		oferta.setPorcentaje(porcentaje);
 		this.ofertaService.editar(oferta, oferta.getId(), true);
-		assertThat(oferta.getPorcentaje()).isEqualTo(10);
+		assertThat(oferta.getPorcentaje()).isEqualTo(porcentaje);
 	}
 	
 }

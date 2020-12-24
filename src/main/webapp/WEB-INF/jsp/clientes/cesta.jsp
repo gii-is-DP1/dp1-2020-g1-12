@@ -40,7 +40,7 @@
 						<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${linea.articulo.marca} ${linea.articulo.modelo}"></c:out></a>
 	                </td>
 	                <td>
-	                    <input type="number" value="${linea.cantidad}"/>
+	                    <input type="number" min="1" max="${linea.articulo.stock}" value="${linea.cantidad}"/>
 	                </td>
 					<td>
 						<c:if test="${linea.articulo.oferta.disponibilidad}" >
@@ -66,7 +66,7 @@
 	        <tr>
 	        	<td></td>
 	        	<td>Importe total:</td>
-	        	<td><c:out value="${cesta.precioFinal} €"/></td>
+	        	<td><fmt:formatNumber type="number" maxFractionDigits="2" value="${cesta.precioFinal}"/> €</td>
 	        	<td></td>
 	        </tr> 
 	        </tbody>
