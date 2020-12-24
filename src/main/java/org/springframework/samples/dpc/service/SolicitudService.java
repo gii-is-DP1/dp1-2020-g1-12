@@ -62,6 +62,7 @@ public class SolicitudService {
 		oferta.setDisponibilidad(false);
 		oferta.setPorcentaje(5);
 		Articulo articulo = new Articulo();
+		articulo.setDescripcion(solicitud.getDescripcion());
 		articulo.setGastoEnvio(solicitud.getGastoEnvio());
 		articulo.setMarca(solicitud.getMarca());
 		articulo.setModelo(solicitud.getModelo());

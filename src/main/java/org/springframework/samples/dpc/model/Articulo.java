@@ -15,6 +15,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
@@ -26,6 +27,10 @@ public class Articulo extends Producto{
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "articulo", fetch = FetchType.EAGER)
 	private Collection<Comentario> comentarios;
+	
+	@Column(name = "descripcion")
+	@Length(min=10,max=5000)
+	private String descripcion;
 	
 	@Column(name = "urlImagen")
 	@URL
@@ -74,6 +79,14 @@ public class Articulo extends Producto{
 	@Override
 	public void setMarca(String marca) {
 		this.marca = marca;
+	}
+	
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public String getUrlImagen() {

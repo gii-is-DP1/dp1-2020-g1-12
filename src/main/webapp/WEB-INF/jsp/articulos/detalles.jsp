@@ -52,7 +52,8 @@
 			</a>
 		</c:if>
 	</sec:authorize>
-	
+	<p align="justify"><br><br>${articulo.descripcion}</p>
+	<br>
 	<table class="table table-borderless">
         <tr>
             <th style="width: 600px;">Vendedor</th>

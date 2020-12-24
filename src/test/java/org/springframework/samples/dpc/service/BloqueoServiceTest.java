@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,18 +24,20 @@ class BloqueoServiceTest {
 		this.bloqueoService = bloqueoService;
 	}
 	
-	@Test
-	void testEdit() throws BloquearSinDescripcionException{
+	@ParameterizedTest
+	@ValueSource(strings = {"Bloqueado por intento de fraude", "Bloqueado por venta ilegal"})
+	void testEdit(String descripcion) throws BloquearSinDescripcionException{
 		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
-		bloqueo.setDescripcion("HOLA ME LLAMO PEPE");
+		bloqueo.setDescripcion(descripcion);
 		this.bloqueoService.editar(bloqueo, bloqueo.getId(), true);
 		assertTrue(bloqueo.isBloqueado());	
 	}
 	
-	@Test
-	void testEditConExcepcion() throws BloquearSinDescripcionException{
+	@ParameterizedTest
+	@ValueSource(strings = {"" , "Bloqueado"})
+	void testEditConExcepcion(String descripcion) throws BloquearSinDescripcionException{
 		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
-		bloqueo.setDescripcion("HOLA");
+		bloqueo.setDescripcion(descripcion);
 		assertThrows(BloquearSinDescripcionException.class,
 				() -> this.bloqueoService.editar(bloqueo, bloqueo.getId(), true));	
 	}
