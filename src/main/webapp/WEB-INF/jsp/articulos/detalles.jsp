@@ -17,6 +17,20 @@
 	        	return opcion;
 	        }
         </script>
+        <script>
+			function vermas(id){
+				if(id=="mas"){
+					document.getElementById("desplegar").style.display="block";   
+					document.getElementById("mas").style.display="none"; 
+					document.getElementById("noDesplegar").style.display="none"; 					
+				}
+				else{
+					document.getElementById("desplegar").style.display="none";
+					document.getElementById("mas").style.display="inline";
+					document.getElementById("noDesplegar").style.display="block";   
+				}
+			}
+        </script>
     </jsp:attribute>
     
     <jsp:body>
@@ -39,8 +53,22 @@
     </form:form>
     <h1>${articulo.marca} ${' '} ${articulo.modelo}</h1>
     
-    <img style='width: 40%; height: 20%' alt='' 
-	            	onerror="this.src=''" src='${articulo.urlImagen}'/>
+    <div style="display:flex;">
+	    <div style="width:50%; height:100%">
+		    <img style='width: 70%; height: 100%' alt='' onerror="this.src=''" src='${articulo.urlImagen}'/>
+		</div>
+		<div style="width:50%;">
+			<p id="noDesplegar"align="justify">${articulo.descripcion.substring(0, articulo.descripcion.length()/2)}...
+				<br><br>
+			</p>
+			
+			<a onclick="vermas('mas');" id="mas">Leer más</a>
+			<p id="desplegar" style="display: none;" align="justify">${articulo.descripcion}
+				<br><br>
+				<a onclick="vermas('menos');" id="menos">Leer menos</a>
+			</p>
+		</div>
+	</div>
 	<sec:authorize access="hasAuthority('cliente')">
 		<c:if test="${articulo.stock > 0}" >	
 			<spring:url value="/cesta/añadirArticulo/{articuloId}" var="añadirArticuloUrl">
@@ -52,7 +80,6 @@
 			</a>
 		</c:if>
 	</sec:authorize>
-	<p align="justify"><br><br>${articulo.descripcion}</p>
 	<br>
 	<table class="table table-borderless">
         <tr>
