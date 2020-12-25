@@ -20,6 +20,7 @@ import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Oferta;
 import org.springframework.samples.dpc.model.Tipo;
 import org.springframework.samples.dpc.service.ArticuloService;
+import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.ComentarioService;
 import org.springframework.samples.dpc.service.GeneroService;
 import org.springframework.samples.dpc.service.VendedorService;
@@ -42,6 +43,9 @@ class ArticuloControllerTest {
 	
 	@MockBean 
 	private ComentarioService comentarioService;
+
+	@MockBean 
+	private CestaService cestaService;
 	
 	@MockBean 
 	private GeneroService generoService;

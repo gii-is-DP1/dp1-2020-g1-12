@@ -70,7 +70,7 @@
 		</div>
 	</div>
 	<sec:authorize access="hasAuthority('cliente')">
-		<c:if test="${articulo.stock > 0}" >	
+		<c:if test="${articulo.stock > 0 && puedeComprar}" >	
 			<spring:url value="/cesta/añadirArticulo/{articuloId}" var="añadirArticuloUrl">
 		   		<spring:param name="articuloId" value="${articulo.id}"/>
 			</spring:url>

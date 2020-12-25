@@ -7,6 +7,7 @@ import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
+import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.ComentarioService;
 import org.springframework.samples.dpc.service.GeneroService;
 import org.springframework.samples.dpc.service.VendedorService;
@@ -24,17 +25,19 @@ public class ArticuloController {
 	private final ArticuloService articuloService;
 	private final VendedorService vendedorService;
 	private final ComentarioService comentarioService;
+	private final CestaService cestaService;
 	private final GeneroService generoService;
 	private static final String generos = "generos";
 	private static final String query = "query";
 
 	@Autowired
 	public ArticuloController(ArticuloService articuloService, VendedorService vendedorService,
-			ComentarioService comentarioService, GeneroService generoService) {
+			ComentarioService comentarioService, GeneroService generoService, CestaService cestaService) {
 		this.articuloService = articuloService;
 		this.vendedorService = vendedorService;
 		this.comentarioService = comentarioService;
 		this.generoService = generoService;
+		this.cestaService = cestaService;
 	}
 
 	@GetMapping()
@@ -59,13 +62,15 @@ public class ArticuloController {
 		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo);
 		Boolean puedeComentar = comentarioService.puedeComentar(articuloId);
 		Double valoracion = comentarioService.getValoracionDeUnArticulo(articuloId);
-
+		Boolean puedeComprar = cestaService.articuloEnCesta(articuloId);
+		System.out.println(puedeComprar + "=============================================================");
 		modelMap.addAttribute(generos, generoService.findAllGeneros());
 		modelMap.addAttribute("articulo", articulo);
 		modelMap.addAttribute(query, new Articulo());
 		modelMap.addAttribute("vendedor", vendedor);
 		modelMap.addAttribute("valoracion", valoracion);
 		modelMap.addAttribute("puedeComentar", puedeComentar);
+		modelMap.addAttribute("puedeComprar", puedeComprar);
 		modelMap.addAttribute("comentarios", comentarios);
 		modelMap.addAttribute("relacionados", relacionados);
 		return vista;
