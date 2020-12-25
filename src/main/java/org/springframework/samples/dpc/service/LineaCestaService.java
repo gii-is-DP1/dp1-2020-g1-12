@@ -15,7 +15,6 @@ public class LineaCestaService {
 	private LineaCestaRepository lineaCestaRepository;
 	private ArticuloService articuloService;
 	public LineaCestaService(LineaCestaRepository lineaCestaRepository, ArticuloService articuloService) {
-		super();
 		this.lineaCestaRepository = lineaCestaRepository;
 		this.articuloService = articuloService;
 	}
@@ -23,7 +22,6 @@ public class LineaCestaService {
 	
 	@Transactional
 	public void crearLinea(Integer articuloId,Cesta cesta) {
-		
 		Articulo articulo = articuloService.findArticuloById(articuloId);
 		LineaCesta lineaCesta = new LineaCesta();
 		lineaCesta.setArticulo(articulo);
@@ -35,7 +33,7 @@ public class LineaCestaService {
 	@Transactional
 	public LineaCesta findLineaById(Integer lineaId) {
 		Optional<LineaCesta> c = lineaCestaRepository.findById(lineaId);
-		return c.isPresent() ? c.get():null;
+		return c.isPresent() ? c.get() : null;
 	}
 	
 	@Transactional
