@@ -43,7 +43,6 @@ class SolicitudServiceTest {
 	@Test
 	void testBuscarSolicitudPorId() {
 		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID);
-		assertThat(solicitud.getDescripcion()).isEqualTo("MSI aprovecha el espíritu de exploración y creatividad al diseñar la mejor colección de computadoras portátiles: la serie Prestige. Para seguir empujando los límites creativos, estas máquinas finamente diseñadas no solo muestran un gusto único, sino que también son inmensamente poderosas. Es hora de dejar volar la inspiración y crear nuestros propios momentos en la vida. Posee un procesador Tiger lake i7-1185G7, memoria DDRIV 16GB*2 (3200MHz) y un almacenamiento 1TB NVMe PCIe Gen4x4 SSD, además de una gráfica GeForce® GTX 1650 Ti MAX Q, GDDR5 4GB.");
 		assertThat(solicitud.getPrecio()).isEqualTo(988.99);
 		assertThat(solicitud.getModelo()).isEqualTo("Prestige Evo A11M-003ES");
 		assertThat(solicitud.getArticulo().getMarca()).isEqualTo("MSI");
