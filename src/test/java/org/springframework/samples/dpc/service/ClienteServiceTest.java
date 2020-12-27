@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ class ClienteServiceTest {
 		c.setUser(user);
 		Cesta cesta = new Cesta();
 		cesta.setId(c.getId());
-		Collection<LineaCesta> lineaCesta = new ArrayList<>();
+		List<LineaCesta> lineaCesta = new ArrayList<>();
 		cesta.setLineas(lineaCesta);
 		c.setCesta(cesta);
 		this.clienteService.guardar(c);
