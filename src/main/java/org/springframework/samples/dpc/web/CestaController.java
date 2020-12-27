@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CestaController {
 	
 	
-	private final CestaService cestaService;
+	private CestaService cestaService;
+	
 	
 	@Autowired
 	public CestaController(CestaService cestaService) {
@@ -32,6 +34,12 @@ public class CestaController {
 	public String anyadirArticuloCesta(ModelMap modelMap,@PathVariable("articuloId") int articuloId) {
 		cestaService.anyadirLineaCesta(articuloId);
 		return "redirect:/articulos/{articuloId}";
+	}
+	
+	@PostMapping(value="/actualizar")
+	public String modificarArticulosCesta(Cesta cesta) {
+		cestaService.actualizarCesta(cesta);
+		return "redirect:/cesta";
 	}
 	
 	@GetMapping("/eliminar/{lineaId}")

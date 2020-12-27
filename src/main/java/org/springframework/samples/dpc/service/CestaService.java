@@ -63,4 +63,17 @@ public class CestaService {
 				.filter(x -> x.getArticulo().getId().equals(articuloId)).findFirst().isPresent() : false;
 	}
 	
+	@Transactional
+	public void actualizarCesta(Cesta cesta) {
+		Cesta cestaSesion = obtenerCestaCliente();
+		
+		for(int i=0; i<=cestaSesion.getLineas().size()-1;i++) {
+			if(cestaSesion.getLineas().get(i)!=cesta.getLineas().get(i)) {
+				lineaCestaService.findLineaById(cesta.getLineas().get(i).getId()).setCantidad(cesta.getLineas().get(i).getCantidad());
+				cestaSesion.getLineas().get(i).setCantidad(cesta.getLineas().get(i).getCantidad());
+			}
+		}
+
+	}
+	
 }

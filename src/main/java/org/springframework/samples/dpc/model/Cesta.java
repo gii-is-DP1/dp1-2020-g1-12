@@ -1,6 +1,6 @@
 package org.springframework.samples.dpc.model;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,13 +16,13 @@ public class Cesta extends BaseEntity{
 	private Double precioFinal;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cesta")
-	private Collection<LineaCesta> lineas;
+	private List<LineaCesta> lineas;
 
-	public Collection<LineaCesta> getLineas() {
+	public List<LineaCesta> getLineas() {
 		return lineas;
 	}
 
-	public void setLineas(Collection<LineaCesta> lineas) {
+	public void setLineas(List<LineaCesta> lineas) {
 		this.lineas = lineas;
 	}
 	
