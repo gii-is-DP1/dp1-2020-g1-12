@@ -59,7 +59,7 @@
 					</dpc:menuItem>
 				</sec:authorize>
 				
-				<dpc:menuItem active="${name eq 'error'}" url="/oups"
+				<dpc:menuItem active="${name eq 'error'}" url="/error"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>

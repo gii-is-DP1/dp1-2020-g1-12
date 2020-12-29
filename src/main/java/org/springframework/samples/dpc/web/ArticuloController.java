@@ -63,7 +63,7 @@ public class ArticuloController {
 		Boolean puedeComentar = comentarioService.puedeComentar(articuloId);
 		Double valoracion = comentarioService.getValoracionDeUnArticulo(articuloId);
 		Boolean puedeComprar = cestaService.articuloEnCesta(articuloId);
-		System.out.println(puedeComprar + "=============================================================");
+
 		modelMap.addAttribute(generos, generoService.findAllGeneros());
 		modelMap.addAttribute("articulo", articulo);
 		modelMap.addAttribute(query, new Articulo());

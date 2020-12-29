@@ -86,7 +86,7 @@ public class UserController {
 			vendedor.setBloqueo(b);
 			this.vendedorService.guardar(vendedor);
 			this.authoritiesService.saveAuthorities(vendedor.getUser().getUsername(), "vendedor");
-			return "redirect:/registro";
+			return "redirect:/login";
 		}
 	}
 
@@ -112,7 +112,7 @@ public class UserController {
 			cliente.setCesta(cesta);
 			this.clienteService.guardar(cliente);
 			this.authoritiesService.saveAuthorities(cliente.getUser().getUsername(), "cliente");
-			return "redirect:/registro";
+			return "redirect:/login";
 		}
 	}
 
