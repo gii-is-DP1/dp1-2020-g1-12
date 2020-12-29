@@ -76,7 +76,7 @@
 			</spring:url>
 			<br>
 			<a href="${fn:escapeXml(añadirArticuloUrl)}">
-				<button style="width:22%;float:right" class="btn btn-primary btn-lg btn-block type="submit">Añadir al carrito</button>
+				<button style="width:22%;float:right" class="btn btn-primary btn-lg btn-block" type="submit">Añadir al carrito</button>
 			</a>
 		</c:if>
 	</sec:authorize>

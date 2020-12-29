@@ -62,7 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/generos/**").hasAnyAuthority(vendedor)
 				.antMatchers("/comentario/eliminar/**").hasAnyAuthority(moderador)
 				.antMatchers("/comentario/**").hasAnyAuthority(cliente, moderador, vendedor)
-				.antMatchers("/articulos/{articuloId}").permitAll().anyRequest().denyAll().and()
+				.antMatchers("/articulos/{articuloId}").permitAll().and()
 				.formLogin()
 				.loginPage("/login") 
 				.failureUrl("/login-error").and().logout();

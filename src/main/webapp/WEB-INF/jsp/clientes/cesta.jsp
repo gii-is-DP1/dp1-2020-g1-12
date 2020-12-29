@@ -22,13 +22,13 @@
     
 	    <h2>Mi cesta</h2>
 		<form:form modelAttribute="cesta" action="/cesta/actualizar" class="form-horizontal" >	
-		    <table id="articulosTable" class="table table-striped">
+		    <table style="text-align: center" id="articulosTable" class="table table-striped">
 		        <thead>
 		        <tr>
-		            <th style="width: 150px;">Producto</th>
-		            <th style="width: 30px;">Cantidad</th>
-		            <th style="width: 30px;">Precio unidad</th>
-		            <th style="width: 50px">Acción</th>
+		            <th style="width: 100px;text-align: center">Producto</th>
+		            <th style="width: 10px;text-align: center">Cantidad</th>
+		            <th style="width: 20px;text-align: center">Precio unidad</th>
+		            <th style="width: 20px;text-align: center">Acción</th>
 		        </tr>
 		        </thead>
 		        <tbody>
@@ -41,7 +41,7 @@
 							<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${linea.articulo.marca} ${linea.articulo.modelo}"></c:out></a>
 		                </td>
 		                <td>
-		                    <form:input path="lineas[${status.index}].cantidad" type="number" min="1" max= "${linea.articulo.stock}" value="${linea.cantidad}"/>
+		                    <form:input onchange="this.form.submit();" style="border-radius: 5px; width:38%; text-align: center" path="lineas[${status.index}].cantidad" type="number" min="1" max= "${linea.articulo.stock}" value="${linea.cantidad}"/>
 		                    <form:input path="lineas[${status.index}].id" type="hidden" value="${linea.id}"/>
 		                    <form:input path="lineas[${status.index}].articulo.id" type="hidden" value="${linea.articulo.id}"/>
 		                </td>
@@ -59,7 +59,7 @@
 						<spring:url value="/cesta/eliminar/{lineaId}" var="eliminarLineaCestaUrl">
 		                	<spring:param name="lineaId" value="${linea.id}"/>
 		                </spring:url>
-		                <a onclick="return alerta()" class="glyphicon glyphicon-remove-circle" 
+		                <a onclick="return alerta()" title="Eliminar artículo" class="glyphicon glyphicon-remove-circle" 
 		                	style="color: #F03232; text-decoration: none" href="${fn:escapeXml(eliminarLineaCestaUrl)}">
 		                 </a>
 						
@@ -74,10 +74,8 @@
 	        </tr> 
 	        </tbody>
 	    </table>
-		<div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-				<button class="btn btn-default" type="submit">Actualizar</button>
-            </div>
+        <div class="col-sm-offset-5">
+			<a href="#"><button class="btn btn-default" >Tramitar pedido</button></a>
         </div>
 	</form:form>
     </jsp:body>
