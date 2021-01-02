@@ -2,6 +2,8 @@ package org.springframework.samples.dpc.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
@@ -14,11 +16,14 @@ public class VendedorService {
 
 	private final VendedorRepository vendedorRepository;
 	private final UserService userService;
-
+	private final ClienteService clienteService;
+	
 	@Autowired
-	public VendedorService(VendedorRepository vendedorRepository, UserService userService) {
+	public VendedorService(VendedorRepository vendedorRepository, UserService userService, 
+			ClienteService clienteService) {
 		this.vendedorRepository = vendedorRepository;
 		this.userService = userService;
+		this.clienteService = clienteService;
 	}
 
 	@Transactional
@@ -67,8 +72,9 @@ public class VendedorService {
 		return vendedorRepository.findByDni(dni);
 	}
 
-	public Iterable<Vendedor> findAllSeller() {
-		return vendedorRepository.findAll();
+	public Page<Vendedor> findAllSeller(Integer page, Integer size, String orden) {
+		Pageable pageable = clienteService.obtenerFiltros(page, size, orden);
+		return vendedorRepository.findAll(pageable);
 	}
 	
 	@Transactional(readOnly = true)

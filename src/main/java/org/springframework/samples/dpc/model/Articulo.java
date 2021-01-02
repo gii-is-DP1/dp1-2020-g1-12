@@ -45,7 +45,6 @@ public class Articulo extends Producto{
 	@Min(0)
 	@Max(500)
 	@NotNull(message="El stock no puede estar vacío.")
-
 	private Integer stock;
 	
 	@Column(name = "tipo")

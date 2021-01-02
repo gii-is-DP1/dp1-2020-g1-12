@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.web;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ClienteService;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/clientes")
@@ -55,14 +57,24 @@ public class ClienteController {
 	}
 	
 	@GetMapping()
-	 public String listadoCliente(ModelMap modelMap) {
-		String vista = "moderadores/listadoClientes";
-		Iterable<Cliente> clientes = clienteService.findAllClient();
-		Iterable<Vendedor> vendedores = vendedorService.findAllSeller();
-
+	 public String listadoCliente(@RequestParam(name = "ClientPage", defaultValue = "0", required = false) Integer clientPage,
+				@RequestParam(name = "clientSize", defaultValue = "10", required = false) Integer clientSize,
+				@RequestParam(name = "orderClientBy", defaultValue = "nombre", required = false) String ordenCliente,
+				@RequestParam(name = "sellerPage", defaultValue = "0", required = false) Integer sellerPage,
+				@RequestParam(name = "sellerSize", defaultValue = "10", required = false) Integer sellerSize,
+				@RequestParam(name = "orderSellerBy", defaultValue = "nombre", required = false) String ordenVendedor, ModelMap modelMap) {
+		Page<Cliente> clientes = clienteService.findAllClient(clientPage, clientSize, ordenCliente);
+		Page<Vendedor> vendedores = vendedorService.findAllSeller(sellerPage, sellerSize, ordenVendedor);
+		String signoCliente = clientes.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
+		String ordenacionCliente = signoCliente + clientes.getSort().get().findAny().get().getProperty();	//de página se siga usando el filtro seleccionado
+		String signoVendedor = vendedores.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
+		String ordenacionVendedor = signoVendedor + vendedores.getSort().get().findAny().get().getProperty();	//de página se siga usando el filtro seleccionado
+		
 		modelMap.addAttribute("clientes",clientes);
 		modelMap.addAttribute("vendedores",vendedores);
-		return vista;
+		modelMap.addAttribute("ordenacionCliente", ordenacionCliente);
+		modelMap.addAttribute("ordenacionVendedor", ordenacionVendedor);
+		return "moderadores/listadoClientes";
 	}
 
 

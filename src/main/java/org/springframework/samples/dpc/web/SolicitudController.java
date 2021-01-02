@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.web;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.SolicitudService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -35,11 +37,19 @@ public class SolicitudController {
 	}
 	
 	@GetMapping()
-	public String listadoSolicitud(ModelMap modelMap) {
+	public String listadoSolicitud(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, 
+			ModelMap modelMap) {
 		String vista = "solicitudes/listadoSolicitudes";
 
-		Iterable<Solicitud> solicitudes = solicitudService.solicitudesPendientes();
+		Page<Solicitud> solicitudes = solicitudService.solicitudesPendientes(page, size, orden);
+		String signo = solicitudes.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
+		String ordenacion = signo + solicitudes.getSort().get().findAny().get().getProperty();	//de página se siga usando el filtro seleccionado
+		
 		modelMap.addAttribute("solicitudes",solicitudes);
+		modelMap.addAttribute("ordenacion", ordenacion);
+
 		return vista;
 	}
 	
@@ -55,7 +65,7 @@ public class SolicitudController {
 	public String aceptarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
 		solicitudService.aceptarSolicitud(solicitudId);
 		modelMap.addAttribute(mensaje, "La solicitud ha sido aceptada correctamente");
-		return listadoSolicitud(modelMap);
+		return listadoSolicitud(0, 10, "-id", modelMap);
 	}
 	
 	@PostMapping(value="/{solicitudId}/denegar")
@@ -70,7 +80,7 @@ public class SolicitudController {
 			modelMap.addAttribute(mensaje, "La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
 			return mostrarSolicitud(solicitudId, modelMap);
 		}
-		return listadoSolicitud(modelMap);
+		return listadoSolicitud(0, 10, "-id", modelMap);
 	}
 	
 	@GetMapping(path="/new")
