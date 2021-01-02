@@ -1,6 +1,8 @@
 package org.springframework.samples.dpc.repository;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,7 @@ public interface ClienteRepository extends CrudRepository<Cliente, Integer> {
 
 	@Query("select u.bloqueo from Cliente u where u.user.username = :username")
 	Bloqueo clienteBloqueo(@Param("username") String username) throws DataAccessException;
+	
+	@Query("select u from Cliente u")
+	Page<Cliente> findAll(Pageable pageable) throws DataAccessException;
 }

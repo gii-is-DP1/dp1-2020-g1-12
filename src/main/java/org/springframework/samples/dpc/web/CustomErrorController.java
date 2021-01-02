@@ -44,6 +44,11 @@ public class CustomErrorController implements ErrorController {
 				request.setAttribute("gif", "/resources/images/403.gif");
 				return "exception";
 			}
+			else if (statusCode == HttpStatus.BAD_REQUEST.value()) {
+				request.setAttribute("mensaje", "El párametro de búsqueda introducido no es válido.");
+				request.setAttribute("gif", "/resources/images/error.gif");
+				return "exception";				
+			}
 		}
 		request.setAttribute("mensaje", "¡Vaya! Ha ocurrido un error...");
 		request.setAttribute("gif", "/resources/images/error.gif");

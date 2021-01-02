@@ -36,7 +36,7 @@ class SolicitudServiceTest {
 
 	@Test
 	void testListadoDeSolicitudesPendientes() {
-		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
+		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertThat(pendientes.size()).isEqualTo(1);
 	}
 
@@ -66,7 +66,7 @@ class SolicitudServiceTest {
 	}
 	@Test
 	void testInsertarSolicitud() throws PrecioMenorAlEnvioException {
-		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
+		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		int size = pendientes.size();
 
 		Solicitud sol = arrange();
@@ -74,13 +74,13 @@ class SolicitudServiceTest {
         this.solicitudService.guardar(sol,vendedor);
 		assertThat(sol.getId().longValue()).isNotZero();
 
-		pendientes = this.solicitudService.solicitudesPendientes();
+		pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertThat(pendientes.size()).isEqualTo(size + 1);
 	}
 	
 	@Test
 	void testInsertarSolicitudFallida() throws PrecioMenorAlEnvioException {
-		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
+		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		int size = pendientes.size();
 
 		Solicitud sol = arrange();
@@ -89,7 +89,7 @@ class SolicitudServiceTest {
         
         assertThrows(PrecioMenorAlEnvioException.class ,() -> this.solicitudService.guardar(sol,vendedor));
 
-		pendientes = this.solicitudService.solicitudesPendientes();
+		pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertThat(pendientes.size()).isEqualTo(size);
 	}
 	
@@ -127,7 +127,7 @@ class SolicitudServiceTest {
 
 	@Test
 	void testBuscarSolicitudPorProveedorId() {
-		List<Solicitud> solicitud = this.solicitudService.getsolicitudesByProvider(VENDEDOR_ID);
+		List<Solicitud> solicitud = this.solicitudService.getsolicitudesByProvider(VENDEDOR_ID, 0, 100, "id").getContent();
 		assertThat(solicitud.size()).isEqualTo(5);
 		assertThat(solicitud.get(0).getId()).isEqualTo(1);
 		assertThat(solicitud.get(1).getId()).isEqualTo(2);
@@ -142,7 +142,7 @@ class SolicitudServiceTest {
 	void testEliminarSolicitud() {
 		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_PENDIENTE_ID);
 		solicitudService.eliminarSolicitud(solicitud);
-		List<Solicitud> aux = solicitudService.solicitudesPendientes();
+		List<Solicitud> aux = solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertFalse(aux.contains(solicitud));
 	}
 }

@@ -3,6 +3,9 @@ package org.springframework.samples.dpc.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Vendedor;
@@ -17,10 +20,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
 public class ArticuloController {
+
+	@Bean
+	public PageableHandlerMethodArgumentResolver pageableResolver2() {
+		return new PageableHandlerMethodArgumentResolver();
+	}
 
 	private final ArticuloService articuloService;
 	private final VendedorService vendedorService;
@@ -41,21 +50,26 @@ public class ArticuloController {
 	}
 
 	@GetMapping()
-	public String listadoArticulos(ModelMap modelMap) {
-		String vista = "articulos/principal";
+	public String listadoArticulos(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden,
+			ModelMap modelMap) {
 
-		List<Articulo> articulos = articuloService.articulosDisponibles();
+		Page<Articulo> articulos = articuloService.articulosDisponibles(page, size, orden);
 		List<Articulo> ofertas = articuloService.ofertasRandomAcotada();
+		String signo = articulos.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
+		String ordenacion = signo + articulos.getSort().get().findAny().get().getProperty();	//de página se siga usando el filtro seleccionado
+		
 		modelMap.addAttribute(generos, generoService.findAllGeneros());
 		modelMap.addAttribute("articulos", articulos);
+		modelMap.addAttribute("ordenacion", ordenacion);
 		modelMap.addAttribute("ofertas", ofertas);
 		modelMap.addAttribute(query, new Articulo());
-		return vista;
+		return "articulos/principal";
 	}
 
 	@GetMapping(value = "/articulos/{articuloId}")
 	public String detallesArticulo(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
-		String vista = "articulos/detalles";
 		Articulo articulo = articuloService.findArticuloById(articuloId);
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		List<Comentario> comentarios = comentarioService.getComentariosDeUnArticulo(articuloId);
@@ -73,16 +87,19 @@ public class ArticuloController {
 		modelMap.addAttribute("puedeComprar", puedeComprar);
 		modelMap.addAttribute("comentarios", comentarios);
 		modelMap.addAttribute("relacionados", relacionados);
-		return vista;
+		return "articulos/detalles";
 	}
 
 	@PostMapping(value = "/busqueda")
-	public String busqueda(Articulo articulo, ModelMap modelMap) {
+	public String busqueda(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden,
+			Articulo articulo, ModelMap modelMap) {
 		String vista = "/articulos/principal";
 		if (articulo.getModelo().isEmpty() && articulo.getGeneros() == null) {
-			return listadoArticulos(modelMap);
+			return "redirect:/";
 		}
-		List<Articulo> articulos = articuloService.busqueda(articulo);
+		Page<Articulo> articulos = articuloService.busqueda(articulo, page, size, orden);
 		modelMap.addAttribute(generos, generoService.findAllGeneros());
 		modelMap.addAttribute(query, new Articulo());
 		modelMap.addAttribute("articulos", articulos);
