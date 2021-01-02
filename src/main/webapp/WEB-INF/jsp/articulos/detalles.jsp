@@ -148,7 +148,7 @@
 			<br><br>
 		</c:if>
 		<h2>Comentarios:</h2>	
-		<c:if test="${articulo.comentarios.size() == 0}">
+		<c:if test="${articulo.comentarios.size() == 0 && puedeComentar}">
 			<p>Sé el primero en comentar.</p>
 		</c:if>
 		<c:forEach items="${comentarios}" var="comentario">
