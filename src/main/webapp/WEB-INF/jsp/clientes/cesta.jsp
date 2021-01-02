@@ -21,6 +21,7 @@
     <jsp:body>
     
 	    <h2>Mi cesta</h2>
+	    <c:if test="${cesta.lineas.size() != 0}">
 		<form:form modelAttribute="cesta" action="/cesta/actualizar" class="form-horizontal" >	
 		    <table style="text-align: center" id="articulosTable" class="table table-striped">
 		        <thead>
@@ -78,5 +79,9 @@
 			<a href="#"><button class="btn btn-default" >Tramitar pedido</button></a>
         </div>
 	</form:form>
+	</c:if>
+	<c:if test="${cesta.lineas.size() == 0}">
+		<h3>No se han añadido artículos a la cesta</h3>
+	</c:if>
     </jsp:body>
 </dpc:layout>
