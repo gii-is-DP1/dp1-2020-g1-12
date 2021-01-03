@@ -10,11 +10,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "cestas")
-public class Cesta extends BaseEntity{
-	
+public class Cesta extends BaseEntity {
+
 	@Column(name = "precioFinal")
 	private Double precioFinal;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cesta")
 	private List<LineaCesta> lineas;
 
@@ -25,16 +25,16 @@ public class Cesta extends BaseEntity{
 	public void setLineas(List<LineaCesta> lineas) {
 		this.lineas = lineas;
 	}
-	
+
 	public Double getPrecioFinal() {
 		Double result = 0.;
 		Double gastosEnvio = 0.;
-		for(LineaCesta linea: lineas) {
+		for (LineaCesta linea : lineas) {
 			Articulo articulo = linea.getArticulo();
-			if(articulo.getOferta().isDisponibilidad()) {
-				result += (articulo.getPrecio() - (articulo.getOferta().getPorcentaje()*articulo.getPrecio())/100) * linea.getCantidad();
-			}
-			else {
+			if (articulo.getOferta().isDisponibilidad()) {
+				result += (articulo.getPrecio() - (articulo.getOferta().getPorcentaje() * articulo.getPrecio()) / 100)
+						* linea.getCantidad();
+			} else {
 				result += articulo.getPrecio() * linea.getCantidad();
 			}
 			gastosEnvio += articulo.getGastoEnvio();
@@ -42,5 +42,5 @@ public class Cesta extends BaseEntity{
 		result += gastosEnvio;
 		return result;
 	}
-	
+
 }

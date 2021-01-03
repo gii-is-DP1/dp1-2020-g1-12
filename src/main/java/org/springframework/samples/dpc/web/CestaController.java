@@ -1,7 +1,11 @@
 package org.springframework.samples.dpc.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Cesta;
+import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,38 +17,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/cesta")
 public class CestaController {
-	
+
 	private CestaService cestaService;
-	
+
 	@Autowired
 	public CestaController(CestaService cestaService) {
 		this.cestaService = cestaService;
 	}
-	
+
 	@GetMapping()
 	public String listadoCesta(ModelMap modelMap) {
 		Cesta cesta = cestaService.obtenerCestaCliente();
-		modelMap.addAttribute("cesta",cesta);
+		modelMap.addAttribute("cesta", cesta);
 		return "clientes/cesta";
 	}
-	
+
 	@GetMapping("/añadirArticulo/{articuloId}")
-	public String anyadirArticuloCesta(ModelMap modelMap,@PathVariable("articuloId") int articuloId) {
+	public String anyadirArticuloCesta(ModelMap modelMap, @PathVariable("articuloId") int articuloId) {
 		cestaService.anyadirLineaCesta(articuloId);
 		return "redirect:/articulos/{articuloId}";
 	}
-	
-	@PostMapping(value="/actualizar")
+
+	@PostMapping(value = "/actualizar")
 	public String modificarArticulosCesta(Cesta cesta) {
 		cestaService.actualizarCesta(cesta);
 		return "redirect:/cesta";
 	}
-	
+
 	@GetMapping("/eliminar/{lineaId}")
-	public String eliminarArticuloCesta(ModelMap modelMap,@PathVariable("lineaId") int lineaId) {
+	public String eliminarArticuloCesta(ModelMap modelMap, @PathVariable("lineaId") int lineaId) {
 		cestaService.eliminarLineaCesta(lineaId);
 		return "redirect:/cesta";
 	}
 
+	@GetMapping("/tramitarPedido")
+	public String tramitarPedido() {
+		List<LineaCesta> lineas = cestaService.obtenerCestaCliente().getLineas();
+		for (LineaCesta linea : lineas) {
+			Articulo articulo = linea.getArticulo();
+			articulo.setStock(articulo.getStock() - linea.getCantidad());
+			cestaService.actualizarCesta(cestaService.obtenerCestaCliente());
+		}
+		cestaService.eliminarLineasCesta(lineas);
+		cestaService.actualizarCesta(cestaService.obtenerCestaCliente());
+		return "redirect:/";
+	}
 
 }
