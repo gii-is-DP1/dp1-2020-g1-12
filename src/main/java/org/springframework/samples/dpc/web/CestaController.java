@@ -7,6 +7,7 @@ import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.service.CestaService;
+import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CestaController {
 
 	private CestaService cestaService;
+	private VendedorService vendedorService;
 
 	@Autowired
-	public CestaController(CestaService cestaService) {
+	public CestaController(CestaService cestaService, VendedorService vendedorService) {
 		this.cestaService = cestaService;
+		this.vendedorService = vendedorService;
 	}
 
 	@GetMapping()
@@ -56,6 +59,7 @@ public class CestaController {
 		for (LineaCesta linea : lineas) {
 			Articulo articulo = linea.getArticulo();
 			articulo.setStock(articulo.getStock() - linea.getCantidad());
+//			vendedorService.vendedorDeUnArticulo(articulo.getId());
 			cestaService.actualizarCesta(cestaService.obtenerCestaCliente());
 		}
 		cestaService.eliminarLineasCesta(lineas);
