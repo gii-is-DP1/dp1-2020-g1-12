@@ -4,24 +4,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.Length;
-
 @Entity
 @Table(name = "tarjetasCredito")
 public class TarjetaCredito extends BaseEntity{
 	
 	@Column(name = "titular")
-	@Length(min = 8, max = 50)
 	private String titular;
 	
 	@Column(name = "numero")
-	//@Digits(fraction = 0, integer = 9)
-	@Length(min = 16, max = 16)
 	private String numero;
 	
 	@Column(name = "cvv")
-	//@Digits(fraction = 0, integer = 9)
-	@Length(min = 3, max = 3)
 	private String cvv;
 
 	@Column(name = "fechaCaducidad")
