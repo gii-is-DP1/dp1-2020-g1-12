@@ -2,15 +2,17 @@ package org.springframework.samples.dpc.web;
 
 import javax.validation.Valid;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.TarjetaCredito;
 import org.springframework.samples.dpc.service.TarjetaService;
+import org.springframework.samples.dpc.util.TarjetaValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,11 @@ public class TarjetaController {
 		this.tarjetaService = tarjetaService;
 	}
 	
+	@InitBinder("tarjetaCredito")
+	public void initTarjetaBinder(WebDataBinder dataBinder) {
+		dataBinder.setValidator(new TarjetaValidator());
+	}
+	
 	@GetMapping(value = "/new")
 	public String iniciarFormulario(Model model) {
 		model.addAttribute("tarjeta", new TarjetaCredito());
@@ -33,13 +40,13 @@ public class TarjetaController {
 	}
 	
 	@PostMapping(path = "/save")
-	public String guardarTarjeta(@Valid TarjetaCredito tarjeta, BindingResult result,ModelMap modelMap) {
+	public String guardarTarjeta(@Valid TarjetaCredito tarjetaCredito, BindingResult result,ModelMap modelMap) {
 		String vista = "redirect:/clientes/perfil";
 		if(result.hasErrors()) {
-			modelMap.addAttribute("tarjeta", tarjeta);
+			modelMap.addAttribute("tarjeta", tarjetaCredito);
 			return "clientes/editarTarjeta";
 		} else {
-			tarjetaService.anyadirTarjeta(tarjeta);
+			tarjetaService.anyadirTarjeta(tarjetaCredito);
 			return vista;
 		}
 	}
