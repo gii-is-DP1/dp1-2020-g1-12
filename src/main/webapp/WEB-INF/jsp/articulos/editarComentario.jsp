@@ -6,6 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <dpc:layout pageName="comentarios">
     
@@ -13,20 +14,30 @@
     
     <form:form modelAttribute="comentario" class="form-horizontal" id="add-comentario-form">
         <div class="form-group has-feedback">
-            <dpc:inputField label="Descripción" name="descripcion"/>
-            <label class="valor">Valoración:</label>
-            <p class="clasificacion">
-                <input id="radio1" type="radio" name="valoracion" value="1">
-    			<label for="radio1">★</label>
-				<input id="radio2" type="radio" name="valoracion" value="2">
-				<label for="radio2">★</label>
-				<input id="radio3" type="radio" name="valoracion" value="3">
-				<label for="radio3">★</label>
-				<input id="radio4" type="radio" name="valoracion" value="4">
-				<label for="radio4">★</label>
-				<input id="radio5" type="radio" name="valoracion" value="5">
-				<label for="radio5">★</label>
-			</p>
+			<sec:authorize access="hasAuthority('cliente')">
+            	<dpc:inputField label="Opinión" name="descripcion"/>
+	            <label class="valor">Valoración:</label>
+	            <p class="clasificacion">
+	                <input id="radio1" type="radio" name="valoracion" value="5">
+	    			<label class="labelComentario" for="radio1">★</label>
+					<input id="radio2" type="radio" name="valoracion" value="4">
+					<label class="labelComentario" for="radio2">★</label>
+					<input id="radio3" type="radio" name="valoracion" value="3">
+					<label class="labelComentario" for="radio3">★</label>
+					<input id="radio4" type="radio" name="valoracion" value="2">
+					<label class="labelComentario" for="radio4">★</label>
+					<input id="radio5" type="radio" name="valoracion" value="1">
+					<label class="labelComentario" for="radio5">★</label>
+				</p>
+			</sec:authorize>
+			<sec:authorize access="hasAuthority('moderador')">
+				<dpc:inputField label="Comentario" name="descripcion"/>
+				<input type=hidden name="valoracion" value="0">
+			</sec:authorize>
+			<sec:authorize access="hasAnyAuthority('vendedor')">
+				<dpc:inputField label="Respuesta" name="descripcion"/>
+				<input type=hidden name="valoracion" value="0">
+			</sec:authorize>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

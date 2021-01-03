@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.model.Oferta;
@@ -61,10 +65,10 @@ class ArticuloServiceTest {
 
 	@Test
 	void testArticulosEnVentaByProvider() {
-		List<Articulo> articulos1 = this.articuloService.articulosEnVentaByProvider(ARTICULO_ID);
+		List<Articulo> articulos1 = this.articuloService.articulosEnVentaByProvider(ARTICULO_ID, 0 , 100, "id").getContent();
 		assertThat(articulos1.size()).isEqualTo(5);
 		
-		List<Articulo> articulos2 = this.articuloService.articulosEnVentaByProvider(10);
+		List<Articulo> articulos2 = this.articuloService.articulosEnVentaByProvider(10, 0 , 100, "id").getContent();
 		assertThat(articulos2).isEmpty();
 	}
 	
@@ -79,7 +83,8 @@ class ArticuloServiceTest {
 	
 	@Test
 	void testArticulosDisponibles() {
-		List<Articulo> articulosDisponibles = articuloService.articulosDisponibles();
+		List<Articulo> articulosDisponibles = articuloService.articulosDisponibles(0, 
+				(int) articuloRepository.count(), "-id").getContent();
 		
 		assertThat(articulosDisponibles.size()).isPositive();
 	}
@@ -104,7 +109,8 @@ class ArticuloServiceTest {
 	
 	@Test
 	void testAcotarOfertas() {
-		List<Articulo> articulos = articuloService.articulosDisponibles();
+		List<Articulo> articulos = articuloService.articulosDisponibles(0, 
+				(int) articuloRepository.count(), "-id").getContent();
 		for(int i = 0; i < 6; i++) 
 			articulos.get(i).getOferta().setDisponibilidad(true);
 		
@@ -128,8 +134,8 @@ class ArticuloServiceTest {
 		Articulo articulo = new Articulo();
 		String cadena = "MSI";
 		articulo.setModelo(cadena);
-		
-		List<Articulo> busqueda = articuloService.busqueda(articulo);
+		List<Articulo> busqueda = articuloService.busqueda(articulo, 0, 
+				(int) articuloRepository.count(), "-id").getContent();
 		
 		assertThat(busqueda.size()).isPositive();
 		
@@ -153,7 +159,8 @@ class ArticuloServiceTest {
 		articulo.setModelo("");
 		articulo.setGeneros(generos);
 		
-		List<Articulo> busqueda = articuloService.busqueda(articulo);
+		List<Articulo> busqueda = articuloService.busqueda(articulo, 0, 
+				(int) articuloRepository.count(), "-id").getContent();
 		
 		assertThat(busqueda.size()).isPositive();
 		
@@ -168,7 +175,8 @@ class ArticuloServiceTest {
 		articulo.setModelo(cadena);
 		articulo.setGeneros(generos);
 		
-		List<Articulo> busqueda = articuloService.busqueda(articulo);
+		List<Articulo> busqueda = articuloService.busqueda(articulo, 0, 
+				(int) articuloRepository.count(), "-id").getContent();
 		
 		assertThat(busqueda.size()).isPositive();
 		
@@ -221,8 +229,9 @@ class ArticuloServiceTest {
 	
 	@Test
 	void testArticuloDisponibleRepository() {
-		
-		assertThat(articuloRepository.articulosDisponibles()).hasSize(10);
+		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
+				Sort.by(new Order(Sort.Direction.DESC, "id")));
+		assertThat(articuloRepository.articulosDisponibles(pageable)).hasSize(11);
 	}
 	
 	@Test
@@ -233,32 +242,37 @@ class ArticuloServiceTest {
 	
 	@Test
 	void testArticuloEnVentaIdRepository() {
-		
-		assertThat(articuloRepository.articulosEnVentaPorId(VENDEDOR_ID)).hasSize(5);
+		Pageable pageable = PageRequest.of(0, 100, Sort.by(new Order(Sort.Direction.ASC, "id")));
+		assertThat(articuloRepository.articulosEnVentaPorId(VENDEDOR_ID, pageable)).hasSize(5);
 	}
 	
 	@Test
 	void testArticuloPorNombreRepository() {
-		
-		assertThat(articuloRepository.articulosPorNombre("msi")).hasSize(1);
+		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
+				Sort.by(new Order(Sort.Direction.DESC, "id")));
+		assertThat(articuloRepository.articulosPorNombre("msi", pageable)).hasSize(1);
 
 	}
 	
 	
 	@Test
 	void testArticuloPorGeneroRepository() {
+		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
+				Sort.by(new Order(Sort.Direction.DESC, "id")));
 		List<Integer> generoId = new ArrayList<>();
 		generoId.add(1);generoId.add(2);generoId.add(3);
-		assertThat(articuloRepository.articulosPorGenero(new ArrayList<>(15))).isEmpty();
-		assertThat(articuloRepository.articulosPorGenero(generoId)).hasSize(4);
+		assertThat(articuloRepository.articulosPorGenero(new ArrayList<>(15), pageable)).isEmpty();
+		assertThat(articuloRepository.articulosPorGenero(generoId, pageable)).hasSize(5);
 	}
 	
 	@Test
 	void testArticuloPorGeneroNombreRepository() {
+		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
+				Sort.by(new Order(Sort.Direction.DESC, "id")));
 		List<Integer> generoId = new ArrayList<>();
 		generoId.add(1);generoId.add(2);generoId.add(3);
-		assertThat(articuloRepository.articulosPorGeneroNombre(new ArrayList<>(), "kjhlh")).isEmpty();
-		assertThat(articuloRepository.articulosPorGeneroNombre(generoId, "msi")).hasSize(1);
+		assertThat(articuloRepository.articulosPorGeneroNombre(new ArrayList<>(), "kjhlh", pageable)).isEmpty();
+		assertThat(articuloRepository.articulosPorGeneroNombre(generoId, "msi", pageable)).hasSize(1);
 	}
 	
 }

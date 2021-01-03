@@ -47,8 +47,7 @@ public class TarjetaControllerTest {
 		tarjeta.setNumero("1234567899876087");
 		tarjeta.setTitular("Juan Fernández Tirado");
 		tarjeta.setCvv("442");
-		tarjeta.setAnyoCaducidad("22");
-		tarjeta.setMesCaducidad("03");
+		tarjeta.setFechaCaducidad("03/22");
 		
 		given(this.tarjetaService.findTarjetaById(TEST_TARJETA_ID)).willReturn(tarjeta);
 	}
@@ -65,8 +64,8 @@ public class TarjetaControllerTest {
     void testGuardarTarjeta() throws Exception {
 	mockMvc.perform(post("/tarjetas/save").param("titular", "Juan Alberto García").param("numero", "1234325678123909")
 						.param("cvv", "453")
-						.param("mesCaducidad", "09")
-						.param("anyoCaducidad", "23").with(csrf()))
+						.param("fechaCaducidad", "09/23")
+						.with(csrf()))
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/clientes/perfil"));
 	}
 	
@@ -75,8 +74,8 @@ public class TarjetaControllerTest {
     void testGuardarTarjetaErroneo() throws Exception {
 	mockMvc.perform(post("/tarjetas/save").param("titular", "Juan Alberto García").param("numero", "123409")
 						.param("cvv", "453")
-						.param("mesCaducidad", "09")
-						.param("anyoCaducidad", "23").with(csrf())).andExpect(model().attributeExists("tarjeta"))
+						.param("fechaCaducidad", "09/23")
+						.with(csrf())).andExpect(model().attributeExists("tarjeta"))
 			.andExpect(status().is2xxSuccessful()).andExpect(view().name("clientes/editarTarjeta"));
 	}
 	

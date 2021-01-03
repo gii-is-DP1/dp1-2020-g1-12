@@ -20,6 +20,7 @@ import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Oferta;
 import org.springframework.samples.dpc.model.Tipo;
 import org.springframework.samples.dpc.service.ArticuloService;
+import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.ComentarioService;
 import org.springframework.samples.dpc.service.GeneroService;
 import org.springframework.samples.dpc.service.VendedorService;
@@ -42,6 +43,9 @@ class ArticuloControllerTest {
 	
 	@MockBean 
 	private ComentarioService comentarioService;
+
+	@MockBean 
+	private CestaService cestaService;
 	
 	@MockBean 
 	private GeneroService generoService;
@@ -90,7 +94,7 @@ class ArticuloControllerTest {
     @Test
     void testBusqueda() throws Exception {
 		mockMvc.perform(post("/busqueda").param("modelo", "msi").with(csrf()))
-			.andExpect(status().isOk()).andExpect(model().attributeExists("query","generos","articulos")).andExpect(status().is2xxSuccessful())
+			.andExpect(status().isOk()).andExpect(model().attributeExists("query","generos")).andExpect(status().is2xxSuccessful())
 			.andExpect(view().name("/articulos/principal"));
 	}
 	
@@ -98,7 +102,7 @@ class ArticuloControllerTest {
     @Test
     void testBusquedaIf() throws Exception {
 		mockMvc.perform(post("/busqueda").param("modelo","").with(csrf()))
-		.andExpect(status().is2xxSuccessful()).andExpect(view().name("articulos/principal"));
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"));
 	}
 	
 	@WithMockUser(value = "spring")

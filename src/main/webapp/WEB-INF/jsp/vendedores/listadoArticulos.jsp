@@ -8,6 +8,21 @@
 
 <dpc:layout pageName="articulosEnVenta">
     
+	<form action="/vendedores/articulosEnVenta?" method="get">
+		<div style="float:right">
+			<input type="hidden" name="page" value="${articulos.getNumber()}"/>
+			<input type="hidden" name="size" value="${articulos.getSize()}"/>			
+	 		<select onchange="this.form.submit();" name="orderBy">
+	       		<option value="" disabled selected>Ordenar por:</option>
+	 			<option value="-id">Más recientes</option>
+	 			<option value="id">Más antiguos</option>
+	 			<option value="marca">Nombre A-Z</option>
+	 			<option value="-marca">Nombre Z-A</option>
+	 			<option value="precio">Precio base de más bajo a más alto</option>
+	 			<option value="-precio">Precio base de más alto a más bajo</option>
+	 		</select>
+		</div>
+	</form>
     <h2>Lista de artículos en venta</h2>
 
     <table id="articulosTable" class="table table-striped">
@@ -21,7 +36,7 @@
         </tr>
         </thead>
         <tbody>
-      <c:forEach items="${articulos}" var="articulos">
+      <c:forEach items="${articulos.getContent()}" var="articulos">
             <tr>
                 <td>
 					<spring:url value="/vendedores/articulo/{articuloId}" var="articuloUrl">
@@ -57,4 +72,34 @@
         </c:forEach> 
         </tbody>
     </table>
+	<div class="container">
+		<div class="row text-center">
+			<form action="/vendedores/articulosEnVenta?" method="get">
+				<input type="hidden" name="page" value="${articulos.getNumber()}"/>
+				<input type="hidden" name="orderBy" value="${ordenacion}"/>
+				<label for="size">Elementos por página: </label>
+				<input onchange="this.form.submit();" style="border-radius: 5px; width:10%; text-align: center"
+				 type="number" min="2" name="size" value="${articulos.getSize()}">
+			 </form>
+			<br><br>
+			<div class="col-12 text-center">
+				<c:forEach begin="0" end="${articulos.getTotalPages()-1}" varStatus="page">
+					<c:if test="${page.index != articulos.getNumber()}">
+						<spring:url value="/vendedores/articulosEnVenta?" var="siguienteUrl">
+							<spring:param name="page" value="${page.index}"/>
+							<spring:param name="size" value="${articulos.getSize()}"/>
+							<spring:param name="orderBy" value="${ordenacion}"/>									
+						</spring:url>
+						
+						<a href="${fn:escapeXml(siguienteUrl)}">
+							<button class="btn btn-default" type="submit">${page.index+1}</button>
+						</a>
+					</c:if> 
+					<c:if test="${page.index == articulos.getNumber()}">
+						<button class="btn btn-default" disabled>${page.index+1}</button>
+					</c:if>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
 </dpc:layout>

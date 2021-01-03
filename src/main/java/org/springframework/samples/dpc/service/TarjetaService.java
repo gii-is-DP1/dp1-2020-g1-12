@@ -25,10 +25,11 @@ public class TarjetaService {
 	
 	@Transactional
 	public void anyadirTarjeta(TarjetaCredito tarjeta) {
-		Integer existe = tarjetaRepository.existeTarjeta(tarjeta.getNumero());
+		Optional<TarjetaCredito> busqueda = tarjetaRepository.existeTarjeta(tarjeta.getNumero(), tarjeta.getCvv(),
+				tarjeta.getTitular(), tarjeta.getFechaCaducidad());
 		Cliente cliente = clienteService.getClienteDeSesion();
-		if(existe == 1) {
-			tarjeta = tarjetaRepository.findTarjetaByNumber(tarjeta.getNumero());
+		if(busqueda.isPresent()) {
+			tarjeta = busqueda.get();
 		}
 		cliente.getTarjetas().add(tarjeta);
 	}

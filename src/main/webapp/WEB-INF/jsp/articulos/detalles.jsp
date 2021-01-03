@@ -17,6 +17,20 @@
 	        	return opcion;
 	        }
         </script>
+        <script>
+			function vermas(id){
+				if(id=="mas"){
+					document.getElementById("desplegar").style.display="block";   
+					document.getElementById("mas").style.display="none"; 
+					document.getElementById("noDesplegar").style.display="none"; 					
+				}
+				else{
+					document.getElementById("desplegar").style.display="none";
+					document.getElementById("mas").style.display="inline";
+					document.getElementById("noDesplegar").style.display="block";   
+				}
+			}
+        </script>
     </jsp:attribute>
     
     <jsp:body>
@@ -39,14 +53,34 @@
     </form:form>
     <h1>${articulo.marca} ${' '} ${articulo.modelo}</h1>
     
-    <img style='width: 40%; height: 20%' alt='' 
-	            	onerror="this.src=''" src='${articulo.urlImagen}'/>
+    <div style="display:flex;">
+	    <div style="width:50%; height:100%">
+		    <img style='width: 70%; height: 100%' alt='' onerror="this.src=''" src='${articulo.urlImagen}'/>
+		</div>
+		<div style="width:50%;">
+			<p id="noDesplegar"align="justify">${articulo.descripcion.substring(0, articulo.descripcion.length()/2)}...
+				<br><br>
+			</p>
+			
+			<a onclick="vermas('mas');" id="mas">Leer más</a>
+			<p id="desplegar" style="display: none;" align="justify">${articulo.descripcion}
+				<br><br>
+				<a onclick="vermas('menos');" id="menos">Leer menos</a>
+			</p>
+		</div>
+	</div>
 	<sec:authorize access="hasAuthority('cliente')">
-		<c:if test="${articulo.stock > 0}" >				
-			<br><a style="width:22%;float:right" class="btn btn-primary btn-lg btn-block" role="button" href="#">Añadir al carrito</a>
+		<c:if test="${articulo.stock > 0 && puedeComprar}" >	
+			<spring:url value="/cesta/añadirArticulo/{articuloId}" var="añadirArticuloUrl">
+		   		<spring:param name="articuloId" value="${articulo.id}"/>
+			</spring:url>
+			<br>
+			<a href="${fn:escapeXml(añadirArticuloUrl)}">
+				<button style="width:22%;float:right" class="btn btn-primary btn-lg btn-block" type="submit">Añadir al carrito</button>
+			</a>
 		</c:if>
 	</sec:authorize>
-	
+	<br>
 	<table class="table table-borderless">
         <tr>
             <th style="width: 600px;">Vendedor</th>
@@ -114,7 +148,7 @@
 			<br><br>
 		</c:if>
 		<h2>Comentarios:</h2>	
-		<c:if test="${articulo.comentarios.size() == 0}">
+		<c:if test="${articulo.comentarios.size() == 0 && puedeComentar}">
 			<p>Sé el primero en comentar.</p>
 		</c:if>
 		<c:forEach items="${comentarios}" var="comentario">

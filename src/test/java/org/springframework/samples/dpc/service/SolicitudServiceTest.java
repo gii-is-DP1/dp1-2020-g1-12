@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,7 +20,6 @@ import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.exceptions.PrecioMenorAlEnvioException;
 import org.springframework.samples.dpc.service.exceptions.SolicitudRechazadaSinRespuestaException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -35,14 +36,13 @@ class SolicitudServiceTest {
 
 	@Test
 	void testListadoDeSolicitudesPendientes() {
-		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
+		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertThat(pendientes.size()).isEqualTo(1);
 	}
 
 	@Test
 	void testBuscarSolicitudPorId() {
 		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID);
-		assertThat(solicitud.getDescripcion()).isEqualTo("Solicitud de venta de MSI Prestige Evo A11M-003ES");
 		assertThat(solicitud.getPrecio()).isEqualTo(988.99);
 		assertThat(solicitud.getModelo()).isEqualTo("Prestige Evo A11M-003ES");
 		assertThat(solicitud.getArticulo().getMarca()).isEqualTo("MSI");
@@ -65,9 +65,8 @@ class SolicitudServiceTest {
 
 	}
 	@Test
-	@Transactional
 	void testInsertarSolicitud() throws PrecioMenorAlEnvioException {
-		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
+		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		int size = pendientes.size();
 
 		Solicitud sol = arrange();
@@ -75,14 +74,13 @@ class SolicitudServiceTest {
         this.solicitudService.guardar(sol,vendedor);
 		assertThat(sol.getId().longValue()).isNotZero();
 
-		pendientes = this.solicitudService.solicitudesPendientes();
+		pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertThat(pendientes.size()).isEqualTo(size + 1);
 	}
 	
 	@Test
-	@Transactional
 	void testInsertarSolicitudFallida() throws PrecioMenorAlEnvioException {
-		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes();
+		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		int size = pendientes.size();
 
 		Solicitud sol = arrange();
@@ -91,7 +89,7 @@ class SolicitudServiceTest {
         
         assertThrows(PrecioMenorAlEnvioException.class ,() -> this.solicitudService.guardar(sol,vendedor));
 
-		pendientes = this.solicitudService.solicitudesPendientes();
+		pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertThat(pendientes.size()).isEqualTo(size);
 	}
 	
@@ -119,20 +117,17 @@ class SolicitudServiceTest {
 		assertThat(solicitud.getRespuesta()).isEqualTo("No está permitida la venta de RPGs");
 	}
 	
-	@Test
-	void testDenegarSolicitudFallido() throws SolicitudRechazadaSinRespuestaException {
+	@ParameterizedTest
+	@ValueSource(strings = {"", "Prohibido"})
+	void testDenegarSolicitudFallido(String respuesta) throws SolicitudRechazadaSinRespuestaException {
 		
 		assertThrows(SolicitudRechazadaSinRespuestaException.class, 
-				() -> this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, ""));
-		
-		assertThrows(SolicitudRechazadaSinRespuestaException.class, 
-				() -> this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, "Prohibido")); // SEPARAR
-
+				() -> this.solicitudService.denegarSolicitud(SOLICITUD_ACEPTADA_ID, respuesta));
 	}
 
 	@Test
 	void testBuscarSolicitudPorProveedorId() {
-		List<Solicitud> solicitud = this.solicitudService.getsolicitudesByProvider(VENDEDOR_ID);
+		List<Solicitud> solicitud = this.solicitudService.getsolicitudesByProvider(VENDEDOR_ID, 0, 100, "id").getContent();
 		assertThat(solicitud.size()).isEqualTo(5);
 		assertThat(solicitud.get(0).getId()).isEqualTo(1);
 		assertThat(solicitud.get(1).getId()).isEqualTo(2);
@@ -147,7 +142,7 @@ class SolicitudServiceTest {
 	void testEliminarSolicitud() {
 		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_PENDIENTE_ID);
 		solicitudService.eliminarSolicitud(solicitud);
-		List<Solicitud> aux = solicitudService.solicitudesPendientes();
+		List<Solicitud> aux = solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertFalse(aux.contains(solicitud));
 	}
 }

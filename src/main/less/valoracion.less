@@ -1,0 +1,46 @@
+input[type="radio"] {
+  display: none;
+}
+
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+
+.labelComentario:hover,
+.labelComentario:hover ~ label {
+  cursor: pointer;
+  color: orange;
+}
+
+input[type="radio"]:checked ~ label {
+  color: orange;
+}
+
+#mas {
+	border: 1px solid #006699;
+	text-decoration: none;
+	padding: 10px 20px 10px 20px;
+	margin: 40%;
+	color: #006699;
+}
+
+#mas:hover {
+	background: #006699;
+	color: #fff;
+	transition: background 1s, color 1s;
+}
+
+#menos {
+	border: 1px solid #006699;
+	text-decoration: none;
+	padding: 10px 20px 10px 20px;
+	margin: 40%;
+	color: #006699;
+}
+
+#menos:hover {
+	background: #006699;
+	color: #fff;
+	transition: background 1s, color 1s;
+}

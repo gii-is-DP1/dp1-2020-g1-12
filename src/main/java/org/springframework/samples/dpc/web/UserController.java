@@ -21,6 +21,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Bloqueo;
+import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.AuthoritiesService;
@@ -85,7 +86,7 @@ public class UserController {
 			vendedor.setBloqueo(b);
 			this.vendedorService.guardar(vendedor);
 			this.authoritiesService.saveAuthorities(vendedor.getUser().getUsername(), "vendedor");
-			return "redirect:/registro";
+			return "redirect:/login";
 		}
 	}
 
@@ -101,15 +102,17 @@ public class UserController {
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_CLIENTE;
 		} else {
+			Cesta cesta = new Cesta();
 			Bloqueo b = new Bloqueo();
 			b.setBloqueado(false);
 			b.setDescripcion("");
 			bloqueoService.guardar(b);
 			cliente.setBloqueo(b);
 			cliente.getUser().setEnabled(true);
+			cliente.setCesta(cesta);
 			this.clienteService.guardar(cliente);
 			this.authoritiesService.saveAuthorities(cliente.getUser().getUsername(), "cliente");
-			return "redirect:/registro";
+			return "redirect:/login";
 		}
 	}
 

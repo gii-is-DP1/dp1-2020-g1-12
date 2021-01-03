@@ -59,7 +59,7 @@
 					</dpc:menuItem>
 				</sec:authorize>
 				
-				<dpc:menuItem active="${name eq 'error'}" url="/oups"
+				<dpc:menuItem active="${name eq 'error'}" url="/error"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
@@ -76,7 +76,15 @@
 					<li><a href="<c:url value="/registro" />">Registrarse</a></li>
 
 				</sec:authorize>
-				<sec:authorize access="isAuthenticated()">
+				<sec:authorize access="isAuthenticated()">	
+					<sec:authorize access="hasAuthority('cliente')">
+						<li>
+							
+							<a  
+                            style="color:white; text-decoration: none" href="/cesta">
+                            <span class="glyphicon glyphicon-shopping-cart"><strong> Cesta </strong></span></a>
+						</li>
+					</sec:authorize>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span

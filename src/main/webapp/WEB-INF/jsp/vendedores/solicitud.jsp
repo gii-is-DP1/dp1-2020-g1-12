@@ -15,17 +15,42 @@
 	        	return opcion;
 	        }
         </script>
+        <script>
+			function vermas(id){
+				if(id=="mas"){
+					document.getElementById("desplegar").style.display="block";   
+					document.getElementById("mas").style.display="none"; 
+					document.getElementById("noDesplegar").style.display="none"; 					
+				}
+				else{
+					document.getElementById("desplegar").style.display="none";
+					document.getElementById("mas").style.display="inline";
+					document.getElementById("noDesplegar").style.display="block";   
+				}
+			}
+        </script>
     </jsp:attribute>
     <jsp:body>
 	    <h2>Solicitud de <c:out value="${solicitud.marca} ${solicitud.modelo}"></c:out></h2>
 	
+		<div style="display:flex;">
+		    <div style="width:50%; height:100%">
+			    <img style='width: 70%; height: 100%' alt='' onerror="this.src=''" src='${solicitud.urlImagen}'/>
+			</div>
+			<div style="width:50%;">
+				<p id="noDesplegar"align="justify">${solicitud.descripcion.substring(0, solicitud.descripcion.length()/2)}...
+					<br><br>
+				</p>
+				
+				<a onclick="vermas('mas');" id="mas">Leer más</a>
+				<p id="desplegar" style="display: none;" align="justify">${solicitud.descripcion}
+					<br><br>
+					<a onclick="vermas('menos');" id="menos">Leer menos</a>
+				</p>
+			</div>
+		</div>
+		<br>
 	    <table class="table table-striped">
-	         <tr>
-				<img style='width: 20%; height: 10%' alt='' onerror="this.src=''" src='${solicitud.urlImagen}'/>        </tr>
-	        <tr>
-	        	<th>Descripción</th>
-	            <td>${solicitud.descripcion}</td>
-	        </tr>
 			<tr>
 	            <th>Precio</th>
 	            <td><c:out value="${solicitud.precio} €"/></td>

@@ -3,12 +3,17 @@ package org.springframework.samples.dpc.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Bloqueo;
+import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,20 +25,19 @@ class ClienteServiceTest {
 	private ClienteService clienteService;
 
 	@Test
-	public void shouldFindclienteById() {
+	void shouldFindclienteById() {
 		Cliente optperfil = this.clienteService.findClientById(1);
 		assertEquals(optperfil.getNombre(), "Juan");
 	}
 
 	@Test
-	public void shouldFindclienteByDni() {
+	void shouldFindclienteByDni() {
 		Cliente optperfil = this.clienteService.findClientByDni("23456789");
 		assertEquals(optperfil.getNombre(), "Juan");
 	}
 
 	@Test
-	@Transactional
-	public void shouldInsertcliente() {
+	void shouldInsertcliente() {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
 		c.setNombre("Quique");
@@ -51,6 +55,11 @@ class ClienteServiceTest {
 		user.setPassword("supersecretpassword");
 		user.setEnabled(true);
 		c.setUser(user);
+		Cesta cesta = new Cesta();
+		cesta.setId(c.getId());
+		List<LineaCesta> lineaCesta = new ArrayList<>();
+		cesta.setLineas(lineaCesta);
+		c.setCesta(cesta);
 		this.clienteService.guardar(c);
 		Cliente cliente = this.clienteService.findClientByDni("12345678");
 		assertEquals(c, cliente);
@@ -58,7 +67,7 @@ class ClienteServiceTest {
 
 	@Test
 	@Transactional
-	public void shouldUpdatecliente() {
+	void shouldUpdatecliente() {
 		Cliente c = this.clienteService.findClientById(1);
 		String oldLastName = c.getApellido();
 		String newLastName = oldLastName + "X";

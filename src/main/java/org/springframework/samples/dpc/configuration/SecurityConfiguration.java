@@ -1,11 +1,13 @@
 package org.springframework.samples.dpc.configuration;
 
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/users/**").permitAll()
 				.antMatchers("/clientes").hasAnyAuthority(moderador)
 				.antMatchers("/clientes/**").hasAnyAuthority(cliente)
+				.antMatchers("/cesta/**").hasAnyAuthority(cliente)
 				.antMatchers("/vendedores/**").hasAnyAuthority(vendedor)
 				.antMatchers("/solicitudes/new").hasAnyAuthority(vendedor)
 				.antMatchers("/solicitudes/save").hasAnyAuthority(vendedor)
@@ -52,14 +55,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/articulosGenero/{generoId}").permitAll()
 				.antMatchers("/busqueda").permitAll()
 				.antMatchers("/ofertas").permitAll()
+				.antMatchers("/login").permitAll()	
+				.antMatchers("/logout").permitAll()	
+				.antMatchers("/loginForm").permitAll()			
 				.antMatchers("/tarjetas/**").hasAnyAuthority(cliente)
 				.antMatchers("/generos/**").hasAnyAuthority(vendedor)
 				.antMatchers("/comentario/eliminar/**").hasAnyAuthority(moderador)
 				.antMatchers("/comentario/**").hasAnyAuthority(cliente, moderador, vendedor)
-				.antMatchers("/articulos/{articuloId}").permitAll().anyRequest().denyAll().and()
+				.antMatchers("/articulos/{articuloId}").permitAll().and()
 				.formLogin()
-				/* .loginPage("/login") */
-				.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
+				.loginPage("/login") 
+				.failureUrl("/login-error").and().logout();
 		// Configuración para que funcione la consola de administración
 		// de la BD H2 (deshabilitar las cabeceras de protección contra
 		// ataques de tipo csrf y habilitar los framesets si su contenido
@@ -68,6 +74,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().sameOrigin();
 	}
 
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {	//Modificar el método para utilizarlo
+	    return super.authenticationManagerBean();								//en el controlador
+	}
+	
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)

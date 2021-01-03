@@ -1,11 +1,10 @@
 package org.springframework.samples.dpc.model;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,14 +15,14 @@ public class Cesta extends BaseEntity{
 	@Column(name = "precioFinal")
 	private Double precioFinal;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cesta", fetch = FetchType.EAGER)
-	private Collection<LineaCesta> lineas;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cesta")
+	private List<LineaCesta> lineas;
 
-	public Collection<LineaCesta> getLineas() {
+	public List<LineaCesta> getLineas() {
 		return lineas;
 	}
 
-	public void setLineas(Collection<LineaCesta> lineas) {
+	public void setLineas(List<LineaCesta> lineas) {
 		this.lineas = lineas;
 	}
 	
@@ -33,10 +32,10 @@ public class Cesta extends BaseEntity{
 		for(LineaCesta linea: lineas) {
 			Articulo articulo = linea.getArticulo();
 			if(articulo.getOferta().isDisponibilidad()) {
-				result += (articulo.getPrecio() - (articulo.getOferta().getPorcentaje()*articulo.getPrecio())/100);
+				result += (articulo.getPrecio() - (articulo.getOferta().getPorcentaje()*articulo.getPrecio())/100) * linea.getCantidad();
 			}
 			else {
-				result += articulo.getPrecio();
+				result += articulo.getPrecio() * linea.getCantidad();
 			}
 			gastosEnvio += articulo.getGastoEnvio();
 		}
