@@ -10,6 +10,9 @@
 <dpc:layout pageName="articulos">
 
     <jsp:attribute name="customScript">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
     	<script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
         <script>
         	$(document).ready(function() {
@@ -24,19 +27,23 @@
 	<!--  <img style="height: 200px; width: 220px" src="${logo}"/>-->
 	
     <form:form modelAttribute="query" action="/busqueda?" class="form-horizontal" >
-        <div class="form-group has-feedback">
-            <dpc:inputField label="Busqueda" name="modelo"/>
-            <div style="float:right">
-				<button class="btn btn-default" type="submit">Buscar</button>
-            </div>
-	        
-            <select class="selectpicker" name="generos" multiple>
-            	<option value="" disabled selected>Seleccione géneros a buscar</option>
+        <div class="container">
+	    <span>
+            <select class="selectpicker" name="generos" multiple title="Elige uno o varios géneros">
             	<c:forEach items="${generos}" var="genero">
     				<option value="${genero.id}">${genero.nombre}</option>
     			</c:forEach>
   			</select>
+  		</span>         
+        <span>
+            <input placeholder="Introduzca su búsqueda" size="100" name="modelo"/>
+		</span>
+         <div style="float:right">
+			<button class="btn btn-default" type="submit">Buscar</button>
+		</div>
         </div>
+
+		<br><br><br>
 
         <c:if test="${mensaje != null}">
 	        <div style="float:right">

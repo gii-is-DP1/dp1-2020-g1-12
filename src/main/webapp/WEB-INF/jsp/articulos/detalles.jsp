@@ -11,6 +11,8 @@
 
 <dpc:layout pageName="articulos">
     <jsp:attribute name="customScript">
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
         <script>
 	        function alerta() {
 	        	var opcion = confirm('¿Seguro que desea eliminar el comentario del artículo?');
@@ -36,20 +38,21 @@
     <jsp:body>
     <form:form modelAttribute="query" action="/busqueda" class="form-horizontal" >
         <div class="form-group has-feedback">
-            <dpc:inputField label="Busqueda" name="modelo"/>
-            
-            <select class="selectpicker" name="generos" multiple>
-            	<option value="" disabled selected>Seleccione géneros a buscar</option>
-            	<c:forEach items="${generos}" var="genero">
-    				<option value="${genero.id}">${genero.nombre}</option>
-    			</c:forEach>
-  			</select>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <span>
+	            <select class="selectpicker" name="generos" multiple title="Elige uno o varios géneros">
+	            	<c:forEach items="${generos}" var="genero">
+	    				<option value="${genero.id}">${genero.nombre}</option>
+	    			</c:forEach>
+	  			</select>
+  			</span>
+	        <span>
+	            <input placeholder="Introduzca su búsqueda" size="100" name="modelo"/>
+			</span>
+	         <div style="float:right">
 				<button class="btn btn-default" type="submit">Buscar</button>
-            </div>
+			</div>
         </div>
+
     </form:form>
     <h1>${articulo.marca} ${' '} ${articulo.modelo}</h1>
     
@@ -71,7 +74,7 @@
 	</div>
 	<sec:authorize access="hasAuthority('cliente')">
 		<c:if test="${articulo.stock > 0 && puedeComprar}" >	
-			<spring:url value="/cesta/añadirArticulo/{articuloId}" var="añadirArticuloUrl">
+			<spring:url value="/cesta/anyadirArticulo/{articuloId}" var="añadirArticuloUrl">
 		   		<spring:param name="articuloId" value="${articulo.id}"/>
 			</spring:url>
 			<br>

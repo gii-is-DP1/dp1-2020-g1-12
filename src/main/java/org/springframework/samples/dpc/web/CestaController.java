@@ -28,7 +28,7 @@ public class CestaController {
 		return "clientes/cesta";
 	}
 	
-	@GetMapping("/añadirArticulo/{articuloId}")
+	@GetMapping("/anyadirArticulo/{articuloId}")
 	public String anyadirArticuloCesta(ModelMap modelMap,@PathVariable("articuloId") int articuloId) {
 		cestaService.anyadirLineaCesta(articuloId);
 		return "redirect:/articulos/{articuloId}";
