@@ -6,11 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.LineaCesta;
-import org.springframework.samples.dpc.model.LineaPedido;
-import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.repository.CestaRepository;
-import org.springframework.samples.dpc.repository.LineaPedidoRepository;
-import org.springframework.samples.dpc.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CestaService {
 
 	private CestaRepository cestaRepository;
-	private PedidoRepository pedidoRepository;
-	private LineaPedidoRepository lineaPedidoRepository;
-
 	private ClienteService clienteService;
 	private UserService userService;
 	private LineaCestaService lineaCestaService;
@@ -52,11 +45,9 @@ public class CestaService {
 
 	@Transactional
 	public void eliminarLineasCesta(List<LineaCesta> lineas) {
-		int i = 0;
 		int l = lineas.size();
-		while (i < l) {
+		for (int i = 0; i < l; i++) {
 			eliminarLineaCesta(lineas.get(0).getId());
-			i++;
 		}
 	}
 
@@ -93,18 +84,5 @@ public class CestaService {
 				cestaSesion.getLineas().get(i).setCantidad(cesta.getLineas().get(i).getCantidad());
 			}
 		}
-
 	}
-
-	@Transactional
-	public void guardarPedido(Pedido p) {
-		pedidoRepository.save(p);
-	}
-
-	@Transactional
-	public void guardarLineaPedido(LineaPedido lp) {
-		lineaPedidoRepository.save(lp);
-
-	}
-
 }

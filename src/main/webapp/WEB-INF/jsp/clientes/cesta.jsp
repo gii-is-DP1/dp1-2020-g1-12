@@ -82,7 +82,7 @@
 	        </tbody>
 	    </table>
         <div class="col-sm-offset-5">
-			<spring:url value="/cesta/tramitarPedido" var="tramitarPedidoUrl"></spring:url>
+			<spring:url value="/pedidos/tramitarPedido" var="tramitarPedidoUrl"></spring:url>
 		    <a onclick="return alertaCompra()" title="Tramitar pedido" type="button" class="btn btn-default"
 		    style="color: #DAD6D6; text-decoration: Tramitar pedido; FONT-SIZE: 12pt;" href="${fn:escapeXml(tramitarPedidoUrl)}">Tramitar pedido</a>
         </div>
