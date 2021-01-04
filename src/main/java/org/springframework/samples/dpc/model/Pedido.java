@@ -7,12 +7,18 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "pedidos")
 public class Pedido extends BaseEntity {
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
 
 	@Column(name = "precioTotal")
 	private Double precioTotal;
@@ -47,4 +53,11 @@ public class Pedido extends BaseEntity {
 		this.lineas = lineas;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 }
