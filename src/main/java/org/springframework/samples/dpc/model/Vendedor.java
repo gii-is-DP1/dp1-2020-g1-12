@@ -1,8 +1,6 @@
 package org.springframework.samples.dpc.model;
 
 import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +10,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-
-import org.springframework.data.util.Pair;
 
 @Entity
 @Table(name = "vendedores")
@@ -36,8 +32,6 @@ public class Vendedor extends Persona {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vendedor", fetch = FetchType.EAGER)
 	private Collection<Solicitud> solicitudes;
-
-	private List<Pair<Articulo, Integer>> articulosVendidos;
 
 	public void setEmail(String email) {
 		this.email = email;
@@ -65,14 +59,6 @@ public class Vendedor extends Persona {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public List<Pair<Articulo, Integer>> getArticulosVendidos() {
-		return articulosVendidos;
-	}
-
-	public void setArticulosVendidos(List<Pair<Articulo, Integer>> articulosVendidos) {
-		this.articulosVendidos = articulosVendidos;
 	}
 
 	@Override
