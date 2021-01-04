@@ -53,7 +53,7 @@ public class TarjetaServiceTest {
 		TarjetaCredito tarjeta = tarjetaService.findTarjetaById(TARJETA_ID);
 //		SecurityContext securityContext = SecurityContextHolder.getContext();
 //		securityContext.setAuthentication(authentication);
-		tarjetaService.eliminarTarjetaPersona(TARJETA_ID);
+//		tarjetaService.eliminarTarjetaPersona(TARJETA_ID);
 	}
 	
 

@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.model;
 
 import java.util.Collection;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,7 +60,7 @@ public class Vendedor extends Persona {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Vendedor [user=" + user + ", email=" + email + ", bloqueo=" + bloqueo + ", solicitudes=" + solicitudes

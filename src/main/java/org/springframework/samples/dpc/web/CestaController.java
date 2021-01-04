@@ -13,38 +13,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/cesta")
 public class CestaController {
-	
+
 	private CestaService cestaService;
-	
+
 	@Autowired
 	public CestaController(CestaService cestaService) {
 		this.cestaService = cestaService;
 	}
-	
+
 	@GetMapping()
 	public String listadoCesta(ModelMap modelMap) {
 		Cesta cesta = cestaService.obtenerCestaCliente();
-		modelMap.addAttribute("cesta",cesta);
+		modelMap.addAttribute("cesta", cesta);
 		return "clientes/cesta";
 	}
+
 	
 	@GetMapping("/anyadirArticulo/{articuloId}")
 	public String anyadirArticuloCesta(ModelMap modelMap,@PathVariable("articuloId") int articuloId) {
 		cestaService.anyadirLineaCesta(articuloId);
 		return "redirect:/articulos/{articuloId}";
 	}
-	
-	@PostMapping(value="/actualizar")
+
+	@PostMapping(value = "/actualizar")
 	public String modificarArticulosCesta(Cesta cesta) {
 		cestaService.actualizarCesta(cesta);
 		return "redirect:/cesta";
 	}
-	
+
 	@GetMapping("/eliminar/{lineaId}")
-	public String eliminarArticuloCesta(ModelMap modelMap,@PathVariable("lineaId") int lineaId) {
+	public String eliminarArticuloCesta(ModelMap modelMap, @PathVariable("lineaId") int lineaId) {
 		cestaService.eliminarLineaCesta(lineaId);
 		return "redirect:/cesta";
 	}
-
-
 }
