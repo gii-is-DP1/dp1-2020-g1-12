@@ -1,5 +1,7 @@
 package org.springframework.samples.dpc.web;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.service.CestaService;
@@ -30,8 +32,9 @@ public class CestaController {
 
 	
 	@GetMapping("/anyadirArticulo/{articuloId}")
-	public String anyadirArticuloCesta(ModelMap modelMap,@PathVariable("articuloId") int articuloId) {
+	public String anyadirArticuloCesta(HttpServletRequest request, ModelMap modelMap,@PathVariable("articuloId") int articuloId) {
 		cestaService.anyadirLineaCesta(articuloId);
+		request.getSession().setAttribute("contador", cestaService.lineasCesta());
 		return "redirect:/articulos/{articuloId}";
 	}
 
@@ -42,8 +45,10 @@ public class CestaController {
 	}
 
 	@GetMapping("/eliminar/{lineaId}")
-	public String eliminarArticuloCesta(ModelMap modelMap, @PathVariable("lineaId") int lineaId) {
+	public String eliminarArticuloCesta(HttpServletRequest request, ModelMap modelMap, 
+			@PathVariable("lineaId") int lineaId) {
 		cestaService.eliminarLineaCesta(lineaId);
+		request.getSession().setAttribute("contador", cestaService.lineasCesta());
 		return "redirect:/cesta";
 	}
 }

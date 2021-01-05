@@ -72,6 +72,11 @@ public class CestaService {
 						.findFirst().isPresent()
 				: false;
 	}
+	
+	@Transactional(readOnly = true)
+	public Integer lineasCesta() {
+		return obtenerCestaCliente().getLineas().size();
+	}
 
 	@Transactional
 	public void actualizarCesta(Cesta cesta) {
