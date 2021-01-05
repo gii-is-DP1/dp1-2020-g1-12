@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
 
@@ -84,10 +83,11 @@
 				<sec:authorize access="isAuthenticated()">	
 					<sec:authorize access="hasAuthority('cliente')">
 						<li>
-							
-							<a  
-                            style="color:white; text-decoration: none" href="/cesta">
-                            <span class="glyphicon glyphicon-shopping-cart"><strong> Cesta </strong></span></a>
+							<a style="color:white; text-decoration: none" href="/cesta">
+                            <span class="glyphicon glyphicon-shopping-cart">
+                            <strong> Cesta </strong></span>
+                            <span class="badge badge-pill badge-success">
+                            <strong>${sessionScope.contador}</strong></span></a>
 						</li>
 					</sec:authorize>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
