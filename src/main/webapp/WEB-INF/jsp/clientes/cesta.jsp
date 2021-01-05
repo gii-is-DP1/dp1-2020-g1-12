@@ -27,6 +27,7 @@
     <jsp:body>
     
 	    <h2>Mi cesta</h2>
+	    <p style="color:red;">${error}</p>
 	    <c:if test="${cesta.lineas.size() != 0}">
 		<form:form modelAttribute="cesta" action="/cesta/actualizar" class="form-horizontal" >	
 		    <table style="text-align: center" id="articulosTable" class="table table-striped">

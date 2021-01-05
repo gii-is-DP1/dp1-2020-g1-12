@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.service.CestaService;
+import org.springframework.samples.dpc.service.exceptions.CantidadNegativaCestaException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +37,13 @@ public class CestaController {
 	}
 
 	@PostMapping(value = "/actualizar")
-	public String modificarArticulosCesta(Cesta cesta) {
-		cestaService.actualizarCesta(cesta);
-		return "redirect:/cesta";
+	public String modificarArticulosCesta(Cesta cesta, ModelMap modelMap) {
+		try {
+			cestaService.actualizarCesta(cesta);
+		} catch(CantidadNegativaCestaException ex) {
+			modelMap.addAttribute("error", "La cantidad de un artículo debe ser mayor a 0");
+		}
+		return listadoCesta(modelMap);
 	}
 
 	@GetMapping("/eliminar/{lineaId}")
