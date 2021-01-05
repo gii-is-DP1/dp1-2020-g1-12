@@ -10,6 +10,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
+import org.springframework.samples.dpc.model.Moderador;
+import org.springframework.samples.dpc.service.exceptions.ComentarioProhibidoException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -27,6 +33,7 @@ class ComentarioServiceTest {
 	private final ModeradorService moderadorService;
 	private final VendedorService vendedorService;
 	private final ClienteService clienteService;
+	//private final AuthenticationManager authenticationManager;
 	private Comentario comentario = new Comentario();
 	
 	@Autowired
@@ -39,6 +46,7 @@ class ComentarioServiceTest {
 		this.moderadorService = moderadorService;
 		this.vendedorService = vendedorService;
 		this.clienteService = clienteService;
+		//this.authenticationManager = authenticationManager;
 	
 	}
 	
@@ -48,10 +56,16 @@ class ComentarioServiceTest {
 		this.comentario.setId(TEST_COMENTARIO_ID);
 		this.comentario.setDescripcion("ASDFGHJKLÑQWERTY");
 		this.comentario.setValoracion(3);  
+//		UsernamePasswordAuthenticationToken authRequest = 
+//				new UsernamePasswordAuthenticationToken("moderador1","moderador1");
+//		Authentication authentication = authenticationManager.authenticate(authRequest);
+//		System.out.println(authentication.getName() + "====================================================================================");
+//		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 	
 //	@Test
 //	void testGuardarComentarioModerador() throws ComentarioProhibidoException{
+//		inicializa();
 //		Comentario comentario = this.comentario;
 //		Moderador moderador = this.moderadorService.findModeradorById(TEST_MODERADOR_ID);
 //		comentario.setModerador(moderador);

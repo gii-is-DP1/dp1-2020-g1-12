@@ -29,6 +29,13 @@
 					<span>Inicio</span>
 				</dpc:menuItem>			
 
+				<sec:authorize access="hasAuthority('cliente')">
+					<dpc:menuItem active="${name eq 'pedidos'}" url="/pedidos"
+						title="Mis pedidos">
+						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+						<span>Mis pedidos</span>
+					</dpc:menuItem>
+				</sec:authorize>
 
 				<sec:authorize access="hasAuthority('moderador')">
 					<dpc:menuItem active="${name eq 'solicitudes'}" url="/solicitudes" title="Solicitudes">
@@ -41,11 +48,9 @@
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Listado de clientes</span>
 					</dpc:menuItem>
-				
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('vendedor')">
-
 					<dpc:menuItem active="${name eq 'articulosEnVenta'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
 						<span>Artículos en venta</span>
 					</dpc:menuItem>
