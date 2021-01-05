@@ -69,6 +69,8 @@ public class PedidoService {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parámetro de búsqueda introducido no "
 					+ "válido.");
 		}
+		page = page < 0 ? 0 : page;
+		size = size < 2 ? 2 : size;
 		Order order = orden.startsWith("-") ? new Order(Sort.Direction.DESC, orden.replace("-", "")) :
 			new Order(Sort.Direction.ASC, orden);
 	

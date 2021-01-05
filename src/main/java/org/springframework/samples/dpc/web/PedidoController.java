@@ -2,10 +2,13 @@ package org.springframework.samples.dpc.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Pedido;
+import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.PedidoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,11 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/pedidos")
 public class PedidoController {
 	
-	private PedidoService pedidoService;
+	private final PedidoService pedidoService;
+	private final CestaService cestaService;
 
 	@Autowired
-	public PedidoController(PedidoService pedidoService) {
+	public PedidoController(PedidoService pedidoService, CestaService cestaService) {
 		this.pedidoService = pedidoService;
+		this.cestaService = cestaService;
 	}
 	
 	@GetMapping()
@@ -39,8 +44,9 @@ public class PedidoController {
 	}
 	
 	@GetMapping("/tramitarPedido")
-	public String listadoPedido(ModelMap modelMap) {
+	public String listadoPedido(HttpServletRequest request, ModelMap modelMap) {
 		pedidoService.tramitarPedido();
+		request.getSession().setAttribute("contador", cestaService.lineasCesta());
 		return "redirect:/pedidos";
 	}
 	

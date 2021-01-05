@@ -3,9 +3,7 @@ package org.springframework.samples.dpc.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Vendedor;
@@ -25,11 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/")
 public class ArticuloController {
-
-	@Bean
-	public PageableHandlerMethodArgumentResolver pageableResolver2() {
-		return new PageableHandlerMethodArgumentResolver();
-	}
 
 	private final ArticuloService articuloService;
 	private final VendedorService vendedorService;
