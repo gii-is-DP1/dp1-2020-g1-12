@@ -16,6 +16,6 @@ public interface LineaPedidoRepository extends CrudRepository<LineaPedido, Integ
 	List<LineaPedido> findByPedido(@Param("pedidoId") int pedidoId);
 
 	@Query("select u from LineaPedido u")
-	Page<LineaPedido> findAll(Pageable pageable) throws DataAccessException;
+	List<LineaPedido> findAll() throws DataAccessException;
 
 }

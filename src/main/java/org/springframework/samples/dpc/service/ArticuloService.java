@@ -18,6 +18,7 @@ import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.repository.ArticuloRepository;
+import org.springframework.samples.dpc.repository.LineaPedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,7 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ArticuloService {
 
 	private final ArticuloRepository articuloRepository;
-	private LineaPedidoService lineaPedidoService;
+	private LineaPedidoRepository lineaPedidoRepository;
 
 	@Autowired
 	public ArticuloService(ArticuloRepository articuloRepository) {
@@ -145,8 +146,11 @@ public class ArticuloService {
 	@Transactional(readOnly = true)
 	public List<LineaPedido> articulosVendidosByProvider(Integer idVendedor, Integer page, Integer size, String orden) {
 		List<Articulo> c = articulosByProvider(idVendedor);
-		@SuppressWarnings("unchecked")
-		List<LineaPedido> l = (List<LineaPedido>) lineaPedidoService.findAll(page, size, orden);
+		System.out.println(
+				"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		List<LineaPedido> l = lineaPedidoRepository.findAll();
+		System.out.println(
+				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		List<LineaPedido> res = new ArrayList<>();
 		for (int i = 0; i < l.size(); i++) {
 			Articulo a = l.get(i).getArticulo();

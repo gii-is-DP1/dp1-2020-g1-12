@@ -15,11 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class LineaPedidoService {
 
 	private LineaPedidoRepository lineaPedidoRepository;
-	private final ClienteService clienteService;
+//	private final ClienteService clienteService;
 
-	public LineaPedidoService(LineaPedidoRepository lineaPedidoRepository, ClienteService clienteService) {
+	public LineaPedidoService(LineaPedidoRepository lineaPedidoRepository) {
 		this.lineaPedidoRepository = lineaPedidoRepository;
-		this.clienteService = clienteService;
 	}
 
 	@Transactional
@@ -32,10 +31,10 @@ public class LineaPedidoService {
 		lineaPedidoRepository.save(lineaPedido);
 	}
 
-	public Page<LineaPedido> findAll(Integer page, Integer size, String orden) {
-		Pageable pageable = clienteService.obtenerFiltros(page, size, orden);
-		return lineaPedidoRepository.findAll(pageable);
-	}
+//	public Page<LineaPedido> findAll(Integer page, Integer size, String orden) {
+//		Pageable pageable = clienteService.obtenerFiltros(page, size, orden);
+//		return lineaPedidoRepository.findAll(pageable);
+//	}
 
 	public List<LineaPedido> obtenerLineas(Integer pedidoId) {
 		return lineaPedidoRepository.findByPedido(pedidoId);
