@@ -88,7 +88,7 @@ class ClienteControllerTest {
 	@Test
 	void testProcesadoListadoClientes() throws Exception {
 		mockMvc.perform(get("/clientes")).andExpect(status().isOk())
-				.andExpect(model().attributeExists("clientes", "vendedores"))
+				.andExpect(model().attributeExists("clientes", "vendedores","ordenacionCliente","ordenacionVendedor"))
 				.andExpect(view().name("moderadores/listadoClientes"));
 	}
 
