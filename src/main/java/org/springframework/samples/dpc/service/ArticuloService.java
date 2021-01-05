@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Genero;
+import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.repository.ArticuloRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ArticuloService {
 
 	private final ArticuloRepository articuloRepository;
+	private LineaPedidoService lineaPedidoService;
 
 	@Autowired
 	public ArticuloService(ArticuloRepository articuloRepository) {
@@ -51,6 +53,11 @@ public class ArticuloService {
 	public Page<Articulo> articulosEnVentaByProvider(Integer id, Integer page, Integer size, String orden) {
 		Pageable pageable = obtenerFiltros(page, size, orden);
 		return articuloRepository.articulosEnVentaPorId(id, pageable);
+	}
+
+	@Transactional
+	public List<Articulo> articulosByProvider(Integer id) {
+		return articuloRepository.articulosDeUnVendedor(id);
 	}
 
 	@Transactional(readOnly = true)
@@ -121,25 +128,34 @@ public class ArticuloService {
 		}
 		return mensaje;
 	}
-	
+
 	@Transactional(readOnly = true)
-	public Pageable obtenerFiltros(Integer page, Integer size, String orden) throws ResponseStatusException{
-		if(!orden.equals("id") && !orden.equals("-id") && !orden.equals("marca") && !orden.equals("-marca") &&
-				!orden.equals("precio") && !orden.equals("-precio")) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parámetro de búsqueda introducido no "
-					+ "válido.");
+	public Pageable obtenerFiltros(Integer page, Integer size, String orden) throws ResponseStatusException {
+		if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("marca") && !orden.equals("-marca")
+				&& !orden.equals("precio") && !orden.equals("-precio")) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"Parámetro de búsqueda introducido no " + "válido.");
 		}
 		page = page < 0 ? 0 : page;
 		size = size < 10 ? 10 : size;
 		Order order = orden.startsWith("-") ? new Order(Sort.Direction.DESC, orden.replace("-", "")) :
 			new Order(Sort.Direction.ASC, orden);
-	
 		return PageRequest.of(page, size, Sort.by(order));
 	}
 
 	@Transactional(readOnly = true)
-	public List<Articulo> articulosVendidosByProvider(Integer id) {
-		return null;
+	public List<LineaPedido> articulosVendidosByProvider(Integer idVendedor, Integer page, Integer size, String orden) {
+		List<Articulo> c = articulosByProvider(idVendedor);
+		@SuppressWarnings("unchecked")
+		List<LineaPedido> l = (List<LineaPedido>) lineaPedidoService.findAll(page, size, orden);
+		List<LineaPedido> res = new ArrayList<>();
+		for (int i = 0; i < l.size(); i++) {
+			Articulo a = l.get(i).getArticulo();
+			if (c.contains(a)) {
+				res.add(l.get(i));
+			}
+		}
+		return res;
 	}
 
 }
