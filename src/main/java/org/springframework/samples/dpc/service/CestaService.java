@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.repository.CestaRepository;
+import org.springframework.samples.dpc.service.exceptions.CantidadNegativaCestaException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,16 +73,25 @@ public class CestaService {
 						.findFirst().isPresent()
 				: false;
 	}
+	
+	@Transactional(readOnly = true)
+	public Integer lineasCesta() {
+		return obtenerCestaCliente().getLineas().size();
+	}
 
-	@Transactional
-	public void actualizarCesta(Cesta cesta) {
+	@Transactional(rollbackFor = CantidadNegativaCestaException.class)
+	public void actualizarCesta(Cesta cesta) throws CantidadNegativaCestaException {
 		Cesta cestaSesion = obtenerCestaCliente();
 
 		for (int i = 0; i <= cestaSesion.getLineas().size() - 1; i++) {
 			if (cestaSesion.getLineas().get(i) != cesta.getLineas().get(i)) {
-				lineaCestaService.findLineaById(cesta.getLineas().get(i).getId())
-						.setCantidad(cesta.getLineas().get(i).getCantidad());
-				cestaSesion.getLineas().get(i).setCantidad(cesta.getLineas().get(i).getCantidad());
+				if(cesta.getLineas().get(i).getCantidad() <= 0) {
+					throw new CantidadNegativaCestaException();
+				} else {
+					lineaCestaService.findLineaById(cesta.getLineas().get(i).getId())
+					.setCantidad(cesta.getLineas().get(i).getCantidad());
+					//cestaSesion.getLineas().get(i).setCantidad(cesta.getLineas().get(i).getCantidad());
+				}
 			}
 		}
 	}
