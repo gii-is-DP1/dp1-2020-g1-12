@@ -2,7 +2,6 @@ package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +24,13 @@ class VendedorServiceTest {
 	@Test
 	void shouldFindVendedorById() {
 		Vendedor optperfil = this.vendedorService.findSellerById(1);
-		assertEquals("Pepe", optperfil.getNombre());
+		assertThat("Pepe").isEqualTo(optperfil.getNombre());
 	}
 
 	@Test
 	void shouldFindVendedorByDni() {
 		Vendedor optperfil = this.vendedorService.findSellerByDni("29976789");
-		assertEquals("Pepe", optperfil.getNombre());
+		assertThat("Pepe").isEqualTo(optperfil.getNombre());
 	}
 
 	@Test
@@ -56,7 +55,7 @@ class VendedorServiceTest {
 		vend.setUser(user);
 		this.vendedorService.guardar(vend);
 		Vendedor vendedor = this.vendedorService.findSellerByDni("12345678");
-		assertEquals(vend, vendedor);
+		assertThat(vend).isEqualTo(vendedor);
 	}
 
 	@Test
