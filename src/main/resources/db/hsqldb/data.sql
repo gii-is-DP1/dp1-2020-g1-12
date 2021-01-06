@@ -16,6 +16,9 @@ INSERT INTO authorities(id,username,authority) VALUES (8,'vendedor3','vendedor')
 INSERT INTO users(username,password,enabled) VALUES ('moderador1','moderador1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (9,'moderador1','moderador');
 
+INSERT INTO users(username,password,enabled) VALUES ('cliente3','cliente3',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'cliente3','cliente');
+
 -- Introducimos bloqueos.
 
 INSERT INTO bloqueos VALUES (1, false, '');
@@ -23,6 +26,7 @@ INSERT INTO bloqueos VALUES (2, false, '');
 INSERT INTO bloqueos VALUES (3, false, '');
 INSERT INTO bloqueos VALUES (4, false, '');
 INSERT INTO bloqueos VALUES (5, false, '');
+INSERT INTO bloqueos VALUES (6, true, 'Uso inadecuado de la sección de comentarios (insultos y calumnias hacia el vendedor y demás usuarios).');
 
 -- Introducimos vendedores.
 
@@ -150,6 +154,7 @@ INSERT INTO solicitudes VALUES (12, 'Si necesitas un móvil versátil y funciona
 
 INSERT INTO cestas VALUES (1,1688.99);
 INSERT INTO cestas VALUES (2,0.0);
+INSERT INTO cestas VALUES (3,0.0);
 
 -- Introducimos linea cestas
 
@@ -160,6 +165,7 @@ INSERT INTO lineas_cestas VALUES (2,2,6,1);
 
 INSERT INTO clientes VALUES (1, 'Fernandez', 'C/Boqueron 34', '23456789', 'Juan', '988733221', 'juan@gmail.com', 1,1,'cliente1');
 INSERT INTO clientes VALUES (2, 'Martin', 'C/Konquero 4', '23456119', 'Francisco', '988733111', 'martin@gmail.com', 2,2,'cliente2');
+INSERT INTO clientes VALUES (3, 'López', 'C/Real betis 11', '98577888', 'Antonio', '877433224', 'pepe@gmail.com', 6,3,'cliente3');
 
 -- Introducimos comentarios.
 

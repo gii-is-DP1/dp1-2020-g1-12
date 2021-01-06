@@ -33,7 +33,7 @@ public class BloqueoService {
 		return (bloqueoRepository.findById(id).isPresent()) ? bloqueoRepository.findById(id).get() : null;
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = UsuarioBloqueadoException.class)
 	public void usuarioBloqueado(String username) throws UsuarioBloqueadoException {
 		String autoridad = userService.getAuthority(username);
 

@@ -1,7 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ class ModeradorServiceTest {
 	@Test
 	void testDatosPerfil() {
 		Moderador moderador = this.moderadorService.findModeradorById(1);
-		assertEquals("Pedro", moderador.getNombre());
+		assertThat("Pedro").isEqualTo(moderador.getNombre());
 	}
 	
 	@Test
@@ -34,7 +34,7 @@ class ModeradorServiceTest {
 		this.moderadorService.guardar(mod);
 		
 		mod = this.moderadorService.findModeradorById(1);
-		assertEquals(mod.getDni(), newDni);
+		assertThat(mod.getDni()).isEqualTo(newDni);
 	}
 	
 	@Test
@@ -59,7 +59,7 @@ class ModeradorServiceTest {
 		this.moderadorService.guardar(mod);
 		Integer id = mod.getId();
 		Moderador moderador = this.moderadorService.findModeradorById(id);
-		assertEquals(mod, moderador);
+		assertThat(mod).isEqualTo(moderador);
 	}
 
 }

@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +26,13 @@ class ClienteServiceTest {
 	@Test
 	void shouldFindclienteById() {
 		Cliente optperfil = this.clienteService.findClientById(1);
-		assertEquals(optperfil.getNombre(), "Juan");
+		assertThat(optperfil.getNombre()).isEqualTo("Juan");
 	}
 
 	@Test
 	void shouldFindclienteByDni() {
 		Cliente optperfil = this.clienteService.findClientByDni("23456789");
-		assertEquals(optperfil.getNombre(), "Juan");
+		assertThat(optperfil.getNombre()).isEqualTo("Juan");
 	}
 
 	@Test
@@ -62,7 +61,7 @@ class ClienteServiceTest {
 		c.setCesta(cesta);
 		this.clienteService.guardar(c);
 		Cliente cliente = this.clienteService.findClientByDni("12345678");
-		assertEquals(c, cliente);
+		assertThat(c).isEqualTo(cliente);
 	}
 
 	@Test
