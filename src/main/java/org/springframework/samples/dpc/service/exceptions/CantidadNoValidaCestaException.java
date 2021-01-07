@@ -1,5 +1,5 @@
 package org.springframework.samples.dpc.service.exceptions;
 
-public class CantidadNegativaCestaException extends Exception {
+public class CantidadNoValidaCestaException extends Exception {
 
 }
