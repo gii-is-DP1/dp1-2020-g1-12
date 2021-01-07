@@ -31,7 +31,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 public class CestaControllerTest {
 	
-	private static final int TEST_CESTA_ID = 1;
 	private static final int TEST_ARTICULO_ID = 2;
 
 	@MockBean 
@@ -87,7 +86,7 @@ public class CestaControllerTest {
     void testActualizarCesta() throws Exception {
 		
 		mockMvc.perform(post("/cesta/actualizar").param("lineas", "new ArrayList<>()").with(csrf())) // tambien valdría poner lineas.cantidad y luego la cantidad
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/cesta"));
+		.andExpect(status().is2xxSuccessful()).andExpect(view().name("redirect:/cesta"));
 	}
 	
 	@WithMockUser(value = "spring")

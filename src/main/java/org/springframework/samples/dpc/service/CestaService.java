@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.repository.CestaRepository;
-import org.springframework.samples.dpc.service.exceptions.CantidadNegativaCestaException;
+import org.springframework.samples.dpc.service.exceptions.CantidadNoValidaCestaException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,14 +79,16 @@ public class CestaService {
 		return obtenerCestaCliente().getLineas().size();
 	}
 
-	@Transactional(rollbackFor = CantidadNegativaCestaException.class)
-	public void actualizarCesta(Cesta cesta) throws CantidadNegativaCestaException {
+	@Transactional(rollbackFor = CantidadNoValidaCestaException.class)
+	public void actualizarCesta(Cesta cesta) throws CantidadNoValidaCestaException {
 		Cesta cestaSesion = obtenerCestaCliente();
 
 		for (int i = 0; i <= cestaSesion.getLineas().size() - 1; i++) {
 			if (cestaSesion.getLineas().get(i) != cesta.getLineas().get(i)) {
-				if(cesta.getLineas().get(i).getCantidad() <= 0) {
-					throw new CantidadNegativaCestaException();
+				LineaCesta lineaModificada = cesta.getLineas().get(i);
+				if(lineaModificada.getCantidad() <= 0 || 
+						lineaModificada.getCantidad() > cestaSesion.getLineas().get(i).getArticulo().getStock()) {
+					throw new CantidadNoValidaCestaException();
 				} else {
 					lineaCestaService.findLineaById(cesta.getLineas().get(i).getId())
 					.setCantidad(cesta.getLineas().get(i).getCantidad());

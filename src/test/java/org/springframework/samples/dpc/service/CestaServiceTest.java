@@ -1,6 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.samples.dpc.model.Articulo;
-import org.springframework.samples.dpc.service.exceptions.CantidadNegativaCestaException;
+import org.springframework.samples.dpc.service.exceptions.CantidadNoValidaCestaException;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class CestaServiceTest {
@@ -77,7 +78,7 @@ public class CestaServiceTest {
 	}
 
 	@Test
-	void testActualizarCesta() throws CantidadNegativaCestaException {
+	void testActualizarCesta() throws CantidadNoValidaCestaException {
 		Cesta c2 = this.cestaService.findCestaById(1);
 		Cesta c = this.cestaService.findCestaById(1);
 		LineaCesta linea3 = new LineaCesta();

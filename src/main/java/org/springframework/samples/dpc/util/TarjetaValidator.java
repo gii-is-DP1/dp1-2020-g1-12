@@ -20,6 +20,10 @@ public class TarjetaValidator implements Validator {
 		if(numero == null || numero.length() != 16 || !isNumeric(numero)) {
 			errors.rejectValue("numero", "El campo numero es obligatorio y debe ser un número de longitud 16",
 					"El campo numero es obligatorio y debe ser un número de longitud 16");
+		}else {
+			if(!algoritmoDeLuhm(numero)) {
+				errors.rejectValue("numero", "El número de la tarjeta de crédito no es válido.","El número de la tarjeta de crédito no es válido.");
+			}
 		}
 		String cvv = tarjeta.getCvv();
 		if(cvv == null || cvv.length() != 3 || !isNumeric(cvv)) {
@@ -59,6 +63,24 @@ public class TarjetaValidator implements Validator {
 		} catch (NumberFormatException nfe) {
 			return false;
 		}
+	}
+	
+	private boolean algoritmoDeLuhm(String cadena){
+		int suma=0;
+		for(Integer i = 0; i <= 15;i++) {
+			int x = cadena.charAt(i) - 48; // el método char devuelve el número en código ASCII por eso se le resta 48 
+			if(i%2==0) {
+				if(x<5)	suma += (x * 2);
+				else {
+					String mul = String.valueOf(x*2);
+					suma += (mul.charAt(0)-48 + mul.charAt(1)-48);
+					
+				}
+			}else {
+				suma += cadena.charAt(i)-48;
+			}
+		}
+		return suma%10==0; 
 	}
 
 	@Override
