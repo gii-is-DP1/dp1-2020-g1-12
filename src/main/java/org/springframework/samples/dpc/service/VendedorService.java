@@ -16,14 +16,14 @@ public class VendedorService {
 
 	private final VendedorRepository vendedorRepository;
 	private final UserService userService;
-	private final ClienteService clienteService;
+	private final ArticuloService articuloService;
 	
 	@Autowired
 	public VendedorService(VendedorRepository vendedorRepository, UserService userService, 
-			ClienteService clienteService) {
+			ArticuloService articuloService) {
 		this.vendedorRepository = vendedorRepository;
 		this.userService = userService;
-		this.clienteService = clienteService;
+		this.articuloService = articuloService;
 	}
 
 	@Transactional
@@ -73,7 +73,7 @@ public class VendedorService {
 	}
 
 	public Page<Vendedor> findAllSeller(Integer page, Integer size, String orden) {
-		Pageable pageable = clienteService.obtenerFiltros(page, size, orden);
+		Pageable pageable = articuloService.obtenerFiltros(page, size, orden, "clientes");
 		return vendedorRepository.findAll(pageable);
 	}
 	

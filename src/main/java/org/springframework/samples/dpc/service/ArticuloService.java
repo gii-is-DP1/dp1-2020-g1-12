@@ -16,11 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Genero;
-import org.springframework.samples.dpc.model.LineaPedido;
-import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.repository.ArticuloRepository;
-import org.springframework.samples.dpc.repository.LineaPedidoRepository;
-import org.springframework.samples.dpc.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,12 +25,10 @@ import org.springframework.web.server.ResponseStatusException;
 public class ArticuloService {
 
 	private final ArticuloRepository articuloRepository;
-	private LineaPedidoService lineaPedidoService;
 
 	@Autowired
-	public ArticuloService(ArticuloRepository articuloRepository, LineaPedidoService lineaPedidoService) {
+	public ArticuloService(ArticuloRepository articuloRepository) {
 		this.articuloRepository = articuloRepository;
-		this.lineaPedidoService = lineaPedidoService;
 	}
 
 	@Transactional
@@ -55,7 +49,7 @@ public class ArticuloService {
 
 	@Transactional
 	public Page<Articulo> articulosEnVentaByProvider(Integer id, Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden);
+		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
 		return articuloRepository.articulosEnVentaPorId(id, pageable);
 	}
 
@@ -71,7 +65,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Page<Articulo> articulosDisponibles(Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden);
+		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
 		return articuloRepository.articulosDisponibles(pageable);
 	}
 
@@ -93,7 +87,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosRelacionados(Articulo articulo) {
-		Pageable pageable = obtenerFiltros(0, (int) articuloRepository.count(), "-id");
+		Pageable pageable = obtenerFiltros(0, (int) articuloRepository.count(), "-id", "articulo");
 		List<Articulo> relacionados = new ArrayList<>();
 		List<Articulo> articulos = articuloRepository.articulosDisponibles(pageable).getContent();
 		for (Articulo art : articulos) {
@@ -106,7 +100,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Page<Articulo> busqueda(Articulo articulo, Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden);
+		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
 		String busqueda = articulo.getModelo();
 		if (articulo.getGeneros() == null) {
 			return articuloRepository.articulosPorNombre(busqueda, pageable);
@@ -134,33 +128,45 @@ public class ArticuloService {
 	}
 
 	@Transactional(readOnly = true)
-	public Pageable obtenerFiltros(Integer page, Integer size, String orden) throws ResponseStatusException {
-		if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("marca") && !orden.equals("-marca")
-				&& !orden.equals("precio") && !orden.equals("-precio")) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-					"Parámetro de búsqueda introducido no " + "válido.");
+	public Pageable obtenerFiltros(Integer page, Integer size, String orden, String caso) throws ResponseStatusException {
+		switch (caso) {
+		case "articulo":
+			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("marca") && !orden.equals("-marca")
+					&& !orden.equals("precio") && !orden.equals("-precio")) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Parámetro de búsqueda introducido no " + "válido.");
+			}
+			page = page < 0 ? 0 : page;
+			size = size < 10 ? 10 : size;
+			break;
+		case "clientes":
+			if(!orden.equals("nombre") && !orden.equals("-nombre") && !orden.equals("apellido") && !orden.equals("-apellido") &&
+					!orden.equals("dni") && !orden.equals("-dni")) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parámetro de búsqueda introducido no "
+						+ "válido.");
+			}
+			page = page < 0 ? 0 : page;
+			size = size < 5 ? 5 : size;
+			break;
+		case "pedidos":
+			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("fecha") && !orden.equals("-fecha")) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Parámetro de búsqueda introducido no " + "válido.");
+			}
+			page = page < 0 ? 0 : page;
+			size = size < 2 ? 2 : size;
+			break;
+		case "vendidos":
+			if (!orden.equals("id") && !orden.equals("-id")) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Parámetro de búsqueda introducido no " + "válido.");
+			}
+			page = page < 0 ? 0 : page;
+			size = size < 10 ? 10 : size;
+			break;
 		}
-		page = page < 0 ? 0 : page;
-		size = size < 10 ? 10 : size;
 		Order order = orden.startsWith("-") ? new Order(Sort.Direction.DESC, orden.replace("-", ""))
 				: new Order(Sort.Direction.ASC, orden);
 		return PageRequest.of(page, size, Sort.by(order));
 	}
-
-	@Transactional(readOnly = true)
-	public List<LineaPedido> articulosVendidosByProvider(Integer idVendedor) {
-		List<Articulo> c = articulosByProvider(idVendedor);
-		List<LineaPedido> l = (List<LineaPedido>) lineaPedidoService.findAll();
-		List<LineaPedido> res = new ArrayList<>();
-
-		for (int i = 0; i < l.size(); i++) {
-			Articulo a = l.get(i).getArticulo();
-			if (c.contains(a)) {
-				res.add(l.get(i));
-			}
-
-		}
-		return res;
-	}
-
 }

@@ -12,6 +12,7 @@ import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.ClienteService;
+import org.springframework.samples.dpc.service.LineaPedidoService;
 import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
@@ -28,18 +29,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/vendedores")
 public class VendedorController {
 
-	private VendedorService vendedorService;
+	private final VendedorService vendedorService;
 	private ArticuloService articuloService;
 	private ClienteService clienteService;
 	private SolicitudService solicitudService;
+	private LineaPedidoService lineaPedidoService;
 
 	@Autowired
 	public VendedorController(VendedorService vendedorService, ArticuloService articuloService,
-			ClienteService clienteService, SolicitudService solicitudService) {
+			ClienteService clienteService, SolicitudService solicitudService, LineaPedidoService lineaPedidoService) {
 		this.vendedorService = vendedorService;
 		this.articuloService = articuloService;
 		this.clienteService = clienteService;
 		this.solicitudService = solicitudService;
+		this.lineaPedidoService = lineaPedidoService;
 	}
 
 	@GetMapping(value = "/perfil")
@@ -104,12 +107,9 @@ public class VendedorController {
 
 		Page<Solicitud> solicitudes = solicitudService.getsolicitudesByProvider(vendedorService.obtenerIdSesion(), page,
 				size, orden);
-		String signo = solicitudes.getSort().get().findAny().get().isAscending() ? "" : "-"; // Guardo el parámetro de
-																								// ordenación para que
-																								// al cambiar
-		String ordenacion = signo + solicitudes.getSort().get().findAny().get().getProperty(); // de página se siga
-																								// usando el filtro
-																								// seleccionado
+		// Guardo el parámetro de ordenación para que al cambiar de página se siga usando el filtro seleccionado
+		String signo = solicitudes.getSort().get().findAny().get().isAscending() ? "" : "-";
+		String ordenacion = signo + solicitudes.getSort().get().findAny().get().getProperty();
 
 		modelMap.addAttribute("solicitudes", solicitudes);
 		modelMap.addAttribute("ordenacion", ordenacion);
@@ -166,11 +166,20 @@ public class VendedorController {
 	}
 
 	@GetMapping(value = "/articulosVendidos")
-	public String mostrarArticulosVendidos(ModelMap modelMap) {
+	public String mostrarArticulosVendidos(
+			@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
 		String vista = "vendedores/listadoArticulosVendidos";
-		Iterable<LineaPedido> optarticulos = articuloService
-				.articulosVendidosByProvider(vendedorService.obtenerIdSesion());
+		Page<LineaPedido> optarticulos = lineaPedidoService
+				.articulosVendidosByProvider(page, size, orden, vendedorService.obtenerIdSesion());
+		
+		// Guardo el parámetro de ordenación para que al cambiar de página se siga usando el filtro seleccionado
+		String signo = optarticulos.getSort().get().findAny().get().isAscending() ? "" : "-";
+		String ordenacion = signo + optarticulos.getSort().get().findAny().get().getProperty();
+		
 		modelMap.addAttribute("lineaPedido", optarticulos);
+		modelMap.addAttribute("ordenacion", ordenacion);
 		return vista;
 	}
 

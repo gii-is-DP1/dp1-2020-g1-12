@@ -5,18 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PedidoService {
@@ -25,18 +20,20 @@ public class PedidoService {
 	private ClienteService clienteService;
 	private LineaPedidoService lineaPedidoService;
 	private CestaService cestaService;
+	private ArticuloService articuloService;
 
 	@Autowired
 	public PedidoService(PedidoRepository pedidoRepository, ClienteService clienteService,
-			LineaPedidoService lineaPedidoService, CestaService cestaService) {
+			LineaPedidoService lineaPedidoService, CestaService cestaService,ArticuloService articuloService) {
 		this.pedidoRepository = pedidoRepository;
 		this.clienteService = clienteService;
 		this.lineaPedidoService = lineaPedidoService;
 		this.cestaService = cestaService;
+		this.articuloService = articuloService;
 	}
 
 	public Page<Pedido> obtenerPedidos(Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden);
+		Pageable pageable = articuloService.obtenerFiltros(page, size, orden, "pedidos");
 		return pedidoRepository.findByCliente(clienteService.obtenerIdSesion(), pageable);
 	}
 
@@ -63,18 +60,5 @@ public class PedidoService {
 
 	public List<LineaPedido> obtenerLineas(Integer pedidoId) {
 		return lineaPedidoService.obtenerLineas(pedidoId);
-	}
-
-	@Transactional(readOnly = true)
-	public Pageable obtenerFiltros(Integer page, Integer size, String orden) throws ResponseStatusException {
-		if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("fecha") && !orden.equals("-fecha")) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-					"Parámetro de búsqueda introducido no " + "válido.");
-		}
-		page = page < 0 ? 0 : page;
-		size = size < 2 ? 2 : size;
-		Order order = orden.startsWith("-") ? new Order(Sort.Direction.DESC, orden.replace("-", "")) :
-			new Order(Sort.Direction.ASC, orden);
-		return PageRequest.of(page, size, Sort.by(order));
 	}
 }
