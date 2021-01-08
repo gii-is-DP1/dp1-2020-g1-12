@@ -17,8 +17,10 @@ import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.model.LineaPedido;
+import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.repository.ArticuloRepository;
 import org.springframework.samples.dpc.repository.LineaPedidoRepository;
+import org.springframework.samples.dpc.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,6 +30,7 @@ public class ArticuloService {
 
 	private final ArticuloRepository articuloRepository;
 	private LineaPedidoRepository lineaPedidoRepository;
+	private PedidoRepository pedidoRepository;
 
 	@Autowired
 	public ArticuloService(ArticuloRepository articuloRepository) {
@@ -139,24 +142,27 @@ public class ArticuloService {
 		}
 		page = page < 0 ? 0 : page;
 		size = size < 10 ? 10 : size;
-		Order order = orden.startsWith("-") ? new Order(Sort.Direction.DESC, orden.replace("-", "")) :
-			new Order(Sort.Direction.ASC, orden);
+		Order order = orden.startsWith("-") ? new Order(Sort.Direction.DESC, orden.replace("-", ""))
+				: new Order(Sort.Direction.ASC, orden);
 		return PageRequest.of(page, size, Sort.by(order));
 	}
 
 	@Transactional(readOnly = true)
-	public List<LineaPedido> articulosVendidosByProvider(Integer idVendedor, Integer page, Integer size, String orden) {
+	public List<LineaPedido> articulosVendidosByProvider(Integer idVendedor) {
 		List<Articulo> c = articulosByProvider(idVendedor);
 		System.out.println(
 				"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		List<LineaPedido> l = lineaPedidoRepository.findAll();
+		List<Pedido> pedidos = (List<Pedido>) pedidoRepository.findAll();
 		System.out.println(
 				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		List<LineaPedido> res = new ArrayList<>();
-		for (int i = 0; i < l.size(); i++) {
-			Articulo a = l.get(i).getArticulo();
-			if (c.contains(a)) {
-				res.add(l.get(i));
+		for (int j = 0; j < pedidos.size(); j++) {
+			List<LineaPedido> l = (List<LineaPedido>) pedidos.get(j).getLineas();
+			for (int i = 0; i < l.size(); i++) {
+				Articulo a = l.get(i).getArticulo();
+				if (c.contains(a)) {
+					res.add(l.get(i));
+				}
 			}
 		}
 		return res;

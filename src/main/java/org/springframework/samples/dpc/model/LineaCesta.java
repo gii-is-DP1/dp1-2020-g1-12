@@ -10,17 +10,17 @@ import javax.validation.constraints.Min;
 
 @Entity
 @Table(name = "lineasCestas")
-public class LineaCesta extends BaseEntity{
+public class LineaCesta extends BaseEntity {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "cesta_id")
 	private Cesta cesta;
-	
+
 	@Column(name = "cantidad")
 	@Min(1)
 	@Max(100)
 	private Integer cantidad;
-	
+
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "articulo_id")
 	private Articulo articulo;
@@ -47,5 +47,11 @@ public class LineaCesta extends BaseEntity{
 
 	public void setArticulo(Articulo articulo) {
 		this.articulo = articulo;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "LineaCesta [cesta=" + cesta + ", cantidad=" + cantidad + ", articulo=" + articulo + "]";
+	}
+
 }

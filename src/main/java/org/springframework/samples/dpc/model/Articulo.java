@@ -20,46 +20,46 @@ import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Table(name = "articulos")
-public class Articulo extends Producto{
-	
-	@OneToOne(optional=true)
+public class Articulo extends Producto {
+
+	@OneToOne(optional = true)
 	private Oferta oferta;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "articulo", fetch = FetchType.EAGER)
 	private Collection<Comentario> comentarios;
-	
+
 	@Column(name = "descripcion")
-	@Length(min=10,max=5000)
+	@Length(min = 10, max = 5000)
 	private String descripcion;
-	
+
 	@Column(name = "urlImagen")
 	@URL
 	private String urlImagen;
-	
+
 	@Column(name = "precio")
 	@Min(1)
 	@Max(10000)
 	private Double precio;
-	
+
 	@Column(name = "stock")
 	@Min(0)
 	@Max(500)
-	@NotNull(message="El stock no puede estar vacío.")
+	@NotNull(message = "El stock no puede estar vacío.")
 	private Integer stock;
-	
+
 	@Column(name = "tipo")
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
-	
-	@Column(name="gastoEnvio")
+
+	@Column(name = "gastoEnvio")
 	@Min(0)
 	private Double gastoEnvio;
-	
+
 	@Column(name = "tiempoEntrega")
 	@Min(1)
 	@Max(30)
 	private Integer tiempoEntrega;
-	
+
 	@Override
 	public String getModelo() {
 		return modelo;
@@ -79,7 +79,7 @@ public class Articulo extends Producto{
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
-	
+
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -151,4 +151,12 @@ public class Articulo extends Producto{
 	public void setComentarios(Collection<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
+
+	@Override
+	public String toString() {
+		return "Articulo [oferta=" + oferta + ", comentarios=" + comentarios + ", descripcion=" + descripcion
+				+ ", urlImagen=" + urlImagen + ", precio=" + precio + ", stock=" + stock + ", tipo=" + tipo
+				+ ", gastoEnvio=" + gastoEnvio + ", tiempoEntrega=" + tiempoEntrega + "]";
+	}
+
 }

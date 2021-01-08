@@ -43,4 +43,9 @@ public class Cesta extends BaseEntity {
 		return result;
 	}
 
+	@Override
+	public String toString() {
+		return "Cesta [precioFinal=" + precioFinal + ", lineas=" + lineas + "]";
+	}
+
 }

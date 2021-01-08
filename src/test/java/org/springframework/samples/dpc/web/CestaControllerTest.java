@@ -30,22 +30,22 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers = CestaController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 
 public class CestaControllerTest {
-	
+
 	private static final int TEST_ARTICULO_ID = 2;
 
-	@MockBean 
+	@MockBean
 	private CestaService cestaService;
-	
-	@MockBean 
+
+	@MockBean
 	private ArticuloService articuloService;
-	
-	@MockBean 
+
+	@MockBean
 	private LineaCestaService lineaCestaService;
-	
+
 	@BeforeEach
 	void setup() {
-		
-		Cesta c= new Cesta();
+
+		Cesta c = new Cesta();
 		LineaCesta linea1 = new LineaCesta();
 		linea1.setCantidad(1);
 		linea1.setCesta(c);
@@ -60,42 +60,44 @@ public class CestaControllerTest {
 		lineas.add(linea1);
 		lineas.add(linea2);
 		c.setLineas(lineas);
-		
+
 		given(this.cestaService.findCestaById(1)).willReturn(c);
 	}
-	
+
 	@Autowired
 	private MockMvc mockMvc;
-	
-	@WithMockUser(value = "spring")
-    @Test
-    void testListadoCesta() throws Exception {
-		mockMvc.perform(get("/cesta")).andExpect(status().isOk())
-		.andExpect(status().is2xxSuccessful()).andExpect(view().name("clientes/cesta"));
-	}
-	
-	@WithMockUser(value = "spring")
-    @Test
-    void testAnyadirArticuloCesta() throws Exception {
-		mockMvc.perform(get("/cesta/anyadirArticulo/"+TEST_ARTICULO_ID))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/articulos/{articuloId}"));
-	}
-	
-	@WithMockUser(value = "spring")
-    @Test
-    void testActualizarCesta() throws Exception {
-		
-		mockMvc.perform(post("/cesta/actualizar").param("lineas", "new ArrayList<>()").with(csrf())) // tambien valdría poner lineas.cantidad y luego la cantidad
-		.andExpect(status().is2xxSuccessful()).andExpect(view().name("redirect:/cesta"));
-	}
-	
-	@WithMockUser(value = "spring")
-    @Test
-    void testEliminarArticuloCesta() throws Exception {
-		mockMvc.perform(get("/cesta/eliminar/"+1))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/cesta"));
-	}
-	
 
+	@WithMockUser(value = "spring")
+	@Test
+	void testListadoCesta() throws Exception {
+		mockMvc.perform(get("/cesta")).andExpect(status().isOk()).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name("clientes/cesta"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testAnyadirArticuloCesta() throws Exception {
+		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/articulos/{articuloId}"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testActualizarCesta() throws Exception {
+
+		mockMvc.perform(post("/cesta/actualizar").param("lineas", "new ArrayList<>()").with(csrf())) // tambien valdría
+																										// poner
+																										// lineas.cantidad
+																										// y luego la
+																										// cantidad
+				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/cesta"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testEliminarArticuloCesta() throws Exception {
+		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/cesta"));
+	}
 
 }
