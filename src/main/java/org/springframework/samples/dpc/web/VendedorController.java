@@ -166,13 +166,10 @@ public class VendedorController {
 	}
 
 	@GetMapping(value = "/articulosVendidos")
-	public String mostrarArticulosVendidos(
-			@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
-			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
-			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+	public String mostrarArticulosVendidos(ModelMap modelMap) {
 		String vista = "vendedores/listadoArticulosVendidos";
 		Iterable<LineaPedido> optarticulos = articuloService
-				.articulosVendidosByProvider(vendedorService.obtenerIdSesion(), page, size, orden);
+				.articulosVendidosByProvider(vendedorService.obtenerIdSesion());
 		modelMap.addAttribute("lineaPedido", optarticulos);
 		return vista;
 	}

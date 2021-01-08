@@ -2,6 +2,7 @@ package org.springframework.samples.dpc.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.dpc.model.LineaCesta;
@@ -15,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class LineaPedidoService {
 
 	private LineaPedidoRepository lineaPedidoRepository;
-//	private final ClienteService clienteService;
 
+	@Autowired
 	public LineaPedidoService(LineaPedidoRepository lineaPedidoRepository) {
 		this.lineaPedidoRepository = lineaPedidoRepository;
 	}
@@ -31,10 +32,9 @@ public class LineaPedidoService {
 		lineaPedidoRepository.save(lineaPedido);
 	}
 
-//	public Page<LineaPedido> findAll(Integer page, Integer size, String orden) {
-//		Pageable pageable = clienteService.obtenerFiltros(page, size, orden);
-//		return lineaPedidoRepository.findAll(pageable);
-//	}
+	public Iterable<LineaPedido> findAll() {
+		return lineaPedidoRepository.findAll();
+	}
 
 	public List<LineaPedido> obtenerLineas(Integer pedidoId) {
 		return lineaPedidoRepository.findByPedido(pedidoId);
