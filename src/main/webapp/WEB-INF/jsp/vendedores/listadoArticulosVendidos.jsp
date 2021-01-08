@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-      <c:forEach items="${lineaPedido.getContent()}" var="lp">
+      <c:forEach items="${lineaPedido}" var="lp">
             <tr>
                 <td>
 					<c:out value="${lp.articulo.marca} ${lp.articulo.modelo}"/>
@@ -30,3 +30,4 @@
         </c:forEach> 
         </tbody>
     </table>
+</dpc:layout>

@@ -29,12 +29,12 @@ import org.springframework.web.server.ResponseStatusException;
 public class ArticuloService {
 
 	private final ArticuloRepository articuloRepository;
-	private LineaPedidoRepository lineaPedidoRepository;
-	private PedidoRepository pedidoRepository;
+	private LineaPedidoService lineaPedidoService;
 
 	@Autowired
-	public ArticuloService(ArticuloRepository articuloRepository) {
+	public ArticuloService(ArticuloRepository articuloRepository, LineaPedidoService lineaPedidoService) {
 		this.articuloRepository = articuloRepository;
+		this.lineaPedidoService = lineaPedidoService;
 	}
 
 	@Transactional
@@ -150,20 +150,15 @@ public class ArticuloService {
 	@Transactional(readOnly = true)
 	public List<LineaPedido> articulosVendidosByProvider(Integer idVendedor) {
 		List<Articulo> c = articulosByProvider(idVendedor);
-		System.out.println(
-				"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-		List<Pedido> pedidos = (List<Pedido>) pedidoRepository.findAll();
-		System.out.println(
-				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		List<LineaPedido> l = (List<LineaPedido>) lineaPedidoService.findAll();
 		List<LineaPedido> res = new ArrayList<>();
-		for (int j = 0; j < pedidos.size(); j++) {
-			List<LineaPedido> l = (List<LineaPedido>) pedidos.get(j).getLineas();
-			for (int i = 0; i < l.size(); i++) {
-				Articulo a = l.get(i).getArticulo();
-				if (c.contains(a)) {
-					res.add(l.get(i));
-				}
+
+		for (int i = 0; i < l.size(); i++) {
+			Articulo a = l.get(i).getArticulo();
+			if (c.contains(a)) {
+				res.add(l.get(i));
 			}
+
 		}
 		return res;
 	}
