@@ -25,6 +25,8 @@
 	</form>
     <h2>Lista de artículos en venta</h2>
 
+    <c:if test="${articulos.getContent().size() == 0}">Aún tienes ningún artículo en venta.</c:if>
+    <c:if test="${articulos.getContent().size() != 0}">
     <table id="articulosTable" class="table table-striped">
         <thead>
         <tr>
@@ -102,4 +104,5 @@
 			</div>
 		</div>
 	</div>
+	</c:if>
 </dpc:layout>

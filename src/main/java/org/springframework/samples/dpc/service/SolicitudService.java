@@ -34,13 +34,13 @@ public class SolicitudService {
 	
 	@Transactional
 	public Page<Solicitud> solicitudesPendientes(Integer page, Integer size, String orden) {
-		Pageable pageable = articuloService.obtenerFiltros(page, size, orden);
+		Pageable pageable = articuloService.obtenerFiltros(page, size, orden, "articulo");
 		return solicitudRepository.solicitudesPendientes(pageable);
 	}
 	
 	@Transactional
 	public Page<Solicitud> getsolicitudesByProvider(Integer vendedorId, Integer page, Integer size, String orden) {
-		Pageable pageable = articuloService.obtenerFiltros(page, size, orden);
+		Pageable pageable = articuloService.obtenerFiltros(page, size, orden, "articulo");
 		return solicitudRepository.findByVendedor(vendedorId, pageable);
 	}
 
