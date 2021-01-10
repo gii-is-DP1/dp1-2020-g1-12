@@ -10,17 +10,14 @@
 <dpc:layout pageName="articulos">
 
     <jsp:attribute name="customScript">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
-    	<script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
-        <script>
-        	$(document).ready(function() {
-        	$('.mdb-select').materialSelect();
-        	});
-
-        </script>
-        
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+	    <script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
+	    <script>
+	        $(document).ready(function() {
+	        $('.mdb-select').materialSelect();
+	        });
+		</script>
     </jsp:attribute>
     <jsp:body>
  	<spring:url value="/resources/images/Logo.png" htmlEscape="true" var="logo"/>

@@ -17,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SolicitudService {
 
-	private final SolicitudRepository solicitudRepository;
-	private final ArticuloService articuloService;
-	private final OfertaService ofertaService;
-	private final VendedorService vendedorService;
+	private SolicitudRepository solicitudRepository;
+	private ArticuloService articuloService;
+	private OfertaService ofertaService;
+	private VendedorService vendedorService;
 	
 	@Autowired
 	public SolicitudService(SolicitudRepository solicitudRepository, OfertaService ofertaService, 

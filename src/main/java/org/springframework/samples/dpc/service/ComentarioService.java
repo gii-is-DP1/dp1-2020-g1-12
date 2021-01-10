@@ -14,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ComentarioService {
 	
-	private final ComentarioRepository comentarioRepository;
-	private final ArticuloService articuloService;
-	private final UserService userService;
-	private final ModeradorService moderadorService;
-	private final VendedorService vendedorService;
-	private final ClienteService clienteService;
+	private ComentarioRepository comentarioRepository;
+	private ArticuloService articuloService;
+	private UserService userService;
+	private ModeradorService moderadorService;
+	private VendedorService vendedorService;
+	private ClienteService clienteService;
 
 
 	@Autowired

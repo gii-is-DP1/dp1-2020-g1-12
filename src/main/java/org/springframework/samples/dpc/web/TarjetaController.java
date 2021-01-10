@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/tarjetas")
 public class TarjetaController {
 	
-	private TarjetaService tarjetaService;
+	private final TarjetaService tarjetaService;
 	
 	@Autowired
 	public TarjetaController(TarjetaService tarjetaService) {

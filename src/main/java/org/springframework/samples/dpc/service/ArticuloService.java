@@ -24,7 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class ArticuloService {
 
-	private final ArticuloRepository articuloRepository;
+	private ArticuloRepository articuloRepository;
 
 	@Autowired
 	public ArticuloService(ArticuloRepository articuloRepository) {

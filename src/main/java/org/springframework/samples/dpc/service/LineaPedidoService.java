@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class LineaPedidoService {
 
-	private final LineaPedidoRepository lineaPedidoRepository;
-	private final ArticuloService articuloService;
+	private LineaPedidoRepository lineaPedidoRepository;
+	private ArticuloService articuloService;
 
 	@Autowired
 	public LineaPedidoService(LineaPedidoRepository lineaPedidoRepository, ArticuloService articuloService) {
