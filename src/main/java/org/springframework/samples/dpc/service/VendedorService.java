@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class VendedorService {
 
-	private final VendedorRepository vendedorRepository;
-	private final UserService userService;
-	private final ArticuloService articuloService;
+	private VendedorRepository vendedorRepository;
+	private UserService userService;
+	private ArticuloService articuloService;
 	
 	@Autowired
 	public VendedorService(VendedorRepository vendedorRepository, UserService userService, 

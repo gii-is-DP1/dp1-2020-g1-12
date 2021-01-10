@@ -16,12 +16,6 @@
                 return opcion;
             }
         </script>
-        <script>
-            function alertaCompra() {
-                var opcion = confirm('¿Seguro que desea llevar a cabo la compra de estos artículos?');
-                return opcion;
-            }
-        </script>
     </jsp:attribute>
 
     <jsp:body>
@@ -84,7 +78,7 @@
 	    </table>
         <div class="col-sm-offset-5">
 			<spring:url value="/pedidos/tramitarPedido" var="tramitarPedidoUrl"></spring:url>
-		    <a onclick="return alertaCompra()" title="Tramitar pedido" type="button" class="btn btn-default"
+		    <a title="Tramitar pedido" type="button" class="btn btn-default"
 		    style="color: #DAD6D6; text-decoration: Tramitar pedido; FONT-SIZE: 12pt;" href="${fn:escapeXml(tramitarPedidoUrl)}">Tramitar pedido</a>
         </div>
 	</form:form>

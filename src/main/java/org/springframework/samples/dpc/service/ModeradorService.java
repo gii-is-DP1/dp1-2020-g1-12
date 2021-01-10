@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ModeradorService {
 	
-	private final ModeradorRepository moderadorRepository;
-	private final UserService userService;
+	private ModeradorRepository moderadorRepository;
+	private UserService userService;
 	
 	public ModeradorService(ModeradorRepository moderadorRepository, UserService userService) {
 		this.moderadorRepository = moderadorRepository;
