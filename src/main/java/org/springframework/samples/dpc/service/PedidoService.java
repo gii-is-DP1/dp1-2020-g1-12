@@ -21,15 +21,18 @@ public class PedidoService {
 	private LineaPedidoService lineaPedidoService;
 	private CestaService cestaService;
 	private ArticuloService articuloService;
+	private TarjetaService tarjetaService;
 
 	@Autowired
 	public PedidoService(PedidoRepository pedidoRepository, ClienteService clienteService,
-			LineaPedidoService lineaPedidoService, CestaService cestaService,ArticuloService articuloService) {
+			LineaPedidoService lineaPedidoService, CestaService cestaService,ArticuloService articuloService,
+			TarjetaService tarjetaService) {
 		this.pedidoRepository = pedidoRepository;
 		this.clienteService = clienteService;
 		this.lineaPedidoService = lineaPedidoService;
 		this.cestaService = cestaService;
 		this.articuloService = articuloService;
+		this.tarjetaService = tarjetaService;
 	}
 
 	public Page<Pedido> obtenerPedidos(Integer page, Integer size, String orden) {
@@ -42,11 +45,12 @@ public class PedidoService {
 	}
 
 	@Transactional
-	public void tramitarPedido() {
+	public void tramitarPedido(Integer tarjetaId) {
 		Pedido pedido = new Pedido();
 		pedido.setCliente(clienteService.getClienteDeSesion());
 		pedido.setFecha(LocalDate.now());
 		pedido.setPrecioTotal(cestaService.obtenerCestaCliente().getPrecioFinal());
+		pedido.setTarjeta(tarjetaService.findTarjetaById(tarjetaId));
 		pedidoRepository.save(pedido);
 
 		List<LineaCesta> lineas = cestaService.obtenerCestaCliente().getLineas();

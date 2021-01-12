@@ -18,11 +18,12 @@
 		</script>
     </jsp:attribute>
 	<jsp:body>
+    <form:form modelAttribute="tarjetaSel" action="confirmarCompra" class="form-horizontal">
 	<div class="modal-body row">
 		<div class="col-md-5">
 			<p>Seleccione una tarjeta para realizar el pago:</p>
 			<br>
-			<select name="tarjeta" title="Seleccione una tarjeta">
+			<select name="id" title="Seleccione una tarjeta">
 	        	<c:forEach items="${tarjetas}" var="tarjeta">
 	    			<option value="${tarjeta.id}">✱✱✱✱ ✱✱✱✱ ✱✱✱✱  ${tarjeta.numero.substring(12)}</option>
 	    		</c:forEach>
@@ -88,12 +89,10 @@
 			    </div>
 		    </div>
 	        <div class="col-sm-offset-1">
-				<spring:url value="/pedidos/confirmarCompra" var="tramitarPedidoUrl"></spring:url>
-			    <a onclick="return alertaCompra()" title="Tramitar pedido"
-					type="button" class="btn btn-default"
-					style="color: #DAD6D6; text-decoration: Tramitar pedido; FONT-SIZE: 12pt;"
-					href="${fn:escapeXml(tramitarPedidoUrl)}">Confirmar compra</a>
+			    <button onclick="return alertaCompra()" title="Confirmar Compra" class="btn btn-default"
+					style="color: #DAD6D6; text-decoration: Tramitar pedido; FONT-SIZE: 12pt;">Confirmar compra</button> 
 	        </div>
         </div>
+        </form:form>
     </jsp:body>
 </dpc:layout>

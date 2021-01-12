@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.samples.dpc.service.exceptions.ValoracionConstraint;
+import org.springframework.samples.dpc.util.ValoracionConstraint;
 
 @Entity
 @Table(name = "comentarios")

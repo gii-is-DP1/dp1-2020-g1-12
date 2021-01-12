@@ -1,4 +1,4 @@
-package org.springframework.samples.dpc.service.exceptions;
+package org.springframework.samples.dpc.util;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

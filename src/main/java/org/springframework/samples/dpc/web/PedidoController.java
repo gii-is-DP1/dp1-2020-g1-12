@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -55,14 +56,15 @@ public class PedidoController {
 		Cesta cesta = cestaService.obtenerCestaCliente();
 		String fechaEstimada = cestaService.fechaEstimada();
 		modelMap.addAttribute("cesta", cesta);
+		modelMap.addAttribute("tarjetaSel", new TarjetaCredito());
 		modelMap.addAttribute("tarjetas", tarjetas);
 		modelMap.addAttribute("fechaEstimada", fechaEstimada);
 		return "clientes/tramitar";
 	}
 	
-	@GetMapping("/confirmarCompra")
-	public String confirmarCompra(HttpServletRequest request, ModelMap modelMap) {
-		pedidoService.tramitarPedido();
+	@PostMapping("/confirmarCompra")
+	public String confirmarCompra(TarjetaCredito tarjeta, HttpServletRequest request, ModelMap modelMap) {
+		pedidoService.tramitarPedido(tarjeta.getId());
 		request.getSession().setAttribute("contador", cestaService.lineasCesta());
 		return "redirect:/pedidos";
 	}
