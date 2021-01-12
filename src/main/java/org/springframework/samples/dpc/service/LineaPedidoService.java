@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.dpc.model.Articulo;
+import org.springframework.samples.dpc.model.Estado;
 import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Pedido;
@@ -30,6 +31,7 @@ public class LineaPedidoService {
 	public void crearLinea(Pedido pedido, LineaCesta lineaCesta) {
 		LineaPedido lineaPedido = new LineaPedido();
 		lineaPedido.setArticulo(lineaCesta.getArticulo());
+		lineaPedido.setEstado(Estado.Pendiente);
 		lineaPedido.setCantidad(lineaCesta.getCantidad());
 		lineaPedido.setPrecioUnitario(lineaCesta.getArticulo().getPrecio());
 		lineaPedido.setPedido(pedido);

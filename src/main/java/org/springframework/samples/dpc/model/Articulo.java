@@ -151,12 +151,4 @@ public class Articulo extends Producto {
 	public void setComentarios(Collection<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
-
-	@Override
-	public String toString() {
-		return "Articulo [oferta=" + oferta + ", comentarios=" + comentarios + ", descripcion=" + descripcion
-				+ ", urlImagen=" + urlImagen + ", precio=" + precio + ", stock=" + stock + ", tipo=" + tipo
-				+ ", gastoEnvio=" + gastoEnvio + ", tiempoEntrega=" + tiempoEntrega + "]";
-	}
-
 }

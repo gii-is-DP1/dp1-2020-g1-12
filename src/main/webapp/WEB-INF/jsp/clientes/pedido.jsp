@@ -13,6 +13,7 @@
 		        <thead>
 		        <tr>
 		            <th style="width: 200px;text-align: center">Producto</th>
+		            <th style="width: 100px;text-align: center">Estado</th>
 		            <th style="width: 100px;text-align: center">Cantidad</th>
 		            <th style="width: 100px;text-align: center">Precio unidad</th>
 		        </tr>
@@ -26,6 +27,7 @@
 							</spring:url>
 							<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${linea.articulo.marca} ${linea.articulo.modelo}"></c:out></a>
 		                </td>
+		                <td><c:out value="${linea.estado}"></c:out></td>
 		                <td>
 							<c:out value="${linea.cantidad} unidades"></c:out>
 		                </td>
@@ -43,8 +45,15 @@
 		        </c:forEach>
 	        <tr>
 	        	<td></td>
+	        	<td></td>
 	        	<td>Importe total:</td>
 	        	<td><fmt:formatNumber type="number" maxFractionDigits="2" value="${pedido.precioTotal}"/> €</td>
+	        </tr> 
+	        <tr>
+	        	<td></td>
+	        	<td></td>
+	        	<td>Tarjeta de crédito utilizada:</td>
+	        	<td>✱✱✱✱✱✱✱✱✱✱✱✱ ${pedido.tarjeta.numero.substring(12)}</td>
 	        </tr> 
 	        </tbody>
 	    </table>

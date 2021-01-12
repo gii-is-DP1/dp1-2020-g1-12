@@ -28,6 +28,10 @@ public class Pedido extends BaseEntity {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido", fetch = FetchType.EAGER)
 	private Collection<LineaPedido> lineas;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "tarjeta_id")
+	private TarjetaCredito tarjeta;
 
 	public Double getPrecioTotal() {
 		return precioTotal;
@@ -59,5 +63,13 @@ public class Pedido extends BaseEntity {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public TarjetaCredito getTarjeta() {
+		return tarjeta;
+	}
+
+	public void setTarjeta(TarjetaCredito tarjeta) {
+		this.tarjeta = tarjeta;
 	}
 }

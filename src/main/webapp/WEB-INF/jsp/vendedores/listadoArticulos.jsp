@@ -47,10 +47,10 @@
 					<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${articulos.marca} ${articulos.modelo}"></c:out></a>
                 </td>
                 <td>
-                    <c:out value="${articulos.stock}"/>
+                    <c:out value="${articulos.stock} unidades"/>
                 </td>
                 <td>
-                    <c:out value="${articulos.precio}"/>
+                    <c:out value="${articulos.precio} €"/>
                 </td>
 				<td>
 					<c:if test="${articulos.oferta.disponibilidad}" >

@@ -42,10 +42,4 @@ public class Cesta extends BaseEntity {
 		result += gastosEnvio;
 		return result;
 	}
-
-	@Override
-	public String toString() {
-		return "Cesta [precioFinal=" + precioFinal + ", lineas=" + lineas + "]";
-	}
-
 }

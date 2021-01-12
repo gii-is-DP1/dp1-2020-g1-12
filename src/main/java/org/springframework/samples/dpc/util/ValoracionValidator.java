@@ -1,4 +1,4 @@
-package org.springframework.samples.dpc.service.exceptions;
+package org.springframework.samples.dpc.util;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
