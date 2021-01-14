@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
 
 	private final BloqueoService bloqueoService;
-	private AuthenticationManager authenticationManager;
+	private final AuthenticationManager authenticationManager;
 	private final UserService userService;
 	private final CestaService cestaService;	
 

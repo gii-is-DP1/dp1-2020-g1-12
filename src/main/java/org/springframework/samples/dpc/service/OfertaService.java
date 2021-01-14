@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OfertaService {
 
-	private final OfertaRepository ofertaRepository;
+	private OfertaRepository ofertaRepository;
 	
 	@Autowired
 	public OfertaService(OfertaRepository ofertaRepository) {

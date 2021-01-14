@@ -183,13 +183,4 @@ public class Solicitud extends BaseEntity {
 	public void setArticulo(Articulo articulo) {
 		this.articulo = articulo;
 	}
-
-	@Override
-	public String toString() {
-		return "Solicitud [articulo=" + articulo + ", vendedor=" + vendedor + ", descripcion=" + descripcion
-				+ ", modelo=" + modelo + ", marca=" + marca + ", urlImagen=" + urlImagen + ", precio=" + precio
-				+ ", stock=" + stock + ", tipo=" + tipo + ", tiempoEntrega=" + tiempoEntrega + ", gastoEnvio="
-				+ gastoEnvio + ", situacion=" + situacion + ", respuesta=" + respuesta + "]";
-	}
-
 }

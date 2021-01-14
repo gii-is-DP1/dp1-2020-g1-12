@@ -1,6 +1,9 @@
 package org.springframework.samples.dpc.service;
 
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +81,13 @@ public class CestaService {
 	public Integer lineasCesta() {
 		return obtenerCestaCliente().getLineas().size();
 	}
+	
+	public String fechaEstimada() {
+		Long dias = lineaCestaService.getTiempoEntrega(obtenerCestaCliente());
+		LocalDateTime estimada = LocalDateTime.now().plusDays(dias);
+		return estimada.getDayOfMonth() + " de " + estimada.getMonth().
+				getDisplayName(TextStyle.FULL, new Locale("es", "ES")) + " de " + estimada.getYear();
+	}
 
 	@Transactional(rollbackFor = CantidadNoValidaCestaException.class)
 	public void actualizarCesta(Cesta cesta) throws CantidadNoValidaCestaException {
@@ -92,7 +102,6 @@ public class CestaService {
 				} else {
 					lineaCestaService.findLineaById(cesta.getLineas().get(i).getId())
 					.setCantidad(cesta.getLineas().get(i).getCantidad());
-					//cestaSesion.getLineas().get(i).setCantidad(cesta.getLineas().get(i).getCantidad());
 				}
 			}
 		}

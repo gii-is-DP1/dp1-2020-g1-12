@@ -61,7 +61,7 @@
 		    <img style='width: 70%; height: 100%' alt='' onerror="this.src=''" src='${articulo.urlImagen}'/>
 		</div>
 		<div style="width:50%;">
-			<p id="noDesplegar"align="justify">${articulo.descripcion.substring(0, articulo.descripcion.length()/2)}...
+			<p id="noDesplegar" align="justify">${articulo.descripcion.substring(0, articulo.descripcion.length()/2)}...
 				<br><br>
 			</p>
 			
@@ -106,7 +106,7 @@
         </tr>
         <tr>
             <th>Stock</th>
-            <td>${articulo.stock}</td>
+            <td>${articulo.stock} unidades</td>
         </tr>
         <tr>
             <th>Estado</th>

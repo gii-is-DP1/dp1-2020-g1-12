@@ -28,7 +28,7 @@ public class Persona extends BaseEntity {
 	protected String nombre;
 
 	@Column(name = "apellido")
-	@Length(min = 3, max = 20, message = "El nombre debe estar comprendido entre 3 y 20 caracteres")
+	@Length(min = 3, max = 20, message = "El apellido debe estar comprendido entre 3 y 20 caracteres")
 	protected String apellido;
 
 	public String getDni() {
@@ -70,11 +70,4 @@ public class Persona extends BaseEntity {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-
-	@Override
-	public String toString() {
-		return "Persona [dni=" + dni + ", telefono=" + telefono + ", direccion=" + direccion + ", nombre=" + nombre
-				+ ", apellido=" + apellido + "]";
-	}
-
 }

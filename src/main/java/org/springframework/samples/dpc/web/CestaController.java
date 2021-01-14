@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/cesta")
 public class CestaController {
 
-	private CestaService cestaService;
+	private final CestaService cestaService;
 
 	@Autowired
 	public CestaController(CestaService cestaService) {
