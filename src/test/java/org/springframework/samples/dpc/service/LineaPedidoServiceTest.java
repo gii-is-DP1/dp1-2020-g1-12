@@ -41,46 +41,38 @@ public class LineaPedidoServiceTest {
 
 	@Test
 	void testCrearLinea() {
-		Cesta c = new Cesta();
-		LineaCesta linea1 = new LineaCesta();
-		linea1.setCantidad(1);
-		linea1.setCesta(c);
-		linea1.setId(1);
-		linea1.setArticulo(articuloService.findArticuloById(1));
-		LineaCesta linea2 = new LineaCesta();
-		linea2.setCantidad(1);
-		linea2.setCesta(c);
-		linea2.setId(2);
-		linea2.setArticulo(articuloService.findArticuloById(6));
-		List<LineaCesta> lineas = new ArrayList<LineaCesta>();
-		lineas.add(linea1);
-		lineas.add(linea2);
-		c.setLineas(lineas);
 
+		List<LineaCesta> lcl = new ArrayList<>();
+		Cesta c = new Cesta();
+		LineaCesta lc = new LineaCesta();
+		lc.setId(1);
+		lc.setCesta(c);
+		lc.setCantidad(2);
+		lc.setArticulo(articuloService.findArticuloById(1));
+		lcl.add(lc);
+		c.setId(1);
+		c.setLineas(lcl);
+
+		List<LineaPedido> lpl = new ArrayList<>();
 		Pedido p = new Pedido();
+//		LineaPedido lp = new LineaPedido();
+//		lp.setId(1);
+//		lp.setPedido(p);
+//		lp.setCantidad(2);
+//		lp.setPrecioUnitario(500.);
+//		lp.setArticulo(articuloService.findArticuloById(1));
+//		lpl.add(lp);
+		p.setId(1);
+		Double pt = 1000.;
+		p.setPrecioTotal(pt);
 		p.setFecha(LocalDate.now());
+		p.setLineas(lpl);
 		p.setCliente(clienteRepository.findByDni("23456789"));
 
-		LineaPedido lp1 = new LineaPedido();
-		lp1.setCantidad(1);
-		lp1.setPedido(p);
-		lp1.setId(1);
-		lp1.setArticulo(articuloService.findArticuloById(1));
-		lp1.setPrecioUnitario(988.99);
-		LineaPedido lp2 = new LineaPedido();
-		lp2.setCantidad(1);
-		lp2.setPedido(p);
-		lp2.setId(2);
-		lp2.setArticulo(articuloService.findArticuloById(6));
-		lp2.setPrecioUnitario(350.0);
-		p.setPrecioTotal(1338.99);
-		List<LineaPedido> lineas2 = new ArrayList<LineaPedido>();
-		p.setLineas(lineas2);
+		this.lineaPedidoService.crearLinea(p, lc);
 
-		this.lineaPedidoService.crearLinea(p, linea1);
-
-		assertThat(linea1.getCantidad()).isEqualTo(lp1.getCantidad());
-		assertThat(linea1.getArticulo()).isEqualTo(lp1.getArticulo());
+		assertThat(lc.getCantidad()).isEqualTo(lineaPedidoRepository.findByPedido(1).get(0).getCantidad());
+		assertThat(lc.getArticulo()).isEqualTo(lineaPedidoRepository.findByPedido(1).get(0).getArticulo());
 
 	}
 }
