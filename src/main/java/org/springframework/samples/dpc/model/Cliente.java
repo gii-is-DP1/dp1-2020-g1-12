@@ -35,7 +35,7 @@ public class Cliente extends Persona{
 	@Email
 	private String email;
 	
-	@OneToOne(optional=false)
+	@OneToOne(cascade = CascadeType.ALL, optional=false)
 	private Bloqueo bloqueo;
 
 	public Cesta getCesta() {

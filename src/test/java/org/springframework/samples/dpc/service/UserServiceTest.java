@@ -1,14 +1,14 @@
 package org.springframework.samples.dpc.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Service;
 import org.springframework.samples.dpc.model.User;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.junit.jupiter.api.Test;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 class UserServiceTest {
@@ -19,7 +19,7 @@ class UserServiceTest {
 	@Test
 	void shouldFindUser() {
 		User optperfil = this.userService.findUser("cliente1");
-		assertEquals("cliente1", optperfil.getPassword());
+		assertEquals("$2a$10$QSvCoF1/GTt6J3zsnBfj2ull8tjIjtYqDt/8QfmskilpIlrJz2Mse", optperfil.getPassword());
 	}
 
 	@Test
