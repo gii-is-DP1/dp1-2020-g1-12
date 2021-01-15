@@ -33,7 +33,10 @@
       <c:forEach items="${lineaPedido.getContent()}" var="lp">
             <tr>
                 <td>
-					<c:out value="${lp.articulo.marca} ${lp.articulo.modelo}"/>
+					<spring:url value="/vendedores/articulo/{articuloId}" var="articuloUrl">
+						<spring:param name="articuloId" value="${lp.articulo.id}"/>
+					</spring:url>
+					<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${lp.articulo.marca} ${lp.articulo.modelo}"></c:out></a>
                 </td>
                 <td>
                     <c:out value="${lp.cantidad}"/>
