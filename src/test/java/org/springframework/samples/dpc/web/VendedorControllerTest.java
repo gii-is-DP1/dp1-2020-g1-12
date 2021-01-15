@@ -27,6 +27,7 @@ import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.AuthoritiesService;
 import org.springframework.samples.dpc.service.ClienteService;
+import org.springframework.samples.dpc.service.LineaPedidoService;
 import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.UserService;
 import org.springframework.samples.dpc.service.VendedorService;
@@ -55,6 +56,9 @@ class VendedorControllerTest {
 
 	@MockBean
 	private SolicitudService solicitudService;
+	
+	@MockBean
+	private LineaPedidoService lineaPedidoService;
 	
 	@MockBean
 	private UserService userService;

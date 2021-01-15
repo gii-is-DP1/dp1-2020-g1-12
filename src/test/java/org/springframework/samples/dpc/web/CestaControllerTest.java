@@ -84,13 +84,8 @@ public class CestaControllerTest {
 	@WithMockUser(value = "spring")
 	@Test
 	void testActualizarCesta() throws Exception {
-
-		mockMvc.perform(post("/cesta/actualizar").param("lineas", "new ArrayList<>()").with(csrf())) // tambien valdría
-																										// poner
-																										// lineas.cantidad
-																										// y luego la
-																										// cantidad
-				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/cesta"));
+		mockMvc.perform(post("/cesta/actualizar").with(csrf()))
+				.andExpect(status().is2xxSuccessful()).andExpect(view().name("clientes/cesta"));
 	}
 
 	@WithMockUser(value = "spring")
