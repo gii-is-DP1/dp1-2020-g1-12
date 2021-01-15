@@ -28,6 +28,7 @@ import org.springframework.samples.dpc.service.AuthoritiesService;
 import org.springframework.samples.dpc.service.BloqueoService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -78,6 +79,8 @@ public class UserController {
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_VENDEDOR;
 		} else {
+			String cifrado = new BCryptPasswordEncoder().encode(vendedor.getUser().getPassword());
+			vendedor.getUser().setPassword(cifrado);
 			Bloqueo b = new Bloqueo();
 			b.setBloqueado(false);
 			bloqueoService.guardar(b);
@@ -102,6 +105,8 @@ public class UserController {
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_CLIENTE;
 		} else {
+			String cifrado = new BCryptPasswordEncoder().encode(cliente.getUser().getPassword());
+			cliente.getUser().setPassword(cifrado);
 			Cesta cesta = new Cesta();
 			Bloqueo b = new Bloqueo();
 			b.setBloqueado(false);

@@ -1,22 +1,30 @@
-INSERT INTO users(username,password,enabled) VALUES ('cliente1','cliente1',TRUE);
+
+--	USUARIO:cliente1, CONTRASEÑA: cliente1
+INSERT INTO users(username,password,enabled) VALUES ('cliente1','$2a$10$QSvCoF1/GTt6J3zsnBfj2ull8tjIjtYqDt/8QfmskilpIlrJz2Mse',TRUE);
 INSERT INTO authorities(id, version, username,authority) VALUES (4, 1, 'cliente1','cliente');
 
-INSERT INTO users(username,password,enabled) VALUES ('cliente2','cliente2',TRUE);
+--	USUARIO:cliente2, CONTRASEÑA: cliente2
+INSERT INTO users(username,password,enabled) VALUES ('cliente2','$2a$10$onbI6GuUb5dY./ib2yaIbufspV/tx3dwqJlzEVPXpqEapq5ubcLKu',TRUE);
 INSERT INTO authorities(id, version, username,authority) VALUES (5, 1, 'cliente2','cliente');
 
-INSERT INTO users(username,password,enabled) VALUES ('vendedor1','vendedor1',TRUE);
+--	USUARIO:vendedor1, CONTRASEÑA: vendedor1
+INSERT INTO users(username,password,enabled) VALUES ('vendedor1','$2a$10$aAOHGFZ5iSltGw65xfbgGelRGDex/Y2tQUg/ijFxsi3cUHV2jgIwu',TRUE);
 INSERT INTO authorities(id, version, username,authority) VALUES (6, 1, 'vendedor1','vendedor');
 
-INSERT INTO users(username,password,enabled) VALUES ('vendedor2','vendedor2',TRUE);
+--	USUARIO:vendedor2, CONTRASEÑA: vendedor2
+INSERT INTO users(username,password,enabled) VALUES ('vendedor2','$2a$10$sxWe/N/XFFxNA4pWbQrs8.0g.VwZZofxJ73wGuvBFGJ.12BL4K0G6',TRUE);
 INSERT INTO authorities(id, version, username,authority) VALUES (7, 1, 'vendedor2','vendedor');
 
-INSERT INTO users(username,password,enabled) VALUES ('vendedor3','vendedor3',TRUE);
+--	USUARIO:vendedor3, CONTRASEÑA: vendedor3
+INSERT INTO users(username,password,enabled) VALUES ('vendedor3','$2a$10$iJmKtb066Zh57qlV0USrHeaa6SVcZ8CMPXSxUN4M.1EKE.m6HvkJm',TRUE);
 INSERT INTO authorities(id, version, username,authority) VALUES (8, 1, 'vendedor3','vendedor');
 
-INSERT INTO users(username,password,enabled) VALUES ('moderador1','moderador1',TRUE);
+--	USUARIO:moderador1, CONTRASEÑA: moderador1
+INSERT INTO users(username,password,enabled) VALUES ('moderador1','$2a$10$6UySYOXXzF0u2DS4/lznBOeXrO.cvGePNT1W2Nie4oVwU1RhIOC8C',TRUE);
 INSERT INTO authorities(id, version, username,authority) VALUES (9, 1, 'moderador1','moderador');
 
-INSERT INTO users(username,password,enabled) VALUES ('cliente3','cliente3',TRUE);
+--	USUARIO:cliente3, CONTRASEÑA: cliente3
+INSERT INTO users(username,password,enabled) VALUES ('cliente3','$2a$10$Kb1PSml6VhRzHDCfFvcKYukEZJvD3OuCLI5tW7I8.7cehSmAAG3my',TRUE);
 INSERT INTO authorities(id, version, username,authority) VALUES (10, 1, 'cliente3','cliente');
 
 -- Introducimos bloqueos.

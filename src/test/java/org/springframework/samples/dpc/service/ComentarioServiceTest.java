@@ -83,7 +83,7 @@ class ComentarioServiceTest {
 	@Test 
 	void testObtenerValoracionMedia() {
 		Double valoracion = this.comentarioService.getValoracionDeUnArticulo(TEST_ARTICULO_ID);
-		assertThat(valoracion).isEqualTo((double) 13/3);
+		assertThat(valoracion).isEqualTo((double) 3);
 	}
 	
 //	@Test 
