@@ -2,6 +2,7 @@ package org.springframework.samples.dpc.web;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -16,13 +17,19 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Bloqueo;
+import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.model.Tipo;
+import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.PedidoService;
@@ -39,6 +46,9 @@ public class PedidoControllerTest {
 
 	@MockBean
 	private CestaService cestaService;
+	
+	@MockBean
+	private ArticuloService articuloService;
 
 	@MockBean
 	private ClienteService clienteService;
@@ -83,7 +93,15 @@ public class PedidoControllerTest {
 		p.setFecha(LocalDate.now());
 		p.setLineas(lpl);
 		p.setCliente(c);
-
+		Cesta cesta = new Cesta();
+		List<Pedido> pedidos = new ArrayList<>();
+		pedidos.add(p);
+		
+		given(this.pedidoService.obtenerPedidos(0, 10, "-id"))
+		.willReturn(new PageImpl<>(pedidos, PageRequest.of(0, 10, Sort.by(Order.desc("nombre"))), 10));
+		given(this.articuloService.obtenerFiltros(0, 10, "nombre", "pedidos")).willReturn(PageRequest.of(0, 10));
+		given(this.clienteService.getClienteDeSesion()).willReturn(c);
+		given(this.cestaService.obtenerCestaCliente()).willReturn(cesta);
 		given(this.pedidoService.obtenerPedido(1)).willReturn(p);
 
 	}
@@ -91,19 +109,19 @@ public class PedidoControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-//	@WithMockUser(value = "spring")
-//	@Test
-//	void testListadoPedido() throws Exception {
-//		mockMvc.perform(get("/pedidos")).andExpect(status().isOk())
-//				.andExpect(model().attributeExists("pedidos", "ordenacion")).andExpect(status().is2xxSuccessful())
-//				.andExpect(view().name("clientes/listadoPedidos"));
-//	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testListadoPedido() throws Exception {
+		mockMvc.perform(get("/pedidos")).andExpect(status().isOk())
+				.andExpect(model().attributeExists("pedidos", "ordenacion")).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name("clientes/listadoPedidos"));
+	}
 
 	@WithMockUser(value = "spring")
 	@Test
 	void testTramitarPedido() throws Exception {
-		mockMvc.perform(get("/pedidos/tramitarPedido")).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/pedidos"));
+		mockMvc.perform(get("/pedidos/tramitarPedido")).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name("clientes/tramitar"));
 	}
 
 	@WithMockUser(value = "spring")
