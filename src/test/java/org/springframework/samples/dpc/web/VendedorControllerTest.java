@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Bloqueo;
@@ -127,13 +134,22 @@ class VendedorControllerTest {
 		sol.setTipo(Tipo.Nuevo);
 		sol.setUrlImagen("vacia");
 		sol.setVendedor(vend);
+		List<Solicitud> ls = new ArrayList<>();
+		ls.add(sol);
+		List<Articulo> la = new ArrayList<>();
+		la.add(art);
 		
+		given(this.articuloService.articulosEnVentaByProvider(TEST_VENDEDOR_ID, 0, 10, "-id")).
+		willReturn(new PageImpl<>(la, PageRequest.of(0, 10, Sort.by(Order.desc("id"))), 10));
+		given(this.solicitudService.getsolicitudesByProvider(TEST_VENDEDOR_ID, 0, 10, "-id")).
+		willReturn(new PageImpl<>(ls, PageRequest.of(0, 10, Sort.by(Order.desc("id"))), 10));
 		given(this.solicitudService.detallesSolicitud(TEST_SOLICITUD_ID)).willReturn(sol);
 		given(this.vendedorService.findSellerById(TEST_VENDEDOR_ID)).willReturn(vend);
 		given(this.vendedorService.obtenerIdSesion()).willReturn(TEST_VENDEDOR_ID);
 		given(this.vendedorService.getVendedorDeSesion()).willReturn(vend);		
 		given(this.vendedorService.vendedorDeUnArticulo(TEST_ARTICULO_ID)).willReturn(vend);
 		given(this.vendedorService.vendedorDeUnArticulo(TEST_ARTICULO_FALLO_ID)).willReturn(null);				
+		given(this.articuloService.obtenerFiltros(0, 10, "-id", "articulo")).willReturn(PageRequest.of(0, 10));
 		given(this.articuloService.findArticuloById(TEST_ARTICULO_ID)).willReturn(art);
 		given(this.clienteService.findClientById(TEST_CLIENTE_ID)).willReturn(c);
 	}

@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class VendedorController {
 
 	private final VendedorService vendedorService;
-	private ArticuloService articuloService;
-	private ClienteService clienteService;
-	private SolicitudService solicitudService;
-	private LineaPedidoService lineaPedidoService;
+	private final ArticuloService articuloService;
+	private final ClienteService clienteService;
+	private final SolicitudService solicitudService;
+	private final LineaPedidoService lineaPedidoService;
 
 	@Autowired
 	public VendedorController(VendedorService vendedorService, ArticuloService articuloService,

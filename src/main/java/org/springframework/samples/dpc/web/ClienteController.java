@@ -57,7 +57,7 @@ public class ClienteController {
 	}
 	
 	@GetMapping()
-	 public String listadoCliente(@RequestParam(name = "ClientPage", defaultValue = "0", required = false) Integer clientPage,
+	 public String listadoCliente(@RequestParam(name = "clientPage", defaultValue = "0", required = false) Integer clientPage,
 				@RequestParam(name = "clientSize", defaultValue = "10", required = false) Integer clientSize,
 				@RequestParam(name = "orderClientBy", defaultValue = "nombre", required = false) String ordenCliente,
 				@RequestParam(name = "sellerPage", defaultValue = "0", required = false) Integer sellerPage,

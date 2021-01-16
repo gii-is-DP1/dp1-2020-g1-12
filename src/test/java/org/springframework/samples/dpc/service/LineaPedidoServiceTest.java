@@ -1,5 +1,12 @@
 package org.springframework.samples.dpc.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,13 +18,6 @@ import org.springframework.samples.dpc.repository.ClienteRepository;
 import org.springframework.samples.dpc.repository.LineaCestaRepository;
 import org.springframework.samples.dpc.repository.LineaPedidoRepository;
 import org.springframework.stereotype.Service;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class LineaPedidoServiceTest {
