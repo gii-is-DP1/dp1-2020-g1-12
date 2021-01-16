@@ -2,6 +2,7 @@ package org.springframework.samples.dpc.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -65,4 +66,10 @@ public class PedidoService {
 	public List<LineaPedido> obtenerLineas(Integer pedidoId) {
 		return lineaPedidoService.obtenerLineas(pedidoId);
 	}
+	
+	public Double obtenerGastoEnvio(Pedido pedido, List<LineaPedido> lineas) {
+		Double result = lineas.stream().collect(Collectors.summarizingDouble(l -> l.getPrecioUnitario() * l.getCantidad())).getSum();
+		return pedido.getPrecioTotal() - result;
+	}
+
 }

@@ -44,7 +44,7 @@
 						</spring:url>
 								<a href="${fn:escapeXml(pedidoUrl)}"><c:out value="Pedido ${pedido.id}"></c:out></a>                </td>
 	                <td>
-	                    <c:out value="${pedido.precioTotal} €"/>
+	                    <fmt:formatNumber type="number" maxFractionDigits="2" value="${pedido.precioTotal}"/> €
 	                </td>
 					<td>
 	                    <c:out value="${pedido.fecha}"/>
