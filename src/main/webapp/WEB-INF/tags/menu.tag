@@ -50,9 +50,31 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('vendedor')">
-					<dpc:menuItem active="${name eq 'articulosEnVenta'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
+					<!--<dpc:menuItem active="${name eq 'articulosEnVenta'}" url="/vendedores/articulosEnVenta" title="Artículos en venta">
 						<span>Artículos en venta</span>
-					</dpc:menuItem>
+					</dpc:menuItem> -->
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-tag"></span> Artículos
+						<span class="glyphicon glyphicon-chevron-down"></span>
+					</a>
+						<ul class="dropdown-menu">
+							<li>
+								<div class="navbar-login">
+									<div class="row">
+										<div class="col-md-10 col-sm-offset-1">
+												<p class="text-left">
+													<a href="<c:url value="/vendedores/articulosEnVenta" />"
+														class="btn btn-primary btn-block btn-sm">En Venta</a>
+												</p>
+											<p class="text-left">
+													<a href="<c:url value="/vendedores/articulosVendidos" />"
+														class="btn btn-primary btn-block btn-sm">Vendidos</a>
+											</p>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul></li>
 					<dpc:menuItem active="${name eq 'crearSolicitud'}" url="/solicitudes/new" title="Crear solicitud">
 						<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 						<span>Crear solicitud</span>
@@ -99,15 +121,7 @@
 							<li>
 								<div class="navbar-login">
 									<div class="row">
-										<div class="col-lg-4">
-											<p class="text-center">
-												<span class="glyphicon glyphicon-user icon-size"></span>
-											</p>
-										</div>
-										<div class="col-lg-8">
-											<p class="text-left">
-												<strong><sec:authentication property="name" /></strong>
-											</p>
+										<div class="col-md-10 col-sm-offset-1">
 											<sec:authorize access="hasAuthority('cliente')">
 												<p class="text-left">
 													<a href="<c:url value="/clientes/perfil" />"
@@ -134,28 +148,9 @@
 									</div>
 								</div>
 							</li>
-							<li class="divider"></li>
-<!-- 							
-                            <li> 
-								<div class="navbar-login navbar-login-session">
-									<div class="row">
-										<div class="col-lg-12">
-											<p>
-												<a href="#" class="btn btn-primary btn-block">My Profile</a>
-												<a href="#" class="btn btn-danger btn-block">Change
-													Password</a>
-											</p>
-										</div>
-									</div>
-								</div>
-							</li>
--->
 						</ul></li>
 				</sec:authorize>
 			</ul>
 		</div>
-
-
-
 	</div>
 </nav>

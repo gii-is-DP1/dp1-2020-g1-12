@@ -44,6 +44,7 @@ public class TarjetaController {
 		String vista = "redirect:/clientes/perfil";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("tarjeta", tarjetaCredito);
+			modelMap.addAttribute("errores", result.getAllErrors());
 			return "clientes/editarTarjeta";
 		} else {
 			tarjetaService.anyadirTarjeta(tarjetaCredito);
