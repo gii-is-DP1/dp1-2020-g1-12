@@ -32,6 +32,7 @@ import org.springframework.samples.dpc.model.Tipo;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.ClienteService;
+import org.springframework.samples.dpc.service.LineaPedidoService;
 import org.springframework.samples.dpc.service.PedidoService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -44,6 +45,9 @@ public class PedidoControllerTest {
 	@MockBean
 	private PedidoService pedidoService;
 
+	@MockBean
+	private LineaPedidoService lineaPedidoService;
+	
 	@MockBean
 	private CestaService cestaService;
 	

@@ -13,6 +13,7 @@ import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.model.TarjetaCredito;
 import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.ClienteService;
+import org.springframework.samples.dpc.service.LineaPedidoService;
 import org.springframework.samples.dpc.service.PedidoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -30,12 +31,14 @@ import lombok.extern.slf4j.Slf4j;
 public class PedidoController {
 	
 	private final PedidoService pedidoService;
+	private final LineaPedidoService lineaPedidoService;
 	private final CestaService cestaService;
 	private final ClienteService clienteService;
 
 	@Autowired
-	public PedidoController(PedidoService pedidoService, CestaService cestaService, ClienteService clienteService) {
+	public PedidoController(PedidoService pedidoService,LineaPedidoService lineaPedidoService, CestaService cestaService, ClienteService clienteService) {
 		this.pedidoService = pedidoService;
+		this.lineaPedidoService = lineaPedidoService;
 		this.cestaService = cestaService;
 		this.clienteService = clienteService;
 	}
@@ -84,9 +87,28 @@ public class PedidoController {
 
 		Pedido pedido = pedidoService.obtenerPedido(pedidoId);
 		List<LineaPedido> lineas = pedidoService.obtenerLineas(pedidoId);
+		Double gastosEnvio = pedidoService.obtenerGastoEnvio(pedido, lineas);
 		modelMap.addAttribute("pedido", pedido);
 		modelMap.addAttribute("lineas", lineas);
+		modelMap.addAttribute("gastos", gastosEnvio);
 		return "clientes/pedido";
 	}
 	
+	@GetMapping("/modificar/{lineaPedidoId}")
+	public String modificarEstadoPedido(@PathVariable("lineaPedidoId") Integer lineaPedidoId, ModelMap modelMap) {
+		LineaPedido lineaPedido = lineaPedidoService.obtenerLineaPedido(lineaPedidoId);
+		if(lineaPedido == null || !lineaPedidoService.compruebaVendedorLinea(lineaPedidoId)) {
+			return "redirect:/vendedores/articulosVendidos";
+		}
+		modelMap.addAttribute("lineaPedido", lineaPedido);
+		return "vendedores/editarEstadoPedido";
+	}
+	
+	@PostMapping("/modificar/{lineaPedidoId}/save")
+	public String guardarEstadoPedido(@PathVariable("lineaPedidoId") int lineaPedidoId, LineaPedido lineaPedido, ModelMap modelMap) {
+		if(lineaPedido != null && lineaPedidoService.compruebaVendedorLinea(lineaPedidoId)) {
+			lineaPedidoService.actualizarEstado(lineaPedidoId, lineaPedido);
+		}
+		return "redirect:/vendedores/articulosVendidos";
+	}
 }

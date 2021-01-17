@@ -16,4 +16,5 @@ public interface LineaPedidoRepository extends CrudRepository<LineaPedido, Integ
 
 	@Query(value = "select * from LINEAS_PEDIDOS where (LINEAS_PEDIDOS.articulo_id in :articulosId)", nativeQuery = true)
 	Page<LineaPedido> findArticulosVendidos(@Param("articulosId") List<Integer> articulosId, Pageable pageable);
+
 }

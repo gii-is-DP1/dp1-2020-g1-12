@@ -25,21 +25,54 @@
     <table id="articulosVendidosTable" class="table table-striped">
         <thead>
         <tr>
+        	<th style="width: 80px;">Fecha</th>
             <th style="width: 180px;">Artículo</th>
+            <th style="width: 120px;">Comprador</th>
             <th style="width: 80px">Cantidad</th>
+            <th style="width: 80px">Estado</th>
+            <th style="width: 50px"></th>
         </tr>
         </thead>
         <tbody>
       <c:forEach items="${lineaPedido.getContent()}" var="lp">
             <tr>
+            	<td>
+                    <c:out value="${lp.pedido.fecha}"/>
+                </td>
                 <td>
 					<spring:url value="/vendedores/articulo/{articuloId}" var="articuloUrl">
 						<spring:param name="articuloId" value="${lp.articulo.id}"/>
 					</spring:url>
 					<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${lp.articulo.marca} ${lp.articulo.modelo}"></c:out></a>
                 </td>
+                 <td>
+                 
+                 	<spring:url value="/vendedores/perfilCliente/{clienteId}" var="compradorUrl">
+						<spring:param name="clienteId" value="${lp.pedido.cliente.id}"/>
+					</spring:url>
+                    <a href="${fn:escapeXml(compradorUrl)}">
+                    	<c:out value="${lp.pedido.cliente.nombre} ${lp.pedido.cliente.apellido}"/>
+                    </a>
+                </td>
                 <td>
                     <c:out value="${lp.cantidad}"/>
+                </td>
+                <td>
+                	<c:if test="${lp.estado == 'EnReparto'}">
+                    	<c:out value="En Reparto"/>
+                    </c:if>
+                    <c:if test="${lp.estado != 'EnReparto'}">
+                    	<c:out value="${lp.estado}"/>
+                    </c:if>
+                </td>
+                <td>
+	                <spring:url value="/pedidos/modificar/{lineaPedidoId}" var="modificarUrl">
+			   			<spring:param name="lineaPedidoId" value="${lp.id}"/>
+					</spring:url>
+		
+					<a href="${fn:escapeXml(modificarUrl)}">
+						<button class="btn btn-default" type="submit">Modificar</button>
+					</a>
                 </td>
             </tr>
         </c:forEach> 
