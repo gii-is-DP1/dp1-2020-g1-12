@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/tarjetas")
 public class TarjetaController {
 	
 	private final TarjetaService tarjetaService;
-	
+
 	@Autowired
 	public TarjetaController(TarjetaService tarjetaService) {
 		this.tarjetaService = tarjetaService;
@@ -35,12 +38,16 @@ public class TarjetaController {
 	
 	@GetMapping(value = "/new")
 	public String iniciarFormulario(Model model) {
+		log.info("Entrando en la función Iniciar Formulario del controlador de Tarjeta de Crédito.");
+
 		model.addAttribute("tarjeta", new TarjetaCredito());
 		return "clientes/editarTarjeta";
 	}
 	
 	@PostMapping(path = "/save")
 	public String guardarTarjeta(@Valid TarjetaCredito tarjetaCredito, BindingResult result,ModelMap modelMap) {
+		log.info("Entrando en la función Guardar Tarjeta de Crédito del controlador de Tarjeta de Crédito.");
+
 		String vista = "redirect:/clientes/perfil";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("tarjeta", tarjetaCredito);
@@ -54,7 +61,8 @@ public class TarjetaController {
 	
 	@GetMapping(value = "/{tarjetaId}/delete")
 	public String borrarTarjetaPersona(@PathVariable("tarjetaId") int tarjetaId,Model model) {
-		
+		log.info("Entrando en la función Borrar Tarjeta de Crédito del controlador de Tarjeta de Crédito.");
+
 		if(tarjetaService.findTarjetaById(tarjetaId) != null) {
 			tarjetaService.eliminarTarjetaPersona(tarjetaId);
 		}

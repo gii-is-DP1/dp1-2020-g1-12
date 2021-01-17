@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/pedidos")
 public class PedidoController {
@@ -44,6 +47,8 @@ public class PedidoController {
 	public String listadoPedido(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
 			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+		log.info("Entrando en la función Listado de Pedidos del controlador de Pedido.");
+
 		Page<Pedido> pedidos = pedidoService.obtenerPedidos(page, size, orden);
 		String signo = pedidos.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
 		String ordenacion = signo + pedidos.getSort().get().findAny().get().getProperty();	//de página se siga usando el filtro seleccionado
@@ -55,6 +60,8 @@ public class PedidoController {
 	
 	@GetMapping("/tramitarPedido")
 	public String tramitarPedido(HttpServletRequest request, ModelMap modelMap) {
+		log.info("Entrando en la función Tramitar un Pedido del controlador de Pedido.");
+
 		Set<TarjetaCredito> tarjetas = clienteService.getClienteDeSesion().getTarjetas();
 		Cesta cesta = cestaService.obtenerCestaCliente();
 		String fechaEstimada = cestaService.fechaEstimada();
@@ -67,6 +74,8 @@ public class PedidoController {
 	
 	@PostMapping("/confirmarCompra")
 	public String confirmarCompra(TarjetaCredito tarjeta, HttpServletRequest request, ModelMap modelMap) {
+		log.info("Entrando en la función Confirmar Compra del controlador de Pedido.");
+
 		pedidoService.tramitarPedido(tarjeta.getId());
 		request.getSession().setAttribute("contador", cestaService.lineasCesta());
 		return "redirect:/pedidos";
@@ -74,6 +83,8 @@ public class PedidoController {
 	
 	@GetMapping("/{pedidoId}")
 	public String obtenerPedido(@PathVariable("pedidoId") Integer pedidoId, ModelMap modelMap) {
+		log.info("Entrando en la función Obtener un Pedido del controlador de Pedido.");
+
 		Pedido pedido = pedidoService.obtenerPedido(pedidoId);
 		List<LineaPedido> lineas = pedidoService.obtenerLineas(pedidoId);
 		Double gastosEnvio = pedidoService.obtenerGastoEnvio(pedido, lineas);

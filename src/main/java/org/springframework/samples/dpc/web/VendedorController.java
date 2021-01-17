@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/vendedores")
 public class VendedorController {
@@ -47,6 +50,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/perfil")
 	public String mostrarPerfil(ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Perfil del controlador de Vendedor.");
+
 		String perfil = "vendedores/perfil";
 		Vendedor optperfil = vendedorService.findSellerById(vendedorService.obtenerIdSesion());
 
@@ -56,6 +61,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/editar")
 	public String editar(Model model) {
+		log.info("Entrando en la función Editar Perfil del controlador de Vendedor.");
+
 		Vendedor vendedor = this.vendedorService.findSellerById(vendedorService.obtenerIdSesion());
 		model.addAttribute(vendedor);
 		return "vendedores/editarPerfil";
@@ -63,6 +70,8 @@ public class VendedorController {
 
 	@PostMapping(value = "/editar")
 	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result) {
+		log.info("Entrando en la función Proceso Editar Perfil del controlador de Vendedor.");
+
 		if (result.hasErrors()) {
 			return "vendedores/editarPerfil";
 		} else {
@@ -73,6 +82,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/perfilCliente/{clienteId}")
 	public String mostrarPerfilCliente(@PathVariable("clienteId") int clienteId, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Perfil del Comprador del controlador de Vendedor.");
+
 		Cliente cliente = this.clienteService.findClientById(clienteId);
 		modelMap.addAttribute("cliente", cliente);
 		modelMap.remove(cliente.getDni());
@@ -84,15 +95,15 @@ public class VendedorController {
 			@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
 			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Artículos en Venta del controlador de Vendedor.");
+
 		String vista = "vendedores/listadoArticulos";
 		Page<Articulo> articulos = articuloService.articulosEnVentaByProvider(vendedorService.obtenerIdSesion(), page,
 				size, orden);
-		String signo = articulos.getSort().get().findAny().get().isAscending() ? "" : "-"; // Guardo el parámetro de
-																							// ordenación para que al
-																							// cambiar
-		String ordenacion = signo + articulos.getSort().get().findAny().get().getProperty(); // de página se siga usando
-																								// el filtro
-																								// seleccionado
+		
+		// Guardo el parámetro de ordenación para que al cambiar de página se siga usando el filtro seleccionado
+		String signo = articulos.getSort().get().findAny().get().isAscending() ? "" : "-"; 
+		String ordenacion = signo + articulos.getSort().get().findAny().get().getProperty(); 
 
 		modelMap.addAttribute("articulos", articulos);
 		modelMap.addAttribute("ordenacion", ordenacion);
@@ -104,6 +115,7 @@ public class VendedorController {
 			@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
 			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Listado de Solicitudes del controlador de Vendedor.");
 
 		Page<Solicitud> solicitudes = solicitudService.getsolicitudesByProvider(vendedorService.obtenerIdSesion(), page,
 				size, orden);
@@ -118,6 +130,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/articulo/{articuloId}")
 	public String mostrarArticuloDetallado(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar un Artículo del controlador de Vendedor.");
+
 		String vista;
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		if (vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
@@ -132,6 +146,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/solicitud/{solicitudId}")
 	public String mostrarSolicitudDetallada(@PathVariable("solicitudId") int solicitudId, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar una Solicitud del controlador de Vendedor.");
+
 		String vista;
 		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
 		if (solicitud != null && solicitud.getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
@@ -145,6 +161,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/eliminarArticulo/{articuloId}")
 	public String eliminarArticulo(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
+		log.info("Entrando en la función Dar de Baja un Artículo del controlador de Vendedor.");
+
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		if (vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
 			articuloService.eliminarArticulo(articuloId);
@@ -156,6 +174,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/eliminarSolicitud/{solicitudId}")
 	public String eliminarSolicitud(@PathVariable("solicitudId") int solicitudId) {
+		log.info("Entrando en la función Cancelar una Solicitud del controlador de Vendedor.");
+
 		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
 
 		if (solicitud != null && solicitud.getSituacion().equals(Situacion.Pendiente)
@@ -170,6 +190,8 @@ public class VendedorController {
 			@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
 			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Artículos Vendidos del controlador de Vendedor.");
+
 		String vista = "vendedores/listadoArticulosVendidos";
 		Page<LineaPedido> optarticulos = lineaPedidoService
 				.articulosVendidosByProvider(page, size, orden, vendedorService.obtenerIdSesion());

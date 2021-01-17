@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class ArticuloController {
@@ -31,7 +34,7 @@ public class ArticuloController {
 	private final GeneroService generoService;
 	private static final String generos = "generos";
 	private static final String query = "query";
-
+	
 	@Autowired
 	public ArticuloController(ArticuloService articuloService, VendedorService vendedorService,
 			ComentarioService comentarioService, GeneroService generoService, CestaService cestaService) {
@@ -47,7 +50,7 @@ public class ArticuloController {
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
 			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden,
 			ModelMap modelMap) {
-
+		log.info("Entrando en la función Listado de Artículo del controlador de Artículo.");
 		Page<Articulo> articulos = articuloService.articulosDisponibles(page, size, orden);
 		List<Articulo> ofertas = articuloService.ofertasRandomAcotada();
 		String signo = articulos.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
@@ -63,6 +66,8 @@ public class ArticuloController {
 
 	@GetMapping(value = "/articulos/{articuloId}")
 	public String detallesArticulo(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
+		log.info("Entrando en la función Detalles de un Artículo del controlador de Artículo.");
+
 		Articulo articulo = articuloService.findArticuloById(articuloId);
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		List<Comentario> comentarios = comentarioService.getComentariosDeUnArticulo(articuloId);
@@ -88,6 +93,8 @@ public class ArticuloController {
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
 			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden,
 			Articulo articulo, ModelMap modelMap) {
+		log.info("Entrando en la función Búsqueda de un Artículo del controlador de Artículo.");
+
 		String vista = "/articulos/principal";
 		if (articulo.getModelo().isEmpty() && articulo.getGeneros() == null) {
 			return "redirect:/";
@@ -102,6 +109,8 @@ public class ArticuloController {
 
 	@GetMapping(value = "/ofertas")
 	public String listadoArticulosEnOfertas(ModelMap modelMap) {
+		log.info("Entrando en la función Listado de Artículos en Oferta del controlador de Artículo.");
+
 		String vista = "/articulos/ofertas";
 		List<Articulo> ofertas = articuloService.articulosOfertados();
 		modelMap.addAttribute("ofertas", ofertas);

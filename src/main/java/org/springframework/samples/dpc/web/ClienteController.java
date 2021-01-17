@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/clientes")
 public class ClienteController {
@@ -32,6 +35,8 @@ public class ClienteController {
 
 	@GetMapping(value="/perfil")
 	public String mostrarPerfil(ModelMap modelMap){
+		log.info("Entrando en la función Mostrar Perfil del controlador de Cliente.");
+
 		String  perfil="clientes/perfil";
 		Cliente optperfil = clienteService.findClientById(clienteService.obtenerIdSesion());		
 		modelMap.addAttribute("cliente", optperfil);
@@ -40,6 +45,8 @@ public class ClienteController {
 	
 	@GetMapping(value = "/editar")
 	public String editar(Model model) {
+		log.info("Entrando en la función Editar Perfil del controlador de Cliente.");
+
 		Cliente cliente = this.clienteService.findClientById(clienteService.obtenerIdSesion());
 		model.addAttribute(cliente);
 		return "clientes/editarPerfil";
@@ -47,6 +54,7 @@ public class ClienteController {
 
 	@PostMapping(value = "/editar")
 	public String procesoEditar(@Valid Cliente cliente, BindingResult result) {
+		log.info("Entrando en la función Proceso Editar Perfil del controlador de Cliente.");
 		
 		if (result.hasErrors()) {
 			return "clientes/editarPerfil";
@@ -57,12 +65,15 @@ public class ClienteController {
 	}
 	
 	@GetMapping()
-	 public String listadoCliente(@RequestParam(name = "clientPage", defaultValue = "0", required = false) Integer clientPage,
+	public String listadoCliente(@RequestParam(name = "clientPage", defaultValue = "0", required = false) Integer clientPage,
 				@RequestParam(name = "clientSize", defaultValue = "10", required = false) Integer clientSize,
 				@RequestParam(name = "orderClientBy", defaultValue = "nombre", required = false) String ordenCliente,
 				@RequestParam(name = "sellerPage", defaultValue = "0", required = false) Integer sellerPage,
 				@RequestParam(name = "sellerSize", defaultValue = "10", required = false) Integer sellerSize,
 				@RequestParam(name = "orderSellerBy", defaultValue = "nombre", required = false) String ordenVendedor, ModelMap modelMap) {
+
+		log.info("Entrando en la función Listado de Clientes del controlador de Cliente.");
+		
 		Page<Cliente> clientes = clienteService.findAllClient(clientPage, clientSize, ordenCliente);
 		Page<Vendedor> vendedores = vendedorService.findAllSeller(sellerPage, sellerSize, ordenVendedor);
 		String signoCliente = clientes.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
@@ -76,6 +87,4 @@ public class ClienteController {
 		modelMap.addAttribute("ordenacionVendedor", ordenacionVendedor);
 		return "moderadores/listadoClientes";
 	}
-
-
 }

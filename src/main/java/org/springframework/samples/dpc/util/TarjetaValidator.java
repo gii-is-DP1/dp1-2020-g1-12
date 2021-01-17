@@ -18,30 +18,30 @@ public class TarjetaValidator implements Validator {
 		}
 		String numero = tarjeta.getNumero();
 		if(numero == null || numero.length() != 16 || !isNumeric(numero)) {
-			errors.rejectValue("numero", "numero",
-					"El campo numero es obligatorio y debe ser un número de longitud 16.");
+			errors.rejectValue("numero", "El campo numero es obligatorio y debe ser un número de longitud 16",
+					"El campo numero es obligatorio y debe ser un número de longitud 16");
 		}else {
 			if(!algoritmoDeLuhm(numero)) {
-				errors.rejectValue("numero", "numero", "El número de la tarjeta de crédito no es válido.");
+				errors.rejectValue("numero", "El número de la tarjeta de crédito no es válido.","El número de la tarjeta de crédito no es válido.");
 			}
 		}
 		String cvv = tarjeta.getCvv();
 		if(cvv == null || cvv.length() != 3 || !isNumeric(cvv)) {
-			errors.rejectValue("cvv", "cvv",
-					"El campo cvv es obligatorio y debe ser un número de longitud 3.");
+			errors.rejectValue("cvv", "El campo cvv es obligatorio y debe ser un número de longitud 3",
+					"El campo cvv es obligatorio y debe ser un número de longitud 3");
 		}
 		String fecha = tarjeta.getFechaCaducidad();
 		if(fecha == null || fecha == "" || !fecha.contains("/")) { // se puede poner con versión de java superiores fechas.isBlank()
-			errors.rejectValue("fechaCaducidad", "fechaCaducidad",
-					"El campo fecha es obligatorio y debe ser una fecha válida.");
+			errors.rejectValue("fechaCaducidad", "El campo fecha es obligatorio y debe ser una fecha válida",
+					"El campo fecha es obligatorio y debe ser una fecha válida");
 		} else {
 			String[] trozos = tarjeta.getFechaCaducidad().split("/");
 			String mes = trozos[0];
 			String anyo = trozos[1];
 			
 			if(mes.length() != 2 || anyo.length() != 2 || !isNumeric(mes) || !isNumeric(anyo)) {
-				errors.rejectValue("fechaCaducidad", "fechaCaducidad",
-						"El mes y el año deben ser válidos.");
+				errors.rejectValue("fechaCaducidad", "El mes y el año deben ser válidos",
+						"El mes y el año deben ser válidos");
 			} else {
 				Integer numMes = Integer.valueOf(mes);
 				Integer numAnyo = Integer.valueOf(anyo);
@@ -49,8 +49,8 @@ public class TarjetaValidator implements Validator {
 				Integer anyoActual = cal.get(Calendar.YEAR) - 2000;
 				Integer mesActual = cal.get(Calendar.MONTH);
 				if(numMes > 12 || numAnyo < anyoActual || (numAnyo.equals(anyoActual) && numMes < mesActual)) {
-					errors.rejectValue("fechaCaducidad", "fechaCaducidad",
-							"La fecha debe ser posterior a la actual.");
+					errors.rejectValue("fechaCaducidad", "La fecha debe ser posterior a la actual",
+							"La fecha debe ser posterior a la actual");
 				}
 			}
 		}

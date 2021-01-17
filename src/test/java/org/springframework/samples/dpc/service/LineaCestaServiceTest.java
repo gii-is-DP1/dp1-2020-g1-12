@@ -20,15 +20,13 @@ public class LineaCestaServiceTest {
 	private final Integer LINEA_CESTA_ID = 1;
 	private final Integer CESTA_ID = 1;
 	
-	private ArticuloService articuloService;
 	private LineaCestaRepository lineaCestaRepository;
 	private LineaCestaService lineaCestaService;
 	private CestaService cestaService;
 	
 	@Autowired	
-	public LineaCestaServiceTest(ArticuloService articuloService, LineaCestaRepository lineaCestaRepository,
-			LineaCestaService lineaCestaService,CestaService cestaService) {
-		this.articuloService = articuloService;
+	public LineaCestaServiceTest(LineaCestaRepository lineaCestaRepository, LineaCestaService lineaCestaService,
+			CestaService cestaService) {
 		this.lineaCestaRepository = lineaCestaRepository;
 		this.lineaCestaService = lineaCestaService;
 		this.cestaService = cestaService;
