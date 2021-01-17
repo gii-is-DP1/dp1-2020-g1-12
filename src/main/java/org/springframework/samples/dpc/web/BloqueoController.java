@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/bloqueos")
 public class BloqueoController {
@@ -27,6 +30,8 @@ public class BloqueoController {
 
 	@GetMapping(value = "/{bloqueoId}")
 	public String editar(@PathVariable("bloqueoId") int bloqueoId, Model model) {
+		log.info("Entrando en la función Editar un Bloqueo del controlador de Bloqueo.");
+
 		Bloqueo bloqueo = this.bloqueoService.findBlockById(bloqueoId);
 		model.addAttribute(bloqueo);
 		return "moderadores/editarBloqueo";
@@ -35,11 +40,15 @@ public class BloqueoController {
 	@PostMapping(value = "/{bloqueoId}")
 	public String procesoBloquear(@Valid Bloqueo bloqueo, BindingResult result,
 			@PathVariable("bloqueoId") int bloqueoId) {
+		log.info("Entrando en la función Proceso Bloquear del controlador de Bloqueo.");
+
 		String vista;
 		try {
 			this.bloqueoService.editar(bloqueo, bloqueoId, true);
 			vista = "redirect:/clientes";
 		} catch (BloquearSinDescripcionException e) {
+			log.warn("La función Proceso Bloquear ha lanzado la excepción BloquearSinDescpción.");
+
             result.rejectValue("descripcion", "errónea", "La descripción debe estar entre 10 y 200 caractéres");
 			vista = "moderadores/editarBloqueo";
 		}
@@ -49,10 +58,13 @@ public class BloqueoController {
 	@GetMapping(value = "/desbloquear/{bloqueoId}")
 	public String procesoDesbloquear(@Valid Bloqueo bloqueo, BindingResult result,
 			@PathVariable("bloqueoId") int bloqueoId) {
+		log.info("Entrando en la función Proceso Desbloquear del controlador de Bloqueo.");
+
 		try {
 			this.bloqueoService.editar(bloqueo, bloqueoId, false);
 		} catch (BloquearSinDescripcionException e) {
-			e.printStackTrace();
+			log.error("La función Proceso Desbloquear ha lanzado la excepción BloquearSinDescripción.");
+
 		}
 		return "redirect:/clientes";
 	}

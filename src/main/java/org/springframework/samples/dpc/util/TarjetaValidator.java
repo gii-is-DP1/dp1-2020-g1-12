@@ -12,7 +12,7 @@ public class TarjetaValidator implements Validator {
 	public void validate(Object obj, Errors errors) {
 		TarjetaCredito tarjeta = (TarjetaCredito) obj;
 		String titular = tarjeta.getTitular();
-		if(titular == null || titular.length() < 8 || titular.length() > 50 || !titular.matches("^[a-zA-Z áéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙñÑ\s]+$")) {
+		if(titular == null || titular.length() < 8 || titular.length() > 50 || !titular.matches("^[a-zA-Z áéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙñÑ]+$")) {
 			errors.rejectValue("titular", "El campo titular es obligatorio y debe estar comprendido entre 8 y 50 caracteres no numéricos",
 					"El campo titular es obligatorio y debe estar comprendido entre 8 y 50 caracteres no numéricos");
 		}
