@@ -1,12 +1,15 @@
 package org.springframework.samples.dpc.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.dpc.model.Bloqueo;
+import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.repository.ClienteRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +19,15 @@ public class ClienteService {
 	private ClienteRepository clienteRepository;
 	private UserService userService;
 	private ArticuloService articuloService;
+	private BloqueoService bloqueoService;
 
 	@Autowired
 	public ClienteService(ClienteRepository clienteRepository, UserService userService, 
-			ArticuloService articuloService) {
+			ArticuloService articuloService,@Lazy BloqueoService bloqueoService) {
 		this.clienteRepository = clienteRepository;
 		this.userService = userService;
 		this.articuloService = articuloService;
+		this.bloqueoService = bloqueoService;
 	}
 
 	@Transactional
@@ -33,6 +38,18 @@ public class ClienteService {
 	@Transactional
 	public void guardar(Cliente cliente) {
 		clienteRepository.save(cliente);
+	}
+	@Transactional
+	public void registroCliente(Cliente cliente) {
+		String cifrado = new BCryptPasswordEncoder().encode(cliente.getUser().getPassword());
+		cliente.getUser().setPassword(cifrado);
+		Cesta cesta = new Cesta();
+		Bloqueo b = new Bloqueo();
+		b.setBloqueado(false);
+		bloqueoService.guardar(b);
+		cliente.setBloqueo(b);
+		cliente.getUser().setEnabled(true);
+		cliente.setCesta(cesta);
 	}
 
 	@Transactional
