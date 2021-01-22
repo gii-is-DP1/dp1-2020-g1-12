@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /*
@@ -39,12 +39,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll()
 				.antMatchers(HttpMethod.GET, "/", "/oups").permitAll()
+				.antMatchers("/actuator/**").permitAll()
 				.antMatchers("/registro/**").permitAll()
 				.antMatchers("/users/**").permitAll()
 				.antMatchers("/clientes").hasAnyAuthority(moderador)
 				.antMatchers("/clientes/**").hasAnyAuthority(cliente)
 				.antMatchers("/cesta/**").hasAnyAuthority(cliente)
 				.antMatchers("/pedidos").hasAnyAuthority(cliente)
+				.antMatchers("/pedidos/modificar/**").hasAnyAuthority(vendedor)
 				.antMatchers("/pedidos/**").hasAnyAuthority(cliente)
 				.antMatchers("/vendedores/**").hasAnyAuthority(vendedor)
 				.antMatchers("/solicitudes/new").hasAnyAuthority(vendedor)
@@ -92,7 +94,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder encoder = NoOpPasswordEncoder.getInstance();
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder;
 	}
 

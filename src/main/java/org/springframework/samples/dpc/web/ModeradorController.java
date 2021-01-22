@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/moderadores")
 public class ModeradorController {
@@ -26,7 +29,8 @@ public class ModeradorController {
 
 	@GetMapping("/perfil")
 	public String mostrarPerfil(ModelMap modelMap){
-		
+		log.info("Entrando en la función Mostrar Perfil del controlador de Moderador.");
+
 		String vista ="moderadores/perfil";
 		Moderador perfil = moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
 		
@@ -36,6 +40,8 @@ public class ModeradorController {
 		
 	@GetMapping(value = "/editar")
 	public String editar(Model model) {
+		log.info("Entrando en la función Editar Perfil del controlador de Moderador.");
+
 		Moderador moderador = this.moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
 		model.addAttribute("moderador", moderador);
 		return "moderadores/editarPerfil";
@@ -43,6 +49,8 @@ public class ModeradorController {
 
 	@PostMapping(value = "/editar")
 	public String procesoEditar(@Valid Moderador moderador, BindingResult result) {
+		log.info("Entrando en la función Proceso Editar Perfil del controlador de Moderador.");
+
 		if (result.hasErrors()) {
 			return "moderadores/editarPerfil";
 		}
@@ -51,7 +59,4 @@ public class ModeradorController {
 			return "redirect:/moderadores/perfil";
 		}
 	}
-	
-
-
 }

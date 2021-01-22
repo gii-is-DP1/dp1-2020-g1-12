@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/comentario")
 public class ComentarioController {
@@ -28,6 +31,8 @@ public class ComentarioController {
 	
 	@GetMapping(value = "/articulo/{articuloId}")
 	public String crearComentario(@PathVariable("articuloId") int articuloId, Model model) {
+		log.info("Entrando en la función Crear un Comentario del controlador de Comentario.");
+
 		model.addAttribute("comentario", new Comentario());
 		model.addAttribute("articulo", articuloId);
 		return editCommentView;
@@ -36,6 +41,8 @@ public class ComentarioController {
 	@PostMapping(value = "/articulo/{articuloId}")
 	public String procesoComentar(@Valid Comentario comentario, BindingResult result,
 			@PathVariable("articuloId") int articuloId, Model model) {
+		log.info("Entrando en la función Proceso Crear un Comentario del controlador de Comentario.");
+
 		String vista;
 		if (result.hasErrors()) {
 			model.addAttribute("comentario",comentario);
@@ -44,6 +51,8 @@ public class ComentarioController {
 			try {
 				this.comentarioService.guardarComentario(comentario, articuloId);
 			} catch (ComentarioProhibidoException e) {
+				log.warn("La función Proceso Crear un Comentario ha lanzado la excepción ComentarioProhibido.");
+
 	            result.rejectValue("descripcion", "errónea", "No puedes publicar un comentario si no "
 	            		+ "eres el propietario del artículo");
 				return editCommentView;
@@ -56,6 +65,8 @@ public class ComentarioController {
 	@GetMapping(value = "/eliminar/{comentarioId}/articulo/{articuloId}")
 	public String borrarComentario(@PathVariable("comentarioId") int comentarioId, 
 			@PathVariable("articuloId") int articuloId, Model model) {
+		log.info("Entrando en la función Borrar un Comentario del controlador de Comentario.");
+
 		Comentario comentario =  comentarioService.findCommentById(comentarioId);
 		if(comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
 			comentarioService.eliminarComentario(comentario);

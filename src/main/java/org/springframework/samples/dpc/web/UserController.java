@@ -28,6 +28,7 @@ import org.springframework.samples.dpc.service.AuthoritiesService;
 import org.springframework.samples.dpc.service.BloqueoService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -35,6 +36,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class UserController {
 
@@ -63,11 +67,15 @@ public class UserController {
 
 	@GetMapping(value = "/registro")
 	public String initCreationForm(Map<String, Object> model) {
+		log.info("Entrando en la función Iniciar Formulario del controlador de User.");
+
 		return VIEWS_CREATE;
 	}
 
 	@GetMapping(value = "/registro/vendedor")
 	public String initCreationFormVendedor(Map<String, Object> model) {
+		log.info("Entrando en la función Iniciar Formulario de Vendedor del controlador de User.");
+
 		Vendedor vendedor = new Vendedor();
 		model.put("vendedor", vendedor);
 		return VIEWS_CREATE_FORM_VENDEDOR;
@@ -75,9 +83,13 @@ public class UserController {
 
 	@PostMapping(value = "/registro/vendedor")
 	public String processCreationFormVendedor(@Valid Vendedor vendedor, BindingResult result) {
+		log.info("Entrando en la función Proceso Formulario de Vendedor del controlador de User.");
+
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_VENDEDOR;
 		} else {
+			String cifrado = new BCryptPasswordEncoder().encode(vendedor.getUser().getPassword());
+			vendedor.getUser().setPassword(cifrado);
 			Bloqueo b = new Bloqueo();
 			b.setBloqueado(false);
 			bloqueoService.guardar(b);
@@ -92,6 +104,8 @@ public class UserController {
 
 	@GetMapping(value = "/registro/cliente")
 	public String initCreationFormCliente(Map<String, Object> model) {
+		log.info("Entrando en la función Iniciar Formulario de Cliente del controlador de User.");
+
 		Cliente cliente = new Cliente();
 		model.put("cliente", cliente);
 		return VIEWS_CREATE_FORM_CLIENTE;
@@ -99,9 +113,13 @@ public class UserController {
 
 	@PostMapping(value = "/registro/cliente")
 	public String processCreationFormCliente(@Valid Cliente cliente, BindingResult result) {
+		log.info("Entrando en la función Proceso Iniciar Formulario de Cliente del controlador de User.");
+
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_CLIENTE;
 		} else {
+			String cifrado = new BCryptPasswordEncoder().encode(cliente.getUser().getPassword());
+			cliente.getUser().setPassword(cifrado);
 			Cesta cesta = new Cesta();
 			Bloqueo b = new Bloqueo();
 			b.setBloqueado(false);

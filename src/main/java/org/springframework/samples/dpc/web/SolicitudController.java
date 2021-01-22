@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/solicitudes")
 public class SolicitudController {
@@ -41,6 +43,8 @@ public class SolicitudController {
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
 			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, 
 			ModelMap modelMap) {
+		log.info("Entrando en la función Listado de Solicitudes del controlador de Solicitud.");
+
 		String vista = "solicitudes/listadoSolicitudes";
 
 		Page<Solicitud> solicitudes = solicitudService.solicitudesPendientes(page, size, orden);
@@ -55,6 +59,8 @@ public class SolicitudController {
 	
 	@GetMapping(value="/{solicitudId}")
 	public String mostrarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar una Solicitud del controlador de Solicitud.");
+
 		String vista="solicitudes/detalles";
 		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
 		modelMap.addAttribute(sol, solicitud);
@@ -63,6 +69,8 @@ public class SolicitudController {
 	
 	@GetMapping(value="/{solicitudId}/aceptar")
 	public String aceptarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
+		log.info("Entrando en la función Aceptar una Solicitud del controlador de Solicitud.");
+
 		solicitudService.aceptarSolicitud(solicitudId);
 		modelMap.addAttribute(mensaje, "La solicitud ha sido aceptada correctamente");
 		return listadoSolicitud(0, 10, "-id", modelMap);
@@ -71,10 +79,14 @@ public class SolicitudController {
 	@PostMapping(value="/{solicitudId}/denegar")
 	public String denegarSolicitud(@PathVariable("solicitudId") Integer solicitudId,Solicitud solicitud, 
 			ModelMap modelMap, BindingResult result) {
+		log.info("Entrando en la función Denegar una Solicitud del controlador de Solicitud.");
+
 		try {
 			solicitudService.denegarSolicitud(solicitudId,solicitud.getRespuesta());
 			modelMap.addAttribute(mensaje, "La solicitud ha sido denegada correctamente");
 		} catch(SolicitudRechazadaSinRespuestaException ex) {
+			log.warn("La función Denegar una Solicitud ha lanzado la excepción SolicitudRechazadaSinRespuesta.");
+
 			result.rejectValue("respuesta", "error", 
 					"La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
 			modelMap.addAttribute(mensaje, "La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
@@ -85,6 +97,8 @@ public class SolicitudController {
 	
 	@GetMapping(path="/new")
 	public String crearSolicutud(ModelMap modelMap) {
+		log.info("Entrando en la función Crear una Solicitud del controlador de Solicitud.");
+
 		modelMap.addAttribute(sol, new Solicitud());
 		modelMap.addAttribute("vendedorId", vendedorService.obtenerIdSesion());
 		return editApplicationView;
@@ -92,6 +106,8 @@ public class SolicitudController {
 	
 	@PostMapping(path = "/save")
 	public String guardarSolicitud(@Valid Solicitud solicitud, BindingResult result,ModelMap modelMap) {
+		log.info("Entrando en la función Proceso de Crear una Solicitud del controlador de Solicitud.");
+
 		String vista = "redirect:/vendedores/listadoSolicitudes";
 		if(result.hasErrors()) {
 			modelMap.addAttribute(sol,solicitud);
@@ -101,6 +117,8 @@ public class SolicitudController {
 			solicitudService.guardar(solicitud, vendedorService.findSellerById(vendedorService.obtenerIdSesion()));
 			modelMap.addAttribute(mensaje, "Se ha guardado correctamente.");
 			} catch(PrecioMenorAlEnvioException ex) {
+				log.warn("La función Proceso de Crear una Solicitud ha lanzado la excepción PrecioMenorAlEnvio.");
+
 				result.rejectValue("gastoEnvio", "error", 
 						"Los gastos de envío deben ser inferiores al precio del artículo");
 				return editApplicationView;
@@ -112,11 +130,12 @@ public class SolicitudController {
 	@GetMapping(value="/{solicitudId}/solicitante/{vendedorId}")
 	public String perfilSolicitante(ModelMap modelMap, @PathVariable("vendedorId") Integer vendedorId, 
 			@PathVariable("solicitudId") Integer solicitudId) {
+		log.info("Entrando en la función Mostrar Perfil del Solicitante del controlador de Solicitud.");
+
 		String solicitante="solicitudes/solicitante";
 		Vendedor vendedor = vendedorService.findSellerById(vendedorId);
 		modelMap.addAttribute("vendedor", vendedor);
 		modelMap.addAttribute("solicitudId", solicitudId);
 		return solicitante;
 	}
-
 }

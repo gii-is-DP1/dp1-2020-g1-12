@@ -13,6 +13,7 @@ import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.model.TarjetaCredito;
 import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.ClienteService;
+import org.springframework.samples.dpc.service.LineaPedidoService;
 import org.springframework.samples.dpc.service.PedidoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,17 +23,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/pedidos")
 public class PedidoController {
 	
 	private final PedidoService pedidoService;
+	private final LineaPedidoService lineaPedidoService;
 	private final CestaService cestaService;
 	private final ClienteService clienteService;
 
 	@Autowired
-	public PedidoController(PedidoService pedidoService, CestaService cestaService, ClienteService clienteService) {
+	public PedidoController(PedidoService pedidoService,LineaPedidoService lineaPedidoService, CestaService cestaService, ClienteService clienteService) {
 		this.pedidoService = pedidoService;
+		this.lineaPedidoService = lineaPedidoService;
 		this.cestaService = cestaService;
 		this.clienteService = clienteService;
 	}
@@ -41,6 +47,8 @@ public class PedidoController {
 	public String listadoPedido(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
 			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+		log.info("Entrando en la función Listado de Pedidos del controlador de Pedido.");
+
 		Page<Pedido> pedidos = pedidoService.obtenerPedidos(page, size, orden);
 		String signo = pedidos.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
 		String ordenacion = signo + pedidos.getSort().get().findAny().get().getProperty();	//de página se siga usando el filtro seleccionado
@@ -52,6 +60,8 @@ public class PedidoController {
 	
 	@GetMapping("/tramitarPedido")
 	public String tramitarPedido(HttpServletRequest request, ModelMap modelMap) {
+		log.info("Entrando en la función Tramitar un Pedido del controlador de Pedido.");
+
 		Set<TarjetaCredito> tarjetas = clienteService.getClienteDeSesion().getTarjetas();
 		Cesta cesta = cestaService.obtenerCestaCliente();
 		String fechaEstimada = cestaService.fechaEstimada();
@@ -64,6 +74,8 @@ public class PedidoController {
 	
 	@PostMapping("/confirmarCompra")
 	public String confirmarCompra(TarjetaCredito tarjeta, HttpServletRequest request, ModelMap modelMap) {
+		log.info("Entrando en la función Confirmar Compra del controlador de Pedido.");
+
 		pedidoService.tramitarPedido(tarjeta.getId());
 		request.getSession().setAttribute("contador", cestaService.lineasCesta());
 		return "redirect:/pedidos";
@@ -71,11 +83,32 @@ public class PedidoController {
 	
 	@GetMapping("/{pedidoId}")
 	public String obtenerPedido(@PathVariable("pedidoId") Integer pedidoId, ModelMap modelMap) {
+		log.info("Entrando en la función Obtener un Pedido del controlador de Pedido.");
+
 		Pedido pedido = pedidoService.obtenerPedido(pedidoId);
 		List<LineaPedido> lineas = pedidoService.obtenerLineas(pedidoId);
+		Double gastosEnvio = pedidoService.obtenerGastoEnvio(pedido, lineas);
 		modelMap.addAttribute("pedido", pedido);
 		modelMap.addAttribute("lineas", lineas);
+		modelMap.addAttribute("gastos", gastosEnvio);
 		return "clientes/pedido";
 	}
 	
+	@GetMapping("/modificar/{lineaPedidoId}")
+	public String modificarEstadoPedido(@PathVariable("lineaPedidoId") Integer lineaPedidoId, ModelMap modelMap) {
+		LineaPedido lineaPedido = lineaPedidoService.obtenerLineaPedido(lineaPedidoId);
+		if(lineaPedido == null || !lineaPedidoService.compruebaVendedorLinea(lineaPedidoId)) {
+			return "redirect:/vendedores/articulosVendidos";
+		}
+		modelMap.addAttribute("lineaPedido", lineaPedido);
+		return "vendedores/editarEstadoPedido";
+	}
+	
+	@PostMapping("/modificar/{lineaPedidoId}/save")
+	public String guardarEstadoPedido(@PathVariable("lineaPedidoId") int lineaPedidoId, LineaPedido lineaPedido, ModelMap modelMap) {
+		if(lineaPedido != null && lineaPedidoService.compruebaVendedorLinea(lineaPedidoId)) {
+			lineaPedidoService.actualizarEstado(lineaPedidoId, lineaPedido);
+		}
+		return "redirect:/vendedores/articulosVendidos";
+	}
 }

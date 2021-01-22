@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class LoginController {
@@ -46,6 +49,8 @@ public class LoginController {
 
 	@GetMapping("/login")
 	public String login(ModelMap modelMap) {
+		log.info("Entrando en la función Iniciar Formulario de Login del controlador de Login.");
+
 		modelMap.addAttribute("usuario", new User());
 
 		return "/login";
@@ -54,6 +59,8 @@ public class LoginController {
 	@PostMapping(value = "/loginForm")
 	public String iniciarSesion(HttpServletRequest request, @Valid User user, BindingResult result, 
 			ModelMap modelMap) throws Exception {
+		log.info("Entrando en la función Procesar Formulario de Login del controlador de Login.");
+
 		UsernamePasswordAuthenticationToken authRequest = 
 				new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
 		try {
@@ -67,11 +74,15 @@ public class LoginController {
 				request.getSession().setAttribute("contador", cestaService.lineasCesta());
 			}
 		} catch (BadCredentialsException e) {
+			log.info("La función Proceso Formulario de Login ha lanzado la excepción BadCredentials");
+
 			modelMap.addAttribute("usuario", user);
 			modelMap.addAttribute("mensaje", "El nombre de usuario y la contraseña que ingresaste no coinciden "
 					+ "con nuestros registros. Por favor, revisa e inténtalo de nuevo.");
 			return "/login";
 		} catch (UsuarioBloqueadoException e) {
+			log.info("La función Proceso Formulario de Login ha lanzado la excepción UsuarioBloqueao");
+			
 			modelMap.addAttribute("usuario", user);
 			modelMap.addAttribute("mensaje", "Su usuario ha sido bloqueado. Razón: " + 
 					bloqueoService.usuarioBloqueadoMotivo(user.getUsername()));
@@ -82,11 +93,13 @@ public class LoginController {
 	
     @RequestMapping("/logout")
     public void exit(HttpServletRequest request, HttpServletResponse response) {
+		log.info("Entrando en la función Cerrar Sesión del controlador de Login.");
+
         new SecurityContextLogoutHandler().logout(request, null, null);
         try {
             response.sendRedirect(request.getHeader("referer"));
         } catch (IOException e) {
-            e.printStackTrace();
+    		log.error("La función Cerrar Sesión ha lanzado una excepción.");
         }
     }
 }

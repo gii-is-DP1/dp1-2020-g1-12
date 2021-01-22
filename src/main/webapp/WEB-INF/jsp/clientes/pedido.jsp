@@ -27,22 +27,28 @@
 							</spring:url>
 							<a href="${fn:escapeXml(articuloUrl)}"><c:out value="${linea.articulo.marca} ${linea.articulo.modelo}"></c:out></a>
 		                </td>
-		                <td><c:out value="${linea.estado}"></c:out></td>
+		                <td>
+		                	<c:if test="${linea.estado == 'EnReparto'}">
+                    			<c:out value="En Reparto"/>
+                    		</c:if>
+                    		<c:if test="${linea.estado != 'EnReparto'}">
+                    			<c:out value="${linea.estado}"/>
+                    		</c:if>
+		                </td>
 		                <td>
 							<c:out value="${linea.cantidad} unidades"></c:out>
 		                </td>
 						<td>
-							<c:if test="${linea.articulo.oferta.disponibilidad}" >
-				                <span style="color: red; "><fmt:formatNumber type="number" maxFractionDigits="2" 
-				                    value="${linea.articulo.precio * (1 - linea.articulo.oferta.porcentaje/100)}"/> € </span>
-				                <span style="color: white; background-color: #f35a5a; border-radius: 3px">${linea.articulo.oferta.porcentaje}%</span>
-			                </c:if>
-			                <c:if test="${!linea.articulo.oferta.disponibilidad}" >
-				                <c:out value="${linea.articulo.precio} €"/>
-			               </c:if>
+				           <fmt:formatNumber type="number" maxFractionDigits="2" value="${linea.precioUnitario}"/> €
 						</td>
 		            </tr>
 		        </c:forEach>
+		    <tr>
+	        	<td></td>
+	        	<td></td>
+	        	<td>Gastos de envío:</td>
+	        	<td><fmt:formatNumber type="number" maxFractionDigits="2" value="${gastos}"/> €</td>
+	        </tr> 
 	        <tr>
 	        	<td></td>
 	        	<td></td>
