@@ -21,13 +21,41 @@
 	        	return opcion;
 	        }
         </script>
+        <script>
+			function vermas(id){
+				if(id=="mas"){
+					document.getElementById("desplegar").style.display="block";   
+					document.getElementById("mas").style.display="none"; 
+					document.getElementById("noDesplegar").style.display="none"; 					
+				}
+				else{
+					document.getElementById("desplegar").style.display="none";
+					document.getElementById("mas").style.display="inline";
+					document.getElementById("noDesplegar").style.display="block";   
+				}
+			}
+        </script>
     </jsp:attribute>
     <jsp:body>
-	    <h2>Artículo <c:out value="${articulo.marca} ${articulo.modelo}"></c:out></h2>
-	
+	    <h1>${articulo.marca} ${' '} ${articulo.modelo}</h1>
+	    
+	    <div style="display:flex;">
+		    <div style="width:50%; height:100%">
+			    <img style='width: 70%; height: 100%' alt='' onerror="this.src=''" src='${articulo.urlImagen}'/>
+			</div>
+			<div style="width:50%;">
+				<p id="noDesplegar" align="justify">${articulo.descripcion.substring(0, articulo.descripcion.length()/2)}...
+					<br><br>
+				</p>
+				
+				<a onclick="vermas('mas');" id="mas">Leer más</a>
+				<p id="desplegar" style="display: none;" align="justify">${articulo.descripcion}
+					<br><br>
+					<a onclick="vermas('menos');" id="menos">Leer menos</a>
+				</p>
+			</div>
+		</div>	
 	    <table class="table table-striped">
-	         <tr>
-				<img style='width: 20%; height: 10%' alt='' onerror="this.src=''" src='${articulo.urlImagen}'/>        </tr>
 	        <tr>
 	            <th>Precio</th>
 	            <td>
@@ -46,7 +74,7 @@
 	        </tr>
 	          <tr>
 	            <th>Stock</th>
-	            <td>${articulo.stock}</td>
+	            <td>${articulo.stock} unidades</td>
 	            <td></td>
 	        </tr>
 	        <tr>
@@ -56,12 +84,12 @@
 	        </tr>
 	        <tr>
 	            <th>Gastos de envío</th>
-	            <td>${articulo.gastoEnvio}</td>
+	            <td>${articulo.gastoEnvio} €</td>
 	            <td></td>
 	        </tr>
 	        <tr>
 	            <th>Tiempo de Entrega</th>
-	            <td>${articulo.tiempoEntrega}</td>
+	            <td>${articulo.tiempoEntrega} días</td>
 	            <td></td>
 	        </tr>
 	        <tr>

@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
 import org.springframework.samples.dpc.model.Situacion;
 import org.springframework.samples.dpc.model.Solicitud;
@@ -25,6 +32,7 @@ import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 @WebMvcTest(value=SolicitudController.class,
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
@@ -65,6 +73,12 @@ class SolicitudControllerTest {
 		solicitud.setTiempoEntrega(8);
 		solicitud.setTipo(Tipo.Nuevo);
 		solicitud.setUrlImagen("vacia");
+		List<Solicitud> l = new ArrayList<>();
+		l.add(solicitud);
+		
+		given(this.solicitudService.solicitudesPendientes(0, 10, "-id")).
+		willReturn(new PageImpl<>(l, PageRequest.of(0, 10, Sort.by(Order.desc("id"))), 10));
+		given(this.articuloService.obtenerFiltros(0, 10, "-id", "articulo")).willReturn(PageRequest.of(0, 10));
 		given(this.solicitudService.detallesSolicitud(TEST_SOLICITUD_ID)).willReturn(solicitud);
 	}
 	

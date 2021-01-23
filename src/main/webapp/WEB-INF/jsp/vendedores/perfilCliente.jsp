@@ -32,12 +32,9 @@
             <td>${cliente.email}</td>
         </tr>
 
-        
-         
-            
     </table>
      
-
+	<a href="/vendedores/articulosVendidos"><button class="btn btn-default" type="submit">Volver</button></a>
     
 
 </dpc:layout>

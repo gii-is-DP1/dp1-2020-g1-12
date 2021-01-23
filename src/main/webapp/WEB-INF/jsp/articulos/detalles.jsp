@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="true" trimDirectiveWhitespaces="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -11,6 +11,8 @@
 
 <dpc:layout pageName="articulos">
     <jsp:attribute name="customScript">
+    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
         <script>
 	        function alerta() {
 	        	var opcion = confirm('¿Seguro que desea eliminar el comentario del artículo?');
@@ -36,20 +38,21 @@
     <jsp:body>
     <form:form modelAttribute="query" action="/busqueda" class="form-horizontal" >
         <div class="form-group has-feedback">
-            <dpc:inputField label="Busqueda" name="modelo"/>
-            
-            <select class="selectpicker" name="generos" multiple>
-            	<option value="" disabled selected>Seleccione géneros a buscar</option>
-            	<c:forEach items="${generos}" var="genero">
-    				<option value="${genero.id}">${genero.nombre}</option>
-    			</c:forEach>
-  			</select>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <span>
+	            <select class="selectpicker" name="generos" multiple title="Elige uno o varios géneros">
+	            	<c:forEach items="${generos}" var="genero">
+	    				<option value="${genero.id}">${genero.nombre}</option>
+	    			</c:forEach>
+	  			</select>
+  			</span>
+	        <span>
+	            <input placeholder="Introduzca su búsqueda" size="100" name="modelo"/>
+			</span>
+	         <div style="float:right">
 				<button class="btn btn-default" type="submit">Buscar</button>
-            </div>
+			</div>
         </div>
+
     </form:form>
     <h1>${articulo.marca} ${' '} ${articulo.modelo}</h1>
     
@@ -58,7 +61,7 @@
 		    <img style='width: 70%; height: 100%' alt='' onerror="this.src=''" src='${articulo.urlImagen}'/>
 		</div>
 		<div style="width:50%;">
-			<p id="noDesplegar"align="justify">${articulo.descripcion.substring(0, articulo.descripcion.length()/2)}...
+			<p id="noDesplegar" align="justify">${articulo.descripcion.substring(0, articulo.descripcion.length()/2)}...
 				<br><br>
 			</p>
 			
@@ -71,12 +74,12 @@
 	</div>
 	<sec:authorize access="hasAuthority('cliente')">
 		<c:if test="${articulo.stock > 0 && puedeComprar}" >	
-			<spring:url value="/cesta/añadirArticulo/{articuloId}" var="añadirArticuloUrl">
+			<spring:url value="/cesta/anyadirArticulo/{articuloId}" var="añadirArticuloUrl">
 		   		<spring:param name="articuloId" value="${articulo.id}"/>
 			</spring:url>
 			<br>
 			<a href="${fn:escapeXml(añadirArticuloUrl)}">
-				<button style="width:22%;float:right" class="btn btn-primary btn-lg btn-block type="submit">Añadir al carrito</button>
+				<button style="width:22%;float:right" class="btn btn-primary btn-lg btn-block" type="submit">Añadir al carrito</button>
 			</a>
 		</c:if>
 	</sec:authorize>
@@ -103,7 +106,7 @@
         </tr>
         <tr>
             <th>Stock</th>
-            <td>${articulo.stock}</td>
+            <td>${articulo.stock} unidades</td>
         </tr>
         <tr>
             <th>Estado</th>
@@ -148,7 +151,7 @@
 			<br><br>
 		</c:if>
 		<h2>Comentarios:</h2>	
-		<c:if test="${articulo.comentarios.size() == 0}">
+		<c:if test="${articulo.comentarios.size() == 0 && puedeComentar}">
 			<p>Sé el primero en comentar.</p>
 		</c:if>
 		<c:forEach items="${comentarios}" var="comentario">

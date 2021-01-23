@@ -17,13 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/generos")
 public class GeneroController {
 
 	private final GeneroService generoService;
 	private final VendedorService vendedorService;
-
 	
 	@Autowired
 	public GeneroController(GeneroService generoService, VendedorService vendedorService) {
@@ -33,6 +35,8 @@ public class GeneroController {
 	
 	@GetMapping(value = "/{articuloId}")
 	public String iniciarFormulario(@PathVariable("articuloId") int articuloId, Model model) {
+		log.info("Entrando en la función Iniciar Formulario de Creación del controlador de Género.");
+
 		List<Genero> generosDisponibles = generoService.generosRestantes(articuloId);
 		model.addAttribute("genero", new Genero());
 		model.addAttribute("articuloId",articuloId);
@@ -43,6 +47,8 @@ public class GeneroController {
 	@PostMapping(path = "/{articuloId}/save")
 	public String guardarGenero(@PathVariable("articuloId") int articuloId, @Valid Genero genero, 
 			BindingResult result,ModelMap modelMap) {
+		log.info("Entrando en la función Guardar Género Creado del controlador de Género.");
+
 		String vista = "redirect:/vendedores/articulo/{articuloId}";
 		if(result.hasErrors()) {
 			modelMap.addAttribute("genero", new Genero());
@@ -56,7 +62,8 @@ public class GeneroController {
 	@GetMapping(value = "/{articuloId}/{generoId}/remove")
 	public String borrarGenero(@PathVariable("articuloId") int articuloId,
 			@PathVariable("generoId") int generoId ,Model model) {
-		
+		log.info("Entrando en la función Borrar un Género del controlador de Género.");
+
 		if(generoService.findGeneroById(generoId) != null && vendedorService.esVendedorDelArticulo(articuloId)) {
 			generoService.eliminarGenero(articuloId, generoId);
 		}

@@ -20,12 +20,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.dpc.model.Bloqueo;
-import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.AuthoritiesService;
-import org.springframework.samples.dpc.service.BloqueoService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
@@ -35,6 +32,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class UserController {
 
@@ -44,15 +44,13 @@ public class UserController {
 
 	private final VendedorService vendedorService;
 	private final ClienteService clienteService;
-	private final BloqueoService bloqueoService;
 	private final AuthoritiesService authoritiesService;
 
 	@Autowired
-	public UserController(VendedorService vendedorService, ClienteService clienteService, BloqueoService bloqueoService,
+	public UserController(VendedorService vendedorService, ClienteService clienteService,
 			AuthoritiesService authoritiesService) {
 		this.vendedorService = vendedorService;
 		this.clienteService = clienteService;
-		this.bloqueoService = bloqueoService;
 		this.authoritiesService = authoritiesService;
 	}
 
@@ -63,11 +61,15 @@ public class UserController {
 
 	@GetMapping(value = "/registro")
 	public String initCreationForm(Map<String, Object> model) {
+		log.info("Entrando en la función Iniciar Formulario del controlador de User.");
+
 		return VIEWS_CREATE;
 	}
 
 	@GetMapping(value = "/registro/vendedor")
 	public String initCreationFormVendedor(Map<String, Object> model) {
+		log.info("Entrando en la función Iniciar Formulario de Vendedor del controlador de User.");
+
 		Vendedor vendedor = new Vendedor();
 		model.put("vendedor", vendedor);
 		return VIEWS_CREATE_FORM_VENDEDOR;
@@ -75,23 +77,22 @@ public class UserController {
 
 	@PostMapping(value = "/registro/vendedor")
 	public String processCreationFormVendedor(@Valid Vendedor vendedor, BindingResult result) {
+		log.info("Entrando en la función Proceso Formulario de Vendedor del controlador de User.");
+
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_VENDEDOR;
 		} else {
-			Bloqueo b = new Bloqueo();
-			b.setBloqueado(false);
-			bloqueoService.guardar(b);
-			vendedor.setBloqueo(b);
-			vendedor.getUser().setEnabled(true);
-			vendedor.setBloqueo(b);
+			this.vendedorService.registroVendedor(vendedor);
 			this.vendedorService.guardar(vendedor);
 			this.authoritiesService.saveAuthorities(vendedor.getUser().getUsername(), "vendedor");
-			return "redirect:/registro";
+			return "redirect:/login";
 		}
 	}
 
 	@GetMapping(value = "/registro/cliente")
 	public String initCreationFormCliente(Map<String, Object> model) {
+		log.info("Entrando en la función Iniciar Formulario de Cliente del controlador de User.");
+
 		Cliente cliente = new Cliente();
 		model.put("cliente", cliente);
 		return VIEWS_CREATE_FORM_CLIENTE;
@@ -99,20 +100,15 @@ public class UserController {
 
 	@PostMapping(value = "/registro/cliente")
 	public String processCreationFormCliente(@Valid Cliente cliente, BindingResult result) {
+		log.info("Entrando en la función Proceso Iniciar Formulario de Cliente del controlador de User.");
+
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_CLIENTE;
 		} else {
-			Cesta cesta = new Cesta();
-			Bloqueo b = new Bloqueo();
-			b.setBloqueado(false);
-			b.setDescripcion("");
-			bloqueoService.guardar(b);
-			cliente.setBloqueo(b);
-			cliente.getUser().setEnabled(true);
-			cliente.setCesta(cesta);
+			this.clienteService.registroCliente(cliente);
 			this.clienteService.guardar(cliente);
 			this.authoritiesService.saveAuthorities(cliente.getUser().getUsername(), "cliente");
-			return "redirect:/registro";
+			return "redirect:/login";
 		}
 	}
 

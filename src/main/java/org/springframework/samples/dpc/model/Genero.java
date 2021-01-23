@@ -21,6 +21,4 @@ public class Genero extends BaseEntity {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	
 }

@@ -1,12 +1,15 @@
 package org.springframework.samples.dpc.model;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -15,16 +18,15 @@ import javax.validation.constraints.Email;
 @Table(name = "clientes")
 public class Cliente extends Persona{
 	
-	@ManyToMany(cascade =
-		{CascadeType.PERSIST,
-		CascadeType.MERGE,
-		CascadeType.DETACH,
-		CascadeType.REFRESH})
-		private Set<TarjetaCredito> tarjetas;
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	private Set<TarjetaCredito> tarjetas;
 
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente", fetch = FetchType.LAZY)
+	private Collection<Pedido> pedidos;
 	
 	@OneToOne(cascade = CascadeType.ALL,optional=false)
 	private Cesta cesta;
@@ -33,7 +35,7 @@ public class Cliente extends Persona{
 	@Email
 	private String email;
 	
-	@OneToOne(optional=false)
+	@OneToOne(cascade = CascadeType.ALL, optional=false)
 	private Bloqueo bloqueo;
 
 	public Cesta getCesta() {
@@ -68,6 +70,14 @@ public class Cliente extends Persona{
 		this.user = user;
 	}
 	
+	public Collection<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(Collection<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
 	public Set<TarjetaCredito> getTarjetas() {
 		return tarjetas;
 	}

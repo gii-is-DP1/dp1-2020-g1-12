@@ -12,12 +12,8 @@ import org.hibernate.validator.constraints.Length;
 @MappedSuperclass
 public class Producto extends BaseEntity {
 	
-	@ManyToMany(cascade =
-		{CascadeType.PERSIST,
-		CascadeType.MERGE,
-		CascadeType.DETACH,
-		CascadeType.REFRESH})
-		private Set<Genero> generos;
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	private Set<Genero> generos;
 	
 	@Column(name = "modelo")
 	@Length(min=3,max=200)
@@ -50,6 +46,4 @@ public class Producto extends BaseEntity {
 	public void setGeneros(Set<Genero> generos) {
 		this.generos = generos;
 	}
-	
-
 }

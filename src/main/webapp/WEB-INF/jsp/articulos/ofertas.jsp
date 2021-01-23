@@ -1,4 +1,4 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ page session="true" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -21,12 +21,12 @@
     
     <fieldset>
 		 <c:forEach items="${ofertas}" var="oferta">
-            <div>
+            <div style="display: inline-table;width:17.5%;margin-left: 2%;overflow: hidden;">
 	            <spring:url value="/articulos/{articuloId}" var="articuloUrl">
 	              		<spring:param name="articuloId" value="${oferta.id}"/>
 	            </spring:url>
 	            
-	            <a href="${fn:escapeXml(articuloUrl)}"><img style='width: 20%; height: 10%' alt='' 
+	            <a href="${fn:escapeXml(articuloUrl)}"><img style='width: 100%; height: 10%' alt='' 
 	            	onerror="this.src=''" src='${oferta.urlImagen}'/><br><br>
 	            	
 	            <c:out value="${oferta.marca} ${oferta.modelo}"/></a><br>

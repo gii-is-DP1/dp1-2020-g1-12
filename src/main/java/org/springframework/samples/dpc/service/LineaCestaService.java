@@ -1,6 +1,7 @@
 package org.springframework.samples.dpc.service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Cesta;
@@ -14,11 +15,11 @@ public class LineaCestaService {
 	
 	private LineaCestaRepository lineaCestaRepository;
 	private ArticuloService articuloService;
+	
 	public LineaCestaService(LineaCestaRepository lineaCestaRepository, ArticuloService articuloService) {
 		this.lineaCestaRepository = lineaCestaRepository;
 		this.articuloService = articuloService;
 	}
-
 	
 	@Transactional
 	public void crearLinea(Integer articuloId,Cesta cesta) {
@@ -39,5 +40,10 @@ public class LineaCestaService {
 	@Transactional
 	public void eliminarLinea(LineaCesta lineaCesta) {
 		lineaCestaRepository.delete(lineaCesta);
+	}
+	
+	@Transactional
+	public Long getTiempoEntrega(Cesta cesta) {
+		return cesta.getLineas().stream().collect(Collectors.summarizingInt(x -> x.getArticulo().getTiempoEntrega())).getSum();
 	}
 }

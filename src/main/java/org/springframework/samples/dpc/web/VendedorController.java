@@ -1,17 +1,18 @@
 package org.springframework.samples.dpc.web;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Situacion;
 import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.ClienteService;
+import org.springframework.samples.dpc.service.LineaPedidoService;
 import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
@@ -22,36 +23,46 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/vendedores")
 public class VendedorController {
 
-	private VendedorService vendedorService;
-	private ArticuloService articuloService;
-	private ClienteService clienteService;
-	private SolicitudService solicitudService;
+	private final VendedorService vendedorService;
+	private final ArticuloService articuloService;
+	private final ClienteService clienteService;
+	private final SolicitudService solicitudService;
+	private final LineaPedidoService lineaPedidoService;
 
 	@Autowired
 	public VendedorController(VendedorService vendedorService, ArticuloService articuloService,
-			ClienteService clienteService, SolicitudService solicitudService) {
+			ClienteService clienteService, SolicitudService solicitudService, LineaPedidoService lineaPedidoService) {
 		this.vendedorService = vendedorService;
 		this.articuloService = articuloService;
 		this.clienteService = clienteService;
 		this.solicitudService = solicitudService;
+		this.lineaPedidoService = lineaPedidoService;
 	}
 
 	@GetMapping(value = "/perfil")
 	public String mostrarPerfil(ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Perfil del controlador de Vendedor.");
+
 		String perfil = "vendedores/perfil";
-		Vendedor optperfil = vendedorService.findSellerById(vendedorService.obtenerIdSesion()); 
-																										
+		Vendedor optperfil = vendedorService.findSellerById(vendedorService.obtenerIdSesion());
+
 		modelMap.addAttribute("vendedor", optperfil);
 		return perfil;
 	}
 
 	@GetMapping(value = "/editar")
 	public String editar(Model model) {
+		log.info("Entrando en la función Editar Perfil del controlador de Vendedor.");
+
 		Vendedor vendedor = this.vendedorService.findSellerById(vendedorService.obtenerIdSesion());
 		model.addAttribute(vendedor);
 		return "vendedores/editarPerfil";
@@ -59,6 +70,8 @@ public class VendedorController {
 
 	@PostMapping(value = "/editar")
 	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result) {
+		log.info("Entrando en la función Proceso Editar Perfil del controlador de Vendedor.");
+
 		if (result.hasErrors()) {
 			return "vendedores/editarPerfil";
 		} else {
@@ -69,6 +82,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/perfilCliente/{clienteId}")
 	public String mostrarPerfilCliente(@PathVariable("clienteId") int clienteId, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Perfil del Comprador del controlador de Vendedor.");
+
 		Cliente cliente = this.clienteService.findClientById(clienteId);
 		modelMap.addAttribute("cliente", cliente);
 		modelMap.remove(cliente.getDni());
@@ -76,23 +91,47 @@ public class VendedorController {
 	}
 
 	@GetMapping(value = "/articulosEnVenta")
-	public String mostrarArticulosEnVenta(ModelMap modelMap) {
+	public String mostrarArticulosEnVenta(
+			@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Artículos en Venta del controlador de Vendedor.");
+
 		String vista = "vendedores/listadoArticulos";
-		Iterable<Articulo> optarticulos = articuloService.articulosEnVentaByProvider(vendedorService.obtenerIdSesion());
-		modelMap.addAttribute("articulos", optarticulos);
+		Page<Articulo> articulos = articuloService.articulosEnVentaByProvider(vendedorService.obtenerIdSesion(), page,
+				size, orden);
+		
+		// Guardo el parámetro de ordenación para que al cambiar de página se siga usando el filtro seleccionado
+		String signo = articulos.getSort().get().findAny().get().isAscending() ? "" : "-"; 
+		String ordenacion = signo + articulos.getSort().get().findAny().get().getProperty(); 
+
+		modelMap.addAttribute("articulos", articulos);
+		modelMap.addAttribute("ordenacion", ordenacion);
 		return vista;
 	}
 
 	@GetMapping(value = "/listadoSolicitudes")
-	public String mostrarListadoSolicitudes(ModelMap modelMap) {
-		String vista = "vendedores/listadoSolicitudes";
-		List<Solicitud> solicitudes = solicitudService.getsolicitudesByProvider(vendedorService.obtenerIdSesion());
+	public String mostrarListadoSolicitudes(
+			@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Listado de Solicitudes del controlador de Vendedor.");
+
+		Page<Solicitud> solicitudes = solicitudService.getsolicitudesByProvider(vendedorService.obtenerIdSesion(), page,
+				size, orden);
+		// Guardo el parámetro de ordenación para que al cambiar de página se siga usando el filtro seleccionado
+		String signo = solicitudes.getSort().get().findAny().get().isAscending() ? "" : "-";
+		String ordenacion = signo + solicitudes.getSort().get().findAny().get().getProperty();
+
 		modelMap.addAttribute("solicitudes", solicitudes);
-		return vista;
+		modelMap.addAttribute("ordenacion", ordenacion);
+		return "vendedores/listadoSolicitudes";
 	}
 
 	@GetMapping(value = "/articulo/{articuloId}")
 	public String mostrarArticuloDetallado(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar un Artículo del controlador de Vendedor.");
+
 		String vista;
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		if (vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
@@ -107,6 +146,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/solicitud/{solicitudId}")
 	public String mostrarSolicitudDetallada(@PathVariable("solicitudId") int solicitudId, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar una Solicitud del controlador de Vendedor.");
+
 		String vista;
 		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
 		if (solicitud != null && solicitud.getVendedor().getId().equals(vendedorService.obtenerIdSesion())) {
@@ -120,6 +161,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/eliminarArticulo/{articuloId}")
 	public String eliminarArticulo(@PathVariable("articuloId") int articuloId, ModelMap modelMap) {
+		log.info("Entrando en la función Dar de Baja un Artículo del controlador de Vendedor.");
+
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(articuloId);
 		if (vendedor != null && vendedor.getId().equals(vendedorService.obtenerIdSesion())) {
 			articuloService.eliminarArticulo(articuloId);
@@ -131,6 +174,8 @@ public class VendedorController {
 
 	@GetMapping(value = "/eliminarSolicitud/{solicitudId}")
 	public String eliminarSolicitud(@PathVariable("solicitudId") int solicitudId) {
+		log.info("Entrando en la función Cancelar una Solicitud del controlador de Vendedor.");
+
 		Solicitud solicitud = solicitudService.detallesSolicitud(solicitudId);
 
 		if (solicitud != null && solicitud.getSituacion().equals(Situacion.Pendiente)
@@ -141,11 +186,22 @@ public class VendedorController {
 	}
 
 	@GetMapping(value = "/articulosVendidos")
-	public String mostrarArticulosVendidos(ModelMap modelMap) {
-		String vista = "vendedores/listadoArticulos";
-		Iterable<Articulo> optarticulos = articuloService
-				.articulosVendidosByProvider(vendedorService.obtenerIdSesion());
-		modelMap.addAttribute("articulos", optarticulos);
+	public String mostrarArticulosVendidos(
+			@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
+			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
+		log.info("Entrando en la función Mostrar Artículos Vendidos del controlador de Vendedor.");
+
+		String vista = "vendedores/listadoArticulosVendidos";
+		Page<LineaPedido> optarticulos = lineaPedidoService
+				.articulosVendidosByProvider(page, size, orden, vendedorService.obtenerIdSesion());
+		
+		// Guardo el parámetro de ordenación para que al cambiar de página se siga usando el filtro seleccionado
+		String signo = optarticulos.getSort().get().findAny().get().isAscending() ? "" : "-";
+		String ordenacion = signo + optarticulos.getSort().get().findAny().get().getProperty();
+		
+		modelMap.addAttribute("lineaPedido", optarticulos);
+		modelMap.addAttribute("ordenacion", ordenacion);
 		return vista;
 	}
 

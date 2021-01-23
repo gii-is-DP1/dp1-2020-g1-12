@@ -16,30 +16,16 @@ import org.springframework.stereotype.Service;
 class ComentarioServiceTest {
 	
 	private final Integer TEST_COMENTARIO_ID = 1;
-	private final Integer TEST_CLIENTE_ID = 1;
-	private final Integer TEST_VENDEDOR_ID = 1;
 	private final Integer TEST_ARTICULO_ID = 1;
-	private final Integer TEST_MODERADOR_ID = 1;
 
 	private final ComentarioService comentarioService;
 	private final ArticuloService articuloService;
-	private final UserService userService;
-	private final ModeradorService moderadorService;
-	private final VendedorService vendedorService;
-	private final ClienteService clienteService;
 	private Comentario comentario = new Comentario();
 	
 	@Autowired
-	public ComentarioServiceTest(ComentarioService comentarioService, ArticuloService articuloService, 
-			UserService userService, ModeradorService moderadorService, VendedorService vendedorService,
-			ClienteService clienteService) {
+	public ComentarioServiceTest(ComentarioService comentarioService, ArticuloService articuloService) {
 		this.comentarioService = comentarioService;
 		this.articuloService = articuloService;
-		this.userService = userService;
-		this.moderadorService = moderadorService;
-		this.vendedorService = vendedorService;
-		this.clienteService = clienteService;
-	
 	}
 	
 	public void inicializa() {
@@ -52,6 +38,7 @@ class ComentarioServiceTest {
 	
 //	@Test
 //	void testGuardarComentarioModerador() throws ComentarioProhibidoException{
+//		inicializa();
 //		Comentario comentario = this.comentario;
 //		Moderador moderador = this.moderadorService.findModeradorById(TEST_MODERADOR_ID);
 //		comentario.setModerador(moderador);
@@ -69,13 +56,8 @@ class ComentarioServiceTest {
 	@Test 
 	void testObtenerValoracionMedia() {
 		Double valoracion = this.comentarioService.getValoracionDeUnArticulo(TEST_ARTICULO_ID);
-		assertThat(valoracion).isEqualTo((double) 13/3);
+		assertThat(valoracion).isEqualTo((double) 3);
 	}
-	
-//	@Test 
-//	void testPuedeComentar() {
-//		
-//	}
 	
 	@Test
 	void testEliminarComentario() {
@@ -84,6 +66,4 @@ class ComentarioServiceTest {
 		List<Comentario> comentarios = this.comentarioService.getComentariosDeUnArticulo(TEST_ARTICULO_ID);
 		assertThat(comentarios.size()).isEqualTo(3);
 	}
-	
-	
 }

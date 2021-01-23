@@ -1,8 +1,8 @@
 package org.springframework.samples.dpc.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Oferta;
 import org.springframework.samples.dpc.model.Situacion;
@@ -17,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SolicitudService {
 
-	private final SolicitudRepository solicitudRepository;
-	private final ArticuloService articuloService;
-	private final OfertaService ofertaService;
-	private final VendedorService vendedorService;
+	private SolicitudRepository solicitudRepository;
+	private ArticuloService articuloService;
+	private OfertaService ofertaService;
+	private VendedorService vendedorService;
 	
 	@Autowired
 	public SolicitudService(SolicitudRepository solicitudRepository, OfertaService ofertaService, 
@@ -33,13 +33,15 @@ public class SolicitudService {
 	
 	
 	@Transactional
-	public List<Solicitud> solicitudesPendientes() {
-		return solicitudRepository.solicitudesPendientes();
+	public Page<Solicitud> solicitudesPendientes(Integer page, Integer size, String orden) {
+		Pageable pageable = articuloService.obtenerFiltros(page, size, orden, "articulo");
+		return solicitudRepository.solicitudesPendientes(pageable);
 	}
 	
 	@Transactional
-	public List<Solicitud> getsolicitudesByProvider(Integer vendedorId) {
-		return solicitudRepository.findByVendedor(vendedorId);
+	public Page<Solicitud> getsolicitudesByProvider(Integer vendedorId, Integer page, Integer size, String orden) {
+		Pageable pageable = articuloService.obtenerFiltros(page, size, orden, "articulo");
+		return solicitudRepository.findByVendedor(vendedorId, pageable);
 	}
 
 	@Transactional

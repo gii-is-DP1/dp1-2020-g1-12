@@ -1,7 +1,6 @@
 package org.springframework.samples.dpc.model;
 
 import java.util.Collection;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +23,7 @@ public class Vendedor extends Persona {
 	@Email
 	private String email;
 
-	@OneToOne(optional = false)
+	@OneToOne(cascade = CascadeType.ALL, optional = false)
 	private Bloqueo bloqueo;
 
 	public String getEmail() {
@@ -61,11 +60,4 @@ public class Vendedor extends Persona {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
-	@Override
-	public String toString() {
-		return "Vendedor [user=" + user + ", email=" + email + ", bloqueo=" + bloqueo + ", solicitudes=" + solicitudes
-				+ "]";
-	}
-
 }

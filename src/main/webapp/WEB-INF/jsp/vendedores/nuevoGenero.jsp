@@ -21,4 +21,6 @@
   		
     </form:form>
     
+    <a href="/vendedores/articulo/${articuloId}"><button class="btn btn-default" type="submit">Volver</button></a>
+    
 </dpc:layout>

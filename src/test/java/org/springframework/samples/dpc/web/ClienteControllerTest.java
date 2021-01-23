@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +18,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.Vendedor;
+import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.AuthoritiesService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.UserService;
@@ -35,9 +43,13 @@ class ClienteControllerTest {
 
 	@MockBean
 	private VendedorService vendedorService;
+	
 	@MockBean
 	private ClienteService clienteService;
 
+	@MockBean
+	private ArticuloService articuloService;
+	
 	@MockBean
 	private UserService userService;
 
@@ -79,7 +91,16 @@ class ClienteControllerTest {
 		c.setTelefono("615067389");
 		c.setEmail("mail@mail.com");
 		c.setBloqueo(bw);
-
+		List<Cliente> lc = new ArrayList<>();
+		lc.add(c);
+		List<Vendedor> lv = new ArrayList<>();
+		lv.add(vend);
+		
+		given(this.vendedorService.findAllSeller(0, 10, "nombre"))
+		.willReturn(new PageImpl<>(lv, PageRequest.of(0, 10, Sort.by(Order.desc("nombre"))), 10));
+		given(this.clienteService.findAllClient(0, 10, "nombre"))
+		.willReturn(new PageImpl<>(lc, PageRequest.of(0, 10, Sort.by(Order.desc("nombre"))), 10));
+		given(this.articuloService.obtenerFiltros(0, 10, "nombre", "clientes")).willReturn(PageRequest.of(0, 10));
 		given(this.vendedorService.findSellerById(TEST_VENDEDOR_ID)).willReturn(vend);
 		given(this.clienteService.findClientById(TEST_CLIENTE_ID)).willReturn(c);
 	}
@@ -88,7 +109,7 @@ class ClienteControllerTest {
 	@Test
 	void testProcesadoListadoClientes() throws Exception {
 		mockMvc.perform(get("/clientes")).andExpect(status().isOk())
-				.andExpect(model().attributeExists("clientes", "vendedores"))
+				.andExpect(model().attributeExists("clientes", "vendedores","ordenacionCliente","ordenacionVendedor"))
 				.andExpect(view().name("moderadores/listadoClientes"));
 	}
 

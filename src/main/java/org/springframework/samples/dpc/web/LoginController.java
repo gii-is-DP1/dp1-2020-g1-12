@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.service.BloqueoService;
+import org.springframework.samples.dpc.service.CestaService;
+import org.springframework.samples.dpc.service.UserService;
 import org.springframework.samples.dpc.service.exceptions.UsuarioBloqueadoException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,28 +26,41 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/")
 public class LoginController {
 
-	private BloqueoService bloqueoService;
-	private AuthenticationManager authenticationManager;
+	private final BloqueoService bloqueoService;
+	private final AuthenticationManager authenticationManager;
+	private final UserService userService;
+	private final CestaService cestaService;	
 
 	@Autowired
-	public LoginController(BloqueoService bloqueoService, AuthenticationManager authenticationManager) {
+	public LoginController(BloqueoService bloqueoService, AuthenticationManager authenticationManager, 
+			UserService userService, CestaService cestaService) {
 		this.bloqueoService = bloqueoService;
 		this.authenticationManager = authenticationManager;
+		this.userService = userService;
+		this.cestaService = cestaService;
 	}
 
 	@GetMapping("/login")
 	public String login(ModelMap modelMap) {
+		log.info("Entrando en la función Iniciar Formulario de Login del controlador de Login.");
+
 		modelMap.addAttribute("usuario", new User());
 
 		return "/login";
 	}
 
 	@PostMapping(value = "/loginForm")
-	public String iniciarSesion(@Valid User user, BindingResult result, ModelMap modelMap) throws Exception {
+	public String iniciarSesion(HttpServletRequest request, @Valid User user, BindingResult result, 
+			ModelMap modelMap) throws Exception {
+		log.info("Entrando en la función Procesar Formulario de Login del controlador de Login.");
+
 		UsernamePasswordAuthenticationToken authRequest = 
 				new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
 		try {
@@ -54,12 +69,20 @@ public class LoginController {
 
 			SecurityContext securityContext = SecurityContextHolder.getContext();
 			securityContext.setAuthentication(authentication);
+			
+			if(userService.getAuthority().equals("cliente")) {
+				request.getSession().setAttribute("contador", cestaService.lineasCesta());
+			}
 		} catch (BadCredentialsException e) {
+			log.info("La función Proceso Formulario de Login ha lanzado la excepción BadCredentials");
+
 			modelMap.addAttribute("usuario", user);
 			modelMap.addAttribute("mensaje", "El nombre de usuario y la contraseña que ingresaste no coinciden "
 					+ "con nuestros registros. Por favor, revisa e inténtalo de nuevo.");
 			return "/login";
 		} catch (UsuarioBloqueadoException e) {
+			log.info("La función Proceso Formulario de Login ha lanzado la excepción UsuarioBloqueao");
+			
 			modelMap.addAttribute("usuario", user);
 			modelMap.addAttribute("mensaje", "Su usuario ha sido bloqueado. Razón: " + 
 					bloqueoService.usuarioBloqueadoMotivo(user.getUsername()));
@@ -70,11 +93,13 @@ public class LoginController {
 	
     @RequestMapping("/logout")
     public void exit(HttpServletRequest request, HttpServletResponse response) {
+		log.info("Entrando en la función Cerrar Sesión del controlador de Login.");
+
         new SecurityContextLogoutHandler().logout(request, null, null);
         try {
             response.sendRedirect(request.getHeader("referer"));
         } catch (IOException e) {
-            e.printStackTrace();
+    		log.error("La función Cerrar Sesión ha lanzado una excepción.");
         }
     }
 }

@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Oferta;
@@ -73,6 +80,12 @@ class ArticuloControllerTest {
 		oferta.setDisponibilidad(false);
 		oferta.setPorcentaje(5);
 		articulo.setOferta(oferta);	
+		List<Articulo> l = new ArrayList<>();
+		l.add(articulo);
+		given(this.articuloService.ofertasRandomAcotada()).willReturn(l);
+		given(this.articuloService.articulosDisponibles(0, 10, "-id")).
+		willReturn(new PageImpl<>(l, PageRequest.of(0, 10, Sort.by(Order.desc("id"))), 10));
+		given(this.articuloService.obtenerFiltros(0, 10, "-id", "articulo")).willReturn(PageRequest.of(0, 10));
 		given(this.articuloService.findArticuloById(TEST_ARTICULO_ID)).willReturn(articulo);
 	}
 
@@ -94,7 +107,7 @@ class ArticuloControllerTest {
     @Test
     void testBusqueda() throws Exception {
 		mockMvc.perform(post("/busqueda").param("modelo", "msi").with(csrf()))
-			.andExpect(status().isOk()).andExpect(model().attributeExists("query","generos","articulos")).andExpect(status().is2xxSuccessful())
+			.andExpect(status().isOk()).andExpect(model().attributeExists("query","generos")).andExpect(status().is2xxSuccessful())
 			.andExpect(view().name("/articulos/principal"));
 	}
 	
@@ -102,7 +115,7 @@ class ArticuloControllerTest {
     @Test
     void testBusquedaIf() throws Exception {
 		mockMvc.perform(post("/busqueda").param("modelo","").with(csrf()))
-		.andExpect(status().is2xxSuccessful()).andExpect(view().name("articulos/principal"));
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"));
 	}
 	
 	@WithMockUser(value = "spring")

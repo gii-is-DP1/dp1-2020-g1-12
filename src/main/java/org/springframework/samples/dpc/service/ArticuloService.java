@@ -2,24 +2,30 @@ package org.springframework.samples.dpc.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Genero;
 import org.springframework.samples.dpc.repository.ArticuloRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ArticuloService {
 
-	private final ArticuloRepository articuloRepository;
-
+	private ArticuloRepository articuloRepository;
+	
 	@Autowired
 	public ArticuloService(ArticuloRepository articuloRepository) {
 		this.articuloRepository = articuloRepository;
@@ -42,8 +48,14 @@ public class ArticuloService {
 	}
 
 	@Transactional
-	public List<Articulo> articulosEnVentaByProvider(Integer id) {
-		return articuloRepository.articulosEnVentaPorId(id);
+	public Page<Articulo> articulosEnVentaByProvider(Integer id, Integer page, Integer size, String orden) {
+		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
+		return articuloRepository.articulosEnVentaPorId(id, pageable);
+	}
+
+	@Transactional
+	public List<Articulo> articulosByProvider(Integer id) {
+		return articuloRepository.articulosDeUnVendedor(id);
 	}
 
 	@Transactional(readOnly = true)
@@ -52,8 +64,9 @@ public class ArticuloService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Articulo> articulosDisponibles() {
-		return articuloRepository.articulosDisponibles();
+	public Page<Articulo> articulosDisponibles(Integer page, Integer size, String orden) {
+		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
+		return articuloRepository.articulosDisponibles(pageable);
 	}
 
 	@Transactional(readOnly = true)
@@ -74,9 +87,9 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosRelacionados(Articulo articulo) {
+		Pageable pageable = obtenerFiltros(0, (int) articuloRepository.count(), "-id", "articulo");
 		List<Articulo> relacionados = new ArrayList<>();
-		List<Articulo> articulos = articuloRepository.articulosDisponibles();
-		articulos.sort(Comparator.comparing(Articulo::getId).reversed());
+		List<Articulo> articulos = articuloRepository.articulosDisponibles(pageable).getContent();
 		for (Articulo art : articulos) {
 			if (relacionados.size() < 6 && !(art.getId().equals(articulo.getId()))
 					&& articulo.getGeneros().containsAll(art.getGeneros()))
@@ -86,16 +99,17 @@ public class ArticuloService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Articulo> busqueda(Articulo articulo) {
+	public Page<Articulo> busqueda(Articulo articulo, Integer page, Integer size, String orden) {
+		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
 		String busqueda = articulo.getModelo();
 		if (articulo.getGeneros() == null) {
-			return articuloRepository.articulosPorNombre(busqueda);
+			return articuloRepository.articulosPorNombre(busqueda, pageable);
 		} else if (busqueda.isEmpty()) {
 			return articuloRepository.articulosPorGenero(
-					articulo.getGeneros().stream().map(Genero::getId).collect(Collectors.toList()));
+					articulo.getGeneros().stream().map(Genero::getId).collect(Collectors.toList()), pageable);
 		} else {
 			return articuloRepository.articulosPorGeneroNombre(
-					articulo.getGeneros().stream().map(Genero::getId).collect(Collectors.toList()), busqueda);
+					articulo.getGeneros().stream().map(Genero::getId).collect(Collectors.toList()), busqueda, pageable);
 		}
 
 	}
@@ -114,8 +128,45 @@ public class ArticuloService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Articulo> articulosVendidosByProvider(Integer id) {
-		return null;
+	public Pageable obtenerFiltros(Integer page, Integer size, String orden, String caso) throws ResponseStatusException {
+		switch (caso) {
+		case "articulo":
+			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("marca") && !orden.equals("-marca")
+					&& !orden.equals("precio") && !orden.equals("-precio")) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Parámetro de búsqueda introducido no " + "válido.");
+			}
+			page = page < 0 ? 0 : page;
+			size = size < 10 ? 10 : size;
+			break;
+		case "clientes":
+			if(!orden.equals("nombre") && !orden.equals("-nombre") && !orden.equals("apellido") && !orden.equals("-apellido") &&
+					!orden.equals("dni") && !orden.equals("-dni")) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parámetro de búsqueda introducido no "
+						+ "válido.");
+			}
+			page = page < 0 ? 0 : page;
+			size = size < 5 ? 5 : size;
+			break;
+		case "pedidos":
+			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("fecha") && !orden.equals("-fecha")) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Parámetro de búsqueda introducido no " + "válido.");
+			}
+			page = page < 0 ? 0 : page;
+			size = size < 2 ? 2 : size;
+			break;
+		case "vendidos":
+			if (!orden.equals("id") && !orden.equals("-id")) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+						"Parámetro de búsqueda introducido no " + "válido.");
+			}
+			page = page < 0 ? 0 : page;
+			size = size < 10 ? 10 : size;
+			break;
+		}
+		Order order = orden.startsWith("-") ? new Order(Sort.Direction.DESC, orden.replace("-", ""))
+				: new Order(Sort.Direction.ASC, orden);
+		return PageRequest.of(page, size, Sort.by(order));
 	}
-
 }
