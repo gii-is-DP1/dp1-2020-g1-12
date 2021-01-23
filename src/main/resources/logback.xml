@@ -35,13 +35,13 @@
     
     <!-- LOG everything at INFO level -->
     <root level="info">
-        <appender-ref ref="RollingFile" />
+        <!--  <appender-ref ref="RollingFile" /> -->
         <appender-ref ref="Console" />
     </root>
 
     <!-- LOG "com.dpc*" at TRACE level -->
     <logger name="com.dpc" level="trace" additivity="false">
-        <appender-ref ref="RollingFile" />
+        <!-- <appender-ref ref="RollingFile" />-->
         <appender-ref ref="Console" />
     </logger>
 
