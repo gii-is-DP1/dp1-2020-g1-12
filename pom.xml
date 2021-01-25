@@ -214,6 +214,11 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
             <build>
@@ -312,6 +317,15 @@
                                 <version>${mockito.version}</version>
                             </dependency>
                         </dependencies>
+                    </plugin>
+                    <plugin>
+                    	<groupId>org.apache.maven.plugins</groupId>
+                    	<artifactId>maven-surefire-plugin</artifactId>
+                    	<configuration>
+                    		<excludes>
+                    			<exclude>**/*ComentarioControllerSecurityTest.java</exclude>
+                    		</excludes>
+                    	</configuration>
                     </plugin>
                 </plugins>
             </build>
