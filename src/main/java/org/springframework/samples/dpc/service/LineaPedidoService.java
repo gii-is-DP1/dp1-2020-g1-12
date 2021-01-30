@@ -91,4 +91,9 @@ public class LineaPedidoService {
 	public boolean compruebaVendedorLinea(Integer lineaPedidoId) {
 		return vendedorService.esVendedorDelArticulo(obtenerLineaPedido(lineaPedidoId).getArticulo().getId());
 	}
+	
+	@Transactional(readOnly = true)
+	public boolean esComprador(List<Integer> lineas, Integer clienteId) {
+		return lineaPedidoRepository.esComprador(lineas, clienteId) > 0 ? true: false;
+	}
 }

@@ -228,6 +228,12 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	void testArticulosDeVendedor() {
+		List<Articulo> articulos = articuloService.articulosByProvider(1);
+		assertThat(articulos.size()).isNotZero();
+	}
+	
+	@Test
 	void testArticuloDisponibleRepository() {
 		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
 				Sort.by(new Order(Sort.Direction.DESC, "id")));

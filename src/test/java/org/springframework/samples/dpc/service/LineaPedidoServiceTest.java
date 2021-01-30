@@ -35,7 +35,7 @@ public class LineaPedidoServiceTest {
 	@Autowired
 	public LineaPedidoServiceTest(LineaPedidoRepository lineaPedidoRepository, ArticuloService articuloService,
 			LineaCestaRepository lineaCestaRepository, LineaPedidoService lineaPedidoService,
-			ClienteRepository clienteRepository, PedidoRepository pedidoRepository, TarjetaService tarjetaService) {
+			ClienteRepository clienteRepository, PedidoRepository pedidoRepository,TarjetaService tarjetaService) {
 		this.lineaPedidoRepository = lineaPedidoRepository;
 		this.articuloService = articuloService;
 		this.lineaPedidoService = lineaPedidoService;

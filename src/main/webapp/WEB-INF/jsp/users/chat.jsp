@@ -86,8 +86,11 @@
 							<img class="avatar avatar-xs"
 								src="https://img.icons8.com/color/36/000000/administrator-male.png"
 								alt="..."> 
-								<input class="publisher-input" type="text" placeholder="Escribe un mensaje">
-								<a class="publisher-btn" href="#" data-abc="true"></a>
+								 <form:form modelAttribute="nuevoMensaje" action="/chat/${rol}/${receptorId}/${id}">
+									<input name="texto" class="publisher-input" type="text" placeholder="Escribe un mensaje">
+									<a class="publisher-btn" href="#" data-abc="true"></a>
+									<button class="glyphicon glyphicon-send"></button>
+								</form:form>
 						</div>
 					</div>
 				</div>
