@@ -63,7 +63,6 @@ public class VendedorService {
 		bloqueoService.guardar(b);
 		vendedor.setBloqueo(b);
 		vendedor.getUser().setEnabled(true);
-		vendedor.setBloqueo(b);
 	}
 
 	@Transactional
