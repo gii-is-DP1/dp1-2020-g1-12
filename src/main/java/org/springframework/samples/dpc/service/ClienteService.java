@@ -8,7 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.repository.ClienteRepository;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,9 +55,21 @@ public class ClienteService {
 		cliente.setCesta(cesta);
 	}
 
-	@Transactional
-	public void editar(Cliente cliente, Integer id) {
+	@Transactional(rollbackFor = {ContrasenyaNoCoincideException.class, ContrasenyaNecesariaException.class})
+	public void editar(Cliente cliente, Integer id) throws Exception {
 		Cliente clienteGuardado = findClientById(id);
+		User clienteUser = cliente.getUser();
+		if(clienteUser.getPassword()!="" && clienteUser.getUsername()!="") {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			if(passwordEncoder.matches(clienteUser.getPassword(), clienteGuardado.getUser().getPassword())) {
+				String cifrado = new BCryptPasswordEncoder().encode(clienteUser.getUsername()); //esta sería la nueva contraseña, habría que mirar si  cumple con el patrón
+				clienteGuardado.getUser().setPassword(cifrado);
+			}else {
+				throw new ContrasenyaNoCoincideException();
+			}
+		}else if(clienteUser.getPassword()=="" && clienteUser.getUsername()!="") {
+			throw new ContrasenyaNecesariaException();
+		}
 		clienteGuardado.setApellido(cliente.getApellido());
 		clienteGuardado.setDireccion(cliente.getDireccion());
 		clienteGuardado.setDni(cliente.getDni());

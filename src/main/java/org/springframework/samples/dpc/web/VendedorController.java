@@ -9,12 +9,15 @@ import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Situacion;
 import org.springframework.samples.dpc.model.Solicitud;
+import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.LineaPedidoService;
 import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.VendedorService;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -37,6 +40,7 @@ public class VendedorController {
 	private final ClienteService clienteService;
 	private final SolicitudService solicitudService;
 	private final LineaPedidoService lineaPedidoService;
+	private static final String editPerfil = "vendedores/editarPerfil";
 
 	@Autowired
 	public VendedorController(VendedorService vendedorService, ArticuloService articuloService,
@@ -64,19 +68,34 @@ public class VendedorController {
 		log.info("Entrando en la función Editar Perfil del controlador de Vendedor.");
 
 		Vendedor vendedor = this.vendedorService.findSellerById(vendedorService.obtenerIdSesion());
+		User user = new User();
+		vendedor.setUser(user);
 		model.addAttribute(vendedor);
-		return "vendedores/editarPerfil";
+		return editPerfil;
 	}
 
 	@PostMapping(value = "/editar")
-	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result) {
+	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Vendedor.");
 
 		if (result.hasErrors()) {
-			return "vendedores/editarPerfil";
+			return editPerfil;
 		} else {
-			this.vendedorService.editar(vendedor, vendedorService.obtenerIdSesion());
-			return "redirect:/vendedores/perfil";
+			try {
+				this.vendedorService.editar(vendedor, vendedorService.obtenerIdSesion());
+				return "redirect:/vendedores/perfil";				
+			}catch(ContrasenyaNecesariaException e) {
+				log.warn("La función Proceso Editar Perfil ha tenido un error relacionado con la contraseña.");
+
+	            result.rejectValue("user.username", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+	            return editPerfil;
+			}catch(ContrasenyaNoCoincideException e) {
+				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");
+
+	            result.rejectValue("user.password", "errónea", "La contraseña introducida no coincide con la de la cuenta.");
+	            return editPerfil;
+			}
+
 		}
 	}
 
