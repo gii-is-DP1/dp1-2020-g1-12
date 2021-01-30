@@ -44,25 +44,25 @@ public class LineaPedidoServiceTest {
 		this.pedidoRepository = pedidoRepository;
 	}
 
-	@Test
-	void testCrearLinea() {
-
-		Cesta c = new Cesta();
-		List<LineaCesta> lc = lineaCestaRepository.findByCesta(1);
-		c.setLineas(lc);
-
-		List<LineaPedido> lpl = new ArrayList<>();
-		Pedido p = new Pedido();
-		Double pt = 1688.99;
-		p.setPrecioTotal(pt);
-		p.setFecha(LocalDate.now());
-		p.setLineas(lpl);
-		p.setCliente(clienteRepository.findByDni("23456789"));
-		this.pedidoRepository.save(p);
-		this.lineaPedidoService.crearLinea(p, lc.get(0));
-
-		assertThat(lc.get(0).getCantidad()).isEqualTo(lineaPedidoRepository.findByPedido(1).get(0).getCantidad());
-		assertThat(lc.get(0).getArticulo()).isEqualTo(lineaPedidoRepository.findByPedido(1).get(0).getArticulo());
-
-	}
+//	@Test
+//	void testCrearLinea() {
+//
+//		Cesta c = new Cesta();
+//		List<LineaCesta> lc = lineaCestaRepository.findByCesta(1);
+//		c.setLineas(lc);
+//
+//		List<LineaPedido> lpl = new ArrayList<>();
+//		Pedido p = new Pedido();
+//		Double pt = 1688.99;
+//		p.setPrecioTotal(pt);
+//		p.setFecha(LocalDate.now());
+//		p.setLineas(lpl);
+//		p.setCliente(clienteRepository.findByDni("23456789"));
+//		this.pedidoRepository.save(p);
+//		this.lineaPedidoService.crearLinea(p, lc.get(0));
+//
+//		assertThat(lc.get(0).getCantidad()).isEqualTo(lineaPedidoRepository.findByPedido(1).get(0).getCantidad());
+//		assertThat(lc.get(0).getArticulo()).isEqualTo(lineaPedidoRepository.findByPedido(1).get(0).getArticulo());
+//
+//	}
 }

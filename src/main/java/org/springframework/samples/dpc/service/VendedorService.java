@@ -20,14 +20,16 @@ public class VendedorService {
 	private UserService userService;
 	private ArticuloService articuloService;
 	private BloqueoService bloqueoService;
+	private AuthoritiesService authoritiesService;
 	
 	@Autowired
 	public VendedorService(VendedorRepository vendedorRepository, UserService userService, 
-			ArticuloService articuloService,@Lazy BloqueoService bloqueoService) {
+			ArticuloService articuloService,@Lazy BloqueoService bloqueoService, AuthoritiesService authoritiesService) {
 		this.vendedorRepository = vendedorRepository;
 		this.userService = userService;
 		this.articuloService = articuloService;
 		this.bloqueoService = bloqueoService;
+		this.authoritiesService = authoritiesService;
 	}
 
 	@Transactional
@@ -64,6 +66,8 @@ public class VendedorService {
 		vendedor.setBloqueo(b);
 		vendedor.getUser().setEnabled(true);
 		vendedor.setBloqueo(b);
+		guardar(vendedor);
+		authoritiesService.saveAuthorities(vendedor.getUser().getUsername(), "vendedor");
 	}
 
 	@Transactional

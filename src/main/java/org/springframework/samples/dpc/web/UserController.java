@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.Vendedor;
-import org.springframework.samples.dpc.service.AuthoritiesService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.stereotype.Controller;
@@ -44,14 +43,11 @@ public class UserController {
 
 	private final VendedorService vendedorService;
 	private final ClienteService clienteService;
-	private final AuthoritiesService authoritiesService;
 
 	@Autowired
-	public UserController(VendedorService vendedorService, ClienteService clienteService,
-			AuthoritiesService authoritiesService) {
+	public UserController(VendedorService vendedorService, ClienteService clienteService) {
 		this.vendedorService = vendedorService;
 		this.clienteService = clienteService;
-		this.authoritiesService = authoritiesService;
 	}
 
 	@InitBinder
@@ -83,8 +79,6 @@ public class UserController {
 			return VIEWS_CREATE_FORM_VENDEDOR;
 		} else {
 			this.vendedorService.registroVendedor(vendedor);
-			this.vendedorService.guardar(vendedor);
-			this.authoritiesService.saveAuthorities(vendedor.getUser().getUsername(), "vendedor");
 			return "redirect:/login";
 		}
 	}
@@ -106,8 +100,6 @@ public class UserController {
 			return VIEWS_CREATE_FORM_CLIENTE;
 		} else {
 			this.clienteService.registroCliente(cliente);
-			this.clienteService.guardar(cliente);
-			this.authoritiesService.saveAuthorities(cliente.getUser().getUsername(), "cliente");
 			return "redirect:/login";
 		}
 	}

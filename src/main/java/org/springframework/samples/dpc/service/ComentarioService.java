@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.repository.ComentarioRepository;
 import org.springframework.samples.dpc.service.exceptions.ComentarioProhibidoException;
@@ -20,18 +21,20 @@ public class ComentarioService {
 	private ModeradorService moderadorService;
 	private VendedorService vendedorService;
 	private ClienteService clienteService;
+	private LineaPedidoService lineaPedidoService;
 
 
 	@Autowired
 	public ComentarioService(ComentarioRepository comentarioRepository, ArticuloService articuloService, 
 			UserService userService, ModeradorService moderadorService, VendedorService vendedorService, 
-			ClienteService clienteService) {
+			ClienteService clienteService, LineaPedidoService lineaPedidoService) {
 		this.comentarioRepository = comentarioRepository;
 		this.articuloService = articuloService;
 		this.userService = userService ;
 		this.moderadorService = moderadorService;
 		this.vendedorService = vendedorService;
 		this.clienteService = clienteService;
+		this.lineaPedidoService = lineaPedidoService;
 	}
 	
 	@Transactional(readOnly = true)
@@ -49,30 +52,37 @@ public class ComentarioService {
 	public Boolean puedeComentar(Integer articuloId) {
 		String autoridad = userService.getAuthority();
 
-		return !autoridad.equals("anonymous") && (autoridad.equals("cliente") || autoridad.equals("moderador") || 
-				(autoridad.equals("vendedor") && vendedorService.esVendedorDelArticulo(articuloId)));
+		return !autoridad.equals("anonymous") && (autoridad.equals("cliente") && lineaPedidoService.articuloComprado(articuloId)
+				|| autoridad.equals("moderador") || (autoridad.equals("vendedor") && vendedorService.esVendedorDelArticulo(articuloId)));
 	}
 	
 	@Transactional(rollbackFor = ComentarioProhibidoException.class)
 	public void guardarComentario(Comentario comentario, Integer articuloId) 
 				throws ComentarioProhibidoException {
 		String autoridad = userService.getAuthority();
+		Articulo articulo =  articuloService.findArticuloById(articuloId);
+
 		if(autoridad.equals("moderador")) {
 			comentario.setValoracion(0);
-			comentario.setArticulo(articuloService.findArticuloById(articuloId));
+			comentario.setArticulo(articulo);
 			comentario.setModerador(moderadorService.getModeradorDeSesion());
 		}
 		else if(autoridad.equals("cliente")) {
-			if(comentario.getValoracion() == 0) {			// Poner a 1 el comentario si envía un 0 al
-				comentario.setValoracion(1);				// inspeccionar elemento con el navegador
+			if(lineaPedidoService.articuloComprado(articuloId)) {
+				if(comentario.getValoracion() == 0) {			// Poner a 1 el comentario si envía un 0 al
+					comentario.setValoracion(1);				// inspeccionar elemento con el navegador
+				}
+				comentario.setArticulo(articulo);
+				comentario.setCliente(clienteService.getClienteDeSesion());			
 			}
-			comentario.setArticulo(articuloService.findArticuloById(articuloId));
-			comentario.setCliente(clienteService.getClienteDeSesion());			
+			else {
+				throw new ComentarioProhibidoException();
+			}
 		}
 		else {
 			if(vendedorService.esVendedorDelArticulo(articuloId)) {
 				comentario.setValoracion(0);
-				comentario.setArticulo(articuloService.findArticuloById(articuloId));
+				comentario.setArticulo(articulo);
 				comentario.setVendedor(vendedorService.getVendedorDeSesion());
 			}
 			else {
