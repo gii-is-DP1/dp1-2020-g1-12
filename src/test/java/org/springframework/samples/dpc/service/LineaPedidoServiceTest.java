@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Pedido;
+import org.springframework.samples.dpc.model.TarjetaCredito;
 import org.springframework.samples.dpc.repository.ClienteRepository;
 import org.springframework.samples.dpc.repository.LineaCestaRepository;
 import org.springframework.samples.dpc.repository.LineaPedidoRepository;
@@ -31,17 +30,19 @@ public class LineaPedidoServiceTest {
 	private LineaCestaRepository lineaCestaRepository;
 	private ClienteRepository clienteRepository;
 	private PedidoRepository pedidoRepository;
+	private TarjetaService tarjetaService;
 
 	@Autowired
 	public LineaPedidoServiceTest(LineaPedidoRepository lineaPedidoRepository, ArticuloService articuloService,
 			LineaCestaRepository lineaCestaRepository, LineaPedidoService lineaPedidoService,
-			ClienteRepository clienteRepository, PedidoRepository pedidoRepository) {
+			ClienteRepository clienteRepository, PedidoRepository pedidoRepository,TarjetaService tarjetaService) {
 		this.lineaPedidoRepository = lineaPedidoRepository;
 		this.articuloService = articuloService;
 		this.lineaPedidoService = lineaPedidoService;
 		this.lineaCestaRepository = lineaCestaRepository;
 		this.clienteRepository = clienteRepository;
 		this.pedidoRepository = pedidoRepository;
+		this.tarjetaService = tarjetaService;
 	}
 
 	@Test
@@ -54,6 +55,8 @@ public class LineaPedidoServiceTest {
 		List<LineaPedido> lpl = new ArrayList<>();
 		Pedido p = new Pedido();
 		Double pt = 1688.99;
+		TarjetaCredito tarjeta = tarjetaService.findTarjetaById(1);
+		p.setTarjeta(tarjeta);
 		p.setPrecioTotal(pt);
 		p.setFecha(LocalDate.now());
 		p.setLineas(lpl);

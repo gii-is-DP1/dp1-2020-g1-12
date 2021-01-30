@@ -62,7 +62,7 @@ public class MensajeController {
 	public String enviarMensaje(@Valid Mensaje mensaje, @PathVariable("rol") String rol,
 			@PathVariable("receptorId") Integer receptorId, @PathVariable("id") int id, Model model, BindingResult result) {
 		log.info("Entrando en la función Enviar Mensaje del controlador de Mensaje.");
-		if(result.hasErrors() || mensaje.getTexto().isBlank()) {
+		if(result.hasErrors() || mensaje.getTexto().trim().isEmpty()) {
 			return "redirect:/chat/{rol}/{id}";
 		}
 		try {
