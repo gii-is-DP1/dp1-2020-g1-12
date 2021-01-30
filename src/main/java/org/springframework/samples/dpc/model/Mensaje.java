@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Digits;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -23,15 +24,17 @@ public class Mensaje extends BaseEntity{
 	private Cliente cliente;
 
 	@Column(name = "emisor")
-	@Length(min = 0, max = 200)
+	@Digits(fraction = 0, integer = 8, message = "Debe de estar formado solo por números")
+	@Length(min = 8, max = 8, message = "El número de DNI debe estar formado por 8 dígitos")
 	private String emisor;
 
 	@Column(name = "destinatario")
-	@Length(min = 0, max = 200)
+	@Digits(fraction = 0, integer = 8, message = "Debe de estar formado solo por números")
+	@Length(min = 8, max = 8, message = "El número de DNI debe estar formado por 8 dígitos")
 	private String destinatario;
 
 	@Column(name = "texto")
-	@Length(min = 0, max = 200)
+	@Length(min = 0, max = 100)
 	private String texto;
 	
 	@Column(name = "fechaEnvio")

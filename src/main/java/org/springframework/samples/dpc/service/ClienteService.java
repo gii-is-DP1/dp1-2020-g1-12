@@ -92,4 +92,9 @@ public class ClienteService {
 	public Bloqueo getBloqueoCliente(String username) throws DataAccessException {
 		return clienteRepository.clienteBloqueo(username);
 	}
+	
+	@Transactional(readOnly = true)
+	public Boolean getValidaChat(Integer articuloId, Integer clienteId) throws DataAccessException {
+		return clienteRepository.haCompradoArticulo(articuloId, clienteId) > 0 ? true : false;
+	}
 }
