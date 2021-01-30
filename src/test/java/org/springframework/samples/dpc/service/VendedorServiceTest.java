@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +51,6 @@ class VendedorServiceTest {
 		user.setPassword("supersecretpassword");
 		vend.setUser(user);
 		this.vendedorService.registroVendedor(vend);
-		this.vendedorService.guardar(vend);
 		Vendedor vendedor = this.vendedorService.findSellerByDni("12345678");
 		System.out.println(vendedor);
 		assertThat(vend.getUser().getUsername()).isEqualTo(vendedor.getUser().getUsername());
@@ -57,13 +58,19 @@ class VendedorServiceTest {
 
 	@Test
 	@Transactional
-	void shouldUpdateVendedor() {
+	void shouldUpdateVendedor() throws Exception{
 		Vendedor vend = this.vendedorService.findSellerById(1);
 		String oldLastName = vend.getApellido();
 		String newLastName = oldLastName + "X";
 
 		vend.setApellido(newLastName);
-		this.vendedorService.editar(vend, 1);
+			try {
+				this.vendedorService.editar(vend, 1);
+			} catch (ContrasenyaNecesariaException e) {
+				
+			}catch (ContrasenyaNoCoincideException e) {
+				
+			}
 
 		vend = this.vendedorService.findSellerById(1);
 		assertThat(vend.getApellido()).isEqualTo(newLastName);
