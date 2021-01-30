@@ -44,24 +44,14 @@ class ClienteServiceTest {
 		c.setDireccion("C/Cuna,1");
 		c.setTelefono("647896370");
 		c.setEmail("quique@mail.com");
-		Bloqueo b = new Bloqueo();
-		b.setId(4);
-		b.setBloqueado(false);
-		b.setDescripcion("");
-		c.setBloqueo(b);
 		User user = new User();
 		user.setUsername("quique");
 		user.setPassword("supersecretpassword");
-		user.setEnabled(true);
 		c.setUser(user);
-		Cesta cesta = new Cesta();
-		cesta.setId(c.getId());
-		List<LineaCesta> lineaCesta = new ArrayList<>();
-		cesta.setLineas(lineaCesta);
-		c.setCesta(cesta);
+		this.clienteService.registroCliente(c);
 		this.clienteService.guardar(c);
 		Cliente cliente = this.clienteService.findClientByDni("12345678");
-		assertThat(c).isEqualTo(cliente);
+		assertThat(c.getUser().getUsername()).isEqualTo(cliente.getUser().getUsername());
 	}
 
 	@Test
@@ -72,7 +62,7 @@ class ClienteServiceTest {
 		String newLastName = oldLastName + "X";
 
 		c.setApellido(newLastName);
-		this.clienteService.guardar(c);
+		this.clienteService.editar(c,1);
 
 		c = this.clienteService.findClientById(1);
 		assertThat(c.getApellido()).isEqualTo(newLastName);

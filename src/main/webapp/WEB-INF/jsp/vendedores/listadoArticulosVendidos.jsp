@@ -7,7 +7,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <dpc:layout pageName="articulosVendidos">
+	<jsp:attribute name="customScript">
+        <script>
+            function ventana(URL) {
+            	window.open(URL, "Chat", "width:100, height:350,scrollbars=0,resizable:0");
+            }
+        </script>
+    </jsp:attribute>
 
+    <jsp:body>
 	<form action="/vendedores/articulosVendidos?" method="get">
 		<div style="float:right">
 			<input type="hidden" name="page" value="${lineaPedido.getNumber()}"/>
@@ -25,12 +33,12 @@
     <table id="articulosVendidosTable" class="table table-striped">
         <thead>
         <tr>
-        	<th style="width: 80px;">Fecha</th>
+        	<th style="width: 50px;">Fecha</th>
             <th style="width: 180px;">Artículo</th>
             <th style="width: 120px;">Comprador</th>
             <th style="width: 80px">Cantidad</th>
-            <th style="width: 80px">Estado</th>
-            <th style="width: 50px"></th>
+            <th style="width: 50px">Estado</th>
+            <th style="width: 100px">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -73,6 +81,12 @@
 					<a href="${fn:escapeXml(modificarUrl)}">
 						<button class="btn btn-default" type="submit">Modificar</button>
 					</a>
+					<spring:url value="/chat/{rol}/{id}" var="articuloUrl">
+						<spring:param name="id" value="${lp.pedido.cliente.id}"/>
+						<spring:param name="rol" value="vendedor"/>
+					</spring:url>
+							<a href="javascript:ventana('${fn:escapeXml(articuloUrl)}')"><button title="Si tienes algún problema puedes inicar un chat con el vendedor" 
+							class="btn btn-default" >Chat</button></a>
                 </td>
             </tr>
         </c:forEach> 
@@ -109,4 +123,5 @@
 		</div>
 	</div>
 	</c:if>
+	</jsp:body>
 </dpc:layout>

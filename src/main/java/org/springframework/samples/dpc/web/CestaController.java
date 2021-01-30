@@ -53,7 +53,7 @@ public class CestaController {
 		try {
 			cestaService.actualizarCesta(cesta);
 		} catch(CantidadNoValidaCestaException ex) {
-			log.info("La función Modificar Artículo de la Cesta ha lanzado la excepción CantidadNoValida.");
+			log.warn("La función Modificar Artículo de la Cesta ha lanzado la excepción CantidadNoValida.");
 			modelMap.addAttribute("error", "La cantidad de un artículo debe ser mayor a 0 y menor al stock del producto");
 		}
 		return listadoCesta(modelMap);

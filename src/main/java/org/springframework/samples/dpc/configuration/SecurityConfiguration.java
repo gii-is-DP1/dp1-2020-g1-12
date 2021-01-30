@@ -66,6 +66,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/generos/**").hasAnyAuthority(vendedor)
 				.antMatchers("/comentario/eliminar/**").hasAnyAuthority(moderador)
 				.antMatchers("/comentario/**").hasAnyAuthority(cliente, moderador, vendedor)
+				.antMatchers("/chat/cliente/{id}").hasAnyAuthority(cliente)
+				.antMatchers("/chat/vendedor/{id}").hasAnyAuthority(vendedor)				
 				.antMatchers("/articulos/{articuloId}").permitAll().and()
 				.formLogin()
 				.loginPage("/login") 
