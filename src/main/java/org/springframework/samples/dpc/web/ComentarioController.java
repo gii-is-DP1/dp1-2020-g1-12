@@ -46,6 +46,9 @@ public class ComentarioController {
 		String vista;
 		if (result.hasErrors()) {
 			model.addAttribute("comentario",comentario);
+			if(result.getFieldError("valoracion") != null) {
+				model.addAttribute("errores",result.getFieldError("valoracion").getDefaultMessage());
+			}
 			vista = editCommentView;
 		} else {
 			try {
@@ -54,7 +57,7 @@ public class ComentarioController {
 				log.warn("La función Proceso Crear un Comentario ha lanzado la excepción ComentarioProhibido.");
 
 	            result.rejectValue("descripcion", "errónea", "No puedes publicar un comentario si no "
-	            		+ "eres el propietario del artículo");
+	            		+ "eres el vendedor del artículo o no lo has comprado previamente.");
 				return editCommentView;
 			}
 			vista = "redirect:/articulos/{articuloId}";

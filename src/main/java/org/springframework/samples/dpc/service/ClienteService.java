@@ -20,14 +20,16 @@ public class ClienteService {
 	private UserService userService;
 	private ArticuloService articuloService;
 	private BloqueoService bloqueoService;
-
+	private AuthoritiesService authoritiesService;
+	
 	@Autowired
 	public ClienteService(ClienteRepository clienteRepository, UserService userService, 
-			ArticuloService articuloService,@Lazy BloqueoService bloqueoService) {
+			ArticuloService articuloService,@Lazy BloqueoService bloqueoService, AuthoritiesService authoritiesService) {
 		this.clienteRepository = clienteRepository;
 		this.userService = userService;
 		this.articuloService = articuloService;
 		this.bloqueoService = bloqueoService;
+		this.authoritiesService = authoritiesService;
 	}
 
 	@Transactional
@@ -50,6 +52,8 @@ public class ClienteService {
 		cliente.setBloqueo(b);
 		cliente.getUser().setEnabled(true);
 		cliente.setCesta(cesta);
+		guardar(cliente);
+		authoritiesService.saveAuthorities(cliente.getUser().getUsername(), "cliente");
 	}
 
 	@Transactional

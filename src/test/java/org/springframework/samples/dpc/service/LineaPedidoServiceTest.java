@@ -44,7 +44,7 @@ public class LineaPedidoServiceTest {
 		this.pedidoRepository = pedidoRepository;
 	}
 
-//	@Test
+	@Test
 	void testCrearLinea() {
 
 		Cesta c = new Cesta();
