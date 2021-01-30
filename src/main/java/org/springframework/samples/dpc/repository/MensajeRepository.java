@@ -1,0 +1,16 @@
+package org.springframework.samples.dpc.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.Mensaje;
+import org.springframework.samples.dpc.model.Vendedor;
+
+public interface MensajeRepository extends CrudRepository<Mensaje, Integer> {
+
+	@Query("select u from Mensaje u where u.cliente =:cliente and u.vendedor =:vendedor order by u.fechaEnvio")
+	List<Mensaje> getMensajes(@Param("cliente") Cliente cliente, @Param("vendedor") Vendedor vendedor);
+}

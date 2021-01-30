@@ -29,6 +29,10 @@
 					<input id="radio5" type="radio" name="valoracion" value="1">
 					<label class="labelComentario" for="radio5">★</label>
 				</p>
+			    <c:if test="${errores != null}">
+				    <p style="color:red;"><c:out value="${errores}"></c:out></p>
+				   	<br>
+			   	</c:if>
 			</sec:authorize>
 			<sec:authorize access="hasAuthority('moderador')">
 				<dpc:inputField label="Comentario" name="descripcion"/>
