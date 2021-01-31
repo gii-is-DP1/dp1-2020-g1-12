@@ -8,19 +8,20 @@
 
 <dpc:layout pageName="EditarEstado">
     
-    <h2>Editando estado del pedido con ID <c:out value="${lineaPedido.id}" /></h2>
-    
-    <form:form modelAttribute="lineaPedido" action="/pedidos/modificar/${lineaPedido.id}/save" class="form-horizontal">
-    	<select name="estado">
-    		<option value="Pendiente">Pendiente</option>
-    		<option value="Enviado">Enviado</option>
-    		<option value="EnReparto">En Reparto</option>
-    		<option value="Entregado">Entregado</option>
-  		</select>
-  		<button class="btn btn-default" type="submit">Guardar</button>
-  		
-    </form:form>
-    
-    <a href="/vendedores/articulosVendidos"><button class="btn btn-default" type="submit">Volver</button></a>
-    
+    <div style="margin-top:3%;text-align:center">
+	    <h2 style="padding: 50px">Editando el estado del pedido con ID <c:out value="${lineaPedido.id}" /></h2>
+	    <form:form modelAttribute="lineaPedido" action="/pedidos/modificar/${lineaPedido.id}/save" class="form-horizontal">
+	    	<select style="margin-right:40px" name="estado">
+	    		<option value="Pendiente">Pendiente</option>
+	    		<option value="Enviado">Enviado</option>
+	    		<option value="EnReparto">En Reparto</option>
+	    		<option value="Entregado">Entregado</option>
+	  		</select>
+	  		<button class="btn btn-default" style="margin-left:20px" type="submit">Guardar</button>
+	  		
+	    </form:form>
+	    
+	    <a href="/vendedores/articulosVendidos"><button class="btn btn-default" style="margin-top:30px;margin-right:170px" 
+	    type="submit">Volver</button></a>
+    </div>
 </dpc:layout>

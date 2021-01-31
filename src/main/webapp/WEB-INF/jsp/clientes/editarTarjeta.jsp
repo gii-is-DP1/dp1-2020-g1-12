@@ -39,7 +39,7 @@
 	            <label for="cvv">CVV:</label>
 				<input style="width:10%" type="text" class="form-control" name="cvv" value="${tarjeta.cvv}" />
 	            <label for="fechaCaducidad">Fecha de Caducidad:</label>
-				<input style="width:10%" type="text" class="form-control" name="fechaCaducidad" value="${tarjeta.fechaCaducidad}" />
+				<input style="width:10%" type="text" class="form-control"  id="datepicker" name="fechaCaducidad" value="${tarjeta.fechaCaducidad}" />
 	        </div>
 	        <div class="form-group">
 	            <div class="col-sm-offset-2 col-sm-10">
