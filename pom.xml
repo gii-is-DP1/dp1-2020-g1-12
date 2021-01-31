@@ -323,7 +323,7 @@
                     	<artifactId>maven-surefire-plugin</artifactId>
                     	<configuration>
                     		<excludes>
-                    			<exclude>**/*ComentarioControllerSecurityTest.java</exclude>
+                    			<exclude>**/*SecurityTest.java</exclude>
                     		</excludes>
                     	</configuration>
                     </plugin>
