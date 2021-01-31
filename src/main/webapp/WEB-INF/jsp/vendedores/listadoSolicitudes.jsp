@@ -44,10 +44,11 @@
 					<a href="${fn:escapeXml(solicitudUrl)}"><c:out value="${solicitudes.marca} ${solicitudes.modelo}"></c:out></a>
                 </td>
                 <td>
-                    <c:out value="${solicitudes.stock}"/>
+                    <c:out value="${solicitudes.stock} unidades"/>
                 </td>
                 <td>
-                    <c:out value="${solicitudes.precio}"/>
+                   <fmt:formatNumber type="number" maxFractionDigits="2" 
+	                    value="${solicitudes.precio}"/> €
                 </td>
                 <td>
                 	<c:out value="${solicitudes.situacion}"></c:out>

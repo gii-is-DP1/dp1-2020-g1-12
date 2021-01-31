@@ -53,32 +53,34 @@
 	    <table class="table table-striped">
 			<tr>
 	            <th>Precio</th>
-	            <td><c:out value="${solicitud.precio} €"/></td>
+	            <td><fmt:formatNumber type="number" maxFractionDigits="2" 
+	                    value="${solicitud.precio}"/> €</td>
 	        </tr>
 	          <tr>
 	            <th>Stock</th>
-	            <td>${solicitud.stock}</td>
+	            <td><c:out value="${solicitud.stock} unidades"></c:out></td>
 	        </tr>
 	        <tr>
 	            <th>Tipo</th>
-	            <td>${solicitud.tipo}</td>
+	            <td><c:out value="${solicitud.tipo}"></c:out></td>
 	        </tr>
 	        <tr>
 	            <th>Gastos de envío</th>
-	            <td>${solicitud.gastoEnvio}</td>
+	            <td><fmt:formatNumber type="number" maxFractionDigits="2" 
+	                    value="${solicitud.gastoEnvio}"/> €</td>
 	        </tr>
 	        <tr>
 	            <th>Tiempo de Entrega</th>
-	            <td>${solicitud.tiempoEntrega}</td>
+	            <td><c:out value="${solicitud.tiempoEntrega} días"></c:out></td>
 	        </tr>
 	        <tr>
 	            <th>Situación</th>
-	            <td>${solicitud.situacion}</td>
+	            <td><c:out value="${solicitud.situacion}"></c:out></td>
 			</tr>
 	        <c:if test="${solicitud.situacion == 'Denegada'}" >
 		        <tr>
 		            <th>Respuesta</th>
-		            <td>${solicitud.respuesta}</td>
+		            <td><c:out value="${solicitud.respuesta}"></c:out></td>
 				</tr>
 			</c:if>	
 		</table>

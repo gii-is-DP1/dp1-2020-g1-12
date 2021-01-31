@@ -9,8 +9,12 @@
 
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand"
-				href="<spring:url value="/" htmlEscape="true" />"><span></span></a>
+			<a
+				href="<spring:url value="/" htmlEscape="true" />"><span>
+				<img style="width:125px;height:60px;margin-top:7px;margin-right:10px" 
+					onmouseout="this.src='/resources/images/nav-logo.png';"
+					onmouseover="this.src='/resources/images/nav-logo2.png';" 
+					src='/resources/images/nav-logo.png' alt="Logo.png"/></span></a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target="#main-navbar">
 				<span class="sr-only"><os-p>Toggle navigation</os-p></span> <span

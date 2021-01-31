@@ -8,19 +8,20 @@
 
 <dpc:layout pageName="generos">
     
-    <h2>Añadir género</h2>
-    
-    <form:form modelAttribute="genero" action="${articuloId}/save" class="form-horizontal">
-    	<select name="genero">
-    		<c:forEach items="${generosDisponibles}" var="generoDisponible">
-    			<option value="${generoDisponible.id}">${generoDisponible.nombre}</option>
-        	</c:forEach>
-  		</select>
-  		
-  		<button class="btn btn-default" type="submit">Añadir género</button>
-  		
-    </form:form>
-    
-    <a href="/vendedores/articulo/${articuloId}"><button class="btn btn-default" type="submit">Volver</button></a>
-    
+	<div style="margin-top:3%;text-align:center">
+	    <h2 style="padding: 50px">Añadir género</h2>
+	    <form:form modelAttribute="genero" action="${articuloId}/save" class="form-horizontal">
+	    	<select name="genero">
+	    		<c:forEach items="${generosDisponibles}" var="generoDisponible">
+	    			<option value="${generoDisponible.id}">${generoDisponible.nombre}</option>
+	        	</c:forEach>
+	  		</select>
+	  		
+	  		<button class="btn btn-default" style="margin-left:20px" type="submit">Añadir género</button>
+	  		
+	    </form:form>
+	    
+	    <a href="/vendedores/articulo/${articuloId}"><button class="btn btn-default" style="margin-top:30px;margin-right:200px" 
+	    	type="submit">Volver</button></a>
+    </div>
 </dpc:layout>

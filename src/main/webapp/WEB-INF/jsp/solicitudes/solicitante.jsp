@@ -6,7 +6,7 @@
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 
 <dpc:layout pageName="solicitante">
-	 <h2>Perfil de ${vendedor.nombre} ${vendedor.apellido}</h2>
+	 <h2>Perfil de <c:out value="${vendedor.nombre} ${vendedor.apellido}"></c:out> </h2>
 
     <table class="table table-striped">
     
