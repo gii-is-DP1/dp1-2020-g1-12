@@ -15,12 +15,15 @@
             <dpc:inputField label="Descripción" name="descripcion"/>
             <dpc:inputField label="Modelo" name="modelo"/>
             <dpc:inputField label="Marca" name="marca"/>
-            <label for="tipo">Tipo </label>
-            <select name="tipo">
-    			<option value="Nuevo">Nuevo</option>
-    			<option value="Reacondicionado">Reacondicionado</option>
-    			<option value="SemiNuevo">Seminuevo</option>
-  			</select>
+            <label class="col-sm-2 control-label" for="tipo">Tipo</label>
+			<div class="col-sm-10">
+	            <select class="form-control" name="tipo">
+	    			<option value="Nuevo">Nuevo</option>
+	    			<option value="Reacondicionado">Reacondicionado</option>
+	    			<option value="SemiNuevo">Seminuevo</option>
+	  			</select>
+	  			<br>
+	  		</div>
             <dpc:inputField label="Url de la imagen" name="urlImagen"/>
             <dpc:inputField label="Precio" name="precio"/>
             <dpc:inputField label="Stock" name="stock"/>
