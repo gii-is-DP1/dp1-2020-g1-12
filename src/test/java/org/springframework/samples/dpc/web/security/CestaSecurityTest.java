@@ -21,7 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext
+
 public class CestaSecurityTest {
 	private static final int TEST_ARTICULO_ID = 1;
 
