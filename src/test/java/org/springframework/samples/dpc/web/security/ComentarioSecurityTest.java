@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext
+
 public class ComentarioSecurityTest {
 
 	private static final int TEST_ARTICULO_ID = 1;
@@ -37,12 +37,11 @@ public class ComentarioSecurityTest {
 	.build();
 	}
 	
-	@WithMockUser(username ="cliente1",authorities = {"cliente"})
+	@WithMockUser(username ="cliente3",authorities = {"cliente"})
     @Test
     void testProcesoComentar() throws Exception {
 		mockMvc.perform(post("/comentario/articulo/" + TEST_ARTICULO_ID).param("descripcion", "ASDFGHJKLÑQWUYEI")
-				.param("valoracion", "4").with(csrf())).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/articulos/{articuloId}"));
+				.param("valoracion", "4").with(csrf())).andExpect(status().isOk());
 	}
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
