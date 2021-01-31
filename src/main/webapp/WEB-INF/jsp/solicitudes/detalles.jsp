@@ -8,7 +8,7 @@
 <dpc:layout pageName="solicitudes">
 
     <h2>Solicitud ${solicitud.id}</h2>
-    <p style="color: red;">${mensaje}</p>
+    ${mensaje}
 
 			<spring:url value="/solicitudes/{solicitudId}/solicitante/{solicitanteId}" var="solicitanteUrl">
                <spring:param name="solicitudId" value="${solicitud.id}"/>
@@ -66,18 +66,19 @@
 	 		<form:form modelAttribute="solicitud" action="/solicitudes/${solicitudId}/denegar" class="form-horizontal" id="add-owner-form">
 				<dpc:inputField label="Respuesta" name="respuesta"/>
 				</th>
+				<input type="hidden" name="version" value="${solicitud.version}"/> 
+				
 				<td>
 				<button class="btn btn-default" type="submit">Denegar</button>
 				</td>
 	   		</form:form>
 	   		
 	   		</table>
-	   		
-	           <spring:url value="/solicitudes/{solicitudId}/aceptar" var="aceptarUrl">
-	               <spring:param name="solicitudId" value="${solicitud.id}"/>
-	           </spring:url>
-	           
-			<a href="${fn:escapeXml(aceptarUrl)}"><button class="btn btn-default" type="submit">Aceptar</button></a>
+	   		<form:form modelAttribute="solicitud" action="/solicitudes/${solicitudId}/aceptar" class="form-horizontal" id="add-owner-form">
+				<input type="hidden" name="version" value="${solicitud.version}"/> 
+				<button class="btn btn-default" type="submit">Aceptar</button>
+	   		</form:form>
+
 		</c:if>
 		
 		<c:if test="${solicitud.situacion == 'Aceptada'}" >	

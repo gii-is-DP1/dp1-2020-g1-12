@@ -8,12 +8,14 @@
 
 <dpc:layout pageName="ofertas">
     
+    ${mensaje}
     <h2>Editar oferta</h2>
     
     <form:form modelAttribute="oferta" class="form-horizontal" id="add-oferta-form">
         <div class="form-group has-feedback">
             <dpc:inputField label="Porcentaje" name="porcentaje"/>
         </div>
+        <input type="hidden" name="version" value="${oferta.version}"/> 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
 				<button class="btn btn-default" type="submit">Crear Oferta</button>

@@ -22,7 +22,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext
 public class TarjetaSecurityTest {
 
 	private static final int TEST_TARJETA_ID = 1;

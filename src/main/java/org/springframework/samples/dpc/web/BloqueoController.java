@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BloqueoController {
 
 	private final BloqueoService bloqueoService;
+	
 
 	@Autowired
 	public BloqueoController(BloqueoService bloqueoService) {
@@ -45,6 +46,10 @@ public class BloqueoController {
 		log.info("Entrando en la función Proceso Bloquear del controlador de Bloqueo.");
 
 		String vista;
+		if(!bloqueoService.findBlockById(bloqueoId).getVersion().equals(bloqueo.getVersion())) {
+			
+			return "redirect:/";
+		}
 		try {
 				this.bloqueoService.editar(bloqueo, bloqueoId, true);
 				vista = "redirect:/clientes";

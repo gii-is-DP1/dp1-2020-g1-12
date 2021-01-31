@@ -189,7 +189,7 @@ INSERT INTO comentarios VALUES (9, 1, 'Está chida esta lavadora',4,6,2,null,nul
 
 -- Introducimos tarjetas de crédito
 
-INSERT INTO tarjetas_credito VALUES (1, 1, '442', '03/22', '1234567899876087', 'Juan Fernández Tirado');
+INSERT INTO tarjetas_credito VALUES (1, 1, '442', '03/22', '4572240486955232', 'Juan Fernández Tirado');
 
 -- Introducimos relaciones tarjeta-cliente
 
@@ -201,3 +201,10 @@ INSERT INTO mensajes VALUES (1, 1, '29976789', '23456789', '2020-05-15', 'Buenas
 INSERT INTO mensajes VALUES (2, 1, '23456789', '29976789', '2020-05-16', 'Una pena...', 1, 1);
 INSERT INTO mensajes VALUES (3, 1, '23456789', '29976789', '2020-05-16', 'Pues compra otro, a ver si sale mejor', 1, 1);
 
+--Insertar pedido al cliente1
+
+INSERT INTO pedidos VALUES (1, 1,to_date('02-12-2019', 'DD-MM-YYYY') , '405.', 1, 1);
+
+-- Insertar linea pedido al cliente1
+
+INSERT INTO lineas_pedidos VALUES (1, 1, 1, 'Entregado','400', 10, 1);

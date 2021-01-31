@@ -20,10 +20,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext
 public class ComentarioSecurityTest {
 
-	private static final int TEST_ARTICULO_ID = 1;
+	private static final int TEST_ARTICULO_ID = 10;
 	
 	@Autowired
 	private WebApplicationContext context;
@@ -40,8 +39,8 @@ public class ComentarioSecurityTest {
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
     void testProcesoComentar() throws Exception {
-		mockMvc.perform(post("/comentario/articulo/" + TEST_ARTICULO_ID).param("descripcion", "ASDFGHJKLÑQWUYEI")
-				.param("valoracion", "4").with(csrf())).andExpect(status().is3xxRedirection())
+		mockMvc.perform(post("/comentario/articulo/" + TEST_ARTICULO_ID).param("descripcion", "asdfgasdfasdfassdfdfdf")
+				.param("valoracion", "3").with(csrf())).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/articulos/{articuloId}"));
 	}
 	
@@ -49,7 +48,7 @@ public class ComentarioSecurityTest {
     @Test
     void testProcesoComentarVendedorArticuloPropio() throws Exception {
 		mockMvc.perform(post("/comentario/articulo/" + TEST_ARTICULO_ID).param("descripcion", "ASDFGHJKLÑQWUYEIASDF")
-				.param("valoracion", "3").with(csrf()))
+				.param("valoracion", "0").with(csrf())).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/articulos/{articuloId}"));
 	}
 	
