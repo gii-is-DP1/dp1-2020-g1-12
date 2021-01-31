@@ -48,10 +48,4 @@ public class LineaCesta extends BaseEntity {
 	public void setArticulo(Articulo articulo) {
 		this.articulo = articulo;
 	}
-
-	@Override
-	public String toString() {
-		return "LineaCesta [cesta=" + cesta + ", cantidad=" + cantidad + ", articulo=" + articulo + "]";
-	}
-
 }

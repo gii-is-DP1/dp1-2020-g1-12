@@ -20,6 +20,9 @@ public class Cliente extends Persona{
 	
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
 	private Set<TarjetaCredito> tarjetas;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+	private Collection<Mensaje> mensajes;
 
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
@@ -84,5 +87,13 @@ public class Cliente extends Persona{
 
 	public void setTarjetas(Set<TarjetaCredito> tarjetas) {
 		this.tarjetas = tarjetas;
+	}
+
+	public Collection<Mensaje> getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(Collection<Mensaje> mensajes) {
+		this.mensajes = mensajes;
 	}
 }

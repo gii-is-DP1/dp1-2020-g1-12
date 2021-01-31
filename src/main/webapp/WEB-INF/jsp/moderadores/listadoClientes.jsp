@@ -15,6 +15,7 @@
         </script>
     </jsp:attribute>
     <jsp:body>
+    <p style="color: red"><c:out value="${mensaje}"></c:out></p>
 		<form action="/clientes?" method="get">
 			<div style="float:right">
 				<input type="hidden" name="clientPage" value="${clientes.getNumber()}"/>

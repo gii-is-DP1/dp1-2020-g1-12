@@ -2,18 +2,14 @@ package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.dpc.model.Bloqueo;
-import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
-import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.model.User;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,36 +40,31 @@ class ClienteServiceTest {
 		c.setDireccion("C/Cuna,1");
 		c.setTelefono("647896370");
 		c.setEmail("quique@mail.com");
-		Bloqueo b = new Bloqueo();
-		b.setId(4);
-		b.setBloqueado(false);
-		b.setDescripcion("");
-		c.setBloqueo(b);
 		User user = new User();
 		user.setUsername("quique");
 		user.setPassword("supersecretpassword");
-		user.setEnabled(true);
 		c.setUser(user);
-		Cesta cesta = new Cesta();
-		cesta.setId(c.getId());
-		List<LineaCesta> lineaCesta = new ArrayList<>();
-		cesta.setLineas(lineaCesta);
-		c.setCesta(cesta);
-		this.clienteService.guardar(c);
+		this.clienteService.registroCliente(c);
+		
 		Cliente cliente = this.clienteService.findClientByDni("12345678");
-		assertThat(c).isEqualTo(cliente);
+		assertThat(c.getUser().getUsername()).isEqualTo(cliente.getUser().getUsername());
 	}
 
 	@Test
 	@Transactional
-	void shouldUpdatecliente() {
+	void shouldUpdatecliente() throws Exception {
 		Cliente c = this.clienteService.findClientById(1);
 		String oldLastName = c.getApellido();
 		String newLastName = oldLastName + "X";
 
 		c.setApellido(newLastName);
-		this.clienteService.guardar(c);
-
+		try {
+			this.clienteService.editar(c,1);
+		} catch (ContrasenyaNecesariaException e) {
+			
+		}catch (ContrasenyaNoCoincideException e) {
+			
+		}
 		c = this.clienteService.findClientById(1);
 		assertThat(c.getApellido()).isEqualTo(newLastName);
 	}

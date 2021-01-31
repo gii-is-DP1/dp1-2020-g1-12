@@ -7,9 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,30 +46,31 @@ class VendedorServiceTest {
 		vend.setDireccion("C/Cuna,1");
 		vend.setTelefono("647896370");
 		vend.setEmail("quique@mail.com");
-		Bloqueo b = new Bloqueo();
-		b.setId(1);
-		b.setBloqueado(false);
-		b.setDescripcion("");
-		vend.setBloqueo(b);
 		User user = new User();
 		user.setUsername("quique");
 		user.setPassword("supersecretpassword");
-		user.setEnabled(true);
 		vend.setUser(user);
-		this.vendedorService.guardar(vend);
+		this.vendedorService.registroVendedor(vend);
 		Vendedor vendedor = this.vendedorService.findSellerByDni("12345678");
-		assertThat(vend).isEqualTo(vendedor);
+		System.out.println(vendedor);
+		assertThat(vend.getUser().getUsername()).isEqualTo(vendedor.getUser().getUsername());
 	}
 
 	@Test
 	@Transactional
-	void shouldUpdateVendedor() {
+	void shouldUpdateVendedor() throws Exception{
 		Vendedor vend = this.vendedorService.findSellerById(1);
 		String oldLastName = vend.getApellido();
 		String newLastName = oldLastName + "X";
 
 		vend.setApellido(newLastName);
-		this.vendedorService.guardar(vend);
+			try {
+				this.vendedorService.editar(vend, 1);
+			} catch (ContrasenyaNecesariaException e) {
+				
+			}catch (ContrasenyaNoCoincideException e) {
+				
+			}
 
 		vend = this.vendedorService.findSellerById(1);
 		assertThat(vend.getApellido()).isEqualTo(newLastName);
@@ -80,6 +84,19 @@ class VendedorServiceTest {
 		assertThat(vendedor.getApellido()).isEqualTo("Lorca");
 		assertThat(vendedor2).isNull();
 		assertNotEquals("2", vendedor.getId().toString());
+	}
+	
+	@Test
+	void testListadoVendedores() {
+		Page<Vendedor> listado = this.vendedorService.findAllSeller(0, 5, "nombre");
+		assertThat(listado.getSize()).isNotZero();
+	}
+	
+	@Test
+	void testObtenerBloqueo() {
+		Vendedor vendedor = this.vendedorService.findSellerById(1);
+		Bloqueo bloqueo = this.vendedorService.getBloqueoVendedor(vendedor.getUser().getUsername());
+		assertThat(bloqueo.isBloqueado()).isFalse();
 	}
 
 }
