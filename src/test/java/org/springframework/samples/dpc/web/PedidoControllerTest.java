@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.util.Pair;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
 import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Bloqueo;
@@ -107,9 +108,10 @@ public class PedidoControllerTest {
 		lineasC.add(lineaC);
 		cesta.setLineas(lineasC);
 		pedidos.add(p);
-		
+		List<Integer> contador = new ArrayList<>(1);
 		given(this.pedidoService.obtenerPedidos(0, 10, "-id"))
 		.willReturn(new PageImpl<>(pedidos, PageRequest.of(0, 10, Sort.by(Order.desc("nombre"))), 10));
+		given(this.pedidoService.obtenerLineas(1)).willReturn(Pair.of(lpl, contador));
 		given(this.articuloService.obtenerFiltros(0, 10, "nombre", "pedidos")).willReturn(PageRequest.of(0, 10));
 		given(this.clienteService.getClienteDeSesion()).willReturn(c);
 		given(this.cestaService.obtenerCestaCliente()).willReturn(cesta);

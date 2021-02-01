@@ -104,7 +104,8 @@ class ClienteControllerTest {
 		given(this.articuloService.obtenerFiltros(0, 10, "nombre", "clientes")).willReturn(PageRequest.of(0, 10));
 		given(this.vendedorService.findSellerById(TEST_VENDEDOR_ID)).willReturn(vend);
 		given(this.clienteService.findClientById(TEST_CLIENTE_ID)).willReturn(c);
-		given(this.clienteService.obtenerIdSesion()).willReturn(TEST_CLIENTE_ID);
+		given(this.clienteService.getClienteDeSesion()).willReturn(c);
+
 	}
 
 	@WithMockUser(value = "spring")
@@ -133,7 +134,7 @@ class ClienteControllerTest {
 	void testCreacion() throws Exception {
 		mockMvc.perform(post("/clientes/editar").param("id", "4").param("version", "1").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is3xxRedirection());
+				.param("email", "mail@mail.com").param("version", "1").with(csrf())).andExpect(status().is3xxRedirection());
 	}
 
 }

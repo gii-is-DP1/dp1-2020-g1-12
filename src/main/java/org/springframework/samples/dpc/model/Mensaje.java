@@ -39,6 +39,9 @@ public class Mensaje extends BaseEntity{
 	
 	@Column(name = "fechaEnvio")
 	private LocalDateTime fechaEnvio;
+	
+	@Column(name = "lectura")
+	private String lectura;
 
 	public String getEmisor() {
 		return emisor;
@@ -86,5 +89,13 @@ public class Mensaje extends BaseEntity{
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public String getLectura() {
+		return lectura;
+	}
+
+	public void setLectura(String lectura) {
+		this.lectura = lectura;
 	}
 }

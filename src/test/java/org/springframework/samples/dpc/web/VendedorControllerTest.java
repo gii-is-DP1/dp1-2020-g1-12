@@ -35,6 +35,7 @@ import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.AuthoritiesService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.LineaPedidoService;
+import org.springframework.samples.dpc.service.MensajeService;
 import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.UserService;
 import org.springframework.samples.dpc.service.VendedorService;
@@ -73,6 +74,9 @@ class VendedorControllerTest {
 	@MockBean
 	private AuthoritiesService authoritiesService;
 
+	@MockBean
+	private MensajeService mensajeService;
+	
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -93,6 +97,7 @@ class VendedorControllerTest {
 		vend.setDireccion("C/Calle");
 		vend.setTelefono("615067389");
 		vend.setEmail("mail@mail.com");
+		vend.setVersion(1);
 		Bloqueo b = new Bloqueo();
 		b.setId(1);
 		b.setBloqueado(false);
@@ -147,6 +152,7 @@ class VendedorControllerTest {
 		willReturn(new PageImpl<>(ls, PageRequest.of(0, 10, Sort.by(Order.desc("id"))), 10));
 		given(this.solicitudService.detallesSolicitud(TEST_SOLICITUD_ID)).willReturn(sol);
 		given(this.vendedorService.findSellerById(TEST_VENDEDOR_ID)).willReturn(vend);
+		given(this.vendedorService.getVendedorDeSesion()).willReturn(vend);
 		given(this.vendedorService.obtenerIdSesion()).willReturn(TEST_VENDEDOR_ID);
 		given(this.vendedorService.getVendedorDeSesion()).willReturn(vend);		
 		given(this.vendedorService.vendedorDeUnArticulo(TEST_ARTICULO_ID)).willReturn(vend);
@@ -175,7 +181,7 @@ class VendedorControllerTest {
 	void testCreacion() throws Exception {
 		mockMvc.perform(post("/vendedores/editar").param("id", "2").param("version", "1").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is3xxRedirection());
+				.param("email", "mail@mail.com").param("version", "1").with(csrf())).andExpect(status().is3xxRedirection());
 	}
 	
 	@WithMockUser(value = "spring")
@@ -183,7 +189,7 @@ class VendedorControllerTest {
 	void testCreacionConErrores() throws Exception {
 		mockMvc.perform(post("/vendedores/editar").param("id", "2").param("version", "1").param("dni", "").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is2xxSuccessful())
+				.param("email", "mail@mail.com").param("version", "1").with(csrf())).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("vendedores/editarPerfil"));
 	}
 
