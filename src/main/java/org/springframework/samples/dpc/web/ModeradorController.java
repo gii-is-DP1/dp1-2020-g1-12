@@ -9,7 +9,6 @@ import org.springframework.samples.dpc.service.ModeradorService;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +42,7 @@ public class ModeradorController {
 	}
 		
 	@GetMapping(value = "/editar")
-	public String editar(Model model) {
+	public String editar(ModelMap model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Moderador.");
 
 		Moderador moderador = moderadorService.getModeradorDeSesion();
@@ -54,9 +53,14 @@ public class ModeradorController {
 	}
 
 	@PostMapping(value = "/editar")
-	public String procesoEditar(@Valid Moderador moderador, BindingResult result) throws Exception {
+	public String procesoEditar(@Valid Moderador moderador, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Moderador.");
 
+		if(!moderador.getVersion().equals(moderadorService.findModeradorById(moderador.getId()).getVersion())) {
+			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
+			return editar(model);
+		}
+		
 		if (result.hasErrors()) {
 			return editPerfil;
 		} else {

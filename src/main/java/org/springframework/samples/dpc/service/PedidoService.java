@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.repository.PedidoRepository;
+import org.springframework.samples.dpc.service.exceptions.PedidoNoValidoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,8 +53,12 @@ public class PedidoService {
 		return pedidoRepository.findById(pedidoId).isPresent() ? pedidoRepository.findById(pedidoId).get() : null;
 	}
 
-	@Transactional
-	public void tramitarPedido(Integer tarjetaId) {
+	@Transactional(rollbackFor=PedidoNoValidoException.class)
+	public void tramitarPedido(Integer tarjetaId) throws PedidoNoValidoException {
+		Optional<LineaCesta> res = cestaService.obtenerCestaCliente().getLineas().stream().filter(x->x.getArticulo().getStock()<x.getCantidad()).findFirst();
+		if(res.isPresent()) {
+			throw new PedidoNoValidoException();
+		}
 		Pedido pedido = new Pedido();
 		pedido.setCliente(clienteService.getClienteDeSesion());
 		pedido.setFecha(LocalDate.now());

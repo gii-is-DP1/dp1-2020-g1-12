@@ -41,6 +41,7 @@ class OfertaControllerTest {
 	@BeforeEach
 	void setup() {
 		oferta = new Oferta();
+		oferta.setVersion(1);
 		oferta.setId(TEST_OFERTA_ID);
 		oferta.setDisponibilidad(true);
 		oferta.setPorcentaje(10);
@@ -57,7 +58,7 @@ class OfertaControllerTest {
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoOfertar() throws Exception{
-		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).
+		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).param("version", "1").
 				param("disponibilidad", "true").param("porcentaje", "10").with(csrf())).andExpect(status().
 						is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
 	}
@@ -65,7 +66,7 @@ class OfertaControllerTest {
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoOfertarConErrores() throws Exception{
-		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).
+		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).param("version", "1").
 				param("disponibilidad", "true").param("porcentaje", "1").with(csrf()))
 				.andExpect(status().isOk()).andExpect(view().name("vendedores/editarOferta"));
 	}
@@ -74,7 +75,7 @@ class OfertaControllerTest {
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcesoDesofertar() throws Exception{
-		mockMvc.perform(get("/vendedores/ofertas/desofertar/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID)).
+		mockMvc.perform(post("/vendedores/ofertas/desofertar/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).with(csrf()).param("version", "1")).
 			andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
 	}
 	

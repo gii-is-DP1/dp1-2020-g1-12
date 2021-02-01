@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Oferta;
 import org.springframework.samples.dpc.service.OfertaService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +28,7 @@ public class OfertaController {
 	}
 
 	@GetMapping(value = "/{ofertaId}/articulo/{articuloId}")
-	public String editar(@PathVariable("ofertaId") int ofertaId, Model model) {
+	public String editar(@PathVariable("ofertaId") int ofertaId, ModelMap model) {
 		log.info("Entrando en la función Editar Oferta del controlador de Oferta.");
 
 		Oferta oferta = this.ofertaService.findOfertById(ofertaId);
@@ -38,22 +38,31 @@ public class OfertaController {
 
 	@PostMapping(value = "/{ofertaId}/articulo/{articuloId}")
 	public String procesoOfertar(@Valid Oferta oferta, BindingResult result, @PathVariable("ofertaId") int ofertaId,
-			@PathVariable("articuloId") int articuloId) {
+			@PathVariable("articuloId") int articuloId,ModelMap modelMap) {
 		log.info("Entrando en la función Proceso Editar Oferta del controlador de Oferta.");
 
+		if(!oferta.getVersion().equals(ofertaService.findOfertById(ofertaId).getVersion())) {
+			modelMap.put("message", "Se ha creado una oferta recientemente, vuelve a intentarlo.");
+			return editar(ofertaId,modelMap);
+		}
 		if (result.hasErrors()) {
 			return "vendedores/editarOferta";
 		} else {
-			this.ofertaService.editar(oferta, ofertaId, true);
+			if(oferta.getPorcentaje()!=null) 
+				this.ofertaService.editar(oferta, ofertaId, true);	
 			return "redirect:/vendedores/articulo/{articuloId}";
 		}
 	}
 	
-	  @GetMapping(value = "/desofertar/{ofertaId}/articulo/{articuloId}") 
+	  @PostMapping(value = "/desofertar/{ofertaId}/articulo/{articuloId}") 
 	  public String procesoDesofertar(@Valid Oferta oferta, BindingResult result,
-			  @PathVariable("ofertaId") int ofertaId, @PathVariable("articuloId") int articuloId) {
+			  @PathVariable("ofertaId") int ofertaId, @PathVariable("articuloId") int articuloId,ModelMap modelMap) {
 			log.info("Entrando en la función Eliminar Oferta del controlador de Oferta.");
-
+			
+			if(!oferta.getVersion().equals(ofertaService.findOfertById(ofertaId).getVersion())) {
+				modelMap.put("message", "Se ha creado una oferta recientemente, para eliminarla vuelve a intentarlo.");
+				return editar(ofertaId,modelMap);
+			}
 		  this.ofertaService.editar(oferta, ofertaId, false); 
 		  return "redirect:/vendedores/articulo/{articuloId}";
 	  }
