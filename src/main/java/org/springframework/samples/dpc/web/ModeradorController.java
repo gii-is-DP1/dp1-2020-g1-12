@@ -36,7 +36,7 @@ public class ModeradorController {
 		log.info("Entrando en la función Mostrar Perfil del controlador de Moderador.");
 
 		String vista ="moderadores/perfil";
-		Moderador perfil = moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
+		Moderador perfil = moderadorService.getModeradorDeSesion();
 		
 		modelMap.addAttribute("moderador", perfil);
 		return vista;
@@ -46,7 +46,7 @@ public class ModeradorController {
 	public String editar(Model model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Moderador.");
 
-		Moderador moderador = this.moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
+		Moderador moderador = moderadorService.getModeradorDeSesion();
 		User user = new User();
 		moderador.setUser(user);
 		model.addAttribute(moderador);

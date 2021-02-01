@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.util.Pair;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Pedido;
@@ -86,10 +87,11 @@ public class PedidoController {
 		log.info("Entrando en la función Obtener un Pedido del controlador de Pedido.");
 
 		Pedido pedido = pedidoService.obtenerPedido(pedidoId);
-		List<LineaPedido> lineas = pedidoService.obtenerLineas(pedidoId);
-		Double gastosEnvio = pedidoService.obtenerGastoEnvio(pedido, lineas);
+		Pair<List<LineaPedido>, List<Integer>> lineas = pedidoService.obtenerLineas(pedidoId);
+		Double gastosEnvio = pedidoService.obtenerGastoEnvio(pedido, lineas.getFirst());
 		modelMap.addAttribute("pedido", pedido);
-		modelMap.addAttribute("lineas", lineas);
+		modelMap.addAttribute("lineas", lineas.getFirst());
+		modelMap.addAttribute("contadores", lineas.getSecond());
 		modelMap.addAttribute("gastos", gastosEnvio);
 		return "clientes/pedido";
 	}

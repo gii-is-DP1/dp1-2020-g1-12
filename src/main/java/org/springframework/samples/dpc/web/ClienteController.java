@@ -42,7 +42,7 @@ public class ClienteController {
 		log.info("Entrando en la función Mostrar Perfil del controlador de Cliente.");
 
 		String  perfil="clientes/perfil";
-		Cliente optperfil = clienteService.findClientById(clienteService.obtenerIdSesion());		
+		Cliente optperfil = clienteService.getClienteDeSesion();		
 		modelMap.addAttribute("cliente", optperfil);
 		return perfil;
 	}
@@ -51,7 +51,7 @@ public class ClienteController {
 	public String editar(Model model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Cliente.");
 
-		Cliente cliente = this.clienteService.findClientById(clienteService.obtenerIdSesion());
+		Cliente cliente = clienteService.getClienteDeSesion();
 		User user = new User();
 		cliente.setUser(user);
 		model.addAttribute(cliente);

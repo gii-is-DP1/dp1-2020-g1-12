@@ -66,7 +66,7 @@ class ModeradorControllerTests {
 		moderador.setDni("12345678");
 		moderador.setTelefono("610111214");
 		
-		given(this.moderadorService.findModeradorById(TEST_MODERADOR_ID)).willReturn(moderador);
+		given(this.moderadorService.getModeradorDeSesion()).willReturn(moderador);
 	
 	}
 	
