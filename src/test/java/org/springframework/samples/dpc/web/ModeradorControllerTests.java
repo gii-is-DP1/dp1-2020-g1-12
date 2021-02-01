@@ -68,7 +68,6 @@ class ModeradorControllerTests {
 		moderador.setTelefono("610111214");
 		
 		given(this.moderadorService.getModeradorDeSesion()).willReturn(moderador);
-	
 	}
 	
 	@WithMockUser(value = "spring")
@@ -88,7 +87,7 @@ class ModeradorControllerTests {
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoEditar() throws Exception {
-		mockMvc.perform(post("/moderadores/editar").param("nombre", "Pepe")
+		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","1").param("nombre", "Pepe")
 		.param("apellido", "López").param("direccion", "C/Real 10")
 		.param("dni", "12345678").param("telefono", "678901234").param("version", "1").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/moderadores/perfil"));
@@ -97,7 +96,7 @@ class ModeradorControllerTests {
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoEditarConErrores() throws Exception {
-		mockMvc.perform(post("/moderadores/editar").param("nombre", "")
+		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","1").param("nombre", "")
 		.param("apellido", "López").param("direccion", "C/Real 10")
 		.param("dni", "12345678").param("telefono", "678901234").param("version", "1").with(csrf())).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("moderadores/editarPerfil"));
