@@ -36,7 +36,7 @@ public class ComentarioSecurityTest {
 	.build();
 	}
 	
-	@WithMockUser(username ="cliente1",authorities = {"cliente"})
+	@WithMockUser(username ="cliente3",authorities = {"cliente"})
     @Test
     void testProcesoComentar() throws Exception {
 		mockMvc.perform(post("/comentario/articulo/" + TEST_ARTICULO_ID).param("descripcion", "asdfgasdfasdfassdfdfdf")

@@ -64,7 +64,10 @@
 	           </spring:url>
 	           
 	 		<form:form modelAttribute="solicitud" action="/solicitudes/${solicitudId}/denegar" class="form-horizontal" id="add-owner-form">
-				<dpc:inputField label="Respuesta" name="respuesta"/>
+				<div >
+				<label for="respuesta">Respuesta</label>
+				<input style="width:600px;margin-left: 100px;margin-top: -25px;" class="form-control" type="text" name="respuesta"/>
+				</div>
 				</th>
 				<input type="hidden" name="version" value="${solicitud.version}"/> 
 				
