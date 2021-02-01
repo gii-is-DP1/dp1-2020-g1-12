@@ -19,7 +19,6 @@ import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +63,7 @@ public class VendedorController {
 	}
 
 	@GetMapping(value = "/editar")
-	public String editar(Model model) {
+	public String editar(ModelMap model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Vendedor.");
 
 		Vendedor vendedor = this.vendedorService.findSellerById(vendedorService.obtenerIdSesion());
@@ -75,9 +74,14 @@ public class VendedorController {
 	}
 
 	@PostMapping(value = "/editar")
-	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result) throws Exception {
+	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Vendedor.");
 
+		if(!vendedor.getVersion().equals(vendedorService.findSellerById(vendedor.getId()).getVersion())) {
+			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
+			return editar(model);
+		}
+		
 		if (result.hasErrors()) {
 			return editPerfil;
 		} else {

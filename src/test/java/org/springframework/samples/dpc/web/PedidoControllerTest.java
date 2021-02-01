@@ -26,6 +26,7 @@ import org.springframework.samples.dpc.model.Articulo;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.LineaCesta;
 import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Pedido;
 import org.springframework.samples.dpc.model.Tipo;
@@ -60,13 +61,11 @@ public class PedidoControllerTest {
 	@BeforeEach
 	void setup() {
 		Pedido p = new Pedido();
+		p.setVersion(1);
 		LineaPedido lp = new LineaPedido();
 		Articulo a = new Articulo();
 		List<LineaPedido> lpl = new ArrayList<>();
-		Bloqueo bw = new Bloqueo();
-		bw.setId(4);
-		bw.setBloqueado(false);
-		bw.setDescripcion("");
+
 		Cliente c = new Cliente();
 		c.setId(1);
 		c.setDni("56789876");
@@ -75,7 +74,6 @@ public class PedidoControllerTest {
 		c.setDireccion("C/Calle");
 		c.setTelefono("615067389");
 		c.setEmail("mail@mail.com");
-		c.setBloqueo(bw);
 		a.setId(1);
 		a.setModelo("Vant1");
 		a.setMarca("Vant");
@@ -99,6 +97,15 @@ public class PedidoControllerTest {
 		p.setCliente(c);
 		Cesta cesta = new Cesta();
 		List<Pedido> pedidos = new ArrayList<>();
+		List<LineaCesta> lineasC = new ArrayList<>();
+		LineaCesta lineaC= new LineaCesta();
+		lineaC.setArticulo(a);
+		lineaC.setCantidad(1);
+		lineaC.setCesta(cesta);
+		lineaC.setId(9);
+		lineaC.setVersion(1);
+		lineasC.add(lineaC);
+		cesta.setLineas(lineasC);
 		pedidos.add(p);
 		
 		given(this.pedidoService.obtenerPedidos(0, 10, "-id"))

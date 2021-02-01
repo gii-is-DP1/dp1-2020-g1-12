@@ -25,7 +25,7 @@ public class Oferta extends BaseEntity{
 	public void setDisponibilidad(boolean disponibilidad) {
 		this.disponibilidad = disponibilidad;
 	}
-
+	
 	public Integer getPorcentaje() {
 		return porcentaje;
 	}

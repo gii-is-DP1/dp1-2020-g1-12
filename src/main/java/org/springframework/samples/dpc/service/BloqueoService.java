@@ -65,6 +65,7 @@ public class BloqueoService {
 	@Transactional(rollbackFor = BloquearSinDescripcionException.class)
 	public void editar(@Valid Bloqueo bloqueo, Integer id, boolean bloqueado) throws BloquearSinDescripcionException {
 		Bloqueo bloqueoGuardado = findBlockById(id);
+
 		if (bloqueado) {
 			if (bloqueo.getDescripcion().length() > 10 && bloqueo.getDescripcion().length() < 200) {
 				bloqueoGuardado.setDescripcion(bloqueo.getDescripcion());

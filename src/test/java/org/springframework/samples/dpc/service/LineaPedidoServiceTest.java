@@ -64,8 +64,8 @@ public class LineaPedidoServiceTest {
 		this.pedidoRepository.save(p);
 		this.lineaPedidoService.crearLinea(p, lc.get(0));
 
-		assertThat(lc.get(0).getCantidad()).isEqualTo(lineaPedidoRepository.findByPedido(1).get(0).getCantidad());
-		assertThat(lc.get(0).getArticulo()).isEqualTo(lineaPedidoRepository.findByPedido(1).get(0).getArticulo());
+		assertThat(lc.get(0).getCantidad()).isEqualTo(lineaPedidoRepository.findByPedido(2).get(0).getCantidad());
+		assertThat(lc.get(0).getArticulo()).isEqualTo(lineaPedidoRepository.findByPedido(2).get(0).getArticulo());
 
 	}
 }
