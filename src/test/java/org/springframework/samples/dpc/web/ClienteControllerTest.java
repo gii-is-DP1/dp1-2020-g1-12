@@ -43,13 +43,13 @@ class ClienteControllerTest {
 
 	@MockBean
 	private VendedorService vendedorService;
-	
+
 	@MockBean
 	private ClienteService clienteService;
 
 	@MockBean
 	private ArticuloService articuloService;
-	
+
 	@MockBean
 	private UserService userService;
 
@@ -95,11 +95,11 @@ class ClienteControllerTest {
 		lc.add(c);
 		List<Vendedor> lv = new ArrayList<>();
 		lv.add(vend);
-		
+
 		given(this.vendedorService.findAllSeller(0, 10, "nombre"))
-		.willReturn(new PageImpl<>(lv, PageRequest.of(0, 10, Sort.by(Order.desc("nombre"))), 10));
+				.willReturn(new PageImpl<>(lv, PageRequest.of(0, 10, Sort.by(Order.desc("nombre"))), 10));
 		given(this.clienteService.findAllClient(0, 10, "nombre"))
-		.willReturn(new PageImpl<>(lc, PageRequest.of(0, 10, Sort.by(Order.desc("nombre"))), 10));
+				.willReturn(new PageImpl<>(lc, PageRequest.of(0, 10, Sort.by(Order.desc("nombre"))), 10));
 		given(this.articuloService.obtenerFiltros(0, 10, "nombre", "clientes")).willReturn(PageRequest.of(0, 10));
 		given(this.vendedorService.findSellerById(TEST_VENDEDOR_ID)).willReturn(vend);
 		given(this.clienteService.findClientById(TEST_CLIENTE_ID)).willReturn(c);
@@ -109,7 +109,7 @@ class ClienteControllerTest {
 	@Test
 	void testProcesadoListadoClientes() throws Exception {
 		mockMvc.perform(get("/clientes")).andExpect(status().isOk())
-				.andExpect(model().attributeExists("clientes", "vendedores","ordenacionCliente","ordenacionVendedor"))
+				.andExpect(model().attributeExists("clientes", "vendedores", "ordenacionCliente", "ordenacionVendedor"))
 				.andExpect(view().name("moderadores/listadoClientes"));
 	}
 

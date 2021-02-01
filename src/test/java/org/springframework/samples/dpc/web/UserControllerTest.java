@@ -21,9 +21,7 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(value=UserController.class,
-excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
-excludeAutoConfiguration= SecurityConfiguration.class)
+@WebMvcTest(value = UserController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class UserControllerTest {
 
 	@MockBean
@@ -40,12 +38,11 @@ class UserControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testIniForm() throws Exception {
-		mockMvc.perform(get("/registro"))
-		.andExpect(view().name("users/registro"));
+		mockMvc.perform(get("/registro")).andExpect(view().name("users/registro"));
 	}
 
 	@WithMockUser(value = "spring")
@@ -53,8 +50,8 @@ class UserControllerTest {
 	void testCreacionCliente() throws Exception {
 		mockMvc.perform(post("/registro/cliente").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").param("user.username", "quique").param("user.password", "quique").with(csrf()))
-				.andExpect(status().is3xxRedirection());
+				.param("email", "mail@mail.com").param("user.username", "quique").param("user.password", "quique")
+				.with(csrf())).andExpect(status().is3xxRedirection());
 	}
 
 	@WithMockUser(value = "spring")
@@ -62,7 +59,7 @@ class UserControllerTest {
 	void testCreacionVendedor() throws Exception {
 		mockMvc.perform(post("/registro/vendedor").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").param("user.username", "qui").param("user.password", "qui").with(csrf()))
-				.andExpect(status().is3xxRedirection());
+				.param("email", "mail@mail.com").param("user.username", "qui").param("user.password", "qui")
+				.with(csrf())).andExpect(status().is3xxRedirection());
 	}
 }
