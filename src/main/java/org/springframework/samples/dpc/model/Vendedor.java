@@ -30,6 +30,9 @@ public class Vendedor extends Persona {
 		return email;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vendedor")
+	private Collection<Mensaje> mensajes;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "vendedor", fetch = FetchType.EAGER)
 	private Collection<Solicitud> solicitudes;
 
@@ -51,6 +54,14 @@ public class Vendedor extends Persona {
 
 	public void setSolicitudes(Collection<Solicitud> solicitudes) {
 		this.solicitudes = solicitudes;
+	}
+	
+	public Collection<Mensaje> getMensajes() {
+		return mensajes;
+	}
+
+	public void setMensajes(Collection<Mensaje> mensajes) {
+		this.mensajes = mensajes;
 	}
 
 	public User getUser() {

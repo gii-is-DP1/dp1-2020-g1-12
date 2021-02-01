@@ -22,4 +22,8 @@ public interface ClienteRepository extends CrudRepository<Cliente, Integer> {
 	
 	@Query("select u from Cliente u")
 	Page<Cliente> findAll(Pageable pageable) throws DataAccessException;
+	
+	@Query(value="SELECT COUNT(*) FROM PEDIDOS, LINEAS_PEDIDOS WHERE cliente_id =:clienteId AND articulo_id =:articuloId", nativeQuery=true)
+	Integer haCompradoArticulo(@Param("articuloId") Integer articuloId, @Param("clienteId") Integer clienteId) throws DataAccessException;
+	
 }

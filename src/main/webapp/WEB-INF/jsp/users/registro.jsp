@@ -8,10 +8,10 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="registro">
-    <h2>
-        Nuevo Usuario
-    </h2>
-    <a href="/registro/cliente"><button class="btn btn-default">Registrarse como cliente</button></a>
-    <a href="/registro/vendedor"><button class="btn btn-default">Registrarse como vendedor</button></a>
+    <div style="margin-top:5%;text-align:center">
+		<h2 style="padding: 50px">Nuevo Usuario</h2>
+    	<a href="/registro/cliente"><button class="btn btn-default">Registrarse como cliente</button></a>
+    	<a href="/registro/vendedor"><button class="btn btn-default">Registrarse como vendedor</button></a>
+   	</div> 
 </petclinic:layout>
 

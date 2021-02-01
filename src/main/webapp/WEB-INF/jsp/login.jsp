@@ -7,31 +7,30 @@
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags"%>
 
 <dpc:layout pageName="login">
-	<div class="container">
-		<div class="row justify-content-center align-items-center"
-			style="height: 100vh">
-			<div class="col-4">
-				<div class="card">
-					<div class="card-body">
-						<h2>Iniciar Sesión</h2>
 
-						<form:form modelAttribute="usuario" action="/loginForm" class="form-horizontal">
-                            <div class="form-group">
-								<p style="color: red"><c:out value="${mensaje}"></c:out></p>
-								<br>
-								<label for="username">Usuario</label>
-								<input placeholder="Usuario" name="username" />
-								<br>
-								<label for="paswword">Contraseña:</label> 
-								<input type="password" placeholder="Contraseña" name="password" />
-							</div>
-                            <div class="form-group">
-								<button class="btn btn-default" type="submit">Iniciar Sesión</button>
-							</div>
-						</form:form>
+	<form:form modelAttribute="usuario" action="/loginForm" class="form-horizontal">
+	<div class="login-wrap">
+		<div class="login-html">
+			<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Iniciar Sesión</label>
+			<div class="login-form">
+				<div class="sign-in-htm">
+					<div class="group">
+						<label for="user" class="label">Usuario</label>
+						<input id="username" type="text" class="input" name="username">
 					</div>
+					<div class="group">
+						<label for="pass" class="label">Contraseña</label>
+						<input id="pass" type="password" class="input" name="password">
+					</div>
+					<div class="group">
+						<input type="submit" class="button" value="Iniciar Sesión">
+					</div>
+					<p style="color:#aaa">¿Aún no tienes una cuenta? <a href="/registro">Regístrate</a></p>
+					<p style="color: red"><c:out value="${mensaje}"></c:out></p>
 				</div>
 			</div>
 		</div>
 	</div>
+	</form:form>
+
 </dpc:layout>

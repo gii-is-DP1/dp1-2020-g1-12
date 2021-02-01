@@ -193,4 +193,11 @@ INSERT INTO tarjetas_credito VALUES (1, 1, '442', '03/22', '1234567899876087', '
 
 -- Introducimos relaciones tarjeta-cliente
 
-INSERT INTO clientes_tarjetas VALUES (1,1)
+INSERT INTO clientes_tarjetas VALUES (1,1);
+
+-- Introducimos mensajes entre clientes y vendedores
+
+INSERT INTO mensajes VALUES (1, 1, '29976789', '23456789', '2020-05-15', 'Buenas, el articulo viene roto', 1, 1);
+INSERT INTO mensajes VALUES (2, 1, '23456789', '29976789', '2020-05-16', 'Una pena...', 1, 1);
+INSERT INTO mensajes VALUES (3, 1, '23456789', '29976789', '2020-05-16', 'Pues compra otro, a ver si sale mejor', 1, 1);
+
