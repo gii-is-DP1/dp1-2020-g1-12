@@ -56,7 +56,7 @@ public class ModeradorController {
 	public String procesoEditar(@Valid Moderador moderador, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Moderador.");
 
-		if(!moderador.getVersion().equals(moderadorService.findModeradorById(moderador.getId()).getVersion())) {
+		if(!moderador.getVersion().equals(moderadorService.getModeradorDeSesion().getVersion())) {
 			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
 			return editar(model);
 		}
@@ -77,8 +77,6 @@ public class ModeradorController {
 				
 				result.rejectValue("user.password", "erronea", "La contraseña introducida no coincide con la de la cuenta.");
 				return editPerfil;
-				
-				
 			}
 		}
 	}

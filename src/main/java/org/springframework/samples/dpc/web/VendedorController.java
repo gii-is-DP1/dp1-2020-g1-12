@@ -84,7 +84,7 @@ public class VendedorController {
 	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Vendedor.");
 
-		if(!vendedor.getVersion().equals(vendedorService.findSellerById(vendedor.getId()).getVersion())) {
+		if(!vendedor.getVersion().equals(vendedorService.getVendedorDeSesion().getVersion())) {
 			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
 			return editar(model);
 		}
