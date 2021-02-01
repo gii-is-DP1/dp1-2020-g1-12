@@ -5,11 +5,13 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ public class ClienteController {
 	
 	private final ClienteService clienteService;
 	private final VendedorService vendedorService;
+	private static final String editPerfil = "clientes/editarPerfil";
 	
 	@Autowired
 	public ClienteController(ClienteService clienteService, VendedorService vendedorService) {
@@ -44,23 +47,41 @@ public class ClienteController {
 	}
 	
 	@GetMapping(value = "/editar")
-	public String editar(Model model) {
+	public String editar(ModelMap model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Cliente.");
 
 		Cliente cliente = this.clienteService.findClientById(clienteService.obtenerIdSesion());
+		User user = new User();
+		cliente.setUser(user);
 		model.addAttribute(cliente);
-		return "clientes/editarPerfil";
+		return editPerfil;
 	}
 
 	@PostMapping(value = "/editar")
-	public String procesoEditar(@Valid Cliente cliente, BindingResult result) {
+	public String procesoEditar(@Valid Cliente cliente, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Cliente.");
 		
+		if(!cliente.getVersion().equals(clienteService.findClientById(cliente.getId()).getVersion())) {
+			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
+			return editar(model);
+		}
 		if (result.hasErrors()) {
-			return "clientes/editarPerfil";
+			return editPerfil;
 		} else {
-			this.clienteService.editar(cliente, clienteService.obtenerIdSesion());
-			return "redirect:/clientes/perfil";
+			try {
+				this.clienteService.editar(cliente, clienteService.obtenerIdSesion());
+				return "redirect:/clientes/perfil";
+			}catch(ContrasenyaNecesariaException e) {
+				log.warn("La función Proceso Editar Perfil ha tenido un error relacionado con la contraseña.");
+
+	            result.rejectValue("user.username", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+	            return editPerfil;
+			}catch(ContrasenyaNoCoincideException e) {
+				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");
+
+	            result.rejectValue("user.password", "errónea", "La contraseña introducida no coincide con la de la cuenta.");
+	            return editPerfil;
+			}
 		}
 	}
 	

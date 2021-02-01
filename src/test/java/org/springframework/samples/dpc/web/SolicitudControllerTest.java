@@ -68,6 +68,7 @@ class SolicitudControllerTest {
 		solicitud.setModelo("14 Evo A11M-003ES");
 		solicitud.setPrecio(988.99);
 		solicitud.setRespuesta("");
+		solicitud.setVersion(1);
 		solicitud.setSituacion(Situacion.Aceptada);
 		solicitud.setStock(5);
 		solicitud.setTiempoEntrega(8);
@@ -148,14 +149,14 @@ class SolicitudControllerTest {
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoAceptarSolicitud() throws Exception {
-		mockMvc.perform(get("/solicitudes/"+TEST_SOLICITUD_ID+"/aceptar")).andExpect(status().isOk()).andExpect(model().attributeExists("solicitudes"))
+		mockMvc.perform(post("/solicitudes/"+TEST_SOLICITUD_ID+"/aceptar").with(csrf()).param("version", "1")).andExpect(status().isOk()).andExpect(model().attributeExists("solicitudes"))
 		.andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/listadoSolicitudes"));
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoDenegarSolicitud() throws Exception {
-		mockMvc.perform(post("/solicitudes/{solicitudId}/denegar",TEST_SOLICITUD_ID).with(csrf()).param("respuesta", "No se permite la venta de este producto."))
+		mockMvc.perform(post("/solicitudes/"+TEST_SOLICITUD_ID+"/denegar").with(csrf()).param("version", "1").param("respuesta", "No se permite la venta de este producto."))
 		.andExpect(status().isOk()).andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/listadoSolicitudes"));
 	}
 	

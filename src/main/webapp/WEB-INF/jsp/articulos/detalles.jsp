@@ -151,7 +151,7 @@
 			<br><br>
 		</c:if>
 		<h2>Comentarios:</h2>	
-		<c:if test="${articulo.comentarios.size() == 0 && puedeComentar}">
+		<c:if test="${articulo.comentarios.size() == 0}">
 			<p>Sé el primero en comentar.</p>
 		</c:if>
 		<c:forEach items="${comentarios}" var="comentario">
@@ -218,27 +218,30 @@
         <br>
 
         <h2>Productos relacionados:</h2>
-        
-        <c:forEach items="${relacionados}" var="relacionado">
-			<spring:url value="/articulos/{articuloId}" var="articuloUrl">
-		   		<spring:param name="articuloId" value="${relacionado.id}"/>
-			</spring:url>
-			<a href="${fn:escapeXml(articuloUrl)}"><img style='width: 20%; height: 10%' alt='' 
-	        	onerror="this.src=''" src='${relacionado.urlImagen}'/><br><br>
-	            	
-	            <c:out value="${relacionado.marca} ${relacionado.modelo}"/></a><br>
-	            <c:if test="${relacionado.oferta.disponibilidad}" >
-                <span style="color: red; font-size: large"><fmt:formatNumber type="number" maxFractionDigits="2" 
-                    value="${relacionado.precio * (1 - relacionado.oferta.porcentaje/100)}"/> € </span>
-                <span style="font-size: small; padding: 0px 6px 0px 6px"><strike>${relacionado.precio} € </strike></span>
-                <span style="color: white; background-color: #f35a5a; border-radius: 3px">${relacionado.oferta.porcentaje}%</span>
-
-                </c:if>
-                <c:if test="${!relacionado.oferta.disponibilidad}" >
-                    <c:out value="${relacionado.precio} €"/>
-               </c:if>
-               <br>
-		</c:forEach>
+        <fieldset>
+	        <c:forEach items="${relacionados}" var="relacionado">
+				<div style="display: inline-table;width:17.5%;margin-left: 2%;overflow: hidden;">
+					<spring:url value="/articulos/{articuloId}" var="articuloUrl">
+				   		<spring:param name="articuloId" value="${relacionado.id}"/>
+					</spring:url>
+					<a href="${fn:escapeXml(articuloUrl)}"><img style='width: 100%; height: 10%' alt='' 
+			        	onerror="this.src=''" src='${relacionado.urlImagen}'/><br><br>
+			            	
+			            <c:out value="${relacionado.marca} ${relacionado.modelo}"/></a><br>
+			            <c:if test="${relacionado.oferta.disponibilidad}" >
+		                <span style="color: red; font-size: large"><fmt:formatNumber type="number" maxFractionDigits="2" 
+		                    value="${relacionado.precio * (1 - relacionado.oferta.porcentaje/100)}"/> € </span>
+		                <span style="font-size: small; padding: 0px 6px 0px 6px"><strike>${relacionado.precio} € </strike></span>
+		                <span style="color: white; background-color: #f35a5a; border-radius: 3px">${relacionado.oferta.porcentaje}%</span>
+		
+		                </c:if>
+		                <c:if test="${!relacionado.oferta.disponibilidad}" >
+		                    <c:out value="${relacionado.precio} €"/>
+		               </c:if>
+		               <br>
+	               </div>
+			</c:forEach>
+		</fieldset>
 		</c:if>
 	</jsp:body>
 </dpc:layout>

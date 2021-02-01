@@ -1,5 +1,6 @@
 package org.springframework.samples.dpc.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,6 +60,15 @@ public class LineaPedidoService {
 		Pageable pageable = articuloService.obtenerFiltros(page, size, orden, "vendidos");
 		return lineaPedidoRepository.findArticulosVendidos(articulosVendedor, pageable);
 	}
+	
+	@Transactional(readOnly = true)
+	public Boolean articuloComprado(Integer articuloId) {
+		Pageable pageable = articuloService.obtenerFiltros(0, Integer.MAX_VALUE, "-id", "vendidos");
+		List<Integer> ids = new ArrayList<>();
+		ids.add(articuloId);
+		return lineaPedidoRepository.findArticulosVendidos(ids, pageable).hasContent();		
+	}
+	
 	@Transactional(readOnly = true)
 	public LineaPedido obtenerLineaPedido(Integer lineaPedidoId) {
 		Optional<LineaPedido> optional = lineaPedidoRepository.findById(lineaPedidoId);
@@ -80,5 +90,10 @@ public class LineaPedidoService {
 	@Transactional(readOnly = true)
 	public boolean compruebaVendedorLinea(Integer lineaPedidoId) {
 		return vendedorService.esVendedorDelArticulo(obtenerLineaPedido(lineaPedidoId).getArticulo().getId());
+	}
+	
+	@Transactional(readOnly = true)
+	public boolean esComprador(List<Integer> lineas, Integer clienteId) {
+		return lineaPedidoRepository.esComprador(lineas, clienteId) > 0 ? true: false;
 	}
 }

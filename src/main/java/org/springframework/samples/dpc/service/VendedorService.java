@@ -9,6 +9,8 @@ import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Solicitud;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.repository.VendedorRepository;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +22,16 @@ public class VendedorService {
 	private UserService userService;
 	private ArticuloService articuloService;
 	private BloqueoService bloqueoService;
+	private AuthoritiesService authoritiesService;
 	
 	@Autowired
 	public VendedorService(VendedorRepository vendedorRepository, UserService userService, 
-			ArticuloService articuloService,@Lazy BloqueoService bloqueoService) {
+			ArticuloService articuloService,@Lazy BloqueoService bloqueoService, AuthoritiesService authoritiesService) {
 		this.vendedorRepository = vendedorRepository;
 		this.userService = userService;
 		this.articuloService = articuloService;
 		this.bloqueoService = bloqueoService;
+		this.authoritiesService = authoritiesService;
 	}
 
 	@Transactional
@@ -63,12 +67,25 @@ public class VendedorService {
 		bloqueoService.guardar(b);
 		vendedor.setBloqueo(b);
 		vendedor.getUser().setEnabled(true);
-		vendedor.setBloqueo(b);
+		guardar(vendedor);
+		authoritiesService.saveAuthorities(vendedor.getUser().getUsername(), "vendedor");
 	}
 
-	@Transactional
-	public void editar(Vendedor vendedor, Integer id) {
+	@Transactional(rollbackFor = {ContrasenyaNoCoincideException.class, ContrasenyaNecesariaException.class})
+	public void editar(Vendedor vendedor, Integer id) throws Exception{
 		Vendedor vendedorGuardado = findSellerById(id);
+		
+		if(vendedor.getUser().getPassword()!="" && vendedor.getUser().getUsername()!="") {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			if(passwordEncoder.matches(vendedor.getUser().getPassword(), vendedorGuardado.getUser().getPassword())) {
+				String cifrado = new BCryptPasswordEncoder().encode(vendedor.getUser().getUsername()); //esta sería la nueva contraseña, habría que mirar si  cumple con el patrón
+				vendedorGuardado.getUser().setPassword(cifrado);
+			}else {
+				throw new ContrasenyaNoCoincideException();
+			}
+		}else if(vendedor.getUser().getPassword()=="" && vendedor.getUser().getUsername()!="") {
+			throw new ContrasenyaNecesariaException();
+		}
 		vendedorGuardado.setApellido(vendedor.getApellido());
 		vendedorGuardado.setDireccion(vendedor.getDireccion());
 		vendedorGuardado.setDni(vendedor.getDni());

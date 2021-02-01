@@ -66,20 +66,28 @@ public class SolicitudController {
 		modelMap.addAttribute(sol, solicitud);
 		return vista;
 	}
-	
-	@GetMapping(value="/{solicitudId}/aceptar")
-	public String aceptarSolicitud(@PathVariable("solicitudId") Integer solicitudId, ModelMap modelMap) {
-		log.info("Entrando en la función Aceptar una Solicitud del controlador de Solicitud.");
 
+	@PostMapping(value="/{solicitudId}/aceptar")
+	public String aceptarSolicitud(@PathVariable("solicitudId") Integer solicitudId,Solicitud solicitud, ModelMap modelMap) {
+		log.info("Entrando en la función Aceptar una Solicitud del controlador de Solicitud.");
+		if(!solicitud.getVersion().equals(solicitudService.detallesSolicitud(solicitudId).getVersion())) {
+			modelMap.put("message", "La solicitud ya ha sido tramitada por otro moderador.");
+			return mostrarSolicitud(solicitudId,modelMap);
+		}
 		solicitudService.aceptarSolicitud(solicitudId);
 		modelMap.addAttribute(mensaje, "La solicitud ha sido aceptada correctamente");
 		return listadoSolicitud(0, 10, "-id", modelMap);
 	}
 	
+	
 	@PostMapping(value="/{solicitudId}/denegar")
 	public String denegarSolicitud(@PathVariable("solicitudId") Integer solicitudId,Solicitud solicitud, 
 			ModelMap modelMap, BindingResult result) {
 		log.info("Entrando en la función Denegar una Solicitud del controlador de Solicitud.");
+		if(!solicitud.getVersion().equals(solicitudService.detallesSolicitud(solicitudId).getVersion())) {
+			modelMap.put("message", "La solicitud ya ha sido tramitada por otro moderador.");
+			return mostrarSolicitud(solicitudId,modelMap);
+		}
 
 		try {
 			solicitudService.denegarSolicitud(solicitudId,solicitud.getRespuesta());

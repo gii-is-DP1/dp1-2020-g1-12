@@ -15,6 +15,7 @@ import org.springframework.samples.dpc.service.CestaService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.LineaPedidoService;
 import org.springframework.samples.dpc.service.PedidoService;
+import org.springframework.samples.dpc.service.exceptions.PedidoNoValidoException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,10 +62,15 @@ public class PedidoController {
 	@GetMapping("/tramitarPedido")
 	public String tramitarPedido(HttpServletRequest request, ModelMap modelMap) {
 		log.info("Entrando en la función Tramitar un Pedido del controlador de Pedido.");
-
-		Set<TarjetaCredito> tarjetas = clienteService.getClienteDeSesion().getTarjetas();
+		
+		
 		Cesta cesta = cestaService.obtenerCestaCliente();
+		if(cesta.getLineas().isEmpty()) {
+			return "redirect:/";
+		}
+		Set<TarjetaCredito> tarjetas = clienteService.getClienteDeSesion().getTarjetas();
 		String fechaEstimada = cestaService.fechaEstimada();
+
 		modelMap.addAttribute("cesta", cesta);
 		modelMap.addAttribute("tarjetaSel", new TarjetaCredito());
 		modelMap.addAttribute("tarjetas", tarjetas);
@@ -72,11 +78,23 @@ public class PedidoController {
 		return "clientes/tramitar";
 	}
 	
+	
 	@PostMapping("/confirmarCompra")
 	public String confirmarCompra(TarjetaCredito tarjeta, HttpServletRequest request, ModelMap modelMap) {
 		log.info("Entrando en la función Confirmar Compra del controlador de Pedido.");
-
-		pedidoService.tramitarPedido(tarjeta.getId());
+		
+		if(clienteService.getClienteDeSesion().getTarjetas().isEmpty() ) {
+			modelMap.put("message", "Es necesario añadir una tarjeta para realizar la compra.");
+			return tramitarPedido(request,modelMap);
+		}
+		try {
+			pedidoService.tramitarPedido(tarjeta.getId());
+			
+		}catch(PedidoNoValidoException e) {
+			log.warn("La función confirmar compra");
+			modelMap.put("message", "La cantidad de uno o varios productos elegidos supera el stock de los artículo, compruébelos antes de realizar la compra.");
+			return tramitarPedido(request,modelMap);
+		}
 		request.getSession().setAttribute("contador", cestaService.lineasCesta());
 		return "redirect:/pedidos";
 	}

@@ -59,6 +59,7 @@ class ModeradorControllerTests {
 		a.setId(1);
 		
 		moderador.setId(TEST_MODERADOR_ID);
+		moderador.setVersion(1);
 		moderador.setUser(user);
 		moderador.setNombre("Pepe");
 		moderador.setApellido("López");

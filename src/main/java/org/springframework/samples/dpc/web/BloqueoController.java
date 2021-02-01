@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BloqueoController {
 
 	private final BloqueoService bloqueoService;
+	
 
 	@Autowired
 	public BloqueoController(BloqueoService bloqueoService) {
@@ -43,9 +44,14 @@ public class BloqueoController {
 		log.info("Entrando en la función Proceso Bloquear del controlador de Bloqueo.");
 
 		String vista;
+		if(!bloqueoService.findBlockById(bloqueoId).getVersion().equals(bloqueo.getVersion())) {
+			
+			return "redirect:/";
+		}
 		try {
-			this.bloqueoService.editar(bloqueo, bloqueoId, true);
-			vista = "redirect:/clientes";
+				this.bloqueoService.editar(bloqueo, bloqueoId, true);
+				vista = "redirect:/clientes";
+
 		} catch (BloquearSinDescripcionException e) {
 			log.warn("La función Proceso Bloquear ha lanzado la excepción BloquearSinDescpción.");
 
@@ -64,7 +70,6 @@ public class BloqueoController {
 			this.bloqueoService.editar(bloqueo, bloqueoId, false);
 		} catch (BloquearSinDescripcionException e) {
 			log.error("La función Proceso Desbloquear ha lanzado la excepción BloquearSinDescripción.");
-
 		}
 		return "redirect:/clientes";
 	}

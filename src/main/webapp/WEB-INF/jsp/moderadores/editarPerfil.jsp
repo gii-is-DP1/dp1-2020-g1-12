@@ -17,7 +17,11 @@
             <dpc:inputField label="Dirección" name="direccion"/>
             <dpc:inputField label="Dni" name="dni"/>
             <dpc:inputField label="Teléfono" name="telefono"/>
+            <dpc:inputField label="Contraseña" name="user.password"/>
+            <dpc:inputField label="Nueva contraseña" name="user.username"/>
         </div>
+       	<input type="hidden" name="id" value="${moderador.id}"/> 
+        <input type="hidden" name="version" value="${moderador.version}"/> 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
 				<button class="btn btn-default" type="submit">Actualizar datos</button>
