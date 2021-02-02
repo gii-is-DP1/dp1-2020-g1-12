@@ -178,19 +178,27 @@ class VendedorControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
-	void testCreacion() throws Exception {
+	void testProcesoEditarPerfiln() throws Exception {
 		mockMvc.perform(post("/vendedores/editar").param("id", "2").param("version", "1").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").param("version", "1").with(csrf())).andExpect(status().is3xxRedirection());
+				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is3xxRedirection());
 	}
 	
 	@WithMockUser(value = "spring")
 	@Test
-	void testCreacionConErrores() throws Exception {
+	void testProcesoEditarPerfilConErrores() throws Exception {
 		mockMvc.perform(post("/vendedores/editar").param("id", "2").param("version", "1").param("dni", "").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").param("version", "1").with(csrf())).andExpect(status().is2xxSuccessful())
+				.param("email", "mail@mail.com").with(csrf())).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("vendedores/editarPerfil"));
+	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testProcesoEditarPerfilErroresVersiones() throws Exception {
+		mockMvc.perform(post("/vendedores/editar").param("id", "2").param("version", "2").param("dni", "56789876").param("nombre", "Quique")
+				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
+					.param("email", "mail@mail.com").with(csrf())).andExpect(status().is2xxSuccessful())
+						.andExpect(view().name("vendedores/editarPerfil"));
 	}
 
 	@WithMockUser(value = "spring")
