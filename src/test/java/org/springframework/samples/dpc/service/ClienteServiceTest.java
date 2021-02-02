@@ -10,6 +10,7 @@ import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
+import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +45,10 @@ class ClienteServiceTest {
 		user.setUsername("quique");
 		user.setPassword("supersecretpassword");
 		c.setUser(user);
-		this.clienteService.registroCliente(c);
+		try {
+			this.clienteService.registroCliente(c);
+		} catch (UsernameDuplicadoException e) {
+		}
 		
 		Cliente cliente = this.clienteService.findClientByDni("12345678");
 		assertThat(c.getUser().getUsername()).isEqualTo(cliente.getUser().getUsername());

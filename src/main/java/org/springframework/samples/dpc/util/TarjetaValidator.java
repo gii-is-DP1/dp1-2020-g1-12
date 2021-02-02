@@ -31,7 +31,7 @@ public class TarjetaValidator implements Validator {
 					"El campo cvv es obligatorio y debe ser un número de longitud 3");
 		}
 		String fecha = tarjeta.getFechaCaducidad();
-		if(fecha == null || fecha == "" || !fecha.contains("/")) { // se puede poner con versión de java superiores fechas.isBlank()
+		if(fecha == null || fecha.equals("") || !fecha.contains("/")) { // se puede poner con versión de java superiores fechas.isBlank()
 			errors.rejectValue("fechaCaducidad", "El campo fecha es obligatorio y debe ser una fecha válida",
 					"El campo fecha es obligatorio y debe ser una fecha válida");
 		} else {

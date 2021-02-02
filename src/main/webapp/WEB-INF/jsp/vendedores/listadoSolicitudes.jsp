@@ -24,7 +24,10 @@
 		</div>
 	</form>
     <h2>Lista de solicitudes</h2>
-
+	<c:if test="${solicitudes.getNumberOfElements() == 0}">
+    <p>Aún tienes ninguna solicitud de venta.</p>
+    </c:if>
+    <c:if test="${solicitudes.getNumberOfElements() != 0}">
     <table id="solicitudesTable" class="table table-striped">
         <thead>
         <tr>
@@ -87,4 +90,5 @@
 			</div>
 		</div>
 	</div>
+	</c:if>
 </dpc:layout>
