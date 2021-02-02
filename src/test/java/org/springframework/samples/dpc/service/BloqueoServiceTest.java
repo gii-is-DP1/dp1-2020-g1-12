@@ -75,7 +75,7 @@ class BloqueoServiceTest {
 	void testClienteBloqueado() throws UsuarioBloqueadoException{
 		Cliente  bloqueado = clienteService.findAllClient(0, 10, "nombre").getContent().stream().filter(x -> x.getBloqueo().isBloqueado() == true).collect(Collectors.toList()).get(0);
 		this.bloqueoService.usuarioBloqueadoMotivo(bloqueado.getUser().getUsername());
-		assertThat(this.bloqueoService.usuarioBloqueadoMotivo(bloqueado.getUser().getUsername())).as(bloqueado.getBloqueo().getDescripcion());	
+		assertThat(this.bloqueoService.usuarioBloqueadoMotivo(bloqueado.getUser().getUsername())).isEqualTo(bloqueado.getBloqueo().getDescripcion());	
 	}
 	
 }

@@ -42,7 +42,7 @@ public class CestaService {
 		return c.isPresent() ? c.get() : null;
 	}
 
-	@Transactional
+	//@Transactional
 	public Cesta obtenerCestaCliente() {
 		return clienteService.getClienteDeSesion().getCesta();
 	}

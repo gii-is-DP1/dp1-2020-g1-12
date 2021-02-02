@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MensajeController {
 
 	private final MensajeService mensajeService;
+	private final String URLChat = "redirect:/chat/{rol}/{id}";
 
 	@Autowired
 	public MensajeController(MensajeService mensajeService) {
@@ -63,15 +64,15 @@ public class MensajeController {
 			@PathVariable("receptorId") Integer receptorId, @PathVariable("id") int id, Model model, BindingResult result) {
 		log.info("Entrando en la función Enviar Mensaje del controlador de Mensaje.");
 		if(result.hasErrors() || mensaje.getTexto().trim().isEmpty()) {
-			return "redirect:/chat/{rol}/{id}";
+			return URLChat;
 		}
 		try {
 			mensajeService.enviarMensaje(mensaje, rol, receptorId, id);
 		} catch (MensajeProhibidoException e) {
 			log.warn("La función Enviar Mensaje ha lanzado la excepción MensajeProhibido.");
-			return "redirect:/chat/{rol}/{id}";
+			return URLChat;
 		}
 		
-		return "redirect:/chat/{rol}/{id}";
+		return URLChat;
 	}
 }
