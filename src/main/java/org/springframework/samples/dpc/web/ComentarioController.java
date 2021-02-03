@@ -20,15 +20,15 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/comentario")
 public class ComentarioController {
-	
+
 	private final ComentarioService comentarioService;
 	private static final String editCommentView = "articulos/editarComentario";
-	
+
 	@Autowired
 	public ComentarioController(ComentarioService comentarioService) {
-		this.comentarioService= comentarioService;
+		this.comentarioService = comentarioService;
 	}
-	
+
 	@GetMapping(value = "/articulo/{articuloId}")
 	public String crearComentario(@PathVariable("articuloId") int articuloId, Model model) {
 		log.info("Entrando en la función Crear un Comentario del controlador de Comentario.");
@@ -45,9 +45,9 @@ public class ComentarioController {
 
 		String vista;
 		if (result.hasErrors()) {
-			model.addAttribute("comentario",comentario);
-			if(result.getFieldError("valoracion") != null) {
-				model.addAttribute("errores",result.getFieldError("valoracion").getDefaultMessage());
+			model.addAttribute("comentario", comentario);
+			if (result.getFieldError("valoracion") != null) {
+				model.addAttribute("errores", result.getFieldError("valoracion").getDefaultMessage());
 			}
 			vista = editCommentView;
 		} else {
@@ -56,23 +56,34 @@ public class ComentarioController {
 			} catch (ComentarioProhibidoException e) {
 				log.warn("La función Proceso Crear un Comentario ha lanzado la excepción ComentarioProhibido.");
 
-	            result.rejectValue("descripcion", "errónea", "No puedes publicar un comentario si no "
-	            		+ "eres el vendedor del artículo o no lo has comprado previamente.");
+				result.rejectValue("descripcion", "errónea", "No puedes publicar un comentario si no "
+						+ "eres el vendedor del artículo o no lo has comprado previamente.");
 				return editCommentView;
 			}
 			vista = "redirect:/articulos/{articuloId}";
 		}
 		return vista;
 	}
-	
+
 	@GetMapping(value = "/eliminar/{comentarioId}/articulo/{articuloId}")
-	public String borrarComentario(@PathVariable("comentarioId") int comentarioId, 
+	public String borrarComentario(@PathVariable("comentarioId") int comentarioId,
 			@PathVariable("articuloId") int articuloId, Model model) {
 		log.info("Entrando en la función Borrar un Comentario del controlador de Comentario.");
 
-		Comentario comentario =  comentarioService.findCommentById(comentarioId);
-		if(comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
+		Comentario comentario = comentarioService.findCommentById(comentarioId);
+		if (comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
 			comentarioService.eliminarComentario(comentario);
+		}
+		return "redirect:/articulos/{articuloId}";
+	}
+
+	@GetMapping(value = "/editar/{comentarioId}/articulo/{articuloId}")
+	public String editarComentario(@PathVariable("comentarioId") int comentarioId,
+			@PathVariable("articuloId") int articuloId, Model model) throws Exception {
+		log.info("Entrando en la función Actualizar un Comentario del controlador de Comentario.");
+		Comentario comentario = comentarioService.findCommentById(comentarioId);
+		if (comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
+			comentarioService.editar(comentario, comentarioId);
 		}
 		return "redirect:/articulos/{articuloId}";
 	}
