@@ -4,40 +4,22 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.samples.dpc.util.ContrasenyaConstraint;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "users")
 public class User{
 	@Id
-	private String username;
+	@Length(min = 3, max = 20, message = "El usuario debe estar comprendido entre 3 y 20 caracteres")
+	String username;
 	
 	@ContrasenyaConstraint
-	private String password;
+	String password;
 	
-	private boolean enabled;
-	
-	public String getUsername() {
-		return username;
-	}
-	
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+	boolean enabled;
+
 }
