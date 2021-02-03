@@ -8,8 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.User;
-import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
-import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +31,7 @@ class ClienteServiceTest {
 	}
 
 	@Test
-	void shouldInsertcliente() {
+	void shouldInsertcliente() throws UsernameDuplicadoException {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
 		c.setNombre("Quique");
@@ -45,11 +43,7 @@ class ClienteServiceTest {
 		user.setUsername("quique");
 		user.setPassword("supersecretpassword");
 		c.setUser(user);
-		try {
-			this.clienteService.registroCliente(c);
-		} catch (UsernameDuplicadoException e) {
-		}
-		
+		this.clienteService.registroCliente(c);
 		Cliente cliente = this.clienteService.findClientByDni("12345678");
 		assertThat(c.getUser().getUsername()).isEqualTo(cliente.getUser().getUsername());
 	}
@@ -62,13 +56,9 @@ class ClienteServiceTest {
 		String newLastName = oldLastName + "X";
 
 		c.setApellido(newLastName);
-		try {
-			this.clienteService.editar(c,1);
-		} catch (ContrasenyaNecesariaException e) {
-			
-		}catch (ContrasenyaNoCoincideException e) {
-			
-		}
+		c.getUser().setPassword("");
+		c.getUser().setUsername("");
+		this.clienteService.editar(c,1);
 		c = this.clienteService.findClientById(1);
 		assertThat(c.getApellido()).isEqualTo(newLastName);
 	}

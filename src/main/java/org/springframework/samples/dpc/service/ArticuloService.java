@@ -130,12 +130,13 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Pageable obtenerFiltros(Integer page, Integer size, String orden, String caso) throws ResponseStatusException {
+		String respuesta = "Parámetro de búsqueda introducido no válido.";
 		switch (caso) {
 		case cadenaArticulo:
 			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("marca") && !orden.equals("-marca")
 					&& !orden.equals("precio") && !orden.equals("-precio")) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"Parámetro de búsqueda introducido no " + "válido.");
+						respuesta);
 			}
 			page = page < 0 ? 0 : page;
 			size = size < 10 ? 10 : size;
@@ -143,24 +144,21 @@ public class ArticuloService {
 		case "clientes":
 			if(!orden.equals("nombre") && !orden.equals("-nombre") && !orden.equals("apellido") && !orden.equals("-apellido") &&
 					!orden.equals("dni") && !orden.equals("-dni")) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parámetro de búsqueda introducido no "
-						+ "válido.");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, respuesta);
 			}
 			page = page < 0 ? 0 : page;
 			size = size < 5 ? 5 : size;
 			break;
 		case "pedidos":
 			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("fecha") && !orden.equals("-fecha")) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"Parámetro de búsqueda introducido no " + "válido.");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, respuesta);
 			}
 			page = page < 0 ? 0 : page;
 			size = size < 2 ? 2 : size;
 			break;
 		case "vendidos":
 			if (!orden.equals("id") && !orden.equals("-id")) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"Parámetro de búsqueda introducido no " + "válido.");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, respuesta);
 			}
 			page = page < 0 ? 0 : page;
 			size = size < 10 ? 10 : size;

@@ -11,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
-import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
-import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +37,7 @@ class VendedorServiceTest {
 
 	@Test
 	@Transactional
-	void shouldInsertVendedor() {
+	void shouldInsertVendedor() throws UsernameDuplicadoException {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
 		vend.setNombre("Quique");
@@ -51,12 +49,8 @@ class VendedorServiceTest {
 		user.setUsername("quique");
 		user.setPassword("supersecretpassword");
 		vend.setUser(user);
-		try {
-			this.vendedorService.registroVendedor(vend);
-		} catch (UsernameDuplicadoException e) {
-		}
+		this.vendedorService.registroVendedor(vend);
 		Vendedor vendedor = this.vendedorService.findSellerByDni("12345678");
-		System.out.println(vendedor);
 		assertThat(vend.getUser().getUsername()).isEqualTo(vendedor.getUser().getUsername());
 	}
 
@@ -68,15 +62,9 @@ class VendedorServiceTest {
 		String newLastName = oldLastName + "X";
 
 		vend.setApellido(newLastName);
-			try {
-				this.vendedorService.editar(vend, 1);
-			} catch (ContrasenyaNecesariaException e) {
-				
-			}catch (ContrasenyaNoCoincideException e) {
-				
-			}
-
-		vend = this.vendedorService.findSellerById(1);
+		vend.getUser().setPassword("");
+		vend.getUser().setUsername("");
+		this.vendedorService.editar(vend, 1);
 		assertThat(vend.getApellido()).isEqualTo(newLastName);
 	}
 
@@ -102,5 +90,4 @@ class VendedorServiceTest {
 		Bloqueo bloqueo = this.vendedorService.getBloqueoVendedor(vendedor.getUser().getUsername());
 		assertThat(bloqueo.isBloqueado()).isFalse();
 	}
-
 }

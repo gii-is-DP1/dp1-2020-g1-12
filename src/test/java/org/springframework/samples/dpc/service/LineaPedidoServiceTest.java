@@ -22,10 +22,9 @@ import org.springframework.samples.dpc.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-public class LineaPedidoServiceTest {
+class LineaPedidoServiceTest {
 
 	private LineaPedidoRepository lineaPedidoRepository;
-	private ArticuloService articuloService;
 	private LineaPedidoService lineaPedidoService;
 	private LineaCestaRepository lineaCestaRepository;
 	private ClienteRepository clienteRepository;
@@ -33,11 +32,10 @@ public class LineaPedidoServiceTest {
 	private TarjetaService tarjetaService;
 
 	@Autowired
-	public LineaPedidoServiceTest(LineaPedidoRepository lineaPedidoRepository, ArticuloService articuloService,
-			LineaCestaRepository lineaCestaRepository, LineaPedidoService lineaPedidoService,
-			ClienteRepository clienteRepository, PedidoRepository pedidoRepository,TarjetaService tarjetaService) {
+	public LineaPedidoServiceTest(LineaPedidoRepository lineaPedidoRepository, LineaCestaRepository lineaCestaRepository,
+			LineaPedidoService lineaPedidoService, ClienteRepository clienteRepository,
+			PedidoRepository pedidoRepository,TarjetaService tarjetaService) {
 		this.lineaPedidoRepository = lineaPedidoRepository;
-		this.articuloService = articuloService;
 		this.lineaPedidoService = lineaPedidoService;
 		this.lineaCestaRepository = lineaCestaRepository;
 		this.clienteRepository = clienteRepository;

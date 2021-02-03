@@ -219,5 +219,4 @@ class SolicitudTests {
 		assertThat(violation.getPropertyPath().toString()).hasToString("respuesta");
 		assertThat(violation.getMessage()).contains("100");
 	}
-
 }

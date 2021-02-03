@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MensajeController {
 
 	private final MensajeService mensajeService;
-	private final String URLChat = "redirect:/chat/{rol}/{id}";
+	private static final String URLChat = "redirect:/chat/{rol}/{id}";
 
 	@Autowired
 	public MensajeController(MensajeService mensajeService) {

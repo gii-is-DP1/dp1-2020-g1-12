@@ -26,13 +26,12 @@ import org.springframework.test.web.servlet.MockMvc;
 excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
 excludeAutoConfiguration= SecurityConfiguration.class)
 
-public class TarjetaControllerTest {
+class TarjetaControllerTest {
 	
 	private static final int TEST_TARJETA_ID = 1;
 	
 	@MockBean 
 	private TarjetaService tarjetaService;
-	
 	
 	@Autowired
 	private MockMvc mockMvc;
