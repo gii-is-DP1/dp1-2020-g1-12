@@ -26,12 +26,14 @@ class ModeradorServiceTest {
 	}
 	
 	@Test
-	void testEditar() {
+	void testEditar() throws Exception {
 		Moderador mod = this.moderadorService.findModeradorById(1);
 		
 		String newDni = "12345678C";
 		mod.setDni(newDni);
-		this.moderadorService.guardar(mod);
+		mod.getUser().setPassword("");
+		mod.getUser().setUsername("");
+		this.moderadorService.editar(mod, 1);
 		
 		mod = this.moderadorService.findModeradorById(1);
 		assertThat(mod.getDni()).isEqualTo(newDni);

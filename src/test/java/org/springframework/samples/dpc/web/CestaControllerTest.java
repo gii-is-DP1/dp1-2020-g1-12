@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = CestaController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 
-public class CestaControllerTest {
+class CestaControllerTest {
 
 	private static final int TEST_ARTICULO_ID = 2;
 
@@ -94,5 +94,4 @@ public class CestaControllerTest {
 		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/cesta"));
 	}
-
 }

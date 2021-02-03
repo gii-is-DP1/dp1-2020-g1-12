@@ -37,6 +37,9 @@ public class LoginController {
 	private final AuthenticationManager authenticationManager;
 	private final UserService userService;
 	private final CestaService cestaService;	
+	
+	private static final String USUARIO = "usuario";
+	private static final String LOGIN = "/login";
 
 	@Autowired
 	public LoginController(BloqueoService bloqueoService, AuthenticationManager authenticationManager, 
@@ -51,9 +54,9 @@ public class LoginController {
 	public String login(ModelMap modelMap) {
 		log.info("Entrando en la función Iniciar Formulario de Login del controlador de Login.");
 
-		modelMap.addAttribute("usuario", new User());
+		modelMap.addAttribute(USUARIO, new User());
 
-		return "/login";
+		return LOGIN;
 	}
 
 	@PostMapping(value = "/loginForm")
@@ -76,17 +79,17 @@ public class LoginController {
 		} catch (BadCredentialsException e) {
 			log.info("La función Proceso Formulario de Login ha lanzado la excepción BadCredentials");
 
-			modelMap.addAttribute("usuario", user);
+			modelMap.addAttribute(USUARIO, user);
 			modelMap.addAttribute("mensaje", "El nombre de usuario y la contraseña que ingresaste no coinciden "
 					+ "con nuestros registros. Por favor, revisa e inténtalo de nuevo.");
-			return "/login";
+			return LOGIN;
 		} catch (UsuarioBloqueadoException e) {
 			log.info("La función Proceso Formulario de Login ha lanzado la excepción UsuarioBloqueao");
 			
-			modelMap.addAttribute("usuario", user);
+			modelMap.addAttribute(USUARIO, user);
 			modelMap.addAttribute("mensaje", "Su usuario ha sido bloqueado. Razón: " + 
 					bloqueoService.usuarioBloqueadoMotivo(user.getUsername()));
-			return "/login";
+			return LOGIN;
 		}
 		return "redirect:/";
 	}

@@ -63,12 +63,12 @@ class BloqueoControllerTests {
 		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/clientes"));
 	}
 	
-//	@WithMockUser(value = "spring")
-//    @Test
-//    void testBloquearConExcepcion() throws Exception{
-//		mockMvc.perform(post("/bloqueos/"+TEST_BLOQUEO_ID).param("bloqueado", "true").param("descripcion", "Es").with(csrf()))
-//		.andExpect(status().isOk()).andExpect(view().name("moderadores/editarBloqueo"));
-//	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testBloquearConError() throws Exception{
+		mockMvc.perform(post("/bloqueos/"+TEST_BLOQUEO_ID).param("version", "2").param("bloqueado", "true").param("descripcion", "Está bloqueado por incumplir normas").with(csrf()))
+		.andExpect(status().isOk()).andExpect(view().name("moderadores/editarBloqueo"));
+	}
 	
 	
 	@WithMockUser(value = "spring")

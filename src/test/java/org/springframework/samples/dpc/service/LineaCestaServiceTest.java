@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 
-public class LineaCestaServiceTest {
+class LineaCestaServiceTest {
 	
 	private final Integer ARTICULO_ID = 3;
 	private final Integer LINEA_CESTA_ID = 1;
@@ -58,8 +58,4 @@ public class LineaCestaServiceTest {
 		LineaCesta linea2 = this.lineaCestaService.findLineaById(LINEA_CESTA_ID);
 		assertThat(linea2).isNull();
 	}
-	
-
-	
-
 }

@@ -11,24 +11,12 @@ import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 
-public class TarjetaServiceTest {
+class TarjetaServiceTest {
 	
 	private static final int TARJETA_ID = 1;
 	
 	@Autowired
 	private TarjetaService tarjetaService;
-	
-	public TarjetaCredito arrange() throws Exception { //Todavía hay que crear la validación
-
-		TarjetaCredito tarjeta = new TarjetaCredito();
-		tarjeta.setId(2);
-		tarjeta.setNumero("1234567899876087");
-		tarjeta.setTitular("Juan Fernández Tirado");
-		tarjeta.setCvv("442");
-		tarjeta.setFechaCaducidad("03/22");
-        return tarjeta;
-
-	}
 	
 	@Test
 	void testBuscarTarjetaId() {
@@ -39,20 +27,4 @@ public class TarjetaServiceTest {
 		assertThat(tarjeta.getFechaCaducidad().split("/")[0]).isEqualTo("03");
 		assertThat(tarjeta.getFechaCaducidad().split("/")[1]).isEqualTo("22");
 	}
-	
-	@Test
-	void testAnyadirTarjeta() {
-	}
-	
-	@Test
-	void testEliminarTarjeta() {
-		TarjetaCredito tarjeta = tarjetaService.findTarjetaById(TARJETA_ID);
-//		SecurityContext securityContext = SecurityContextHolder.getContext();
-//		securityContext.setAuthentication(authentication);
-//		tarjetaService.eliminarTarjetaPersona(TARJETA_ID);
-	}
-	
-
-
-
 }
