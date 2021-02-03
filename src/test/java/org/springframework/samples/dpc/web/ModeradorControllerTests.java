@@ -89,7 +89,7 @@ class ModeradorControllerTests {
     void testProcesoEditar() throws Exception {
 		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","1").param("nombre", "Pepe")
 		.param("apellido", "López").param("direccion", "C/Real 10")
-		.param("dni", "12345678").param("telefono", "678901234").param("version", "1").with(csrf())).andExpect(status().is3xxRedirection())
+		.param("dni", "12345678").param("telefono", "678901234").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/moderadores/perfil"));
 	}
 	
@@ -98,7 +98,16 @@ class ModeradorControllerTests {
     void testProcesoEditarConErrores() throws Exception {
 		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","1").param("nombre", "")
 		.param("apellido", "López").param("direccion", "C/Real 10")
-		.param("dni", "12345678").param("telefono", "678901234").param("version", "1").with(csrf())).andExpect(status().is2xxSuccessful())
+		.param("dni", "12345678").param("telefono", "678901234").with(csrf())).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("moderadores/editarPerfil"));
 	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoEditarConErroresVersiones() throws Exception {
+		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","2").param("nombre", "Pepe")
+		.param("apellido", "López").param("direccion", "C/Real 10")
+		.param("dni", "12345678").param("telefono", "678901234").with(csrf())).andExpect(status().is2xxSuccessful())
+		.andExpect(view().name("moderadores/editarPerfil"));
+	}
+	
 }

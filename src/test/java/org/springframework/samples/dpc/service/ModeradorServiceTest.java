@@ -22,7 +22,7 @@ class ModeradorServiceTest {
 	@Test
 	void testDatosPerfil() {
 		Moderador moderador = this.moderadorService.findModeradorById(1);
-		assertThat("Pedro").isEqualTo(moderador.getNombre());
+		assertThat(moderador.getNombre()).isEqualTo("Pedro");
 	}
 	
 	@Test

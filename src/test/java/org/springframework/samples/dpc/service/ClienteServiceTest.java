@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.User;
+import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ class ClienteServiceTest {
 	}
 
 	@Test
-	void shouldInsertcliente() {
+	void shouldInsertcliente() throws UsernameDuplicadoException {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
 		c.setNombre("Quique");
@@ -43,7 +44,6 @@ class ClienteServiceTest {
 		user.setPassword("supersecretpassword");
 		c.setUser(user);
 		this.clienteService.registroCliente(c);
-		
 		Cliente cliente = this.clienteService.findClientByDni("12345678");
 		assertThat(c.getUser().getUsername()).isEqualTo(cliente.getUser().getUsername());
 	}

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
+import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +37,7 @@ class VendedorServiceTest {
 
 	@Test
 	@Transactional
-	void shouldInsertVendedor() {
+	void shouldInsertVendedor() throws UsernameDuplicadoException {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
 		vend.setNombre("Quique");
@@ -50,7 +51,6 @@ class VendedorServiceTest {
 		vend.setUser(user);
 		this.vendedorService.registroVendedor(vend);
 		Vendedor vendedor = this.vendedorService.findSellerByDni("12345678");
-		System.out.println(vendedor);
 		assertThat(vend.getUser().getUsername()).isEqualTo(vendedor.getUser().getUsername());
 	}
 

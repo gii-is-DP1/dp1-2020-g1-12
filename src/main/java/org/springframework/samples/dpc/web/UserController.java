@@ -24,6 +24,7 @@ import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
+import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -72,13 +73,18 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/registro/vendedor")
-	public String processCreationFormVendedor(@Valid Vendedor vendedor, BindingResult result) {
+	public String processCreationFormVendedor(@Valid Vendedor vendedor, BindingResult result, Map<String, Object> model) {
 		log.info("Entrando en la función Proceso Formulario de Vendedor del controlador de User.");
-
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_VENDEDOR;
 		} else {
-			this.vendedorService.registroVendedor(vendedor);
+			try {
+				this.vendedorService.registroVendedor(vendedor);
+			} catch (UsernameDuplicadoException e) {
+				log.warn("La función Proceso Formulario de Vendedor ha lanzado la excepción Username Duplicado");
+				model.put("message", "El nombre de usuario introducido ya está en uso o no es válido. Por favor, seleccione otro");
+				return VIEWS_CREATE_FORM_VENDEDOR;
+			}
 			return "redirect:/login";
 		}
 	}
@@ -93,13 +99,19 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/registro/cliente")
-	public String processCreationFormCliente(@Valid Cliente cliente, BindingResult result) {
-		log.info("Entrando en la función Proceso Iniciar Formulario de Cliente del controlador de User.");
+	public String processCreationFormCliente(@Valid Cliente cliente, BindingResult result, Map<String, Object> model) {
+		log.info("Entrando en la función Proceso Formulario de Cliente del controlador de User.");
 
 		if (result.hasErrors()) {
 			return VIEWS_CREATE_FORM_CLIENTE;
 		} else {
-			this.clienteService.registroCliente(cliente);
+			try {
+				this.clienteService.registroCliente(cliente);
+			} catch (UsernameDuplicadoException e) {
+				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Username Duplicado");
+				model.put("message", "El nombre de usuario introducido ya está en uso o no es válido. Por favor, seleccione otro");
+				return VIEWS_CREATE_FORM_CLIENTE;
+			}
 			return "redirect:/login";
 		}
 	}
