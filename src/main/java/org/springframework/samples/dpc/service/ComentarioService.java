@@ -52,7 +52,7 @@ public class ComentarioService {
 		comentarioRepository.delete(comentario);
 	}
 
-	@Transactional
+	@Transactional(rollbackFor = ComentarioProhibidoException.class)
 	public void editar(Comentario comentario, Integer id) throws Exception {
 		Comentario comentarioGuardado = findCommentById(id);
 		comentarioGuardado.setDescripcion(comentario.getDescripcion());
