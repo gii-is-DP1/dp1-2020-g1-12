@@ -81,7 +81,7 @@ public class VendedorController {
 	}
 
 	@PostMapping(value = "/editar")
-	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result,ModelMap model) throws Exception {
+	public String procesoEditar(@Valid Vendedor vendedor, @Valid User user, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Vendedor.");
 
 		if(!vendedor.getVersion().equals(vendedorService.getVendedorDeSesion().getVersion())) {
@@ -91,8 +91,8 @@ public class VendedorController {
 		
 		if (result.hasErrors()) {
 			model.addAttribute("vendedor", vendedor);
-			if(result.getFieldError("user.password") != null) {
-				model.addAttribute("errores",result.getFieldError("user.password").getDefaultMessage());
+			if(result.getFieldError("password") != null) {
+				model.addAttribute("errores",result.getFieldError("password").getDefaultMessage());
 			}
 			return editPerfil;
 		} else {
@@ -102,7 +102,7 @@ public class VendedorController {
 			}catch(ContrasenyaNecesariaException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error relacionado con la contraseña.");
 
-	            result.rejectValue("user.username", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+	            result.rejectValue("user.newPassword", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
 	            return editPerfil;
 			}catch(ContrasenyaNoCoincideException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");

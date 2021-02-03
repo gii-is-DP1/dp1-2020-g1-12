@@ -21,6 +21,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
@@ -73,13 +74,13 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/registro/vendedor")
-	public String processCreationFormVendedor(@Valid Vendedor vendedor, BindingResult result, Map<String, Object> model) {
+	public String processCreationFormVendedor(@Valid Vendedor vendedor, @Valid User user, BindingResult result, Map<String, Object> model) {
 		log.info("Entrando en la función Proceso Formulario de Vendedor del controlador de User.");
 
 		if (result.hasErrors()) {
 			model.put("vendedor", vendedor);
-			if(result.getFieldError("user.password") != null) {
-				model.put("errores",result.getFieldError("user.password").getDefaultMessage());
+			if(result.getFieldError("password") != null) {
+				model.put("errores",result.getFieldError("password").getDefaultMessage());
 			}
 			return VIEWS_CREATE_FORM_VENDEDOR;
 		} else {
@@ -104,13 +105,13 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/registro/cliente")
-	public String processCreationFormCliente(@Valid Cliente cliente, BindingResult result, Map<String, Object> model) {
+	public String processCreationFormCliente(@Valid Cliente cliente, @Valid User user, BindingResult result, Map<String, Object> model) {
 		log.info("Entrando en la función Proceso Formulario de Cliente del controlador de User.");
 
 		if (result.hasErrors()) {
 			model.put("cliente", cliente);
-			if(result.getFieldError("user.password") != null) {
-				model.put("errores",result.getFieldError("user.password").getDefaultMessage());
+			if(result.getFieldError("password") != null) {
+				model.put("errores",result.getFieldError("password").getDefaultMessage());
 			}
 			return VIEWS_CREATE_FORM_CLIENTE;
 		} else {

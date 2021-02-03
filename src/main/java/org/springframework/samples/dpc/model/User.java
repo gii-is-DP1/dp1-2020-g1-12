@@ -20,6 +20,9 @@ public class User{
 	@ContrasenyaConstraint
 	String password;
 	
+	@ContrasenyaConstraint
+	String newPassword;
+	
 	boolean enabled;
 
 }

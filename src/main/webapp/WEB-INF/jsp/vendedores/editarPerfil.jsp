@@ -20,7 +20,7 @@
             <dpc:inputField label="Teléfono" name="telefono"/>
             <dpc:inputField label="Email" name="email"/>
             <dpc:inputField label="Contraseña" name="user.password"/>
-            <dpc:inputField label="Nueva contraseña" name="user.username"/>
+            <dpc:inputField label="Nueva contraseña" name="user.newPassword"/>
         </div>
         <input type="hidden" name="id" value="${vendedor.id}"/> 
         <input type="hidden" name="version" value="${vendedor.version}"/> 

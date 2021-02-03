@@ -81,15 +81,15 @@ public class VendedorService {
 	public void editar(Vendedor vendedor, Integer id) throws Exception{
 		Vendedor vendedorGuardado = findSellerById(id);
 		
-		if(!vendedor.getUser().getPassword().equals("") && !vendedor.getUser().getUsername().equals("")) {
+		if(!vendedor.getUser().getPassword().equals("") && !vendedor.getUser().getNewPassword().equals("")) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			if(passwordEncoder.matches(vendedor.getUser().getPassword(), vendedorGuardado.getUser().getPassword())) {
-				String cifrado = new BCryptPasswordEncoder().encode(vendedor.getUser().getUsername()); //esta sería la nueva contraseña, habría que mirar si  cumple con el patrón
+				String cifrado = new BCryptPasswordEncoder().encode(vendedor.getUser().getNewPassword()); //esta sería la nueva contraseña, habría que mirar si  cumple con el patrón
 				vendedorGuardado.getUser().setPassword(cifrado);
 			}else {
 				throw new ContrasenyaNoCoincideException();
 			}
-		}else if(vendedor.getUser().getPassword().equals("") && !vendedor.getUser().getUsername().equals("")) {
+		}else if(vendedor.getUser().getPassword().equals("") && !vendedor.getUser().getNewPassword().equals("")) {
 			throw new ContrasenyaNecesariaException();
 		}
 		vendedorGuardado.setApellido(vendedor.getApellido());

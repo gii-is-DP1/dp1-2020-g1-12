@@ -68,15 +68,15 @@ public class ClienteService {
 	public void editar(Cliente cliente, Integer id) throws Exception {
 		Cliente clienteGuardado = findClientById(id);
 		User clienteUser = cliente.getUser();
-		if(!clienteUser.getPassword().equals("") && !clienteUser.getUsername().equals("")) {
+		if(!clienteUser.getPassword().equals("") && !clienteUser.getNewPassword().equals("")) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			if(passwordEncoder.matches(clienteUser.getPassword(), clienteGuardado.getUser().getPassword())) {
-				String cifrado = new BCryptPasswordEncoder().encode(clienteUser.getUsername()); //esta sería la nueva contraseña, habría que mirar si cumple con el patrón
+				String cifrado = new BCryptPasswordEncoder().encode(clienteUser.getNewPassword()); //esta sería la nueva contraseña, habría que mirar si cumple con el patrón
 				clienteGuardado.getUser().setPassword(cifrado);
 			}else {
 				throw new ContrasenyaNoCoincideException();
 			}
-		}else if(clienteUser.getPassword().equals("") && !clienteUser.getUsername().equals("")) {
+		}else if(clienteUser.getPassword().equals("") && !clienteUser.getNewPassword().equals("")) {
 			throw new ContrasenyaNecesariaException();
 		}
 		clienteGuardado.setApellido(cliente.getApellido());

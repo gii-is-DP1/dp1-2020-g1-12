@@ -58,7 +58,7 @@ public class ClienteController {
 	}
 
 	@PostMapping(value = "/editar")
-	public String procesoEditar(@Valid Cliente cliente, BindingResult result,ModelMap model) throws Exception {
+	public String procesoEditar(@Valid Cliente cliente, @Valid User user, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Cliente.");
 		
 		if(!cliente.getVersion().equals(clienteService.getClienteDeSesion().getVersion())) {
@@ -68,9 +68,10 @@ public class ClienteController {
 		if (result.hasErrors()) {
 			log.warn("El formulario contiene errores.");
 			model.addAttribute("cliente", cliente);
-			if(result.getFieldError("user.password") != null) {
+			if(result.getFieldError("newPassword") != null) {
 				log.info("El error se produce en la contraseña.");
-				model.addAttribute("errores",result.getFieldError("user.password").getDefaultMessage());
+				log.warn(result.getAllErrors().toString());
+				model.addAttribute("errores",result.getFieldError("newPassword").getDefaultMessage());
 			}
 			return editPerfil;
 		} else {
@@ -80,7 +81,7 @@ public class ClienteController {
 			}catch(ContrasenyaNecesariaException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error relacionado con la contraseña.");
 
-	            result.rejectValue("user.username", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+	            result.rejectValue("user.newPassword", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
 	            return editPerfil;
 			}catch(ContrasenyaNoCoincideException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");
