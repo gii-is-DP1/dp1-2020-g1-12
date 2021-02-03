@@ -18,9 +18,11 @@ public class User{
 	String username;
 	
 	@ContrasenyaConstraint
+//	@Pattern(regexp = "^[0-9]{8,16}$")
 	String password;
 	
 	@ContrasenyaConstraint
+//	@Pattern(regexp = "^[0-9]{8,16}$")
 	String newPassword;
 	
 	boolean enabled;
