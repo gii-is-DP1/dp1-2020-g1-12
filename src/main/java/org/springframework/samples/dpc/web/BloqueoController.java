@@ -45,13 +45,11 @@ public class BloqueoController {
 
 		String vista;
 		if(!bloqueoService.findBlockById(bloqueoId).getVersion().equals(bloqueo.getVersion())) {
-			
-			return "redirect:/";
+			return "moderadores/editarBloqueo";
 		}
 		try {
-				this.bloqueoService.editar(bloqueo, bloqueoId, true);
-				vista = "redirect:/clientes";
-
+			this.bloqueoService.editar(bloqueo, bloqueoId, true);
+			vista = "redirect:/clientes";
 		} catch (BloquearSinDescripcionException e) {
 			log.warn("La función Proceso Bloquear ha lanzado la excepción BloquearSinDescpción.");
 

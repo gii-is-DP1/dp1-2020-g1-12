@@ -44,7 +44,7 @@ public class BloqueoService {
 	}
 	
 	@Transactional
-	public String usuarioBloqueadoMotivo(String username) throws UsuarioBloqueadoException {
+	public String usuarioBloqueadoMotivo(String username) {
 		String autoridad = userService.getAuthority(username);
 		String motivo = "";
 

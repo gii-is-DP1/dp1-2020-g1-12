@@ -24,7 +24,6 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.util.Pair;
 import org.springframework.samples.dpc.configuration.SecurityConfiguration;
 import org.springframework.samples.dpc.model.Articulo;
-import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Cesta;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.LineaCesta;
@@ -42,7 +41,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = PedidoController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 
-public class PedidoControllerTest {
+class PedidoControllerTest {
 
 	@MockBean
 	private PedidoService pedidoService;

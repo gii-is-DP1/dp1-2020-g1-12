@@ -35,7 +35,6 @@ public class CestaController {
 		modelMap.addAttribute("cesta", cesta);
 		return "clientes/cesta";
 	}
-
 	
 	@GetMapping("/anyadirArticulo/{articuloId}")
 	public String anyadirArticuloCesta(HttpServletRequest request, ModelMap modelMap,@PathVariable("articuloId") int articuloId) {
