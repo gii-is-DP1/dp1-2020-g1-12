@@ -21,6 +21,12 @@
             <petclinic:inputField label="Usuario" name="user.username"/>
             <petclinic:inputField label="Contraseña" name="user.password"/>
         </div>
+        <div>
+        	<c:if test="${errores != null}">
+				    <p style="color:red;"><c:out value="${errores}"></c:out></p>
+				   	<br>
+			</c:if>
+        </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
             	<button class="btn btn-default" type="submit">Registrarse</button>

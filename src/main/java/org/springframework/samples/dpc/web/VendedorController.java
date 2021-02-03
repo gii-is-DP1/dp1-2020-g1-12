@@ -83,6 +83,10 @@ public class VendedorController {
 		}
 		
 		if (result.hasErrors()) {
+			model.addAttribute("vendedor", vendedor);
+			if(result.getFieldError("user.password") != null) {
+				model.addAttribute("errores",result.getFieldError("user.password").getDefaultMessage());
+			}
 			return editPerfil;
 		} else {
 			try {

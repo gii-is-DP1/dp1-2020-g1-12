@@ -66,6 +66,12 @@ public class ClienteController {
 			return editar(model);
 		}
 		if (result.hasErrors()) {
+			log.warn("El formulario contiene errores.");
+			model.addAttribute("cliente", cliente);
+			if(result.getFieldError("user.password") != null) {
+				log.info("El error se produce en la contraseña.");
+				model.addAttribute("errores",result.getFieldError("user.password").getDefaultMessage());
+			}
 			return editPerfil;
 		} else {
 			try {
