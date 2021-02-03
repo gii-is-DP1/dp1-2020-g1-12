@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -39,6 +40,10 @@ public class Mensaje extends BaseEntity{
 	
 	@Column(name = "fechaEnvio")
 	private LocalDateTime fechaEnvio;
+	
+	@Column(name = "lectura")
+	@Pattern(regexp = "^[0-1]{2,2}$")
+	private String lectura;
 
 	public String getEmisor() {
 		return emisor;
@@ -86,5 +91,13 @@ public class Mensaje extends BaseEntity{
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public String getLectura() {
+		return lectura;
+	}
+
+	public void setLectura(String lectura) {
+		this.lectura = lectura;
 	}
 }

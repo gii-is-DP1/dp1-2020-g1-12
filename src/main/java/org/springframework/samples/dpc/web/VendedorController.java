@@ -1,5 +1,7 @@
 package org.springframework.samples.dpc.web;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.LineaPedidoService;
+import org.springframework.samples.dpc.service.MensajeService;
 import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
@@ -39,16 +42,20 @@ public class VendedorController {
 	private final ClienteService clienteService;
 	private final SolicitudService solicitudService;
 	private final LineaPedidoService lineaPedidoService;
+	private final MensajeService mensajeService;
+	
 	private static final String editPerfil = "vendedores/editarPerfil";
 
 	@Autowired
 	public VendedorController(VendedorService vendedorService, ArticuloService articuloService,
-			ClienteService clienteService, SolicitudService solicitudService, LineaPedidoService lineaPedidoService) {
+			ClienteService clienteService, SolicitudService solicitudService, LineaPedidoService lineaPedidoService,
+			MensajeService mensajeService) {
 		this.vendedorService = vendedorService;
 		this.articuloService = articuloService;
 		this.clienteService = clienteService;
 		this.solicitudService = solicitudService;
 		this.lineaPedidoService = lineaPedidoService;
+		this.mensajeService = mensajeService;
 	}
 
 	@GetMapping(value = "/perfil")
@@ -56,7 +63,7 @@ public class VendedorController {
 		log.info("Entrando en la función Mostrar Perfil del controlador de Vendedor.");
 
 		String perfil = "vendedores/perfil";
-		Vendedor optperfil = vendedorService.findSellerById(vendedorService.obtenerIdSesion());
+		Vendedor optperfil = vendedorService.getVendedorDeSesion();
 
 		modelMap.addAttribute("vendedor", optperfil);
 		return perfil;
@@ -66,7 +73,7 @@ public class VendedorController {
 	public String editar(ModelMap model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Vendedor.");
 
-		Vendedor vendedor = this.vendedorService.findSellerById(vendedorService.obtenerIdSesion());
+		Vendedor vendedor = vendedorService.getVendedorDeSesion();
 		User user = new User();
 		vendedor.setUser(user);
 		model.addAttribute(vendedor);
@@ -77,7 +84,7 @@ public class VendedorController {
 	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Vendedor.");
 
-		if(!vendedor.getVersion().equals(vendedorService.findSellerById(vendedor.getId()).getVersion())) {
+		if(!vendedor.getVersion().equals(vendedorService.getVendedorDeSesion().getVersion())) {
 			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
 			return editar(model);
 		}
@@ -111,7 +118,7 @@ public class VendedorController {
 	public String mostrarPerfilCliente(@PathVariable("clienteId") int clienteId, ModelMap modelMap) {
 		log.info("Entrando en la función Mostrar Perfil del Comprador del controlador de Vendedor.");
 
-		Cliente cliente = this.clienteService.findClientById(clienteId);
+		Cliente cliente = clienteService.findClientById(clienteId);
 		modelMap.addAttribute("cliente", cliente);
 		modelMap.remove(cliente.getDni());
 		return "vendedores/perfilCliente";
@@ -226,7 +233,10 @@ public class VendedorController {
 		// Guardo el parámetro de ordenación para que al cambiar de página se siga usando el filtro seleccionado
 		String signo = optarticulos.getSort().get().findAny().get().isAscending() ? "" : "-";
 		String ordenacion = signo + optarticulos.getSort().get().findAny().get().getProperty();
-		
+		if(optarticulos!=null) {
+			List<Integer> contadores = mensajeService.getMensajesNoLeidosVendedor(optarticulos.getContent());
+			modelMap.addAttribute("contadores", contadores);
+		}
 		modelMap.addAttribute("lineaPedido", optarticulos);
 		modelMap.addAttribute("ordenacion", ordenacion);
 		return vista;

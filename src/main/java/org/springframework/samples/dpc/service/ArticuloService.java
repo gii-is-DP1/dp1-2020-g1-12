@@ -25,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ArticuloService {
 
 	private ArticuloRepository articuloRepository;
+	private static final String cadenaArticulo = "articulo";
 	
 	@Autowired
 	public ArticuloService(ArticuloRepository articuloRepository) {
@@ -49,7 +50,7 @@ public class ArticuloService {
 
 	@Transactional
 	public Page<Articulo> articulosEnVentaByProvider(Integer id, Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
+		Pageable pageable = obtenerFiltros(page, size, orden, cadenaArticulo);
 		return articuloRepository.articulosEnVentaPorId(id, pageable);
 	}
 
@@ -65,7 +66,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Page<Articulo> articulosDisponibles(Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
+		Pageable pageable = obtenerFiltros(page, size, orden, cadenaArticulo);
 		return articuloRepository.articulosDisponibles(pageable);
 	}
 
@@ -87,7 +88,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosRelacionados(Articulo articulo) {
-		Pageable pageable = obtenerFiltros(0, (int) articuloRepository.count(), "-id", "articulo");
+		Pageable pageable = obtenerFiltros(0, (int) articuloRepository.count(), "-id", cadenaArticulo);
 		List<Articulo> relacionados = new ArrayList<>();
 		List<Articulo> articulos = articuloRepository.articulosDisponibles(pageable).getContent();
 		for (Articulo art : articulos) {
@@ -100,7 +101,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Page<Articulo> busqueda(Articulo articulo, Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
+		Pageable pageable = obtenerFiltros(page, size, orden, cadenaArticulo);
 		String busqueda = articulo.getModelo();
 		if (articulo.getGeneros() == null) {
 			return articuloRepository.articulosPorNombre(busqueda, pageable);
@@ -130,7 +131,7 @@ public class ArticuloService {
 	@Transactional(readOnly = true)
 	public Pageable obtenerFiltros(Integer page, Integer size, String orden, String caso) throws ResponseStatusException {
 		switch (caso) {
-		case "articulo":
+		case cadenaArticulo:
 			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("marca") && !orden.equals("-marca")
 					&& !orden.equals("precio") && !orden.equals("-precio")) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

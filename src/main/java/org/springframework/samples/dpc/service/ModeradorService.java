@@ -35,7 +35,7 @@ public class ModeradorService {
 	public void editar(Moderador moderador, Integer id) throws Exception {
 		Moderador moderadorGuardado = findModeradorById(id);
 		User moderadorUser = moderador.getUser();
-		if(moderadorUser.getPassword() != "" && moderadorUser.getUsername() != "") {
+		if(!moderadorUser.getPassword().equals("") && !moderadorUser.getUsername().equals("")) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			if(passwordEncoder.matches(moderadorUser.getPassword(), moderadorGuardado.getUser().getPassword())) {
 				String cifrado = new BCryptPasswordEncoder().encode(moderadorUser.getUsername());
@@ -43,7 +43,7 @@ public class ModeradorService {
 			} else {
 				throw new ContrasenyaNoCoincideException();
 			}
-		} else if(moderadorUser.getPassword() == "" && moderadorUser.getUsername() != "") {
+		} else if(moderadorUser.getPassword().equals("") && !moderadorUser.getUsername().equals("")) {
 			throw new ContrasenyaNecesariaException();
 		}
 		moderadorGuardado.setNombre(moderador.getNombre());

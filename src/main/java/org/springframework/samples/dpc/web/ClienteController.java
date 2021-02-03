@@ -41,7 +41,7 @@ public class ClienteController {
 		log.info("Entrando en la función Mostrar Perfil del controlador de Cliente.");
 
 		String  perfil="clientes/perfil";
-		Cliente optperfil = clienteService.findClientById(clienteService.obtenerIdSesion());		
+		Cliente optperfil = clienteService.getClienteDeSesion();		
 		modelMap.addAttribute("cliente", optperfil);
 		return perfil;
 	}
@@ -50,7 +50,7 @@ public class ClienteController {
 	public String editar(ModelMap model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Cliente.");
 
-		Cliente cliente = this.clienteService.findClientById(clienteService.obtenerIdSesion());
+		Cliente cliente = clienteService.getClienteDeSesion();
 		User user = new User();
 		cliente.setUser(user);
 		model.addAttribute(cliente);
@@ -61,7 +61,7 @@ public class ClienteController {
 	public String procesoEditar(@Valid Cliente cliente, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Cliente.");
 		
-		if(!cliente.getVersion().equals(clienteService.findClientById(cliente.getId()).getVersion())) {
+		if(!cliente.getVersion().equals(clienteService.getClienteDeSesion().getVersion())) {
 			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
 			return editar(model);
 		}

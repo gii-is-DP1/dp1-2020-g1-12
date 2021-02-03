@@ -35,14 +35,14 @@
         <tr>
         	<th style="width: 50px;">Fecha</th>
             <th style="width: 180px;">Artículo</th>
-            <th style="width: 120px;">Comprador</th>
-            <th style="width: 80px">Cantidad</th>
-            <th style="width: 50px">Estado</th>
-            <th style="width: 100px">Acciones</th>
+            <th style="width: 100px;">Comprador</th>
+            <th style="width: 30px">Cantidad</th>
+            <th style="width: 30px">Estado</th>
+            <th style="width: 110px">Acciones</th>
         </tr>
         </thead>
         <tbody>
-      <c:forEach items="${lineaPedido.getContent()}" var="lp">
+      <c:forEach items="${lineaPedido.getContent()}" var="lp" varStatus="status">
             <tr>
             	<td>
                     <c:out value="${lp.pedido.fecha}"/>
@@ -63,7 +63,7 @@
                     </a>
                 </td>
                 <td>
-                    <c:out value="${lp.cantidad}"/>
+                    <c:out value="${lp.cantidad} unidades"/>
                 </td>
                 <td>
                 	<c:if test="${lp.estado == 'EnReparto'}">
@@ -85,8 +85,10 @@
 						<spring:param name="id" value="${lp.pedido.cliente.id}"/>
 						<spring:param name="rol" value="vendedor"/>
 					</spring:url>
-							<a href="javascript:ventana('${fn:escapeXml(articuloUrl)}')"><button title="Si tienes algún problema puedes inicar un chat con el vendedor" 
-							class="btn btn-default" >Chat</button></a>
+					<a href="javascript:ventana('${fn:escapeXml(articuloUrl)}')"><button title="Si tienes algún problema puedes inicar un chat con el vendedor" 
+						class="btn btn-default" >Chat</button></a>
+					<span class="badge badge-pill badge-success">
+                    	<strong>${contadores[status.index]}</strong></span>
                 </td>
             </tr>
         </c:forEach> 

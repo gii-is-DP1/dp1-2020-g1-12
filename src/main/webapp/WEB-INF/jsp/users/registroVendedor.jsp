@@ -19,7 +19,11 @@
             <petclinic:inputField label="Teléfono" name="telefono"/>
             <petclinic:inputField label="Email" name="email"/>
             <petclinic:inputField label="Usuario" name="user.username"/>
-            <petclinic:inputField label="Contraseña" name="user.password"/>
+             <label class="col-sm-2 control-label" for="user.password">Contraseña</label>
+			<div class="col-sm-10">
+	            <input type="password" name="user.password"/>
+	  			<br>
+	  		</div>
         </div>
         <div>
         	<c:if test="${errores != null}">

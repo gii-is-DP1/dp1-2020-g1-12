@@ -67,8 +67,7 @@ class ModeradorControllerTests {
 		moderador.setDni("12345678");
 		moderador.setTelefono("610111214");
 		
-		given(this.moderadorService.findModeradorById(TEST_MODERADOR_ID)).willReturn(moderador);
-		given(this.moderadorService.obtenerIdSesion()).willReturn(TEST_MODERADOR_ID);
+		given(this.moderadorService.getModeradorDeSesion()).willReturn(moderador);
 	}
 	
 	@WithMockUser(value = "spring")
@@ -102,4 +101,13 @@ class ModeradorControllerTests {
 		.param("dni", "12345678").param("telefono", "678901234").with(csrf())).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("moderadores/editarPerfil"));
 	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoEditarConErroresVersiones() throws Exception {
+		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","2").param("nombre", "Pepe")
+		.param("apellido", "López").param("direccion", "C/Real 10")
+		.param("dni", "12345678").param("telefono", "678901234").with(csrf())).andExpect(status().is2xxSuccessful())
+		.andExpect(view().name("moderadores/editarPerfil"));
+	}
+	
 }
