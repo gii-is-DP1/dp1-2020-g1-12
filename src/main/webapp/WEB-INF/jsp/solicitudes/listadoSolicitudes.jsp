@@ -6,7 +6,7 @@
 <%@ taglib prefix="dpc" tagdir="/WEB-INF/tags" %>
 
 <dpc:layout pageName="solicitudes">
-    
+    ${message}
 	<form action="/solicitudes?" method="get">
 		<div style="float:right">
 			<input type="hidden" name="page" value="${solicitudes.getNumber()}"/>

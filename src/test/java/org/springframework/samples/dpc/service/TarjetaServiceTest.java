@@ -34,7 +34,7 @@ public class TarjetaServiceTest {
 	void testBuscarTarjetaId() {
 		TarjetaCredito tarjeta = tarjetaService.findTarjetaById(TARJETA_ID);
 		assertThat(tarjeta.getTitular().split(" ")[0]).isEqualTo("Juan");
-		assertThat(tarjeta.getNumero()).isEqualTo("1234567899876087");
+		assertThat(tarjeta.getNumero()).isEqualTo("4572240486955232");
 		assertThat(tarjeta.getCvv()).isEqualTo("442");
 		assertThat(tarjeta.getFechaCaducidad().split("/")[0]).isEqualTo("03");
 		assertThat(tarjeta.getFechaCaducidad().split("/")[1]).isEqualTo("22");

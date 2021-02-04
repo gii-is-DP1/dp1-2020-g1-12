@@ -100,14 +100,18 @@
 		                    	<c:out value="${articulo.oferta.porcentaje}%"/>
 		                	</td>
 		                	<td>
-						 		<spring:url value="/vendedores/ofertas/desofertar/{ofertaId}/articulo/{articuloId}" 
+		                		<form:form modelAttribute="articulo.oferta" action="/vendedores/ofertas/desofertar/${articulo.oferta.id}/articulo/${articulo.id}" class="form-horizontal" id="add-owner-form">
+									<input type="hidden" name="version" value="${articulo.oferta.version}"/> 
+									<button class="btn btn-default" type="submit">Eliminar</button>
+	   							</form:form>
+			<%-- 			 		<spring:url value="/vendedores/ofertas/desofertar/{ofertaId}/articulo/{articuloId}" 
 						 			var="ofertaArticuloUrl">
 						              <spring:param name="ofertaId" value="${articulo.oferta.id}"/>
 						              <spring:param name="articuloId" value="${articulo.id}"/>
 						        </spring:url>
 								<a href="${fn:escapeXml(ofertaArticuloUrl)}">
 									<button class="btn btn-default" type="submit">Eliminar</button>
-								</a>
+								</a> --%>
 					        </td>
 	               		</c:when>
 						<c:otherwise>
