@@ -70,11 +70,9 @@ public class ComentarioService {
 	}
 
 	@Transactional
-	public Boolean puedeEditarCliente(Integer articuloId, Integer comentarioId) {
-		String autoridad = userService.getAuthority();
-
-		return !autoridad.equals("anonymous") && (autoridad.equals("cliente") && articuloService
-				.findArticuloById(articuloId).getComentarios().stream().anyMatch(x -> x.getId().equals(comentarioId)));
+	public Integer puedeEditarCliente(Integer articuloId) {
+		Integer c = clienteService.obtenerIdSesion();
+		return c;
 
 	}
 

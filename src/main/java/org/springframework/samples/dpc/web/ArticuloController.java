@@ -75,6 +75,8 @@ public class ArticuloController {
 		Boolean puedeComentar = comentarioService.puedeComentar(articuloId);
 		Double valoracion = comentarioService.getValoracionDeUnArticulo(articuloId);
 		Boolean puedeComprar = cestaService.articuloEnCesta(articuloId);
+		Integer puedeEditarCliente = comentarioService.puedeEditarCliente(articuloId);
+//		Boolean puedeEditarVendedor = comentarioService.puedeEditarVendedor(articuloId);
 
 		modelMap.addAttribute(generos, generoService.findAllGeneros());
 		modelMap.addAttribute("articulo", articulo);
@@ -85,6 +87,8 @@ public class ArticuloController {
 		modelMap.addAttribute("puedeComprar", puedeComprar);
 		modelMap.addAttribute("comentarios", comentarios);
 		modelMap.addAttribute("relacionados", relacionados);
+		modelMap.addAttribute("puedeEditarCliente", puedeEditarCliente);
+//		modelMap.addAttribute("puedeEditarVendedor", puedeEditarVendedor);
 		return "articulos/detalles";
 	}
 

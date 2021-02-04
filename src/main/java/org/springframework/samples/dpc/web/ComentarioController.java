@@ -85,6 +85,30 @@ public class ComentarioController {
 		if (comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
 			comentarioService.editar(comentario, comentarioId);
 		}
-		return "redirect:/articulos/{articuloId}";
+		return editCommentView;
+	}
+
+	@PostMapping(value = "/editar/{comentarioId}/articulo/{articuloId}")
+	public String procesoEditarComentario(@PathVariable("comentarioId") int comentarioId,
+			@PathVariable("articuloId") int articuloId, Model model, BindingResult result) {
+		log.info("Entrando en la función Proceso Editar un Comentario del controlador de Comentario.");
+
+		String vista;
+		if (result.hasErrors()) {
+			model.addAttribute("comentario", comentarioService.findCommentById(comentarioId));
+			vista = editCommentView;
+		} else {
+			try {
+				this.comentarioService.guardarComentario(comentarioService.findCommentById(comentarioId), articuloId);
+			} catch (ComentarioProhibidoException e) {
+				log.warn("La función Proceso Editar un Comentario ha lanzado la excepción ComentarioProhibido.");
+
+				result.rejectValue("descripcion", "errónea", "No puedes publicar un comentario si no "
+						+ "eres el vendedor del artículo o no lo has comprado previamente.");
+				return editCommentView;
+			}
+			vista = "redirect:/articulos/{articuloId}";
+		}
+		return vista;
 	}
 }

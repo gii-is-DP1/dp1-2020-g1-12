@@ -174,16 +174,14 @@
 							style="color: #F03232; text-decoration: none" href="${fn:escapeXml(eliminarComentarioUrl)}">
 							</a>
 						</sec:authorize>
-						<c:if test="${puedeEditarCliente == true}">
-						<sec:authorize access="hasAuthority('cliente')"> 
+						<c:if test="${puedeEditarCliente==comentario.cliente.id}">
 							<spring:url value="/editar/{comentarioId}/articulo/{articuloId}" var="comentarioEditarCliente">
 								<spring:param name="comentarioId" value="${comentario.id}"/>
 		   						<spring:param name="articuloId" value="${articulo.id}"/>
 							</spring:url>
 							<a onclick="return editar()" class="glyphicon glyphicon-pencil" 
-							style="color: #F03232; text-decoration: none" href="${fn:escapeXml(comentarioEditarCliente)}">
+							style="color: #000000; text-decoration: none" href="${fn:escapeXml(comentarioEditarCliente)}">
 							</a>
-						</sec:authorize>
 						</c:if>
 					</legend>	
 					<p><c:out value="Valoración: "></c:out>
