@@ -8,8 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.samples.dpc.model.Comentario;
 
 public interface ComentarioRepository extends CrudRepository<Comentario, Integer> {
-	
+
 	@Query("select u from Comentario u where u.articulo.id = :articuloId")
 	List<Comentario> findByArticulo(@Param("articuloId") int articuloId);
 
+	@Query("select u from Comentario u where u.id = :id")
+	Comentario obtenerById(@Param("id") int id);
 }

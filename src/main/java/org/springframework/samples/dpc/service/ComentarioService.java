@@ -41,6 +41,11 @@ public class ComentarioService {
 		return (comentarioRepository.findById(id).isPresent()) ? comentarioRepository.findById(id).get() : null;
 	}
 
+	@Transactional
+	public Comentario findById(int id) {
+		return comentarioRepository.obtenerById(id);
+	}
+
 	@Transactional()
 	public void eliminarComentario(Comentario comentario) throws DataAccessException {
 		articuloService.eliminarComentario(comentario.getArticulo(), comentario);
@@ -48,8 +53,8 @@ public class ComentarioService {
 	}
 
 	@Transactional(rollbackFor = ComentarioProhibidoException.class)
-	public void editar(Comentario comentario, Integer id) throws Exception {
-		Comentario comentarioGuardado = findCommentById(id);
+	public void editar(Comentario comentario, Integer id) throws ComentarioProhibidoException {
+		Comentario comentarioGuardado = findById(id);
 		comentarioGuardado.setDescripcion(comentario.getDescripcion());
 		comentarioGuardado.setValoracion(comentario.getValoracion());
 	}
@@ -72,9 +77,9 @@ public class ComentarioService {
 	}
 
 	@Transactional
-	public Boolean puedeEditarVendedor(Integer comentarioId) {
+	public Integer puedeEditarVendedor(Integer comentarioId) {
 		Integer vendedor = vendedorService.obtenerIdSesion();
-		return findCommentById(comentarioId).getVendedor().getId() == vendedor;
+		return vendedor;
 	}
 
 	@Transactional(rollbackFor = ComentarioProhibidoException.class)
