@@ -82,24 +82,24 @@ public class ComentarioController {
 			@PathVariable("articuloId") int articuloId, Model model) throws Exception {
 		log.info("Entrando en la función Actualizar un Comentario del controlador de Comentario.");
 		Comentario comentario = comentarioService.findCommentById(comentarioId);
-		if (comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
-			comentarioService.editar(comentario, comentarioId);
-		}
+//		if (comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
+//			comentarioService.editar(comentario, comentarioId);
+//		}
+		model.addAttribute(comentario);
 		return editCommentView;
 	}
 
 	@PostMapping(value = "/editar/{comentarioId}/articulo/{articuloId}")
 	public String procesoEditarComentario(@PathVariable("comentarioId") int comentarioId,
-			@PathVariable("articuloId") int articuloId, Model model, BindingResult result) {
+			@PathVariable("articuloId") int articuloId, Model model, BindingResult result) throws Exception {
 		log.info("Entrando en la función Proceso Editar un Comentario del controlador de Comentario.");
-
-		String vista;
 		if (result.hasErrors()) {
-			model.addAttribute("comentario", comentarioService.findCommentById(comentarioId));
-			vista = editCommentView;
+//			model.addAttribute("comentario", comentarioService.findCommentById(comentarioId));
+			return editCommentView;
 		} else {
 			try {
-				this.comentarioService.guardarComentario(comentarioService.findCommentById(comentarioId), articuloId);
+				this.comentarioService.editar(comentarioService.findCommentById(comentarioId), comentarioId);
+				return "redirect:/articulos/{articuloId}";
 			} catch (ComentarioProhibidoException e) {
 				log.warn("La función Proceso Editar un Comentario ha lanzado la excepción ComentarioProhibido.");
 
@@ -107,8 +107,8 @@ public class ComentarioController {
 						+ "eres el vendedor del artículo o no lo has comprado previamente.");
 				return editCommentView;
 			}
-			vista = "redirect:/articulos/{articuloId}";
+
 		}
-		return vista;
+
 	}
 }

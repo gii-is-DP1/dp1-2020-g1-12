@@ -6,14 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.dpc.model.Articulo;
-import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.Comentario;
-import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.repository.ComentarioRepository;
 import org.springframework.samples.dpc.service.exceptions.ComentarioProhibidoException;
-import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
-import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
