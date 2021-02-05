@@ -3,9 +3,9 @@ package org.springframework.samples.dpc.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.samples.dpc.util.ContrasenyaConstraint;
 
 import lombok.Data;
 
@@ -17,12 +17,8 @@ public class User{
 	@Length(min = 3, max = 20, message = "El usuario debe estar comprendido entre 3 y 20 caracteres")
 	String username;
 	
-	@ContrasenyaConstraint
-//	@Pattern(regexp = "^[0-9]{8,16}$")
 	String password;
 	
-	@ContrasenyaConstraint
-//	@Pattern(regexp = "^[0-9]{8,16}$")
 	String newPassword;
 	
 	boolean enabled;

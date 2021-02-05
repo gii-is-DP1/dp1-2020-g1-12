@@ -21,6 +21,7 @@ import org.springframework.samples.dpc.service.SolicitudService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoValidaException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -81,7 +82,7 @@ public class VendedorController {
 	}
 
 	@PostMapping(value = "/editar")
-	public String procesoEditar(@Valid Vendedor vendedor, @Valid User user, BindingResult result,ModelMap model) throws Exception {
+	public String procesoEditar(@Valid Vendedor vendedor, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Vendedor.");
 
 		if(!vendedor.getVersion().equals(vendedorService.getVendedorDeSesion().getVersion())) {
@@ -90,19 +91,20 @@ public class VendedorController {
 		}
 		
 		if (result.hasErrors()) {
-			model.addAttribute("vendedor", vendedor);
-			if(result.getFieldError("password") != null) {
-				model.addAttribute("errores",result.getFieldError("password").getDefaultMessage());
-			}
 			return editPerfil;
 		} else {
 			try {
 				this.vendedorService.editar(vendedor, vendedorService.obtenerIdSesion());
 				return "redirect:/vendedores/perfil";				
+			}catch (ContrasenyaNoValidaException e) {
+				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya No Válida");
+
+				result.rejectValue("user.newPpassword", "erronea", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
+				return editPerfil;
 			}catch(ContrasenyaNecesariaException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error relacionado con la contraseña.");
 
-	            result.rejectValue("user.newPassword", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+	            result.rejectValue("user.password", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
 	            return editPerfil;
 			}catch(ContrasenyaNoCoincideException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");

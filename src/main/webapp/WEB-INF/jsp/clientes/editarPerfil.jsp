@@ -23,10 +23,6 @@
         </div>
         <input type="hidden" name="id" value="${cliente.id}"/> 
         <input type="hidden" name="version" value="${cliente.version}"/> 
-        <c:if test="${errores != null}">
-				    <p style="color:red;"><c:out value="${errores}"></c:out></p>
-				   	<br>
-			</c:if>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
 				<button class="btn btn-default" type="submit">Guardar</button>

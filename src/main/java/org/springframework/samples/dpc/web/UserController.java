@@ -25,6 +25,8 @@ import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoValidaException;
 import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -74,22 +76,30 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/registro/vendedor")
-	public String processCreationFormVendedor(@Valid Vendedor vendedor, @Valid User user, BindingResult result, Map<String, Object> model) {
+	public String processCreationFormVendedor(@Valid Vendedor vendedor, BindingResult result, Map<String, Object> model) {
 		log.info("Entrando en la función Proceso Formulario de Vendedor del controlador de User.");
 
 		if (result.hasErrors()) {
-			model.put("vendedor", vendedor);
-			if(result.getFieldError("password") != null) {
-				model.put("errores",result.getFieldError("password").getDefaultMessage());
-			}
 			return VIEWS_CREATE_FORM_VENDEDOR;
 		} else {
 			try {
 				this.vendedorService.registroVendedor(vendedor);
 			} catch (UsernameDuplicadoException e) {
 				log.warn("La función Proceso Formulario de Vendedor ha lanzado la excepción Username Duplicado");
-				model.put("message", "El nombre de usuario introducido ya está en uso o no es válido. Por favor, seleccione otro");
+				result.rejectValue("user.username", "errónea", "El nombre de usuario introducido ya está en uso o no es válido. Por favor, seleccione otro");
+//				model.put("message", "El nombre de usuario introducido ya está en uso o no es válido. Por favor, seleccione otro");
 				return VIEWS_CREATE_FORM_VENDEDOR;
+			} catch (ContrasenyaNoValidaException e) {
+				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya No Válida");
+				result.rejectValue("user.password", "erronea", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
+//				model.put("message", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres"
+//						+ " y al menos una mayúscula, una minúscula y un dígito.");
+				return VIEWS_CREATE_FORM_VENDEDOR;
+			} catch (ContrasenyaNoCoincideException e) {
+				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");
+
+	            result.rejectValue("user.newPassword", "errónea", "La contraseña introducida no coincide con la de la cuenta.");
+	            return VIEWS_CREATE_FORM_VENDEDOR;
 			}
 			return "redirect:/login";
 		}
@@ -105,22 +115,30 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/registro/cliente")
-	public String processCreationFormCliente(@Valid Cliente cliente, @Valid User user, BindingResult result, Map<String, Object> model) {
+	public String processCreationFormCliente(@Valid Cliente cliente, BindingResult result, Map<String, Object> model) {
 		log.info("Entrando en la función Proceso Formulario de Cliente del controlador de User.");
 
 		if (result.hasErrors()) {
-			model.put("cliente", cliente);
-			if(result.getFieldError("password") != null) {
-				model.put("errores",result.getFieldError("password").getDefaultMessage());
-			}
 			return VIEWS_CREATE_FORM_CLIENTE;
 		} else {
 			try {
 				this.clienteService.registroCliente(cliente);
 			} catch (UsernameDuplicadoException e) {
 				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Username Duplicado");
-				model.put("message", "El nombre de usuario introducido ya está en uso o no es válido. Por favor, seleccione otro");
+				result.rejectValue("user.username", "errónea", "El nombre de usuario introducido ya está en uso o no es válido. Por favor, seleccione otro");
+//				model.put("message", "El nombre de usuario introducido ya está en uso o no es válido. Por favor, seleccione otro");
 				return VIEWS_CREATE_FORM_CLIENTE;
+			} catch (ContrasenyaNoValidaException e) {
+				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya No Válida");
+				result.rejectValue("user.password", "erronea", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
+//				model.put("message", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres"
+//						+ " y al menos una mayúscula, una minúscula y un dígito.");
+				return VIEWS_CREATE_FORM_CLIENTE;
+			} catch (ContrasenyaNoCoincideException e) {
+				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");
+				
+	            result.rejectValue("user.newPassword", "errónea", "La contraseña introducida no coincide con la de la cuenta.");
+	            return VIEWS_CREATE_FORM_CLIENTE;
 			}
 			return "redirect:/login";
 		}

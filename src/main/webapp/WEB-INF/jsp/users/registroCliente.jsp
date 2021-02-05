@@ -22,14 +22,11 @@
             <label class="col-sm-2 control-label" for="user.password">Contraseña</label>
 			<div class="col-sm-10">
 	            <input type="password" name="user.password"/>
-	  			<br>
 	  		</div>
-        </div>
-        <div>
-        	<c:if test="${errores != null}">
-				    <p style="color:red;"><c:out value="${errores}"></c:out></p>
-				   	<br>
-			</c:if>
+	  		<label class="col-sm-2 control-label" for="user.newPassword">Confirmar contraseña</label>
+			<div class="col-sm-10">
+	            <input type="password" name="user.newPassword"/>
+	  		</div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
