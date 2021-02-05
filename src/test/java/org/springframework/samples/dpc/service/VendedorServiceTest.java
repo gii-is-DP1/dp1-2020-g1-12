@@ -37,7 +37,7 @@ class VendedorServiceTest {
 
 	@Test
 	@Transactional
-	void shouldInsertVendedor() throws UsernameDuplicadoException {
+	void shouldInsertVendedor() throws Exception {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
 		vend.setNombre("Quique");

@@ -31,7 +31,7 @@ class ClienteServiceTest {
 	}
 
 	@Test
-	void shouldInsertcliente() throws UsernameDuplicadoException {
+	void shouldInsertcliente() throws Exception {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
 		c.setNombre("Quique");

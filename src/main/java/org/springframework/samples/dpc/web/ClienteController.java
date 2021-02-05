@@ -12,6 +12,7 @@ import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoValidaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaParecidaUsuarioException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -73,7 +74,7 @@ public class ClienteController {
 				this.clienteService.editar(cliente, clienteService.obtenerIdSesion());
 				return "redirect:/clientes/perfil";
 			}catch (ContrasenyaNoValidaException e) {
-				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya No Válida");
+				log.warn("La función Proceso Editar Perfil ha lanzado la excepción Contrasenya No Válida");
 				
 				result.rejectValue("user.newPassword", "erronea", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
 				return editPerfil;
@@ -87,6 +88,11 @@ public class ClienteController {
 
 	            result.rejectValue("user.password", "errónea", "La contraseña introducida no coincide con la de la cuenta.");
 	            return editPerfil;
+			}catch(ContrasenyaParecidaUsuarioException e) {
+				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya Parecida Usuario.");
+				
+				result.rejectValue("user.newPassword", "errónea", "La contraseña no puede ser idéntica al nombre de usuario.");
+				return editPerfil;
 			}
 		}
 	}
