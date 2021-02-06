@@ -24,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 class CestaSecurityTest {
 	private static final int TEST_ARTICULO_ID = 1;
+	private static final int TEST_LINEA_ID = 1;
 
 	@Autowired
 	private WebApplicationContext context;
@@ -38,7 +39,7 @@ class CestaSecurityTest {
 	.build();
 	}
 	
-	@WithMockUser(username ="cliente2",authorities = {"cliente"})
+	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
     void testAnyadirArticuloCesta() throws Exception {
 		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().is3xxRedirection())
@@ -69,6 +70,7 @@ class CestaSecurityTest {
 	void testActualizarCestaVendedor() throws Exception {
 		mockMvc.perform(post("/cesta/actualizar").with(csrf())).andExpect(status().isForbidden());
 	}
+	
 	
 	@WithMockUser(username ="cliente2",authorities = {"cliente"})
     @Test
