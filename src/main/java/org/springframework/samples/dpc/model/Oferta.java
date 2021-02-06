@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "ofertas")
@@ -16,6 +17,7 @@ public class Oferta extends BaseEntity{
 	@Column(name = "porcentaje")
 	@Min(5)
 	@Max(70)
+	@NotNull(message = "El porcentaje no puede estar vacío.")
 	private Integer porcentaje;
 
 	public boolean isDisponibilidad() {

@@ -39,7 +39,6 @@ class GeneroServiceTest {
 	
 	@Test
 	void testAnyadirGenero() {
-		
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = generoService.findGeneroById(GENERO_ID2);
 		assertThat(art.getGeneros()).doesNotContain(genero);
@@ -50,7 +49,6 @@ class GeneroServiceTest {
 	
 	@Test
 	void testAnyadirGeneroNull() {
-		
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = new Genero();
 		genero.setId(null);
