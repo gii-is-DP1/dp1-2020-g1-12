@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -69,6 +70,35 @@ class CestaSecurityTest {
 		mockMvc.perform(post("/cesta/actualizar").with(csrf())).andExpect(status().isForbidden());
 	}
 	
+	@WithMockUser(username ="cliente2",authorities = {"cliente"})
+    @Test
+	void testEliminarArticuloCesta() throws Exception {
+		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/cesta"));
+	}
 	
+	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
+    @Test
+	void testEliminarArticuloCestaVendedor() throws Exception {
+		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+	}
+	
+	@WithMockUser(username ="cliente1",authorities = {"cliente"})
+    @Test
+	void testListadoCesta() throws Exception {
+		mockMvc.perform(get("/cesta")).andExpect(status().isOk()).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name("clientes/cesta"));
+	}
 
+	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
+    @Test
+	void testListadoCestaVendedor() throws Exception {
+		mockMvc.perform(get("/cesta")).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+	}
+	
+	@WithMockUser(username ="moderador1",authorities = {"moderador"})
+    @Test
+	void testListadoCestaModerador() throws Exception {
+		mockMvc.perform(get("/cesta")).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+	}
 }
