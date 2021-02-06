@@ -97,11 +97,9 @@ public class ComentarioService {
 		return comentarioRepository.findByArticulo(articuloId);
 	}
 	
-	
 	@Transactional
 	public Double getValoracionDeUnArticulo(Integer articuloId) {
 		return getComentariosDeUnArticulo(articuloId).stream().filter(x -> x.getValoracion() != 0)
 				.collect(Collectors.averagingDouble(Comentario::getValoracion));
 	}
-	
 }
