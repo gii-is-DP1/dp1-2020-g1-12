@@ -27,8 +27,6 @@
 			<div class="col-sm-2">
 	            <input type="password" name="user.newPassword"/>
 	  		</div> 
-<!--        <dpc:inputField label="Contraseña" name="user.password"/>
-            <dpc:inputField label="Nueva contraseña" name="user.newPassword"/>  -->
         </div>
         <input type="hidden" name="id" value="${vendedor.id}"/> 
         <input type="hidden" name="version" value="${vendedor.version}"/> 
