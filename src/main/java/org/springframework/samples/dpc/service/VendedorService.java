@@ -74,7 +74,7 @@ public class VendedorService {
 		if(!usuario.getPassword().equals(usuario.getNewPassword())) {
 			throw new ContrasenyaNoCoincideException();
 		}
-		if(usuario.getNewPassword().equals(usuario.getUsername())) {
+		if(usuario.getPassword().equals(usuario.getUsername())) {
 			throw new ContrasenyaParecidaUsuarioException();
 		}
 		String cifrado = new BCryptPasswordEncoder().encode(usuario.getPassword());
