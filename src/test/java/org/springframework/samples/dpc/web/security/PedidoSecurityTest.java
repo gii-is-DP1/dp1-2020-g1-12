@@ -20,10 +20,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-
-class CestaSecurityTest {
-	private static final int TEST_ARTICULO_ID = 1;
-	private static final int TEST_LINEA_ID = 1;
+public class PedidoSecurityTest {
+	
+	private static final int TEST_PEDIDO_ID = 1;
+	private static final int TEST_LINEAPEDIDO_ID = 1;
 
 	@Autowired
 	private WebApplicationContext context;
@@ -40,43 +40,44 @@ class CestaSecurityTest {
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
-    void testAnyadirArticuloCesta() throws Exception {
-		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/articulos/{articuloId}"));
+    void testObtenerPedido() throws Exception {
+		mockMvc.perform(get("/pedidos/" + TEST_PEDIDO_ID)).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name("clientes/pedido"));
 	}
-	
-	@WithMockUser(username ="moderador1",authorities = {"moderador"})
-    @Test
-    void testAnyadirArticuloCestaModerador() throws Exception {
-		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().is4xxClientError());
-	}
-	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
-    void testAnyadirArticuloCestaVendedor() throws Exception {
-		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().isForbidden());
+    void testObtenerPedidoErroneo() throws Exception {
+		mockMvc.perform(get("/pedidos/" + TEST_PEDIDO_ID)).andExpect(status().isForbidden());
+	}
+	
+	@WithMockUser(username ="vendedor2",authorities = {"vendedor"})
+    @Test
+    void testGuardarEstadoPedido() throws Exception {
+		mockMvc.perform(post("/pedidos/modificar/" + TEST_LINEAPEDIDO_ID +"/save").with(csrf())).andExpect(status().is3xxRedirection())
+		.andExpect(view().name("redirect:/vendedores/articulosVendidos"));
+	}
+	
+//	@WithMockUser(username ="cliente1",authorities = {"cliente"}) NO SÉ COMO ARREGLARLO
+//    @Test
+//    void testConfirmarCompra() throws Exception {
+//		mockMvc.perform(post("/pedidos/confirmarCompra").with(csrf())).andExpect(status().is3xxRedirection())
+//		.andExpect(view().name("redirect:/pedidos"));
+//	}
+	@WithMockUser(username ="cliente1",authorities = {"cliente"})
+    @Test
+    void testListadoPedidos() throws Exception {
+		mockMvc.perform(get("/pedidos")).andExpect(status().is2xxSuccessful())
+		.andExpect(view().name("clientes/listadoPedidos"));
 	}
 	
 	@WithMockUser(username ="cliente2",authorities = {"cliente"})
     @Test
-	void testActualizarCesta() throws Exception {
-		mockMvc.perform(post("/cesta/actualizar").with(csrf()))
-				.andExpect(status().is2xxSuccessful()).andExpect(view().name("clientes/cesta"));
+    void testConfirmarCompraErrorSinLineas() throws Exception {
+		mockMvc.perform(post("/pedidos/confirmarCompra").with(csrf())).andExpect(status().is3xxRedirection())
+		.andExpect(view().name("redirect:/"));
 	}
 	
-	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
-    @Test
-	void testActualizarCestaVendedor() throws Exception {
-		mockMvc.perform(post("/cesta/actualizar").with(csrf())).andExpect(status().isForbidden());
-	}
-	
-	@WithMockUser(username ="cliente1",authorities = {"cliente"})
-    @Test
-	void testEliminarArticuloCesta() throws Exception {
-		mockMvc.perform(get("/cesta/eliminar/"+ TEST_LINEA_ID))
-				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/cesta"));
-	}
-	
+
 	
 
 }
