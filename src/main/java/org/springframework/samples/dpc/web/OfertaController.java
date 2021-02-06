@@ -48,8 +48,7 @@ public class OfertaController {
 		if (result.hasErrors()) {
 			return "vendedores/editarOferta";
 		} else {
-			if(oferta.getPorcentaje()!=null) 
-				this.ofertaService.editar(oferta, ofertaId, true);	
+			this.ofertaService.editar(oferta, ofertaId, true);	
 			return "redirect:/vendedores/articulo/{articuloId}";
 		}
 	}

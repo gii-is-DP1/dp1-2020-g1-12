@@ -12,6 +12,8 @@ import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.repository.ClienteRepository;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoValidaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaParecidaUsuarioException;
 import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,11 +47,20 @@ public class ClienteService {
 	public void guardar(Cliente cliente) {
 		clienteRepository.save(cliente);
 	}
-	@Transactional(rollbackFor=UsernameDuplicadoException.class)
-	public void registroCliente(Cliente cliente) throws UsernameDuplicadoException {
+	@Transactional(rollbackFor= {UsernameDuplicadoException.class, ContrasenyaNoValidaException.class, ContrasenyaNoCoincideException.class, ContrasenyaNoCoincideException.class})
+	public void registroCliente(Cliente cliente) throws Exception {
 		User usuario = cliente.getUser();
 		if(userService.findUser(usuario.getUsername()) != null || usuario.getUsername().length() < 4) {
 			throw new UsernameDuplicadoException();
+		}
+		if(!usuario.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,16}$")) {
+			throw new ContrasenyaNoValidaException();
+		}
+		if(!usuario.getPassword().equals(usuario.getNewPassword())) {
+			throw new ContrasenyaNoCoincideException();
+		}
+		if(usuario.getPassword().equals(usuario.getUsername())) {
+			throw new ContrasenyaParecidaUsuarioException();
 		}
 		String cifrado = new BCryptPasswordEncoder().encode(usuario.getPassword());
 		usuario.setPassword(cifrado);
@@ -64,19 +75,25 @@ public class ClienteService {
 		authoritiesService.saveAuthorities(usuario.getUsername(), "cliente");
 	}
 
-	@Transactional(rollbackFor = {ContrasenyaNoCoincideException.class, ContrasenyaNecesariaException.class})
+	@Transactional(rollbackFor = {ContrasenyaNoCoincideException.class, ContrasenyaNecesariaException.class, ContrasenyaNoValidaException.class, ContrasenyaParecidaUsuarioException.class})
 	public void editar(Cliente cliente, Integer id) throws Exception {
 		Cliente clienteGuardado = findClientById(id);
 		User clienteUser = cliente.getUser();
-		if(!clienteUser.getPassword().equals("") && !clienteUser.getUsername().equals("")) {
+		if(!clienteUser.getPassword().equals("") && !clienteUser.getNewPassword().equals("")) {
+			if(!clienteUser.getNewPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,16}$")) {
+				throw new ContrasenyaNoValidaException();
+			}
+			if(clienteUser.getNewPassword().equals(clienteGuardado.getUser().getUsername())) {
+				throw new ContrasenyaParecidaUsuarioException();
+			}
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			if(passwordEncoder.matches(clienteUser.getPassword(), clienteGuardado.getUser().getPassword())) {
-				String cifrado = new BCryptPasswordEncoder().encode(clienteUser.getUsername()); //esta sería la nueva contraseña, habría que mirar si cumple con el patrón
+				String cifrado = new BCryptPasswordEncoder().encode(clienteUser.getNewPassword()); //esta sería la nueva contraseña, habría que mirar si cumple con el patrón
 				clienteGuardado.getUser().setPassword(cifrado);
 			}else {
 				throw new ContrasenyaNoCoincideException();
 			}
-		}else if(clienteUser.getPassword().equals("") && !clienteUser.getUsername().equals("")) {
+		}else if(clienteUser.getPassword().equals("") && !clienteUser.getNewPassword().equals("")) {
 			throw new ContrasenyaNecesariaException();
 		}
 		clienteGuardado.setApellido(cliente.getApellido());

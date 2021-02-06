@@ -33,37 +33,32 @@ public class MensajeController {
 	}
 
 	@GetMapping("/{rol}/{id}")
-	public String visualizarChat(@PathVariable("rol") String rol, @PathVariable("id") int id,
-			Model model) {
+	public String visualizarChat(@PathVariable("rol") String rol, @PathVariable("id") int id, Model model) {
 		log.info("Entrando en la función Visualizar Chat del controlador de Mensaje.");
-
-		if(!rol.equals("vendedor") && !rol.equals("cliente")) {
+		// La id es la de un artículo si venimos de un cliente o la de un cliente si
+		// venimos de un vendedor
+		Pair<List<Mensaje>, List<String>> mensajes;
+		try {
+			mensajes = mensajeService.obtenerMensajes(rol, id);
+			model.addAttribute("dni", mensajes.getSecond().get(0));
+			model.addAttribute("nombre", mensajes.getSecond().get(1));
+			model.addAttribute("receptorId", mensajes.getSecond().get(2));
+			model.addAttribute("id", id);
+			model.addAttribute("mensajes", mensajes.getFirst());
+			model.addAttribute("nuevoMensaje", new Mensaje());
+		} catch (MensajeProhibidoException e) {
+			log.warn("La función Visualizar Chat ha lanzado la excepción MensajeProhibido.");
 			return "redirect:/";
-		}
-		else {
-			//La id es la de un artículo si venimos de un cliente o la de un cliente si venimos de un vendedor
-			Pair<List<Mensaje>, List<String>> mensajes;
-			try {
-				mensajes = mensajeService.obtenerMensajes(rol, id);
-				model.addAttribute("dni", mensajes.getSecond().get(0));
-				model.addAttribute("nombre", mensajes.getSecond().get(1));
-				model.addAttribute("receptorId", mensajes.getSecond().get(2));
-				model.addAttribute("id", id);
-				model.addAttribute("mensajes", mensajes.getFirst());
-				model.addAttribute("nuevoMensaje", new Mensaje());
-			} catch (MensajeProhibidoException e) {
-				log.warn("La función Visualizar Chat ha lanzado la excepción MensajeProhibido.");
-				return "redirect:/";
-			}
 		}
 		return "users/chat";
 	}
-	
+
 	@PostMapping("/{rol}/{receptorId}/{id}")
 	public String enviarMensaje(@Valid Mensaje mensaje, @PathVariable("rol") String rol,
-			@PathVariable("receptorId") Integer receptorId, @PathVariable("id") int id, Model model, BindingResult result) {
+			@PathVariable("receptorId") Integer receptorId, @PathVariable("id") int id, Model model,
+			BindingResult result) {
 		log.info("Entrando en la función Enviar Mensaje del controlador de Mensaje.");
-		if(result.hasErrors() || mensaje.getTexto().trim().isEmpty()) {
+		if (result.hasErrors() || mensaje.getTexto().trim().isEmpty()) {
 			return URLChat;
 		}
 		try {
@@ -72,7 +67,7 @@ public class MensajeController {
 			log.warn("La función Enviar Mensaje ha lanzado la excepción MensajeProhibido.");
 			return URLChat;
 		}
-		
+
 		return URLChat;
 	}
 }
