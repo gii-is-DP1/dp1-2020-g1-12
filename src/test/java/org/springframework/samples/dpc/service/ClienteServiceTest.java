@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.dpc.model.Cliente;
 import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ class ClienteServiceTest {
 	void shouldFindclienteById() {
 		Cliente optperfil = this.clienteService.findClientById(1);
 		assertThat(optperfil.getNombre()).isEqualTo("Juan");
+		assertThat(optperfil.getUser().getPassword().matches("cliente1"));
 	}
 
 	@Test
@@ -41,7 +43,8 @@ class ClienteServiceTest {
 		c.setEmail("quique@mail.com");
 		User user = new User();
 		user.setUsername("quique");
-		user.setPassword("supersecretpassword");
+		user.setPassword("Supersecret1");
+		user.setNewPassword("Supersecret1");
 		c.setUser(user);
 		this.clienteService.registroCliente(c);
 		Cliente cliente = this.clienteService.findClientByDni("12345678");
@@ -56,8 +59,8 @@ class ClienteServiceTest {
 		String newLastName = oldLastName + "X";
 
 		c.setApellido(newLastName);
-		c.getUser().setPassword("");
-		c.getUser().setUsername("");
+		c.getUser().setPassword("cliente1");
+		c.getUser().setNewPassword("Cliente10");
 		this.clienteService.editar(c,1);
 		c = this.clienteService.findClientById(1);
 		assertThat(c.getApellido()).isEqualTo(newLastName);

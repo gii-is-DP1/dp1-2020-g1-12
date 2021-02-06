@@ -98,24 +98,28 @@ public class VendedorController {
 				this.vendedorService.editar(vendedor, vendedorService.obtenerIdSesion());
 				return "redirect:/vendedores/perfil";				
 			}catch (ContrasenyaNoValidaException e) {
-				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya No Válida");
+				log.warn("La función Proceso Editar Perfil ha lanzado la excepción Contrasenya No Válida");
 
-				result.rejectValue("user.newPpassword", "erronea", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
+				model.put("message", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
+//				result.rejectValue("user.newPpassword", "erronea", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
 				return editPerfil;
 			}catch(ContrasenyaNecesariaException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error relacionado con la contraseña.");
 
-	            result.rejectValue("user.password", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+				model.put("message", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+//	            result.rejectValue("user.password", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
 	            return editPerfil;
 			}catch(ContrasenyaNoCoincideException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");
 
-	            result.rejectValue("user.password", "errónea", "La contraseña introducida no coincide con la de la cuenta.");
+				model.put("message", "La contraseña introducida no coincide con la de la cuenta.");
+//	            result.rejectValue("user.password", "errónea", "La contraseña introducida no coincide con la de la cuenta.");
 	            return editPerfil;
 			}catch(ContrasenyaParecidaUsuarioException e) {
 				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya Parecida Usuario.");
 				
-				result.rejectValue("user.password", "errónea", "La contraseña no puede ser idéntica al nombre de usuario.");
+				model.put("message", "La contraseña no puede ser idéntica al nombre de usuario.");
+//				result.rejectValue("user.password", "errónea", "La contraseña no puede ser idéntica al nombre de usuario.");
 				return editPerfil;
 			}
 

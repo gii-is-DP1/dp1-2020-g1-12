@@ -47,7 +47,8 @@ class VendedorServiceTest {
 		vend.setEmail("quique@mail.com");
 		User user = new User();
 		user.setUsername("quique");
-		user.setPassword("supersecretpassword");
+		user.setPassword("Supersecret1");
+		user.setNewPassword("Supersecret1");
 		vend.setUser(user);
 		this.vendedorService.registroVendedor(vend);
 		Vendedor vendedor = this.vendedorService.findSellerByDni("12345678");
@@ -62,8 +63,8 @@ class VendedorServiceTest {
 		String newLastName = oldLastName + "X";
 
 		vend.setApellido(newLastName);
-		vend.getUser().setPassword("");
-		vend.getUser().setUsername("");
+		vend.getUser().setPassword("vendedor1");
+		vend.getUser().setNewPassword("Vendedor10");
 		this.vendedorService.editar(vend, 1);
 		assertThat(vend.getApellido()).isEqualTo(newLastName);
 	}
