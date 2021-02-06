@@ -17,8 +17,14 @@
             <dpc:inputField label="Dirección" name="direccion"/>
             <dpc:inputField label="Dni" name="dni"/>
             <dpc:inputField label="Teléfono" name="telefono"/>
-            <dpc:inputField label="Contraseña" name="user.password"/>
-            <dpc:inputField label="Nueva contraseña" name="user.username"/>
+            <label class="col-sm-2 control-label" for="user.password">Contraseña</label>
+ 			<div class="col-sm-2">
+	            <input type="password" name="user.password"/>
+	  		</div>
+	  		<label class="col-sm-2 control-label" for="user.newPassword">Nueva contraseña</label>
+			<div class="col-sm-2">
+	            <input type="password" name="user.newPassword"/>
+	  		</div> 
         </div>
        	<input type="hidden" name="id" value="${moderador.id}"/> 
         <input type="hidden" name="version" value="${moderador.version}"/> 
