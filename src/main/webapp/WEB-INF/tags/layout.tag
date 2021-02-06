@@ -15,7 +15,7 @@
 <div class="container-fluid">
     <div class="container xd-container">
 	<c:if test="${not empty message}" >
-	<div class="alert alert-${not empty messageType ? messageType : 'info'}" role="alert">
+	<div class="alert alert-${not empty messageType ? messageType : 'danger'}" role="alert">
   		<c:out value="${message}"></c:out>
    		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
     		<span aria-hidden="true">&times;</span>
