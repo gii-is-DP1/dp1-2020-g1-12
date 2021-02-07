@@ -27,7 +27,12 @@ public class OfertaService {
 	@Transactional
 	public void editar(@Valid Oferta oferta, Integer id, Boolean disponible) {
 		Oferta ofertaGuardada = findOfertById(id);
-		ofertaGuardada.setPorcentaje(oferta.getPorcentaje());
+		if(oferta.getPorcentaje() != null) {
+			ofertaGuardada.setPorcentaje(oferta.getPorcentaje());
+		}
+		else {
+			ofertaGuardada.setPorcentaje(5);
+		}
 		ofertaGuardada.setDisponibilidad(disponible);
 	}
 	

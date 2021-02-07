@@ -7,10 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.dpc.model.Bloqueo;
 import org.springframework.samples.dpc.model.Solicitud;
+import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.repository.VendedorRepository;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoValidaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaParecidaUsuarioException;
+import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,32 +62,52 @@ public class VendedorService {
 	public void guardar(Vendedor vendedor) {
 		vendedorRepository.save(vendedor);
 	}
-	@Transactional
-	public void registroVendedor(Vendedor vendedor) {
-		String cifrado = new BCryptPasswordEncoder().encode(vendedor.getUser().getPassword());
-		vendedor.getUser().setPassword(cifrado);
+	@Transactional(rollbackFor= {UsernameDuplicadoException.class, ContrasenyaNoValidaException.class, ContrasenyaNoCoincideException.class, ContrasenyaParecidaUsuarioException.class})
+	public void registroVendedor(Vendedor vendedor) throws Exception {
+		User usuario = vendedor.getUser();
+		if(userService.findUser(usuario.getUsername()) != null || usuario.getUsername().length() < 4) {
+			throw new UsernameDuplicadoException();
+		}
+		if(!usuario.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,16}$")) {
+			throw new ContrasenyaNoValidaException();
+		}
+		if(!usuario.getPassword().equals(usuario.getNewPassword())) {
+			throw new ContrasenyaNoCoincideException();
+		}
+		if(usuario.getPassword().equals(usuario.getUsername())) {
+			throw new ContrasenyaParecidaUsuarioException();
+		}
+		String cifrado = new BCryptPasswordEncoder().encode(usuario.getPassword());
+		usuario.setPassword(cifrado);
 		Bloqueo b = new Bloqueo();
 		b.setBloqueado(false);
 		bloqueoService.guardar(b);
 		vendedor.setBloqueo(b);
-		vendedor.getUser().setEnabled(true);
+		usuario.setEnabled(true);
 		guardar(vendedor);
-		authoritiesService.saveAuthorities(vendedor.getUser().getUsername(), "vendedor");
+		authoritiesService.saveAuthorities(usuario.getUsername(), "vendedor");
 	}
 
-	@Transactional(rollbackFor = {ContrasenyaNoCoincideException.class, ContrasenyaNecesariaException.class})
-	public void editar(Vendedor vendedor, Integer id) throws Exception{
+	@Transactional(rollbackFor = {ContrasenyaNoCoincideException.class, ContrasenyaNecesariaException.class, ContrasenyaNoValidaException.class, ContrasenyaParecidaUsuarioException.class})
+	public void editar(Vendedor vendedor, Integer id) throws Exception {
 		Vendedor vendedorGuardado = findSellerById(id);
+		User vendedorUser = vendedor.getUser();
 		
-		if(vendedor.getUser().getPassword()!="" && vendedor.getUser().getUsername()!="") {
+		if(!vendedorUser.getPassword().equals("") && !vendedorUser.getNewPassword().equals("")) {
+			if(!vendedorUser.getNewPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,16}$")) {
+				throw new ContrasenyaNoValidaException();
+			}
+			if(vendedorUser.getNewPassword().equals(vendedorGuardado.getUser().getUsername())) {
+				throw new ContrasenyaParecidaUsuarioException();
+			}
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			if(passwordEncoder.matches(vendedor.getUser().getPassword(), vendedorGuardado.getUser().getPassword())) {
-				String cifrado = new BCryptPasswordEncoder().encode(vendedor.getUser().getUsername()); //esta sería la nueva contraseña, habría que mirar si  cumple con el patrón
+			if(passwordEncoder.matches(vendedorUser.getPassword(), vendedorGuardado.getUser().getPassword())) {
+				String cifrado = new BCryptPasswordEncoder().encode(vendedorUser.getNewPassword()); //esta sería la nueva contraseña, habría que mirar si  cumple con el patrón
 				vendedorGuardado.getUser().setPassword(cifrado);
 			}else {
 				throw new ContrasenyaNoCoincideException();
 			}
-		}else if(vendedor.getUser().getPassword()=="" && vendedor.getUser().getUsername()!="") {
+		}else if(vendedorUser.getPassword().equals("") && !vendedorUser.getNewPassword().equals("")) {
 			throw new ContrasenyaNecesariaException();
 		}
 		vendedorGuardado.setApellido(vendedor.getApellido());

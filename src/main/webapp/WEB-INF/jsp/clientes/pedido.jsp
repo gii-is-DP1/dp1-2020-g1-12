@@ -29,7 +29,7 @@
 		        </tr>
 		        </thead>
 		        <tbody>
-		      <c:forEach items="${lineas}" var="linea">
+		      <c:forEach items="${lineas}" var="linea" varStatus="status">
 		            <tr>
 		                <td>
 							<spring:url value="/articulos/{articuloId}" var="articuloUrl">
@@ -58,6 +58,8 @@
 							</spring:url>
 							<a href="javascript:ventana('${fn:escapeXml(articuloUrl)}')"><button title="Si tienes algún problema puedes inicar un chat con el vendedor" 
 							class="btn btn-default" >Iniciar chat</button></a>
+							<span class="badge badge-pill badge-success">
+                            <strong>${contadores[status.index]}</strong></span>
 						</td>
 		            </tr>
 		        </c:forEach>

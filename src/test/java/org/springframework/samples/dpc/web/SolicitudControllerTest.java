@@ -118,20 +118,6 @@ class SolicitudControllerTest {
 			.andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/editarSolicitud"));
 	}
 	
-//	@WithMockUser(value = "spring")
-//    @Test
-//    void testCreacionConExcepcion() throws Exception {
-//	mockMvc.perform(post("/solicitudes/save").param("descripcion", "Laptop ultima generación").param("modelo", "14 Evo A11M-003ES")
-//						.param("marca", "MSI-Persisten")
-//						.param("urlImagen", "https://imagen.png")
-//						.param("precio", "500")
-//						.param("stock", "30")
-//						.param("tiempoEntrega", "3")
-//						.param("gastoEnvio", "800")
-//						.param("tipo","Nuevo").with(csrf()))
-//			.andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/editarSolicitud"));
-//	}
-	
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoListadoSolicitud() throws Exception {
@@ -152,12 +138,24 @@ class SolicitudControllerTest {
 		mockMvc.perform(post("/solicitudes/"+TEST_SOLICITUD_ID+"/aceptar").with(csrf()).param("version", "1")).andExpect(status().isOk()).andExpect(model().attributeExists("solicitudes"))
 		.andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/listadoSolicitudes"));
 	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoAceptarSolicitudErrorVersion() throws Exception {
+		mockMvc.perform(post("/solicitudes/"+TEST_SOLICITUD_ID+"/aceptar").with(csrf()).param("version", "2")).andExpect(status().isOk())
+		.andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/detalles"));
+	}
 	
 	@WithMockUser(value = "spring")
     @Test
     void testProcesoDenegarSolicitud() throws Exception {
 		mockMvc.perform(post("/solicitudes/"+TEST_SOLICITUD_ID+"/denegar").with(csrf()).param("version", "1").param("respuesta", "No se permite la venta de este producto."))
 		.andExpect(status().isOk()).andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/listadoSolicitudes"));
+	}
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoDenegarSolicitudErrorVersion() throws Exception {
+		mockMvc.perform(post("/solicitudes/"+TEST_SOLICITUD_ID+"/denegar").with(csrf()).param("version", "2").param("respuesta", "No se permite la venta de este producto."))
+		.andExpect(status().isOk()).andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/detalles"));
 	}
 	
 	@WithMockUser(value = "spring")
@@ -166,5 +164,4 @@ class SolicitudControllerTest {
 		mockMvc.perform(get("/solicitudes/"+TEST_SOLICITUD_ID+"/solicitante/"+TEST_VENDEDOR_ID))
 		.andExpect(status().isOk()).andExpect(status().is2xxSuccessful()).andExpect(view().name("solicitudes/solicitante"));
 	}
-
 }

@@ -42,7 +42,7 @@ public class CestaService {
 		return c.isPresent() ? c.get() : null;
 	}
 
-	@Transactional
+	//@Transactional
 	public Cesta obtenerCestaCliente() {
 		return clienteService.getClienteDeSesion().getCesta();
 	}
@@ -72,8 +72,7 @@ public class CestaService {
 	@Transactional(readOnly = true)
 	public Boolean articuloEnCesta(Integer articuloId) {
 		return userService.getAuthority().equals("cliente")
-				? !obtenerCestaCliente().getLineas().stream().filter(x -> x.getArticulo().getId().equals(articuloId))
-						.findFirst().isPresent()
+				? !obtenerCestaCliente().getLineas().stream().anyMatch(x -> x.getArticulo().getId().equals(articuloId))
 				: false;
 	}
 	

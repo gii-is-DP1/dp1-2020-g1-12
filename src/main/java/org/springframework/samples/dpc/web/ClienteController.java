@@ -11,6 +11,8 @@ import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.VendedorService;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoValidaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaParecidaUsuarioException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -41,7 +43,7 @@ public class ClienteController {
 		log.info("Entrando en la función Mostrar Perfil del controlador de Cliente.");
 
 		String  perfil="clientes/perfil";
-		Cliente optperfil = clienteService.findClientById(clienteService.obtenerIdSesion());		
+		Cliente optperfil = clienteService.getClienteDeSesion();		
 		modelMap.addAttribute("cliente", optperfil);
 		return perfil;
 	}
@@ -50,7 +52,7 @@ public class ClienteController {
 	public String editar(ModelMap model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Cliente.");
 
-		Cliente cliente = this.clienteService.findClientById(clienteService.obtenerIdSesion());
+		Cliente cliente = clienteService.getClienteDeSesion();
 		User user = new User();
 		cliente.setUser(user);
 		model.addAttribute(cliente);
@@ -61,7 +63,7 @@ public class ClienteController {
 	public String procesoEditar(@Valid Cliente cliente, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Cliente.");
 		
-		if(!cliente.getVersion().equals(clienteService.findClientById(cliente.getId()).getVersion())) {
+		if(!cliente.getVersion().equals(clienteService.getClienteDeSesion().getVersion())) {
 			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
 			return editar(model);
 		}
@@ -71,16 +73,26 @@ public class ClienteController {
 			try {
 				this.clienteService.editar(cliente, clienteService.obtenerIdSesion());
 				return "redirect:/clientes/perfil";
+			}catch (ContrasenyaNoValidaException e) {
+				log.warn("La función Proceso Editar Perfil ha lanzado la excepción Contrasenya No Válida");
+				
+				model.put("message", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
+				return editPerfil;
 			}catch(ContrasenyaNecesariaException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error relacionado con la contraseña.");
 
-	            result.rejectValue("user.username", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+				model.put("message", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
 	            return editPerfil;
 			}catch(ContrasenyaNoCoincideException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");
 
-	            result.rejectValue("user.password", "errónea", "La contraseña introducida no coincide con la de la cuenta.");
+				model.put("message", "La contraseña introducida no coincide con la de la cuenta.");
 	            return editPerfil;
+			}catch(ContrasenyaParecidaUsuarioException e) {
+				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya Parecida Usuario.");
+				
+				model.put("message", "La contraseña no puede ser idéntica al nombre de usuario.");
+				return editPerfil;
 			}
 		}
 	}
