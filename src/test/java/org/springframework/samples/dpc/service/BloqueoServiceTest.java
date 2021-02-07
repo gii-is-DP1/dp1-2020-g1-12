@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -30,6 +31,7 @@ class BloqueoServiceTest {
 	}
 	
 	@ParameterizedTest
+	@DisplayName("Test Editar bloqueo (Test parametrizado)")
 	@ValueSource(strings = {"Bloqueado por intento de fraude", "Bloqueado por venta ilegal"})
 	void testEdit(String descripcion) throws BloquearSinDescripcionException{
 		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
@@ -39,6 +41,7 @@ class BloqueoServiceTest {
 	}
 	
 	@ParameterizedTest
+	@DisplayName("Test Editar bloqueo con error(Test parametrizado)")
 	@ValueSource(strings = {"" , "Bloqueado"})
 	void testEditConExcepcion(String descripcion) throws BloquearSinDescripcionException{
 		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
@@ -48,6 +51,7 @@ class BloqueoServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Quitar bloqueo")
 	void testEditSinBloqueo() throws BloquearSinDescripcionException{
 		Bloqueo bloqueo = this.bloqueoService.findBlockById(1);
 		this.bloqueoService.editar(bloqueo, bloqueo.getId(), false);
@@ -55,6 +59,7 @@ class BloqueoServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Guardar bloqueo")
 	void testSave() throws BloquearSinDescripcionException{
 		Bloqueo bloqueo = new Bloqueo();
 		bloqueo.setBloqueado(true);
@@ -64,6 +69,7 @@ class BloqueoServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Obtener usuario bloqueado ")
 	void testBloqueado() throws UsuarioBloqueadoException{
 		
 		Cliente  bloqueado = clienteService.findAllClient(0, 10, "nombre").getContent().stream().filter(x -> x.getBloqueo().isBloqueado()==true).collect(Collectors.toList()).get(0);
@@ -72,6 +78,7 @@ class BloqueoServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Obtener descripción del bloqueo")
 	void testClienteBloqueado() throws UsuarioBloqueadoException{
 		Cliente  bloqueado = clienteService.findAllClient(0, 10, "nombre").getContent().stream().filter(x -> x.getBloqueo().isBloqueado() == true).collect(Collectors.toList()).get(0);
 		this.bloqueoService.usuarioBloqueadoMotivo(bloqueado.getUser().getUsername());

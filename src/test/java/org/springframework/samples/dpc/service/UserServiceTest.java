@@ -2,6 +2,7 @@ package org.springframework.samples.dpc.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,6 +24,7 @@ class UserServiceTest {
 	}
 
 	@Test
+	@DisplayName("Test Guardar usuario")
 	@Transactional
 	void shouldSaveUser() {
 		User u = new User();

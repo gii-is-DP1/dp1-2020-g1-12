@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -40,6 +41,7 @@ class ModeradorServiceTest {
 //	}
 	
 	@Test
+	@DisplayName("Test Editar un moderador")
 	void testSave() {
 		Moderador mod = new Moderador();
 		User user = new User();
