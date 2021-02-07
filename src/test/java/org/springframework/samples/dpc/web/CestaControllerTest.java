@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -69,6 +70,7 @@ class CestaControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Visualizar cesta")
 	void testListadoCesta() throws Exception {
 		mockMvc.perform(get("/cesta")).andExpect(status().isOk()).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("clientes/cesta"));
@@ -76,6 +78,7 @@ class CestaControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+	@DisplayName("Test Añadir artículo a la cesta")
 	void testAnyadirArticuloCesta() throws Exception {
 		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/articulos/{articuloId}"));
@@ -83,6 +86,7 @@ class CestaControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+	@DisplayName("Test Actualizar cesta")
 	void testActualizarCesta() throws Exception {
 		mockMvc.perform(post("/cesta/actualizar").with(csrf()))
 				.andExpect(status().is2xxSuccessful()).andExpect(view().name("clientes/cesta"));
@@ -90,6 +94,7 @@ class CestaControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+	@DisplayName("Test Eliminar artículo de cesta")
 	void testEliminarArticuloCesta() throws Exception {
 		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/cesta"));
