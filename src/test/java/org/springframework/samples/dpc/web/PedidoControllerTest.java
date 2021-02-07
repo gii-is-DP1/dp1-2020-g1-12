@@ -161,18 +161,28 @@ class PedidoControllerTest {
 		mockMvc.perform(get("/pedidos/" + 1)).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("clientes/pedido"));
 	}
+	
 	@WithMockUser(value = "spring")
 	@Test
 	void testConfirmarCompra() throws Exception {
 		mockMvc.perform(post("/pedidos/confirmarCompra").param("tarjetaId", "1").with(csrf())).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/pedidos"));
 	}
+	
 	@WithMockUser(value = "spring")
 	@Test
 	void testModificarEstadoPedido() throws Exception {
 		mockMvc.perform(get("/pedidos/modificar/"+ TEST_LINEAPEDIDO_ID))
 			.andExpect(status().is2xxSuccessful()).andExpect(view().name("vendedores/editarEstadoPedido"));
 	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testModificarEstadoPedidoConError() throws Exception {
+		mockMvc.perform(get("/pedidos/modificar/9"))
+			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulosVendidos"));
+	}
+	
 	@WithMockUser(value = "spring")
 	@Test
 	void testGuardarEstadoPedido() throws Exception {

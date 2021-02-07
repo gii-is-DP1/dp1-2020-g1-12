@@ -18,7 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class VendedorSecirityTest {
+class VendedorSecurityTest {
 	
 
 	@Autowired

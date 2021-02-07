@@ -50,10 +50,18 @@ class UserControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+	void testIniCreacionCliente() throws Exception {
+		mockMvc.perform(get("/registro/cliente")).andExpect(status().is2xxSuccessful())
+		.andExpect(view().name("users/registroCliente"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
 	void testCreacionCliente() throws Exception {
 		mockMvc.perform(post("/registro/cliente").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
-				.param("email", "mail@mail.com").param("user.username", "quique").param("user.password", "Quique100").with(csrf()))
+				.param("email", "mail@mail.com").param("user.username", "quique").param("user.password", "Quique100")
+				.param("user.newPassword", "Quique100").with(csrf()))
 				.andExpect(status().is3xxRedirection());
 	}
 	
@@ -62,8 +70,16 @@ class UserControllerTest {
 	void testCreacionClienteConErrores() throws Exception {
 		mockMvc.perform(post("/registro/cliente").param("dni", "5678987").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "689")
-				.param("email", "mail@mail.com").param("user.username", "q").param("user.password", "quique").with(csrf()))
+				.param("email", "mail@mail.com").param("user.username", "cliente9").param("user.password", "Quique100")
+				.param("user.newPassword", "Quique100").with(csrf()))
 				.andExpect(status().isOk()).andExpect(view().name("users/registroCliente"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testIniCreacionVendedor() throws Exception {
+		mockMvc.perform(get("/registro/vendedor")).andExpect(status().is2xxSuccessful())
+		.andExpect(view().name("users/registroVendedor"));
 	}
 
 	@WithMockUser(value = "spring")
@@ -80,7 +96,8 @@ class UserControllerTest {
 	void testCreacionVendedorConErrores() throws Exception {
 		mockMvc.perform(post("/registro/vendedor").param("dni", "5678987").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "689")
-				.param("email", "mail@mail.com").param("user.username", "q").param("user.password", "quique").with(csrf()))
+				.param("email", "mail@mail.com").param("user.username", "Client2wa").param("user.password", "Quique100")
+				.param("user.newPassword", "Quique100").with(csrf()))
 				.andExpect(status().isOk()).andExpect(view().name("users/registroVendedor"));
 	}
 }
