@@ -25,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ArticuloService {
 
 	private ArticuloRepository articuloRepository;
+	private static final String cadenaArticulo = "articulo";
 	
 	@Autowired
 	public ArticuloService(ArticuloRepository articuloRepository) {
@@ -50,7 +51,7 @@ public class ArticuloService {
 
 	@Transactional
 	public Page<Articulo> articulosEnVentaByProvider(Integer id, Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
+		Pageable pageable = obtenerFiltros(page, size, orden, cadenaArticulo);
 		return articuloRepository.articulosEnVentaPorId(id, pageable);
 	}
 
@@ -66,7 +67,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Page<Articulo> articulosDisponibles(Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
+		Pageable pageable = obtenerFiltros(page, size, orden, cadenaArticulo);
 		return articuloRepository.articulosDisponibles(pageable);
 	}
 
@@ -88,7 +89,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public List<Articulo> articulosRelacionados(Articulo articulo) {
-		Pageable pageable = obtenerFiltros(0, (int) articuloRepository.count(), "-id", "articulo");
+		Pageable pageable = obtenerFiltros(0, (int) articuloRepository.count(), "-id", cadenaArticulo);
 		List<Articulo> relacionados = new ArrayList<>();
 		List<Articulo> articulos = articuloRepository.articulosDisponibles(pageable).getContent();
 		for (Articulo art : articulos) {
@@ -101,7 +102,7 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Page<Articulo> busqueda(Articulo articulo, Integer page, Integer size, String orden) {
-		Pageable pageable = obtenerFiltros(page, size, orden, "articulo");
+		Pageable pageable = obtenerFiltros(page, size, orden, cadenaArticulo);
 		String busqueda = articulo.getModelo();
 		if (articulo.getGeneros() == null) {
 			return articuloRepository.articulosPorNombre(busqueda, pageable);
@@ -130,12 +131,13 @@ public class ArticuloService {
 
 	@Transactional(readOnly = true)
 	public Pageable obtenerFiltros(Integer page, Integer size, String orden, String caso) throws ResponseStatusException {
+		String respuesta = "Parámetro de búsqueda introducido no válido.";
 		switch (caso) {
-		case "articulo":
+		case cadenaArticulo:
 			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("marca") && !orden.equals("-marca")
 					&& !orden.equals("precio") && !orden.equals("-precio")) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"Parámetro de búsqueda introducido no " + "válido.");
+						respuesta);
 			}
 			page = page < 0 ? 0 : page;
 			size = size < 10 ? 10 : size;
@@ -143,24 +145,21 @@ public class ArticuloService {
 		case "clientes":
 			if(!orden.equals("nombre") && !orden.equals("-nombre") && !orden.equals("apellido") && !orden.equals("-apellido") &&
 					!orden.equals("dni") && !orden.equals("-dni")) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parámetro de búsqueda introducido no "
-						+ "válido.");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, respuesta);
 			}
 			page = page < 0 ? 0 : page;
 			size = size < 5 ? 5 : size;
 			break;
 		case "pedidos":
 			if (!orden.equals("id") && !orden.equals("-id") && !orden.equals("fecha") && !orden.equals("-fecha")) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"Parámetro de búsqueda introducido no " + "válido.");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, respuesta);
 			}
 			page = page < 0 ? 0 : page;
 			size = size < 2 ? 2 : size;
 			break;
 		case "vendidos":
 			if (!orden.equals("id") && !orden.equals("-id")) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"Parámetro de búsqueda introducido no " + "válido.");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, respuesta);
 			}
 			page = page < 0 ? 0 : page;
 			size = size < 10 ? 10 : size;

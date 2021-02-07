@@ -49,7 +49,7 @@ class SolicitudTests {
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).hasToString("descripcion");
-		assertThat(violation.getMessage()).contains("La descripción debe contener entre 3 y 250 caracteres.");
+		assertThat(violation.getMessage()).contains("La descripción debe contener entre 3 y 5000 caracteres.");
 	}
 	
 	@Test
@@ -219,5 +219,4 @@ class SolicitudTests {
 		assertThat(violation.getPropertyPath().toString()).hasToString("respuesta");
 		assertThat(violation.getMessage()).contains("100");
 	}
-
 }

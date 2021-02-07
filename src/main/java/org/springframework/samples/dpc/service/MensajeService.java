@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.samples.dpc.model.Cliente;
+import org.springframework.samples.dpc.model.LineaPedido;
 import org.springframework.samples.dpc.model.Mensaje;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.repository.MensajeRepository;
@@ -46,6 +47,10 @@ public class MensajeService {
 			aux.add(cliente.getDni());
 			aux.add(vendedor.getNombre() + " " + vendedor.getApellido());
 			aux.add(vendedor.getId().toString());
+			
+			if(!mensajes.isEmpty() && mensajes.get(mensajes.size()-1).getLectura().equals("01")) {
+				mensajeRepository.confirmarLectura(cliente, vendedor);
+			}
 			return Pair.of(mensajes, aux);
 		}
 		Cliente cliente = clienteService.findClientById(id);
@@ -61,6 +66,10 @@ public class MensajeService {
 		aux.add(vendedor.getDni());
 		aux.add(cliente.getNombre() + " " + cliente.getApellido());
 		aux.add(cliente.getId().toString());
+		
+		if(!mensajes.isEmpty() && mensajes.get(mensajes.size()-1).getLectura().equals("10")) {
+			mensajeRepository.confirmarLectura(cliente, vendedor);
+		}
 		return Pair.of(mensajes, aux);
 	}
 	
@@ -76,6 +85,7 @@ public class MensajeService {
 			Vendedor vendedor = vendedorService.findSellerById(receptorId);
 			mensaje.setDestinatario(vendedor.getDni());
 			mensaje.setVendedor(vendedor);
+			mensaje.setLectura("10");
 		} else {
 			Vendedor vendedor = vendedorService.getVendedorDeSesion();
 			List<Integer> lineas = lineaPedidoService.articulosVendidosByProvider(0, Integer.MAX_VALUE, "-id", 
@@ -89,8 +99,27 @@ public class MensajeService {
 			mensaje.setEmisor(vendedor.getDni());
 			mensaje.setDestinatario(cliente.getDni());
 			mensaje.setVendedor(vendedor);
+			mensaje.setLectura("01");
 		}
 		mensaje.setFechaEnvio(LocalDateTime.now());
 		mensajeRepository.save(mensaje);
+	}
+	
+	@Transactional(readOnly = true)
+	public Integer getMensajesNoLeidosCliente(Cliente cliente, Vendedor vendedor) {
+		return mensajeRepository.mensajesNoLeidosCliente(cliente, vendedor);
+	}
+	
+	@Transactional(readOnly = true)
+	public List<Integer> getMensajesNoLeidosVendedor(List<LineaPedido> lineas) {
+		List<Integer> contadores = new ArrayList<>();
+		lineas.forEach(x -> contadores.add(mensajeRepository.mensajesNoLeidosVendedor(clienteService.findClientById(
+				x.getPedido().getCliente().getId()), vendedorService.getVendedorDeSesion())));
+		return contadores;
+	}
+	
+	@Transactional
+	public void confimarLectura(Cliente cliente, Vendedor vendedor) {
+		mensajeRepository.confirmarLectura(cliente, vendedor);
 	}
 }

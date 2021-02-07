@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -21,8 +22,9 @@ import org.springframework.web.context.WebApplicationContext;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 
-public class CestaSecurityTest {
+class CestaSecurityTest {
 	private static final int TEST_ARTICULO_ID = 1;
+	private static final int TEST_LINEA_ID = 1;
 
 	@Autowired
 	private WebApplicationContext context;
@@ -37,7 +39,7 @@ public class CestaSecurityTest {
 	.build();
 	}
 	
-	@WithMockUser(username ="cliente2",authorities = {"cliente"})
+	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
     void testAnyadirArticuloCesta() throws Exception {
 		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().is3xxRedirection())
@@ -70,5 +72,35 @@ public class CestaSecurityTest {
 	}
 	
 	
+	@WithMockUser(username ="cliente2",authorities = {"cliente"})
+    @Test
+	void testEliminarArticuloCesta() throws Exception {
+		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/cesta"));
+	}
+	
+	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
+    @Test
+	void testEliminarArticuloCestaVendedor() throws Exception {
+		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+	}
+	
+	@WithMockUser(username ="cliente1",authorities = {"cliente"})
+    @Test
+	void testListadoCesta() throws Exception {
+		mockMvc.perform(get("/cesta")).andExpect(status().isOk()).andExpect(status().is2xxSuccessful())
+				.andExpect(view().name("clientes/cesta"));
+	}
 
+	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
+    @Test
+	void testListadoCestaVendedor() throws Exception {
+		mockMvc.perform(get("/cesta")).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+	}
+	
+	@WithMockUser(username ="moderador1",authorities = {"moderador"})
+    @Test
+	void testListadoCestaModerador() throws Exception {
+		mockMvc.perform(get("/cesta")).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
+	}
 }

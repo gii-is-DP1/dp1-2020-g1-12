@@ -221,6 +221,16 @@
 							style="color: #F03232; text-decoration: none" href="${fn:escapeXml(eliminarComentarioUrl)}">
 							</a>
 						</sec:authorize>
+						<c:if test="${puedeEditarVendedor==comentario.vendedor.id}">
+						
+							<spring:url value="/editar/{comentarioId}/articulo/{articuloId}" var="comentarioEditarVendedor">
+								<spring:param name="comentarioId" value="${comentario.id}"/>
+		   						<spring:param name="articuloId" value="${articulo.id}"/>
+							</spring:url>
+							<a onclick="return editar()" class="glyphicon glyphicon-pencil" 
+							style="color: #000000; text-decoration: none" href="${fn:escapeXml(comentarioEditarVendedor)}">
+							</a>
+						</c:if>
 					</legend>	
 					<p><c:out value="Respuesta: ${comentario.descripcion}"></c:out></p>
 				</c:if>

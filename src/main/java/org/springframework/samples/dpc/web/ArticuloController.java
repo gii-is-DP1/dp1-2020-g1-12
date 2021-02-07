@@ -9,6 +9,7 @@ import org.springframework.samples.dpc.model.Comentario;
 import org.springframework.samples.dpc.model.Vendedor;
 import org.springframework.samples.dpc.service.ArticuloService;
 import org.springframework.samples.dpc.service.CestaService;
+import org.springframework.samples.dpc.service.ClienteService;
 import org.springframework.samples.dpc.service.ComentarioService;
 import org.springframework.samples.dpc.service.GeneroService;
 import org.springframework.samples.dpc.service.VendedorService;
@@ -32,30 +33,36 @@ public class ArticuloController {
 	private final ComentarioService comentarioService;
 	private final CestaService cestaService;
 	private final GeneroService generoService;
+	private final ClienteService clienteService;
 	private static final String generos = "generos";
 	private static final String query = "query";
-	
+
 	@Autowired
 	public ArticuloController(ArticuloService articuloService, VendedorService vendedorService,
-			ComentarioService comentarioService, GeneroService generoService, CestaService cestaService) {
+			ComentarioService comentarioService, GeneroService generoService, CestaService cestaService,
+			ClienteService clienteService) {
 		this.articuloService = articuloService;
 		this.vendedorService = vendedorService;
 		this.comentarioService = comentarioService;
 		this.generoService = generoService;
 		this.cestaService = cestaService;
+		this.clienteService = clienteService;
 	}
 
 	@GetMapping()
 	public String listadoArticulos(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
-			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden,
-			ModelMap modelMap) {
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, ModelMap modelMap) {
 		log.info("Entrando en la función Listado de Artículo del controlador de Artículo.");
 		Page<Articulo> articulos = articuloService.articulosDisponibles(page, size, orden);
 		List<Articulo> ofertas = articuloService.ofertasRandomAcotada();
-		String signo = articulos.getSort().get().findAny().get().isAscending() ? "" : "-";		//Guardo el parámetro de ordenación para que al cambiar
-		String ordenacion = signo + articulos.getSort().get().findAny().get().getProperty();	//de página se siga usando el filtro seleccionado
-		
+		String signo = articulos.getSort().get().findAny().get().isAscending() ? "" : "-"; // Guardo el parámetro de
+																							// ordenación para que al
+																							// cambiar
+		String ordenacion = signo + articulos.getSort().get().findAny().get().getProperty(); // de página se siga usando
+																								// el filtro
+																								// seleccionado
+
 		modelMap.addAttribute(generos, generoService.findAllGeneros());
 		modelMap.addAttribute("articulos", articulos);
 		modelMap.addAttribute("ordenacion", ordenacion);
@@ -75,8 +82,8 @@ public class ArticuloController {
 		Boolean puedeComentar = comentarioService.puedeComentar(articuloId);
 		Double valoracion = comentarioService.getValoracionDeUnArticulo(articuloId);
 		Boolean puedeComprar = cestaService.articuloEnCesta(articuloId);
-		Integer puedeEditarCliente = comentarioService.puedeEditarCliente(articuloId);
-//		Boolean puedeEditarVendedor = comentarioService.puedeEditarVendedor(articuloId);
+		Integer puedeEditarCliente = clienteService.obtenerIdSesion();
+		Integer puedeEditarVendedor = vendedorService.obtenerIdSesion();
 
 		modelMap.addAttribute(generos, generoService.findAllGeneros());
 		modelMap.addAttribute("articulo", articulo);
@@ -88,15 +95,15 @@ public class ArticuloController {
 		modelMap.addAttribute("comentarios", comentarios);
 		modelMap.addAttribute("relacionados", relacionados);
 		modelMap.addAttribute("puedeEditarCliente", puedeEditarCliente);
-//		modelMap.addAttribute("puedeEditarVendedor", puedeEditarVendedor);
+		modelMap.addAttribute("puedeEditarVendedor", puedeEditarVendedor);
 		return "articulos/detalles";
 	}
 
 	@PostMapping(value = "/busqueda")
 	public String busqueda(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
 			@RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
-			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden,
-			Articulo articulo, ModelMap modelMap) {
+			@RequestParam(name = "orderBy", defaultValue = "-id", required = false) String orden, Articulo articulo,
+			ModelMap modelMap) {
 		log.info("Entrando en la función Búsqueda de un Artículo del controlador de Artículo.");
 
 		String vista = "/articulos/principal";

@@ -8,6 +8,8 @@ import org.springframework.samples.dpc.model.User;
 import org.springframework.samples.dpc.service.ModeradorService;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNecesariaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoValidaException;
+import org.springframework.samples.dpc.service.exceptions.ContrasenyaParecidaUsuarioException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -35,7 +37,7 @@ public class ModeradorController {
 		log.info("Entrando en la función Mostrar Perfil del controlador de Moderador.");
 
 		String vista ="moderadores/perfil";
-		Moderador perfil = moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
+		Moderador perfil = moderadorService.getModeradorDeSesion();
 		
 		modelMap.addAttribute("moderador", perfil);
 		return vista;
@@ -45,7 +47,7 @@ public class ModeradorController {
 	public String editar(ModelMap model) {
 		log.info("Entrando en la función Editar Perfil del controlador de Moderador.");
 
-		Moderador moderador = this.moderadorService.findModeradorById(moderadorService.obtenerIdSesion());
+		Moderador moderador = moderadorService.getModeradorDeSesion();
 		User user = new User();
 		moderador.setUser(user);
 		model.addAttribute(moderador);
@@ -56,7 +58,7 @@ public class ModeradorController {
 	public String procesoEditar(@Valid Moderador moderador, BindingResult result,ModelMap model) throws Exception {
 		log.info("Entrando en la función Proceso Editar Perfil del controlador de Moderador.");
 
-		if(!moderador.getVersion().equals(moderadorService.findModeradorById(moderador.getId()).getVersion())) {
+		if(!moderador.getVersion().equals(moderadorService.getModeradorDeSesion().getVersion())) {
 			model.put("message", "Este perfil está siendo editado de forma concurrente, vuelva a intentarlo.");
 			return editar(model);
 		}
@@ -67,18 +69,26 @@ public class ModeradorController {
 			try {
 				this.moderadorService.editar(moderador, moderadorService.obtenerIdSesion());
 				return "redirect:/moderadores/perfil";
+			} catch (ContrasenyaNoValidaException e) {
+				log.warn("La función Proceso Editar Perfil ha lanzado la excepción Contrasenya No Válida");
+				
+				model.put("message", "La contraseña introducida no es válida. Debe contener entre 8 y 16 caracteres y al menos una mayúscula, una minúscula y un dígito.");
+				return editPerfil;
 			} catch(ContrasenyaNecesariaException e) {
 				log.warn("La función Proceso Editar Perfil ha tenido un error relacionado con la contraseña.");
-				
-				result.rejectValue("user.username", "errónea", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
-				return editPerfil;
+
+				model.put("message", "Si quieres editar tu contaseña debes de introducir tu antigua contraseña.");
+	            return editPerfil;
 			} catch(ContrasenyaNoCoincideException e) {
-				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseñas no coinciden.");
+				log.warn("La función Proceso Editar Perfil ha tenido un error debido a que las contraseña no coinciden.");
+
+				model.put("message", "La contraseña introducida no coincide con la de la cuenta.");
+	            return editPerfil;
+			} catch(ContrasenyaParecidaUsuarioException e) {
+				log.warn("La función Proceso Formulario de Cliente ha lanzado la excepción Contrasenya Parecida Usuario.");
 				
-				result.rejectValue("user.password", "erronea", "La contraseña introducida no coincide con la de la cuenta.");
+				model.put("message", "La contraseña no puede ser idéntica al nombre de usuario.");
 				return editPerfil;
-				
-				
 			}
 		}
 	}

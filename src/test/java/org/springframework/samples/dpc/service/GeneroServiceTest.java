@@ -39,7 +39,6 @@ class GeneroServiceTest {
 	
 	@Test
 	void testAnyadirGenero() {
-		
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = generoService.findGeneroById(GENERO_ID2);
 		assertThat(art.getGeneros()).doesNotContain(genero);
@@ -50,7 +49,6 @@ class GeneroServiceTest {
 	
 	@Test
 	void testAnyadirGeneroNull() {
-		
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = new Genero();
 		genero.setId(null);
@@ -79,17 +77,18 @@ class GeneroServiceTest {
 		assertThat(generosRestantes).doesNotContainAnyElementsOf(generosArticulo);
 	}
 	
-//	@Test
-//	void testGenerosRestantesRepository() {
-//		Set<Genero> generosActuales = ((Collection<Genero>) generoService.findAllGeneros()).stream().collect(Collectors.toSet());
-//		Genero g = new Genero();
-//		g.setId(1);
-//		g.setNombre("Smartphone");
-//		Set<Genero> gLista = new HashSet<>();
-//		gLista.add(g);
-//
-//		assertThat(generoRepository.generosRestantes(generosActuales)).isEmpty();
-//		assertThat(generoRepository.generosRestantes(gLista)).hasSize(generosActuales.size()-1);
-//	}
+	@Test
+	void testGenerosRestantesRepository() {
+		Set<Genero> generosActuales = ((Collection<Genero>) generoService.findAllGeneros()).stream().collect(Collectors.toSet());
+		Genero g = new Genero();
+		g.setId(1);
+		g.setNombre("Smartphone");
+		g.setVersion(1);
+		Set<Genero> gLista = new HashSet<>();
+		gLista.add(g);
+
+		assertThat(generoRepository.generosRestantes(generosActuales)).isEmpty();
+		assertThat(generoRepository.generosRestantes(gLista)).hasSize(generosActuales.size()-1);
+	}
 	
 }

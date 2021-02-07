@@ -79,13 +79,13 @@ public class ComentarioController {
 
 	@GetMapping(value = "/editar/{comentarioId}/articulo/{articuloId}")
 	public String editarComentario(@PathVariable("comentarioId") int comentarioId,
-			@PathVariable("articuloId") int articuloId, Model model) throws Exception {
-		log.info("Entrando en la función Actualizar un Comentario del controlador de Comentario.");
-		Comentario comentario = comentarioService.findCommentById(comentarioId);
+			@PathVariable("articuloId") int articuloId, Model model) {
+		log.info("Entrando en la función Editar un Comentario del controlador de Comentario.");
+		Comentario comentario = comentarioService.findById(comentarioId);
 //		if (comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
 //			comentarioService.editar(comentario, comentarioId);
 //		}
-		model.addAttribute(comentario);
+		model.addAttribute("comentario",comentario);
 		return editCommentView;
 	}
 
@@ -98,7 +98,7 @@ public class ComentarioController {
 			return editCommentView;
 		} else {
 			try {
-				this.comentarioService.editar(comentarioService.findCommentById(comentarioId), comentarioId);
+				this.comentarioService.editar(comentarioService.findById(comentarioId), comentarioId);
 				return "redirect:/articulos/{articuloId}";
 			} catch (ComentarioProhibidoException e) {
 				log.warn("La función Proceso Editar un Comentario ha lanzado la excepción ComentarioProhibido.");
