@@ -18,6 +18,11 @@
 	        	var opcion = confirm('¿Seguro que desea eliminar el comentario del artículo?');
 	        	return opcion;
 	        }
+	        
+	        function editar() {
+	        	var editar = confirm('¿Seguro que desea editar el comentario del artículo?');
+	        	return editar;
+	        }
         </script>
         <script>
 			function vermas(id){
@@ -169,6 +174,16 @@
 							style="color: #F03232; text-decoration: none" href="${fn:escapeXml(eliminarComentarioUrl)}">
 							</a>
 						</sec:authorize>
+						<c:if test="${puedeEditarCliente==comentario.cliente.id}">
+						
+							<spring:url value="/comentario/editar/{comentarioId}/articulo/{articuloId}" var="comentarioEditarCliente">
+								<spring:param name="comentarioId" value="${comentario.id}"/>
+		   						<spring:param name="articuloId" value="${articulo.id}"/>
+							</spring:url>
+							<a onclick="return editar()" class="glyphicon glyphicon-pencil" 
+							style="color: #000000; text-decoration: none" href="${fn:escapeXml(comentarioEditarCliente)}">
+							</a>
+						</c:if>
 					</legend>	
 					<p><c:out value="Valoración: "></c:out>
 						<c:forEach begin="1" end="${comentario.valoracion}">
@@ -206,6 +221,16 @@
 							style="color: #F03232; text-decoration: none" href="${fn:escapeXml(eliminarComentarioUrl)}">
 							</a>
 						</sec:authorize>
+						<c:if test="${puedeEditarVendedor==comentario.vendedor.id}">
+						
+							<spring:url value="/editar/{comentarioId}/articulo/{articuloId}" var="comentarioEditarVendedor">
+								<spring:param name="comentarioId" value="${comentario.id}"/>
+		   						<spring:param name="articuloId" value="${articulo.id}"/>
+							</spring:url>
+							<a onclick="return editar()" class="glyphicon glyphicon-pencil" 
+							style="color: #000000; text-decoration: none" href="${fn:escapeXml(comentarioEditarVendedor)}">
+							</a>
+						</c:if>
 					</legend>	
 					<p><c:out value="Respuesta: ${comentario.descripcion}"></c:out></p>
 				</c:if>
