@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PedidoSecurityTest {
+class PedidoSecurityTest {
 	
 	private static final int TEST_PEDIDO_ID = 1;
 	private static final int TEST_LINEAPEDIDO_ID = 1;
@@ -44,6 +44,7 @@ public class PedidoSecurityTest {
 		mockMvc.perform(get("/pedidos/" + TEST_PEDIDO_ID)).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("clientes/pedido"));
 	}
+	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
     void testObtenerPedidoErroneo() throws Exception {
@@ -57,12 +58,13 @@ public class PedidoSecurityTest {
 		.andExpect(view().name("redirect:/vendedores/articulosVendidos"));
 	}
 	
-//	@WithMockUser(username ="cliente1",authorities = {"cliente"}) NO SÉ COMO ARREGLARLO
-//    @Test
-//    void testConfirmarCompra() throws Exception {
-//		mockMvc.perform(post("/pedidos/confirmarCompra").with(csrf())).andExpect(status().is3xxRedirection())
-//		.andExpect(view().name("redirect:/pedidos"));
-//	}
+	@WithMockUser(username ="cliente1",authorities = {"cliente"}) 
+    @Test
+    void testConfirmarCompra() throws Exception {
+		mockMvc.perform(post("/pedidos/confirmarCompra").param("id", "1").with(csrf())).andExpect(status().is3xxRedirection())
+		.andExpect(view().name("redirect:/pedidos"));
+	}
+	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
     void testListadoPedidos() throws Exception {
@@ -72,7 +74,7 @@ public class PedidoSecurityTest {
 	
 	@WithMockUser(username ="cliente2",authorities = {"cliente"})
     @Test
-    void testConfirmarCompraErrorSinLineas() throws Exception {
+    void testConfirmarCompraErrorSinTarjeta() throws Exception {
 		mockMvc.perform(post("/pedidos/confirmarCompra").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/"));
 	}
