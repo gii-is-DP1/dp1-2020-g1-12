@@ -45,7 +45,9 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-				<button class="btn btn-default" type="submit">Crear comentario</button>
+				<button class="btn btn-default" type="submit">
+				<c:if test="${comentario['new']}">Crear</c:if>
+				<c:if test="${!comentario['new']}">Editar</c:if> comentario</button>
             </div>
         </div>
     </form:form>
