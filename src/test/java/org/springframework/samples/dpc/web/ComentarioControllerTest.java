@@ -134,4 +134,29 @@ class ComentarioControllerTest {
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/articulos/{articuloId}"));
 	}
 	
+	@WithMockUser(value = "spring")
+    @Test
+    void testEditarComentario() throws Exception {
+		mockMvc.perform(get("/comentario/editar/" + TEST_COMENTARIO_ID + "/articulo/" + TEST_ARTICULO_ID))
+		.andExpect(status().isOk()).andExpect(model().attributeExists("comentario" , "articulo"))
+			.andExpect(view().name("articulos/editarComentario"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoEditarComentarioConErrores() throws Exception {
+		mockMvc.perform(post("/comentario/editar/" + TEST_COMENTARIO_ID + "/articulo/" + TEST_ARTICULO_ID)
+				.param("descripcion", "ASDFGHJKLÑQWUYEI")
+				.param("valoracion", "7").with(csrf())).andExpect(status().isOk())
+				.andExpect(view().name("articulos/editarComentario"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoEditarComentario() throws Exception {
+		mockMvc.perform(post("/comentario/editar/" + TEST_COMENTARIO_ID + "/articulo/" + TEST_ARTICULO_ID)
+				.param("descripcion", "ASDFGHJKLÑQWUYEI").param("valoracion", "4").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/articulos/{articuloId}"));
+	}
+	
 }
