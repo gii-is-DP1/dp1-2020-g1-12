@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,6 +24,7 @@ class ClienteServiceTest {
 	private ClienteService clienteService;
 
 	@Test
+	@DisplayName("Test Encontrar cliente por Id")
 	void shouldFindclienteById() {
 		Cliente optperfil = this.clienteService.findClientById(1);
 		assertThat(optperfil.getNombre()).isEqualTo("Juan");
@@ -30,12 +32,14 @@ class ClienteServiceTest {
 	}
 
 	@Test
+	@DisplayName("Test Encontrar cliente por dni")
 	void shouldFindclienteByDni() {
 		Cliente optperfil = this.clienteService.findClientByDni("23456789");
 		assertThat(optperfil.getNombre()).isEqualTo("Juan");
 	}
 
 	@Test
+	@DisplayName("Test Registrar cliente")
 	void shouldInsertcliente() throws Exception {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
@@ -55,6 +59,7 @@ class ClienteServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Registrar cliente con contraseña incorrecta")
 	void shouldInsertclienteConErroresContrasenya() throws ContrasenyaNoValidaException {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
@@ -72,6 +77,7 @@ class ClienteServiceTest {
 	}
 
 	@Test
+	@DisplayName("Test Registrar cliente con usuario incorrecto")
 	void shouldInsertclienteConErroresUsername() throws UsernameDuplicadoException {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
@@ -89,6 +95,7 @@ class ClienteServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Registrar cliente con errores en nueva contraseña")
 	void shouldInsertclienteConErroresContrasenya2() throws ContrasenyaNoCoincideException {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
@@ -106,6 +113,7 @@ class ClienteServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Registrar cliente con errores")
 	void shouldInsertclienteConErroresContrasenya3() throws ContrasenyaParecidaUsuarioException {
 		Cliente c = new Cliente();
 		c.setDni("12345678");
