@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -59,6 +60,7 @@ class GeneroControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Formulario añadir género en artículo")
     void testIniciarFormulario() throws Exception {
 		mockMvc.perform(get("/generos/"+TEST_ARTICULO_ID )).andExpect(status().isOk())
 		.andExpect(model().attributeExists("genero","articuloId","generosDisponibles")).andExpect(status().is2xxSuccessful())
@@ -67,6 +69,7 @@ class GeneroControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Añadir género en artículo")
     void testGuardarGenero() throws Exception {
 	mockMvc.perform(post("/generos/"+TEST_ARTICULO_ID +"/save").param("nombre", "Smartphone").with(csrf()))
 		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
@@ -74,6 +77,7 @@ class GeneroControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Añadir género en artículo (con error en el nombre)")
     void testGuardarGeneroConErrores() throws Exception {
 	mockMvc.perform(post("/generos/"+TEST_ARTICULO_ID +"/save").param("nombre", "").with(csrf()))
 		.andExpect(status().is2xxSuccessful()).andExpect(view().name("/generos/{articuloId}"));
@@ -81,6 +85,7 @@ class GeneroControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Borrar género en artículo")
 	void testBorrarGenero() throws Exception{
 		mockMvc.perform(get("/generos/"+TEST_ARTICULO_ID +"/"+TEST_GENERO_ID+"/remove")).
 			andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));

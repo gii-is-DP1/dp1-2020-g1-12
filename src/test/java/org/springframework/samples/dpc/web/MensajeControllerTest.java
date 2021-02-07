@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -110,6 +111,7 @@ public class MensajeControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Visualizar chat en cliente")
     void testVisualizarChatCliente() throws Exception {
 		mockMvc.perform(get("/chat/" + TEST_ROL_CLIENTE + "/" + TEST_CLIENTE_ID)).
 			andExpect(model().attributeExists("dni")).andExpect(model().attributeExists("nombre"))
@@ -120,6 +122,7 @@ public class MensajeControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Enviar mensaje en cliente")
     void testEnviarMensajeCliente() throws Exception{
 		mockMvc.perform(post("/chat/" + TEST_ROL_CLIENTE + "/" + TEST_VENDEDOR_ID + "/" + TEST_ARTICULO_ID)
 				.param("version", "1")
@@ -130,6 +133,7 @@ public class MensajeControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Enviar mensaje en cliente (con error en el texto)")
     void testEnviarMensajeClienteConError() throws Exception{
 		mockMvc.perform(post("/chat/" + TEST_ROL_CLIENTE + "/" + TEST_VENDEDOR_ID + "/" + TEST_ARTICULO_ID)
 				.param("version", "1")
@@ -140,6 +144,7 @@ public class MensajeControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Enviar mensaje en vendedor")
     void testEnviarMensajeVendedor() throws Exception{
 		mockMvc.perform(post("/chat/" + TEST_ROL_VENDEDOR + "/" + TEST_CLIENTE_ID + "/" + TEST_CLIENTE_ID)
 				.param("version", "1")
@@ -150,6 +155,7 @@ public class MensajeControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Enviar mensaje vendedor (con error en texto)")
     void testEnviarMensajeVendedorConError() throws Exception{
 		mockMvc.perform(post("/chat/" + TEST_ROL_CLIENTE + "/" + TEST_VENDEDOR_ID + "/" + TEST_ARTICULO_ID)
 				.param("version", "1")

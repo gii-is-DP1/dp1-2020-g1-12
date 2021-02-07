@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -95,6 +96,7 @@ class ArticuloControllerTest {
 
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Listado de artículos")
     void testListadoArticulo() throws Exception {
 		mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(model().attributeExists("articulos","generos","ofertas","query"))
 		.andExpect(status().is2xxSuccessful()).andExpect(view().name("articulos/principal"));
@@ -102,6 +104,7 @@ class ArticuloControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Obtener detalles artículo")
     void testDetallesArticulo() throws Exception {
 		mockMvc.perform(get("/articulos/"+TEST_ARTICULO_ID)).andExpect(status().isOk())
 		.andExpect(model().attributeExists("query","generos","articulo","valoracion","puedeComentar","relacionados","comentarios")).andExpect(view().name("articulos/detalles"));
@@ -109,6 +112,7 @@ class ArticuloControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Búsqueda de artículos")
     void testBusqueda() throws Exception {
 		mockMvc.perform(post("/busqueda").param("modelo", "msi").with(csrf()))
 			.andExpect(status().isOk()).andExpect(model().attributeExists("query","generos")).andExpect(status().is2xxSuccessful())
@@ -117,6 +121,7 @@ class ArticuloControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Búsqueda vacía")
     void testBusquedaIf() throws Exception {
 		mockMvc.perform(post("/busqueda").param("modelo","").with(csrf()))
 		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"));
@@ -124,6 +129,7 @@ class ArticuloControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Obtener artículos en oferta")
     void testArtículosEnOferta() throws Exception {
 		mockMvc.perform(get("/ofertas")).andExpect(status().isOk()).andExpect(model().attributeExists("ofertas"))
 		.andExpect(view().name("/articulos/ofertas"));

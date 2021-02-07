@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,12 +42,14 @@ class UserControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Formulario de registro")
 	void testIniForm() throws Exception {
 		mockMvc.perform(get("/registro")).andExpect(view().name("users/registro"));
 	}
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Formulario de registro de cliente")
 	void testIniCreacionCliente() throws Exception {
 		mockMvc.perform(get("/registro/cliente")).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("users/registroCliente"));
@@ -54,6 +57,7 @@ class UserControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Registro de cliente")
 	void testCreacionCliente() throws Exception {
 		mockMvc.perform(post("/registro/cliente").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
@@ -64,6 +68,7 @@ class UserControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Registro de cliente (con error en telefono)")
 	void testCreacionClienteConErrores() throws Exception {
 		mockMvc.perform(post("/registro/cliente").param("dni", "5678987").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "689")
@@ -74,6 +79,7 @@ class UserControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Formulario de registro de vendedor")
 	void testIniCreacionVendedor() throws Exception {
 		mockMvc.perform(get("/registro/vendedor")).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("users/registroVendedor"));
@@ -81,6 +87,7 @@ class UserControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Registro de vendedor")
 	void testCreacionVendedor() throws Exception {
 		mockMvc.perform(post("/registro/vendedor").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
@@ -90,6 +97,7 @@ class UserControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Registro de vendedor (con error en telefono)")
 	void testCreacionVendedorConErrores() throws Exception {
 		mockMvc.perform(post("/registro/vendedor").param("dni", "5678987").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "689")
