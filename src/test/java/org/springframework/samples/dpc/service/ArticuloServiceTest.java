@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -40,6 +41,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Guardar articulo")
 	void testSave() {
 		Articulo a = new Articulo();
 		a.setUrlImagen("https://storage-asset.msi.com/global/picture/image/feature/nb/Prestige/Prestige15/intel-Visual-Basic.png");
@@ -64,6 +66,7 @@ class ArticuloServiceTest {
 	}
 
 	@Test
+	@DisplayName("Test de Listado de articulos en venta de un proveedor")
 	void testArticulosEnVentaByProvider() {
 		List<Articulo> articulos1 = this.articuloService.articulosEnVentaByProvider(ARTICULO_ID, 0 , 100, "id").getContent();
 		assertThat(articulos1.size()).isEqualTo(5);
@@ -73,6 +76,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Eliminar un articulo de un proveedor")
 	void testEliminarArticulo() {
 		Articulo articulo = articuloService.findArticuloById(ARTICULO_ID);
 		assertThat(articulo.getStock()).isPositive();
@@ -82,6 +86,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Listado de artículos disponibles")
 	void testArticulosDisponibles() {
 		List<Articulo> articulosDisponibles = articuloService.articulosDisponibles(0, 
 				(int) articuloRepository.count(), "-id").getContent();
@@ -90,6 +95,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Artículos en oferta")
 	void testArticulosOfertados() {
 		List<Articulo> articulosOfertados = articuloService.articulosOfertados();
 		
@@ -99,6 +105,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Ofertas aleatorias")
 	void testOfertasRandom() {
 		List<Articulo> ofertasRandom = articuloService.ofertasRandomAcotada();
 		
@@ -108,6 +115,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Número de artículos en oferta")
 	void testAcotarOfertas() {
 		List<Articulo> articulos = articuloService.articulosDisponibles(0, 
 				(int) articuloRepository.count(), "-id").getContent();
@@ -121,6 +129,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Artículos relacionados")
 	void testArticulosRelacionados() {
 		Articulo articulo = articuloService.findArticuloById(ARTICULO_ID);
 		List<Articulo> relacionados = articuloService.articulosRelacionados(articulo);
@@ -130,6 +139,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Búsqueda dada una cadena")
 	void testBusquedaCadena() {
 		Articulo articulo = new Articulo();
 		String cadena = "MSI";
@@ -152,6 +162,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Búsqueda por género")
 	void testBusquedaGeneros() {
 		Articulo articulo = new Articulo();
 		Set<Genero> generos = obtieneGeneros();
@@ -168,6 +179,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Búsqueda por género y cadena")
 	void testBusquedaCadenaYGeneros() {
 		Articulo articulo = new Articulo();
 		Set<Genero> generos = obtieneGeneros();
@@ -186,6 +198,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Cadena de Búsqueda")
 	void testMensajeCadena() {
 		Articulo articulo = new Articulo();
 		
@@ -199,6 +212,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Cadena búsqueda")
 	void testMensajeGeneros() {
 		Articulo articulo = new Articulo();
 		
@@ -213,6 +227,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Generos buscados")
 	void testMensajeCadenaGeneros() {
 		Articulo articulo = new Articulo();
 		
@@ -228,12 +243,14 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Artículos de un vendedor")
 	void testArticulosDeVendedor() {
 		List<Articulo> articulos = articuloService.articulosByProvider(1);
 		assertThat(articulos.size()).isNotZero();
 	}
 	
 	@Test
+	@DisplayName("Test Articulos disponibles (Repositorio)")
 	void testArticuloDisponibleRepository() {
 		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
 				Sort.by(new Order(Sort.Direction.DESC, "id")));
@@ -241,18 +258,21 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Articulos en oferta (Repositorio)")
 	void testArticuloEnOfertaRepository() {
 		
 		assertThat(articuloRepository.articulosOfert()).hasSize(2);
 	}
 	
 	@Test
+	@DisplayName("Test Articulo en venta de un proveedor (Repositorio)")
 	void testArticuloEnVentaIdRepository() {
 		Pageable pageable = PageRequest.of(0, 100, Sort.by(new Order(Sort.Direction.ASC, "id")));
 		assertThat(articuloRepository.articulosEnVentaPorId(VENDEDOR_ID, pageable)).hasSize(5);
 	}
 	
 	@Test
+	@DisplayName("Test Búsqueda por cadena(Repositorio)")
 	void testArticuloPorNombreRepository() {
 		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
 				Sort.by(new Order(Sort.Direction.DESC, "id")));
@@ -262,6 +282,7 @@ class ArticuloServiceTest {
 	
 	
 	@Test
+	@DisplayName("Test Búsqueda por generos(Repositorio)")
 	void testArticuloPorGeneroRepository() {
 		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
 				Sort.by(new Order(Sort.Direction.DESC, "id")));
@@ -272,6 +293,7 @@ class ArticuloServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Búsqueda por generos y cadenas(Repositorio)")
 	void testArticuloPorGeneroNombreRepository() {
 		Pageable pageable = PageRequest.of(0, (int) articuloRepository.count(), 
 				Sort.by(new Order(Sort.Direction.DESC, "id")));
