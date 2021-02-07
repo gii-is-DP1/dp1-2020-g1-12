@@ -41,11 +41,6 @@ public class ComentarioService {
 		return (comentarioRepository.findById(id).isPresent()) ? comentarioRepository.findById(id).get() : null;
 	}
 
-	@Transactional
-	public Comentario findById(int id) {
-		return comentarioRepository.obtenerById(id);
-	}
-
 	@Transactional()
 	public void eliminarComentario(Comentario comentario) throws DataAccessException {
 		articuloService.eliminarComentario(comentario.getArticulo(), comentario);
@@ -53,8 +48,31 @@ public class ComentarioService {
 	}
 
 	@Transactional(rollbackFor = ComentarioProhibidoException.class)
-	public void editar(Comentario comentario, Integer id) throws ComentarioProhibidoException {
-		Comentario comentarioGuardado = findById(id);
+	public void editar(Comentario comentario, Integer id, Integer articuloId) throws ComentarioProhibidoException {
+		Comentario comentarioGuardado = findCommentById(id);
+
+		String autoridad = userService.getAuthority();
+		Articulo articulo = articuloService.findArticuloById(articuloId);
+
+		if (autoridad.equals("cliente")) {
+			if (lineaPedidoService.articuloComprado(articuloId)) {
+				if (comentario.getValoracion() == 0) { // Poner a 1 el comentario si envía un 0 al
+					comentario.setValoracion(1); // inspeccionar elemento con el navegador
+				}
+				comentario.setArticulo(articulo);
+				comentario.setCliente(clienteService.getClienteDeSesion());
+			} else {
+				throw new ComentarioProhibidoException();
+			}
+		} else {
+			if (vendedorService.esVendedorDelArticulo(articuloId)) {
+				comentario.setValoracion(0);
+				comentario.setArticulo(articulo);
+				comentario.setVendedor(vendedorService.getVendedorDeSesion());
+			} else {
+				throw new ComentarioProhibidoException();
+			}
+		}
 		comentarioGuardado.setDescripcion(comentario.getDescripcion());
 		comentarioGuardado.setValoracion(comentario.getValoracion());
 	}
@@ -71,15 +89,13 @@ public class ComentarioService {
 
 	@Transactional
 	public Integer puedeEditarCliente(Integer articuloId) {
-		Integer c = clienteService.obtenerIdSesion();
-		return c;
+		return clienteService.obtenerIdSesion();
 
 	}
 
 	@Transactional
 	public Integer puedeEditarVendedor(Integer comentarioId) {
-		Integer vendedor = vendedorService.obtenerIdSesion();
-		return vendedor;
+		return vendedorService.obtenerIdSesion();
 	}
 
 	@Transactional(rollbackFor = ComentarioProhibidoException.class)

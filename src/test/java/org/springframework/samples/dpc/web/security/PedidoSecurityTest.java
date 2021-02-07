@@ -65,6 +65,13 @@ class PedidoSecurityTest {
 		.andExpect(view().name("redirect:/pedidos"));
 	}
 	
+	@WithMockUser(username ="cliente3",authorities = {"cliente"}) 
+    @Test
+    void testConfirmarCompraError() throws Exception {
+		mockMvc.perform(post("/pedidos/confirmarCompra").param("id", "1").with(csrf())).andExpect(status().is3xxRedirection())
+		.andExpect(view().name("redirect:/"));
+	}
+	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
     void testListadoPedidos() throws Exception {
