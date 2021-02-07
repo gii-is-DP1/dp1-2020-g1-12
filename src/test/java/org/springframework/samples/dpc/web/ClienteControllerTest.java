@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -110,6 +111,7 @@ class ClienteControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Obtener listado de clientes")
 	void testProcesadoListadoClientes() throws Exception {
 		mockMvc.perform(get("/clientes")).andExpect(status().isOk())
 				.andExpect(model().attributeExists("clientes", "vendedores", "ordenacionCliente", "ordenacionVendedor"))
@@ -118,12 +120,14 @@ class ClienteControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Ver perfil de cliente")
 	void testPerfil() throws Exception {
 		mockMvc.perform(get("/clientes/perfil")).andExpect(status().isOk()).andExpect(view().name("clientes/perfil"));
 	}
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Formulario editar perfil de cliente")
     void testEdit() throws Exception {
 		mockMvc.perform(get("/clientes/editar")).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("clientes/editarPerfil"));
@@ -131,6 +135,7 @@ class ClienteControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Editar perfil de cliente")
 	void testProcesoEditarPerfil() throws Exception {
 		mockMvc.perform(post("/clientes/editar").param("id", "4").param("version", "1").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
@@ -138,6 +143,7 @@ class ClienteControllerTest {
 	}
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Formulario editar perfil de cliente (con error en dni)")
 	void testProcesoEditarPerfilErrores() throws Exception {
 		mockMvc.perform(post("/clientes/editar").param("id", "4").param("version", "1").param("dni", "").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
@@ -146,6 +152,7 @@ class ClienteControllerTest {
 	}
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Editar perfil de cliente (con error en versión)")
 	void testProcesoEditarPerfilErroresVersiones() throws Exception {
 		mockMvc.perform(post("/clientes/editar").param("id", "4").param("version", "2").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")

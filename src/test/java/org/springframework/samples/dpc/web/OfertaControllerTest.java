@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -50,6 +51,7 @@ class OfertaControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Formulario de crear oferta en artículo")
     void testEdit() throws Exception {
 		mockMvc.perform(get("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID)).
 			andExpect(model().attributeExists("oferta")).andExpect(view().name("vendedores/editarOferta"));
@@ -57,6 +59,7 @@ class OfertaControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Crear oferta en artículo")
     void testProcesoOfertar() throws Exception{
 		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).param("version", "1").
 				param("disponibilidad", "true").param("porcentaje", "10").with(csrf())).andExpect(status().
@@ -65,6 +68,7 @@ class OfertaControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Crear oferta en artículo (con error en porcentaje)")
     void testProcesoOfertarConErrores() throws Exception{
 		mockMvc.perform(post("/vendedores/ofertas/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).param("version", "1").
 				param("disponibilidad", "true").param("porcentaje", "1").with(csrf()))
@@ -74,6 +78,7 @@ class OfertaControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Eliminar oferta en artículo")
 	void testProcesoDesofertar() throws Exception{
 		mockMvc.perform(post("/vendedores/ofertas/desofertar/"+TEST_OFERTA_ID+"/articulo/"+TEST_ARTICULO_ID).with(csrf()).param("version", "1")).
 			andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulo/{articuloId}"));
