@@ -45,22 +45,16 @@ public class TarjetaService {
 
 	@Transactional
 	public void eliminarTarjetaPersona(int tarjetaId) {
-//		Cliente cliente = clienteService.getClienteDeSesion();
-//		TarjetaCredito tarjeta = findTarjetaById(tarjetaId);
-//		if(cliente.getTarjetas().contains(tarjeta)) {
-//			cliente.getTarjetas().remove(tarjeta);
-//		}
 		Cliente cliente = clienteService.getClienteDeSesion();
 		TarjetaCredito tarjeta = findTarjetaById(tarjetaId);
 		if(cliente.getTarjetas().contains(tarjeta)) {
-//			tarjeta.setNumero("0000000000000000");
-			tarjeta.setTitular("Tarjeta eliminada");
-			tarjeta.setCvv("000");
-			tarjeta.setFechaCaducidad("00/00");
+			cliente.getTarjetas().remove(tarjeta);
 		}
 		int nRelaciones =tarjetaRepository.tarjetaCompartida(tarjetaId);
 		if(nRelaciones==0) {
-			tarjetaRepository.delete(tarjeta);
+			tarjeta.setTitular("Tarjeta eliminada");
+			tarjeta.setCvv("000");
+			tarjeta.setFechaCaducidad("00/00");
 		}
 		
 	}
