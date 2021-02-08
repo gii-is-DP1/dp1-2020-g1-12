@@ -11,6 +11,7 @@
     <h2>Bloqueo de usuario</h2>
     
     <form:form modelAttribute="bloqueo" class="form-horizontal" id="add-bloqueo-form">
+        <input type="hidden" name="version" value="${bloqueo.version}"/> 
         <div class="form-group has-feedback">
             <dpc:inputField label="Descripción" name="descripcion"/>
         </div>

@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ class VendedorSecurityTest {
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test Mostrar artículos vendidos (como vendedor)")
     void testMostrarArticulosObtenidos() throws Exception {
 		mockMvc.perform(get("/vendedores/articulosVendidos")).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("vendedores/listadoArticulosVendidos"));

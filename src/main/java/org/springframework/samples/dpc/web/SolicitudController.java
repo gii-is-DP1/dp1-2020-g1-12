@@ -95,9 +95,7 @@ public class SolicitudController {
 		} catch(SolicitudRechazadaSinRespuestaException ex) {
 			log.warn("La función Denegar una Solicitud ha lanzado la excepción SolicitudRechazadaSinRespuesta.");
 
-			result.rejectValue("respuesta", "error", 
-					"La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
-			modelMap.addAttribute(mensaje, "La respuesta es obligatoria al rechazar y debe tener un tamaño mayor de 15");
+			modelMap.put("message", "La respuesta es obligatoria al rechazar y debe tener un tamaño de entre 15 y 100");
 			return mostrarSolicitud(solicitudId, modelMap);
 		}
 		return listadoSolicitud(0, 10, "-id", modelMap);

@@ -22,10 +22,10 @@
 		        <thead>
 		        <tr>
 		            <th style="width: 200px;text-align: center">Producto</th>
-		            <th style="width: 100px;text-align: center">Estado</th>
+		            <th style="width: 60px;text-align: center">Estado</th>
 		            <th style="width: 100px;text-align: center">Cantidad</th>
 		            <th style="width: 100px;text-align: center">Precio unidad</th>
-		            <th style="width: 100px;text-align: center">Acción</th>
+		            <th style="width: 120px;text-align: center">Acción</th>
 		        </tr>
 		        </thead>
 		        <tbody>
@@ -59,7 +59,7 @@
 							<a href="javascript:ventana('${fn:escapeXml(articuloUrl)}')"><button title="Si tienes algún problema puedes inicar un chat con el vendedor" 
 							class="btn btn-default" >Iniciar chat</button></a>
 							<span class="badge badge-pill badge-success">
-                            <strong>${contadores[status.index]}</strong></span>
+                            <strong>${contadores[status.index]} mensajes nuevos</strong></span>
 						</td>
 		            </tr>
 		        </c:forEach>

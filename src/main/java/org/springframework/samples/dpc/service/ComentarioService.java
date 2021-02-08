@@ -1,5 +1,6 @@
 package org.springframework.samples.dpc.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,12 +51,13 @@ public class ComentarioService {
 	@Transactional(rollbackFor = ComentarioProhibidoException.class)
 	public void editar(Comentario comentario, Integer id, Integer articuloId) throws ComentarioProhibidoException {
 		Comentario comentarioGuardado = findCommentById(id);
-
+		List<Integer> articulos = new ArrayList<>();
+		articulos.add(articuloId);
 		String autoridad = userService.getAuthority();
 		Articulo articulo = articuloService.findArticuloById(articuloId);
 
 		if (autoridad.equals("cliente")) {
-			if (lineaPedidoService.articuloComprado(articuloId)) {
+			if (lineaPedidoService.esComprador(articulos, clienteService.obtenerIdSesion())) {
 				if (comentario.getValoracion() == 0) { // Poner a 1 el comentario si envía un 0 al
 					comentario.setValoracion(1); // inspeccionar elemento con el navegador
 				}
@@ -80,17 +82,18 @@ public class ComentarioService {
 	@Transactional
 	public Boolean puedeComentar(Integer articuloId) {
 		String autoridad = userService.getAuthority();
+		List<Integer> articulos = new ArrayList<>();
+		articulos.add(articuloId);
 
 		return !autoridad.equals("anonymous")
-				&& (autoridad.equals("cliente") && lineaPedidoService.articuloComprado(articuloId)
-						|| autoridad.equals("moderador")
-						|| (autoridad.equals("vendedor") && vendedorService.esVendedorDelArticulo(articuloId)));
+				&& (autoridad.equals("cliente") && lineaPedidoService.esComprador(articulos,
+				clienteService.obtenerIdSesion()) || autoridad.equals("moderador")
+				|| (autoridad.equals("vendedor") && vendedorService.esVendedorDelArticulo(articuloId)));
 	}
 
 	@Transactional
 	public Integer puedeEditarCliente(Integer articuloId) {
 		return clienteService.obtenerIdSesion();
-
 	}
 
 	@Transactional
@@ -102,13 +105,15 @@ public class ComentarioService {
 	public void guardarComentario(Comentario comentario, Integer articuloId) throws ComentarioProhibidoException {
 		String autoridad = userService.getAuthority();
 		Articulo articulo = articuloService.findArticuloById(articuloId);
+		List<Integer> articulos = new ArrayList<>();
+		articulos.add(articuloId);
 
 		if (autoridad.equals("moderador")) {
 			comentario.setValoracion(0);
 			comentario.setArticulo(articulo);
 			comentario.setModerador(moderadorService.getModeradorDeSesion());
 		} else if (autoridad.equals("cliente")) {
-			if (lineaPedidoService.articuloComprado(articuloId)) {
+			if (lineaPedidoService.esComprador(articulos, clienteService.obtenerIdSesion())) {
 				if (comentario.getValoracion() == 0) { // Poner a 1 el comentario si envía un 0 al
 					comentario.setValoracion(1); // inspeccionar elemento con el navegador
 				}

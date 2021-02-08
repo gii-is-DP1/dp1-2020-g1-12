@@ -78,12 +78,8 @@ class BloqueoControllerTests {
 	@WithMockUser(value = "spring")
     @Test
     @DisplayName("Test Desbloquear usuario")
-
     void testDesbloquear() throws Exception{
 		mockMvc.perform(get("/bloqueos/desbloquear/"+TEST_BLOQUEO_ID))
 		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/clientes"));
 	}
-	
-	
-	
 }

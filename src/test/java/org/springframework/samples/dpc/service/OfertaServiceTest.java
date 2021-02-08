@@ -40,5 +40,4 @@ class OfertaServiceTest {
 		this.ofertaService.editar(oferta, oferta.getId(), true);
 		assertThat(oferta.getPorcentaje()).isEqualTo(porcentaje);
 	}
-	
 }
