@@ -25,7 +25,12 @@
 			<br>
 			<select name="id" title="Seleccione una tarjeta">
 	        	<c:forEach items="${tarjetas}" var="tarjeta">
-	    			<option value="${tarjeta.id}">✱✱✱✱ ✱✱✱✱ ✱✱✱✱  ${tarjeta.numero.substring(12)}</option>
+	        	<c:choose>
+	        		<c:when test = "${tarjeta.titular== 'Tarjeta eliminada'}"/>
+	    			<c:otherwise> 
+	    				<option value="${tarjeta.id}">✱✱✱✱ ✱✱✱✱ ✱✱✱✱  ${tarjeta.numero.substring(12)}</option>
+	    			</c:otherwise>
+	    		</c:choose>
 	    		</c:forEach>
 	  		</select>
 	  		<br><br>
