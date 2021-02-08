@@ -100,7 +100,7 @@ public class LoginController {
 
         new SecurityContextLogoutHandler().logout(request, null, null);
         try {
-            response.sendRedirect(request.getHeader("referer"));
+            response.sendRedirect("/");
         } catch (IOException e) {
     		log.error("La función Cerrar Sesión ha lanzado una excepción.");
         }

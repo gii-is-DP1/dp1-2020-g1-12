@@ -10,7 +10,7 @@
 	<jsp:attribute name="customScript">
         <script>
             function ventana(URL) {
-            	window.open(URL, "Chat", "width:100, height:350,scrollbars=0,resizable:0");
+            	window.open(URL, "Chat", "width:1000, height:1000,scrollbars=0,resizable:1");
             }
         </script>
     </jsp:attribute>
@@ -38,7 +38,7 @@
             <th style="width: 100px;">Comprador</th>
             <th style="width: 30px">Cantidad</th>
             <th style="width: 30px">Estado</th>
-            <th style="width: 110px">Acciones</th>
+            <th style="width: 90px">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -88,7 +88,7 @@
 					<a href="javascript:ventana('${fn:escapeXml(articuloUrl)}')"><button title="Si tienes algún problema puedes inicar un chat con el vendedor" 
 						class="btn btn-default" >Chat</button></a>
 					<span class="badge badge-pill badge-success">
-                    	<strong>${contadores[status.index]}</strong></span>
+                    	<strong>${contadores[status.index]} mensajes nuevos</strong></span>
                 </td>
             </tr>
         </c:forEach> 

@@ -26,23 +26,20 @@
     <table id="pedidosTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Id del Pedido</th>
-            <th style="width: 30px;">Pedido</th>
-            <th style="width: 30px;">Precio Total</th>
-            <th style="width: 30px">Fecha del Pedido</th>
+            <th style="width: 150px;">Pedido #Número de referencia</th>
+            <th style="width: 70px;">Precio Total</th>
+            <th style="width: 70px;">Fecha del Pedido</th>
         </tr>
         </thead>
         <tbody>
 			<c:forEach items="${pedidos.getContent()}" var="pedido">
 	            <tr>
 	                <td>
-	                    <c:out value="${pedido.id}"/>
-	                </td>
-	                <td>
 						<spring:url value="/pedidos/{pedidoId}" var="pedidoUrl">
 							<spring:param name="pedidoId" value="${pedido.id}"/>
 						</spring:url>
-								<a href="${fn:escapeXml(pedidoUrl)}"><c:out value="Pedido ${pedido.id}"></c:out></a>                </td>
+						<a href="${fn:escapeXml(pedidoUrl)}"><c:out value="Pedido # ${pedido.id}"></c:out></a>
+					</td>
 	                <td>
 	                    <fmt:formatNumber type="number" maxFractionDigits="2" value="${pedido.precioTotal}"/> €
 	                </td>

@@ -28,7 +28,7 @@ public class Solicitud extends BaseEntity {
 	private Vendedor vendedor;
 
 	@Column(name = "descripcion")
-	@Length(min = 10, max = 5000, message = "La descripción debe contener entre 3 y 5000 caracteres.")
+	@Length(min = 10, max = 5000, message = "La descripción debe contener entre 10 y 5000 caracteres.")
 	private String descripcion;
 
 	@Column(name = "modelo")

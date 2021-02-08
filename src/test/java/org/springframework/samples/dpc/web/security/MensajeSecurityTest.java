@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ class MensajeSecurityTest {
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Visualizar chat (como cliente)")
     void testVisualizaChatCliente() throws Exception {
 		mockMvc.perform(get("/chat/" + TEST_ROL_CLIENTE + "/" + TEST_ARTICULO_ID))
 		.andExpect(status().is2xxSuccessful()).andExpect(view().name("users/chat"));
@@ -50,6 +52,7 @@ class MensajeSecurityTest {
 	
 	@WithMockUser(username ="cliente2",authorities = {"cliente"})
     @Test
+    @DisplayName("Test de error Visualizar Chat (como cliente)")
     void testVisualizaChatClienteExcepcion() throws Exception {
 		mockMvc.perform(get("/chat/" + TEST_ROL_CLIENTE + "/" + TEST_ARTICULO_ID))
 		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"));
@@ -57,6 +60,7 @@ class MensajeSecurityTest {
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test Visualizar Chat (como vendedor)")
     void testVisualizaChatVendedor() throws Exception {
 		mockMvc.perform(get("/chat/" + TEST_ROL_VENDEDOR + "/" + TEST_CLIENTE_ID))
 		.andExpect(status().is2xxSuccessful()).andExpect(view().name("users/chat"));
@@ -64,6 +68,7 @@ class MensajeSecurityTest {
 	
 	@WithMockUser(username ="vendedor2",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test de error Visualizar Chat (como vendedor)")
     void testVisualizaChatVendedorExcepcion() throws Exception {
 		mockMvc.perform(get("/chat/" + TEST_ROL_VENDEDOR + "/" + TEST_CLIENTE_ID))
 		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"));
@@ -71,6 +76,7 @@ class MensajeSecurityTest {
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Enviar mensaje (como cliente)")
     void testEnviarMensajeCliente() throws Exception {
 		mockMvc.perform(post("/chat/" + TEST_ROL_CLIENTE + "/" + TEST_VENDEDOR_ID + "/" + TEST_ARTICULO_ID)
 				.param("version", "1")
@@ -81,6 +87,7 @@ class MensajeSecurityTest {
 	
 	@WithMockUser(username ="cliente2",authorities = {"cliente"})
     @Test
+    @DisplayName("Test de error Enviar mensaje (como cliente)")
     void testEnviarMensajeClienteExcepcion() throws Exception {
 		mockMvc.perform(post("/chat/" + TEST_ROL_CLIENTE + "/" + TEST_VENDEDOR_ID + "/" + TEST_ARTICULO_ID)
 				.param("version", "1")
@@ -91,6 +98,7 @@ class MensajeSecurityTest {
     
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test Enviar mensaje (como vendedor)")
     void testEnviarMensajeVendedor() throws Exception {
 		mockMvc.perform(post("/chat/" + TEST_ROL_VENDEDOR + "/" + TEST_CLIENTE_ID + "/" + TEST_CLIENTE_ID)
 				.param("version", "1")
@@ -101,6 +109,7 @@ class MensajeSecurityTest {
 	
 	@WithMockUser(username ="vendedor2",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test de error Enviar mensaje (como vendedor)")
     void testEnviarMensajeVendedorExcepcion() throws Exception {
 		mockMvc.perform(post("/chat/" + TEST_ROL_VENDEDOR + "/" + TEST_CLIENTE_ID + "/" + TEST_CLIENTE_ID)
 				.param("version", "1")
@@ -108,6 +117,4 @@ class MensajeSecurityTest {
 				.param("lectura", "10").with(csrf())).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/chat/{rol}/{id}"));
 	}
-	
-	
 }

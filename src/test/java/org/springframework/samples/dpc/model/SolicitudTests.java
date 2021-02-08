@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -21,6 +22,7 @@ class SolicitudTests {
 		localValidatorFactoryBean.afterPropertiesSet();
 		return localValidatorFactoryBean;
 	}
+	
 	@BeforeEach
 	void setup() {
 
@@ -38,7 +40,9 @@ class SolicitudTests {
 		this.solicitud.setTipo(Tipo.Nuevo);
 		this.solicitud.setUrlImagen("https://images-na.ssl-images-amazon.com/images/I/71QQz9ZPLoL._AC_SL1500_.jpg");
 	}
+	
 	@Test
+    @DisplayName("Test validar descripción")
 	void descripcionValidacion() {
 
 		this.solicitud.setDescripcion("");
@@ -49,10 +53,11 @@ class SolicitudTests {
 		assertThat(constraintViolations.size()).isEqualTo(1);
 		ConstraintViolation<Solicitud> violation = constraintViolations.iterator().next();
 		assertThat(violation.getPropertyPath().toString()).hasToString("descripcion");
-		assertThat(violation.getMessage()).contains("La descripción debe contener entre 3 y 5000 caracteres.");
+		assertThat(violation.getMessage()).contains("La descripción debe contener entre 10 y 5000 caracteres.");
 	}
 	
 	@Test
+    @DisplayName("Test validar modelo")
 	void modeloValidacion() {
 
 		this.solicitud.setModelo("");
@@ -67,6 +72,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test validar marca")
 	void marcaValidacion() {
 
 		this.solicitud.setMarca("");
@@ -81,6 +87,7 @@ class SolicitudTests {
 	}
 
 	@Test
+    @DisplayName("Test validar URL")
 	void UrlVacíaValidacion() {
 
 		this.solicitud.setUrlImagen("");
@@ -95,6 +102,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test de error validar URL")
 	void UrlNoVálidaValidacion() {
 
 		this.solicitud.setUrlImagen("esto no es una url");
@@ -109,6 +117,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test validar precio nulo")
 	void precioNullValidacion() {
 
 		this.solicitud.setPrecio(null);
@@ -123,6 +132,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test validar precio fuera de rango")
 	void precioFueraDeRangoValidacion() {
 
 		this.solicitud.setPrecio(10001.);
@@ -137,6 +147,7 @@ class SolicitudTests {
 	}
 
 	@Test
+    @DisplayName("Test validar stock nulo")
 	void stockNullValidacion() {
 
 		this.solicitud.setStock(null);
@@ -151,6 +162,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test validar stock fuera de rango")
 	void stockFueraDeRangoValidacion() {
 
 		this.solicitud.setStock(0);
@@ -165,6 +177,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test validar validador")
 	void TipoValidacion() {
 
 		this.solicitud.setTipo(null);
@@ -179,6 +192,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test validar tiempo de entrega")
 	void tiempoEntregaValidacion() {
 
 		this.solicitud.setTiempoEntrega(40);
@@ -193,6 +207,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test validar gastos de envío")
 	void gastoEnvioValidacion() {
 
 		this.solicitud.setGastoEnvio(-1.);
@@ -207,6 +222,7 @@ class SolicitudTests {
 	}
 	
 	@Test
+    @DisplayName("Test validar respuesta")
 	void respuestaValidacion() {
 
 		this.solicitud.setRespuesta("Mensaje demasiado extenso.Mensaje demasiado extenso.Mensaje demasiado extenso.Mensaje demasiado extenso.");

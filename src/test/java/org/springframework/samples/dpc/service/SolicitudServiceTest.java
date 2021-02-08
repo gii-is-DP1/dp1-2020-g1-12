@@ -36,6 +36,7 @@ class SolicitudServiceTest {
 	private VendedorService vendedorService;
 
 	@Test
+    @DisplayName("Test Obtener listado de solicitudes pendientes")
 	void testListadoDeSolicitudesPendientes() {
 		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		assertThat(pendientes.size()).isEqualTo(1);
@@ -52,7 +53,6 @@ class SolicitudServiceTest {
 	}
 	
 	public Solicitud arrange() throws PrecioMenorAlEnvioException {
-
 		Solicitud sol = new Solicitud();
 		sol.setDescripcion("Venta de Apple Iphone XS");
 		sol.setModelo("Iphone XS");

@@ -14,7 +14,6 @@ import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoCoincideE
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaNoValidaException;
 import org.springframework.samples.dpc.service.exceptions.ContrasenyaParecidaUsuarioException;
 import org.springframework.samples.dpc.service.exceptions.UsernameDuplicadoException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -129,25 +128,4 @@ class ClienteServiceTest {
 		c.setUser(user);
 		assertThrows(ContrasenyaParecidaUsuarioException.class, () -> this.clienteService.registroCliente(c));
 	}
-	
-	
-//	@Test
-//	void shouldUpdatecliente() throws Exception {
-//		Cliente c = new Cliente();
-//		c = this.clienteService.findClientById(1);
-//		User user = c.getUser();
-//		String oldLastName = c.getApellido();
-//		String newLastName = oldLastName + "X";
-//
-//		c.setApellido(newLastName);
-//		System.out.println(c.getUser().getPassword() + "+++++++++++++++++++++++++++++++++++++++");
-//
-//		user.setPassword("cliente1");
-//		c.getUser().setNewPassword("Pepito84");
-//		System.out.println(this.clienteService.findClientById(1).getUser().getPassword() + "+++++++++++++++++++++++++++++++++++++++");
-//		this.clienteService.editar(c,1);
-//		c = this.clienteService.findClientById(1);
-//		assertThat(c.getApellido()).isEqualTo(newLastName);
-//	}
-
 }

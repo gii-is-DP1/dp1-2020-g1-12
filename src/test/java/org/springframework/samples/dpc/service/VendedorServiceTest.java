@@ -139,20 +139,6 @@ class VendedorServiceTest {
 		assertThrows(ContrasenyaParecidaUsuarioException.class, () -> this.vendedorService.registroVendedor(vend));
 	}
 	
-//	@Test
-//	@Transactional
-//	void shouldUpdateVendedor() throws Exception{
-//		Vendedor vend = this.vendedorService.findSellerById(1);
-//		String oldLastName = vend.getApellido();
-//		String newLastName = oldLastName + "X";
-//
-//		vend.setApellido(newLastName);
-//		vend.getUser().setPassword("vendedor1");
-//		vend.getUser().setNewPassword("Vendedor10");
-//		this.vendedorService.editar(vend, 1);
-//		assertThat(vend.getApellido()).isEqualTo(newLastName);
-//	}
-
 	@Test
 	@DisplayName("Test Obtener vendedor de un artículo")
 	void testVendedorArticulo() {
