@@ -8,6 +8,7 @@ import org.springframework.samples.dpc.service.ComentarioService;
 import org.springframework.samples.dpc.service.exceptions.ComentarioProhibidoException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,16 +92,14 @@ public class ComentarioController {
 	@PostMapping(value = "/editar/{comentarioId}/articulo/{articuloId}")
 	public String procesoEditarComentario(Comentario comentario, 
 			@PathVariable("comentarioId") int comentarioId, @PathVariable("articuloId") int articuloId,
-			Model model, BindingResult result) {
+			ModelMap model, BindingResult result) {
 		log.info("Entrando en la función Proceso Editar un Comentario del controlador de Comentario.");
 		
 		if (comentario.getDescripcion() == null || comentario.getDescripcion().length() < 11 || comentario.getValoracion() == null || comentario.getValoracion() < 0 || comentario.getValoracion() > 6) {
 			comentario.setId(comentarioId);
 			model.addAttribute("comentario", comentario);
 			model.addAttribute("articulo", articuloId);
-			if (result.getFieldError("valoracion") != null) {
-				model.addAttribute("errores", result.getFieldError("valoracion").getDefaultMessage());
-			}
+			model.put("message", "Todos los campos son obligatorios, la descripción debe estar entre 10 y 200 caracteres");
 			return editCommentView;
 		} else {
 			try {
