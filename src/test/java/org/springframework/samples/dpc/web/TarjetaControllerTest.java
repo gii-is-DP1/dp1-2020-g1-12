@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -53,6 +54,7 @@ class TarjetaControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Formulario de crear tarjeta")
     void testIniciarFormulario() throws Exception {
 		mockMvc.perform(get("/tarjetas/new")).andExpect(status().isOk()).andExpect(model().attributeExists("tarjeta"))
 		.andExpect(status().is2xxSuccessful()).andExpect(view().name("clientes/editarTarjeta"));
@@ -60,6 +62,7 @@ class TarjetaControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Crear tarjeta")
     void testGuardarTarjeta() throws Exception {
 	mockMvc.perform(post("/tarjetas/save").param("titular", "Juan Alberto García").param("numero", "1234325678123909")
 						.param("cvv", "453")
@@ -70,6 +73,7 @@ class TarjetaControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Crear tarjeta (con error en numero)")
     void testGuardarTarjetaErroneo() throws Exception {
 	mockMvc.perform(post("/tarjetas/save").param("titular", "Juan Alberto García").param("numero", "123409")
 						.param("cvv", "453")
@@ -80,6 +84,7 @@ class TarjetaControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Eliminar tarjeta")
     void testEliminarTarjeta() throws Exception {
 	mockMvc.perform(get("/tarjetas/"+TEST_TARJETA_ID+"/delete"))
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/clientes/perfil"));

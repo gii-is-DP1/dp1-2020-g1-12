@@ -24,7 +24,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 class CestaSecurityTest {
 	private static final int TEST_ARTICULO_ID = 1;
-	private static final int TEST_LINEA_ID = 1;
 
 	@Autowired
 	private WebApplicationContext context;
@@ -49,7 +48,7 @@ class CestaSecurityTest {
 	@WithMockUser(username ="moderador1",authorities = {"moderador"})
     @Test
     void testAnyadirArticuloCestaModerador() throws Exception {
-		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().isForbidden());
 	}
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})

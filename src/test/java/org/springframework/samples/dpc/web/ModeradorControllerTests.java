@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -72,6 +73,7 @@ class ModeradorControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Ver perfil de moderador")
     void testMostrarPerfil() throws Exception {
 		mockMvc.perform(get("/moderadores/perfil")).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("moderadores/perfil"));
@@ -79,6 +81,7 @@ class ModeradorControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Formulario editar perfil de moderador")
     void testEdit() throws Exception {
 		mockMvc.perform(get("/moderadores/editar")).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("moderadores/editarPerfil"));
@@ -86,6 +89,7 @@ class ModeradorControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Editar perfil de moderador")
     void testProcesoEditar() throws Exception {
 		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","1").param("nombre", "Pepe")
 		.param("apellido", "López").param("direccion", "C/Real 10")
@@ -95,6 +99,7 @@ class ModeradorControllerTests {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Editar perfil de moderador (con error en nombre)")
     void testProcesoEditarConErrores() throws Exception {
 		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","1").param("nombre", "")
 		.param("apellido", "López").param("direccion", "C/Real 10")
@@ -103,6 +108,7 @@ class ModeradorControllerTests {
 	}
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Editar perfil de moderador (con error en versión)")
     void testProcesoEditarConErroresVersiones() throws Exception {
 		mockMvc.perform(post("/moderadores/editar").param("id", "1").param("version","2").param("nombre", "Pepe")
 		.param("apellido", "López").param("direccion", "C/Real 10")

@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -19,6 +20,7 @@ class OfertaServiceTest {
 	private OfertaService ofertaService;
 	
 	@Test
+	@DisplayName("Test Crear una oferta")
 	void testSave() {
 		Oferta o = new Oferta();
 		o.setPorcentaje(5);
@@ -30,6 +32,7 @@ class OfertaServiceTest {
 	}
 	
 	@ParameterizedTest
+	@DisplayName("Test Editar una oferta")
 	@ValueSource(ints = {10, 30, 40, 60, 70})
 	void testEdit(Integer porcentaje) {
 		Oferta oferta = this.ofertaService.findOfertById(1);

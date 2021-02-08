@@ -46,6 +46,7 @@ public class ComentarioController {
 		String vista;
 		if (result.hasErrors()) {
 			model.addAttribute("comentario", comentario);
+			model.addAttribute("articulo", articuloId);
 			if (result.getFieldError("valoracion") != null) {
 				model.addAttribute("errores", result.getFieldError("valoracion").getDefaultMessage());
 			}
@@ -81,24 +82,29 @@ public class ComentarioController {
 	public String editarComentario(@PathVariable("comentarioId") int comentarioId,
 			@PathVariable("articuloId") int articuloId, Model model) {
 		log.info("Entrando en la función Editar un Comentario del controlador de Comentario.");
-		Comentario comentario = comentarioService.findById(comentarioId);
-//		if (comentario != null && comentario.getArticulo().getId().equals(articuloId)) {
-//			comentarioService.editar(comentario, comentarioId);
-//		}
+		Comentario comentario = comentarioService.findCommentById(comentarioId);
 		model.addAttribute("comentario",comentario);
+		model.addAttribute("articulo", articuloId);
 		return editCommentView;
 	}
 
 	@PostMapping(value = "/editar/{comentarioId}/articulo/{articuloId}")
-	public String procesoEditarComentario(@PathVariable("comentarioId") int comentarioId,
-			@PathVariable("articuloId") int articuloId, Model model, BindingResult result) throws Exception {
+	public String procesoEditarComentario(Comentario comentario, 
+			@PathVariable("comentarioId") int comentarioId, @PathVariable("articuloId") int articuloId,
+			Model model, BindingResult result) {
 		log.info("Entrando en la función Proceso Editar un Comentario del controlador de Comentario.");
-		if (result.hasErrors()) {
-//			model.addAttribute("comentario", comentarioService.findCommentById(comentarioId));
+		
+		if (comentario.getDescripcion() == null || comentario.getDescripcion().length() < 11 || comentario.getValoracion() == null || comentario.getValoracion() < 0 || comentario.getValoracion() > 6) {
+			comentario.setId(comentarioId);
+			model.addAttribute("comentario", comentario);
+			model.addAttribute("articulo", articuloId);
+			if (result.getFieldError("valoracion") != null) {
+				model.addAttribute("errores", result.getFieldError("valoracion").getDefaultMessage());
+			}
 			return editCommentView;
 		} else {
 			try {
-				this.comentarioService.editar(comentarioService.findById(comentarioId), comentarioId);
+				this.comentarioService.editar(comentario, comentarioId, articuloId);
 				return "redirect:/articulos/{articuloId}";
 			} catch (ComentarioProhibidoException e) {
 				log.warn("La función Proceso Editar un Comentario ha lanzado la excepción ComentarioProhibido.");
@@ -107,8 +113,6 @@ public class ComentarioController {
 						+ "eres el vendedor del artículo o no lo has comprado previamente.");
 				return editCommentView;
 			}
-
 		}
-
 	}
 }

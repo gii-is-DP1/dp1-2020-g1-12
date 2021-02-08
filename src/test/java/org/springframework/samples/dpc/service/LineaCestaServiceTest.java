@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Iterator;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -33,6 +34,7 @@ class LineaCestaServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Crear una linea de cesta")
 	void testCrearLinea() {
 		Integer lineas1=1;
 		Iterator<LineaCesta> it = lineaCestaRepository.findAll().iterator();
@@ -51,6 +53,7 @@ class LineaCestaServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Eliminar una linea de cesta")
 	void testEliminarLinea() {
 		LineaCesta linea = this.lineaCestaService.findLineaById(LINEA_CESTA_ID);
 		assertThat(linea).isNotNull();
