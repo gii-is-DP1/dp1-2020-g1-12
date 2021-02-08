@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -164,6 +165,7 @@ class VendedorControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Visualizar perfil de vendedor")
 	void testPerfil() throws Exception {
 		mockMvc.perform(get("/vendedores/perfil")).andExpect(status().isOk())
 				.andExpect(model().attributeExists("vendedor")).andExpect(view().name("vendedores/perfil"));
@@ -171,6 +173,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Formulario editar perfil de vendedor")
     void testEdit() throws Exception {
 		mockMvc.perform(get("/vendedores/editar")).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("vendedores/editarPerfil"));
@@ -178,6 +181,7 @@ class VendedorControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Editar perfil de vendedor")
 	void testProcesoEditarPerfiln() throws Exception {
 		mockMvc.perform(post("/vendedores/editar").param("id", "2").param("version", "1").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
@@ -186,6 +190,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Editar perfil de vendedor (con error en dni)")
 	void testProcesoEditarPerfilConErrores() throws Exception {
 		mockMvc.perform(post("/vendedores/editar").param("id", "2").param("version", "1").param("dni", "").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
@@ -194,6 +199,7 @@ class VendedorControllerTest {
 	}
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Editar perfil de vendedor (con error en versión)")
 	void testProcesoEditarPerfilErroresVersiones() throws Exception {
 		mockMvc.perform(post("/vendedores/editar").param("id", "2").param("version", "2").param("dni", "56789876").param("nombre", "Quique")
 				.param("apellido", "Salazar").param("direccion", "Calle Cuna").param("telefono", "615067389")
@@ -203,6 +209,7 @@ class VendedorControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Ver perfil de cliente desde vendedor")
 	void testProcesoPerfilCliente() throws Exception {
 		mockMvc.perform(get("/vendedores/perfilCliente/" + TEST_CLIENTE_ID)).andExpect(status().isOk())
 				.andExpect(model().attributeExists("cliente")).andExpect(view().name("vendedores/perfilCliente"));
@@ -210,6 +217,7 @@ class VendedorControllerTest {
 
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Visualizar articulos en venta")
 	void testProcesoArticulosVenta() throws Exception {
 		mockMvc.perform(get("/vendedores/articulosEnVenta")).andExpect(status().isOk())
 				.andExpect(model().attributeExists("articulos")).andExpect(view().name("vendedores/listadoArticulos"));
@@ -217,6 +225,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Visualizar listado de solicitudes")
 	void testMostrarListadoSolicitudes() throws Exception {
 		mockMvc.perform(get("/vendedores/listadoSolicitudes")).andExpect(status().isOk())
 				.andExpect(model().attributeExists("solicitudes")).andExpect(view().name("vendedores/listadoSolicitudes"));
@@ -224,6 +233,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Visualizar detalles de artículo")
 	void testMostrarArticuloDetallado() throws Exception {
 		mockMvc.perform(get("/vendedores/articulo/" + TEST_ARTICULO_ID)).andExpect(status().is2xxSuccessful())
 					.andExpect(view().name("vendedores/articulo"));
@@ -231,6 +241,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Visualizar detalles de artículo ")
 	void testMostrarArticuloDetalladoConErrores() throws Exception {
 		mockMvc.perform(get("/vendedores/articulo/" + TEST_ARTICULO_FALLO_ID)).andExpect(status().is3xxRedirection())
 					.andExpect(view().name("redirect:/vendedores/articulosEnVenta"));
@@ -238,6 +249,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Mostrar solicitud detallada")
 	void testMostrarSolicitudDetallada() throws Exception {
 		mockMvc.perform(get("/vendedores/solicitud/" + TEST_SOLICITUD_ID)).andExpect(status().is2xxSuccessful())
 					.andExpect(view().name("vendedores/solicitud"));
@@ -245,6 +257,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Mostrar solicitud detallada (con error en id)")
 	void testMostrarSolicitudDetalladaConErrores() throws Exception {
 		mockMvc.perform(get("/vendedores/solicitud/" + TEST_SOLICITUD_FALLO_ID)).andExpect(status().is3xxRedirection())
 					.andExpect(view().name("redirect:/vendedores/listadoSolicitudes"));
@@ -252,6 +265,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Eliminar artículo en venta")
 	void testEliminarArticulo() throws Exception {
 		mockMvc.perform(get("/vendedores/eliminarArticulo/" + TEST_ARTICULO_ID)).andExpect(status()
 				.is3xxRedirection()).andExpect(view().name("redirect:/vendedores/articulosEnVenta"));
@@ -259,6 +273,7 @@ class VendedorControllerTest {
 	
 	@WithMockUser(value = "spring")
 	@Test
+    @DisplayName("Test Eliminar solicitud pendiente")
 	void testEliminarSolicitud() throws Exception {
 		mockMvc.perform(get("/vendedores/eliminarSolicitud/" + TEST_SOLICITUD_ID)).andExpect(status()
 				.is3xxRedirection()).andExpect(view().name("redirect:/vendedores/listadoSolicitudes"));

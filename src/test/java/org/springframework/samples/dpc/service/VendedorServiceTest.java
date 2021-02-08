@@ -2,9 +2,9 @@ package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -29,12 +29,14 @@ class VendedorServiceTest {
 	private VendedorService vendedorService;
 
 	@Test
+	@DisplayName("Test Obtener Vendedor por Id")
 	void shouldFindVendedorById() {
 		Vendedor optperfil = this.vendedorService.findSellerById(1);
 		assertThat("Pepe").isEqualTo(optperfil.getNombre());
 	}
 
 	@Test
+	@DisplayName("Test Obtener Vendedor por dni")
 	void shouldFindVendedorByDni() {
 		Vendedor optperfil = this.vendedorService.findSellerByDni("29976789");
 		assertThat("Pepe").isEqualTo(optperfil.getNombre());
@@ -42,6 +44,7 @@ class VendedorServiceTest {
 
 	@Test
 	@Transactional
+	@DisplayName("Test Regsitrar vendedor")
 	void shouldInsertVendedor() throws Exception {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
@@ -62,6 +65,7 @@ class VendedorServiceTest {
 	
 	@Test
 	@Transactional
+	@DisplayName("Test Regsitrar vendedor con error en usuario")
 	void shouldInsertVendedorConErroresUsername() throws UsernameDuplicadoException {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
@@ -80,6 +84,7 @@ class VendedorServiceTest {
 
 	@Test
 	@Transactional
+	@DisplayName("Test Regsitrar vendedor con error en contraseña")
 	void shouldInsertVendedorConErroresContrasenya() throws ContrasenyaNoValidaException {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
@@ -98,6 +103,7 @@ class VendedorServiceTest {
 	
 	@Test
 	@Transactional
+	@DisplayName("Test Regsitrar vendedor con error en contraseña2")
 	void shouldInsertVendedorConErroresContrasenya2() throws ContrasenyaNoCoincideException {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
@@ -116,6 +122,7 @@ class VendedorServiceTest {
 	
 	@Test
 	@Transactional
+	@DisplayName("Test Regsitrar vendedor con error en contraseña3")
 	void shouldInsertVendedorConErroresContrasenya3() throws ContrasenyaParecidaUsuarioException {
 		Vendedor vend = new Vendedor();
 		vend.setDni("12345678");
@@ -147,6 +154,7 @@ class VendedorServiceTest {
 //	}
 
 	@Test
+	@DisplayName("Test Obtener vendedor de un artículo")
 	void testVendedorArticulo() {
 		Vendedor vendedor = vendedorService.vendedorDeUnArticulo(ARTICULO_ID);
 		Vendedor vendedor2 = vendedorService.vendedorDeUnArticulo(100);
@@ -157,12 +165,14 @@ class VendedorServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Listado de vendedores")
 	void testListadoVendedores() {
 		Page<Vendedor> listado = this.vendedorService.findAllSeller(0, 5, "nombre");
 		assertThat(listado.getSize()).isNotZero();
 	}
 	
 	@Test
+	@DisplayName("Test Obtener bloqueo de vendedor")
 	void testObtenerBloqueo() {
 		Vendedor vendedor = this.vendedorService.findSellerById(1);
 		Bloqueo bloqueo = this.vendedorService.getBloqueoVendedor(vendedor.getUser().getUsername());

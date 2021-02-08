@@ -180,7 +180,7 @@ INSERT INTO clientes VALUES (3, 1, 'López', 'C/Real betis 11', '98577888', 'Ant
 INSERT INTO comentarios VALUES (1, 1, 'Lo compré hará 1 año y todo va fenomenal, pero a veces noto que la batería se agota demasiado rápdio',3,1,1,null,null);
 INSERT INTO comentarios VALUES (2, 1, 'Funciona perfectamente y es muy fácil de usar ',5,6,1,null,null);
 INSERT INTO comentarios VALUES (3, 1, 'No recomendado para nada, se ha necesitado más de 5 reparaciones en 1 año.',1,1,1,null,null);
-INSERT INTO comentarios VALUES (4, 1, 'Estaba deseando comprarla :-)',5,10,2,null,null);
+INSERT INTO comentarios VALUES (4, 1, 'Estaba deseando comprarla :-)',5,10,1,null,null);
 INSERT INTO comentarios VALUES (5, 1, 'Pronto aumentaremos el stock de este producto para que no te quedes sin ninguno',0,3,null,null,1);
 INSERT INTO comentarios VALUES (6, 1, 'Estamos viendo varios insultos en los comentarios de estos artículos, todo aquel que insulte se le bloqueará',0,5,null,1,null);
 INSERT INTO comentarios VALUES (7, 1, '¿Sabéis si este ordenador corre el fortnite?',5,1,2,null,null);

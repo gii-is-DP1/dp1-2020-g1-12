@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MensajeSecurityTest {
+class MensajeSecurityTest {
 
 	private static final int TEST_CLIENTE_ID = 1;
 	private static final int TEST_VENDEDOR_ID = 1;

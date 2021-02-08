@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -41,6 +42,7 @@ class SolicitudServiceTest {
 	}
 
 	@Test
+	@DisplayName("Test Buscar solicitud por Id")
 	void testBuscarSolicitudPorId() {
 		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID);
 		assertThat(solicitud.getPrecio()).isEqualTo(988.99);
@@ -65,6 +67,7 @@ class SolicitudServiceTest {
 
 	}
 	@Test
+	@DisplayName("Test Insertar solicitud")
 	void testInsertarSolicitud() throws PrecioMenorAlEnvioException {
 		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		int size = pendientes.size();
@@ -79,6 +82,7 @@ class SolicitudServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Insertar solicitud fallida")
 	void testInsertarSolicitudFallida() throws PrecioMenorAlEnvioException {
 		List<Solicitud> pendientes = this.solicitudService.solicitudesPendientes(0, 1000, "-id").getContent();
 		int size = pendientes.size();
@@ -94,6 +98,7 @@ class SolicitudServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Aceptar solicitud")
 	void testAceptarSolicitud() {
 		Solicitud solicitud = solicitudService.detallesSolicitud(SOLICITUD_PENDIENTE_ID);
 		
@@ -105,6 +110,7 @@ class SolicitudServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Denegar solicitud")
 	void testDenegarSolicitud() throws SolicitudRechazadaSinRespuestaException {
 		Solicitud solicitud = solicitudService.detallesSolicitud(SOLICITUD_ACEPTADA_ID);
 		
@@ -118,6 +124,7 @@ class SolicitudServiceTest {
 	}
 	
 	@ParameterizedTest
+	@DisplayName("Test Denegar solicitud fallidos")
 	@ValueSource(strings = {"", "Prohibido"})
 	void testDenegarSolicitudFallido(String respuesta) throws SolicitudRechazadaSinRespuestaException {
 		
@@ -126,6 +133,7 @@ class SolicitudServiceTest {
 	}
 
 	@Test
+	@DisplayName("Test Buscar solicitud de vendedor")
 	void testBuscarSolicitudPorProveedorId() {
 		List<Solicitud> solicitud = this.solicitudService.getsolicitudesByProvider(VENDEDOR_ID, 0, 100, "id").getContent();
 		assertThat(solicitud.size()).isEqualTo(5);
@@ -139,6 +147,7 @@ class SolicitudServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Test Eliminar solicitud")
 	void testEliminarSolicitud() {
 		Solicitud solicitud = this.solicitudService.detallesSolicitud(SOLICITUD_PENDIENTE_ID);
 		solicitudService.eliminarSolicitud(solicitud);

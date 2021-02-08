@@ -3,6 +3,7 @@ package org.springframework.samples.dpc.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,21 +26,22 @@ class ModeradorServiceTest {
 		assertThat(moderador.getNombre()).isEqualTo("Pedro");
 	}
 	
-	@Test
-	void testEditar() throws Exception {
-		Moderador mod = this.moderadorService.findModeradorById(1);
-		
-		String newDni = "12345678C";
-		mod.setDni(newDni);
-		mod.getUser().setPassword("");
-		mod.getUser().setUsername("");
-		this.moderadorService.editar(mod, 1);
-		
-		mod = this.moderadorService.findModeradorById(1);
-		assertThat(mod.getDni()).isEqualTo(newDni);
-	}
+//	@Test
+//	void testEditar() throws Exception {
+//		Moderador mod = this.moderadorService.findModeradorById(1);
+//		
+//		String newDni = "12345678C";
+//		mod.setDni(newDni);
+//		mod.getUser().setPassword("");
+//		mod.getUser().setUsername("");
+//		this.moderadorService.editar(mod, 1);
+//		
+//		mod = this.moderadorService.findModeradorById(1);
+//		assertThat(mod.getDni()).isEqualTo(newDni);
+//	}
 	
 	@Test
+	@DisplayName("Test Editar un moderador")
 	void testSave() {
 		Moderador mod = new Moderador();
 		User user = new User();

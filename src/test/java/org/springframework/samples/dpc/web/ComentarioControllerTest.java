@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -100,6 +101,7 @@ class ComentarioControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Formulario crear comentario en artículo")
     void testCrearComentario() throws Exception {
 		mockMvc.perform(get("/comentario/articulo/" + TEST_ARTICULO_ID)).andExpect(status().isOk())
 			.andExpect(model().attributeExists("comentario" , "articulo"))
@@ -108,6 +110,7 @@ class ComentarioControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Crear comentario en artículo (con error de valoración)")
     void testProcesoComentarConErrores() throws Exception {
 		mockMvc.perform(post("/comentario/articulo/" + TEST_ARTICULO_ID).param("descripcion", "ASDFGHJKLÑQWUYEI")
 				.param("valoracion", "4.5").with(csrf())).andExpect(status().isOk())
@@ -116,6 +119,7 @@ class ComentarioControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Crear comentario en artículo")
     void testProcesoComentar() throws Exception {
 		mockMvc.perform(post("/comentario/articulo/" + TEST_ARTICULO_ID).param("descripcion", "ASDFGHJKLÑQWUYEI")
 				.param("valoracion", "4").with(csrf())).andExpect(status().is3xxRedirection())
@@ -124,9 +128,35 @@ class ComentarioControllerTest {
 	
 	@WithMockUser(value = "spring")
     @Test
+    @DisplayName("Test Eliminar comentario en artículo")
     void testEliminarComentario() throws Exception {
 		mockMvc.perform(get("/comentario/eliminar/" + TEST_COMENTARIO_ID + "/articulo/" + TEST_ARTICULO_ID))
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/articulos/{articuloId}"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testEditarComentario() throws Exception {
+		mockMvc.perform(get("/comentario/editar/" + TEST_COMENTARIO_ID + "/articulo/" + TEST_ARTICULO_ID))
+		.andExpect(status().isOk()).andExpect(model().attributeExists("comentario" , "articulo"))
+			.andExpect(view().name("articulos/editarComentario"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoEditarComentarioConErrores() throws Exception {
+		mockMvc.perform(post("/comentario/editar/" + TEST_COMENTARIO_ID + "/articulo/" + TEST_ARTICULO_ID)
+				.param("descripcion", "ASDFGHJKLÑQWUYEI")
+				.param("valoracion", "7").with(csrf())).andExpect(status().isOk())
+				.andExpect(view().name("articulos/editarComentario"));
+	}
+	
+	@WithMockUser(value = "spring")
+    @Test
+    void testProcesoEditarComentario() throws Exception {
+		mockMvc.perform(post("/comentario/editar/" + TEST_COMENTARIO_ID + "/articulo/" + TEST_ARTICULO_ID)
+				.param("descripcion", "ASDFGHJKLÑQWUYEI").param("valoracion", "4").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/articulos/{articuloId}"));
 	}
 	
 }
