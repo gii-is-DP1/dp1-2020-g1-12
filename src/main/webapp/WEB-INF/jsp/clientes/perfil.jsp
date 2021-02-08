@@ -47,25 +47,32 @@
     	<p>No tienes ninguna tarjeta asociada a esta cuenta</p>
     </c:if>
     
-    
     <c:forEach items="${cliente.tarjetas}" var="tarjeta">
     	<table class="table table-bordered">
         <tr>
-			<spring:url value="/tarjetas/{tarjetaId}/delete" var="tarjetaUrl">
-	            <spring:param name="tarjetaId" value="${tarjeta.id}"/>
-	        </spring:url> 
-	        <a href="${fn:escapeXml(tarjetaUrl)}"><button class="btn btn-default" type="submit">Eliminar</button></a>       	
-            <th>Titular</th>
-            <td>${tarjeta.titular}</td>
+        	<c:choose>
+        		<c:when test = "${tarjeta.titular== 'Tarjeta eliminada' && cliente.tarjetas.size() == 0}">
+        			<p>No tienes ninguna tarjeta asociada a esta cuenta</p>
+        		</c:when>
+        		<c:when test = "${tarjeta.titular== 'Tarjeta eliminada'}"/>
+        		<c:otherwise>
+					<spring:url value="/tarjetas/{tarjetaId}/delete" var="tarjetaUrl">
+	      	    	  <spring:param name="tarjetaId" value="${tarjeta.id}"/>
+	     	  		</spring:url> 
+	      	 		 <a href="${fn:escapeXml(tarjetaUrl)}"><button class="btn btn-default" type="submit">Eliminar</button></a>       	
+          	 	 		<th>Titular</th>
+           		 		<td>${tarjeta.titular}</td>
         </tr>
-        <tr>
-            <th>Numero de tarjeta</th>
-            <td>✱✱✱✱✱✱✱✱✱✱✱✱ ${tarjeta.numero.substring(12)}</td>
-        </tr>
-        <tr>
-            <th>Fecha de caducidad</th>
-            <td>${tarjeta.fechaCaducidad}</td>
-        </tr>
+        		<tr>
+        	 	   <th>Numero de tarjeta</th>
+         	 	   <td>✱✱✱✱✱✱✱✱✱✱✱✱ ${tarjeta.numero.substring(12)}</td>
+      	  		</tr>
+      	  		<tr>
+        	 	   <th>Fecha de caducidad</th>
+        	 	   <td>${tarjeta.fechaCaducidad}</td>
+       	   		</tr>
+       	    	</c:otherwise>
+       	    </c:choose>
     	</table>
     </c:forEach>
             
