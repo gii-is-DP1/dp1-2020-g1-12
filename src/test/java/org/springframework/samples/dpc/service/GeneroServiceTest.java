@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -38,6 +39,7 @@ class GeneroServiceTest {
 	
 	
 	@Test
+    @DisplayName("Test Añadir género")
 	void testAnyadirGenero() {
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = generoService.findGeneroById(GENERO_ID2);
@@ -48,6 +50,7 @@ class GeneroServiceTest {
 	}
 	
 	@Test
+    @DisplayName("Test de error Añadir género (ID nula)")
 	void testAnyadirGeneroNull() {
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = new Genero();
@@ -59,6 +62,7 @@ class GeneroServiceTest {
 	}
 	
 	@Test
+    @DisplayName("Test Eliminar género")
 	void testEliminarGenero() {
 		Articulo art = articuloService.findArticuloById(ARTICULO_ID);
 		Genero genero = generoService.findGeneroById(GENERO_ID);
@@ -69,6 +73,7 @@ class GeneroServiceTest {
 	}
 
 	@Test
+    @DisplayName("Test Obtener géneros restantes")
 	void testGenerosRestantes() {
 		Set<Genero> todosGeneros = ((Collection<Genero>) generoService.findAllGeneros()).stream().collect(Collectors.toSet());
 		Set<Genero> generosArticulo = articuloService.findArticuloById(ARTICULO_ID).getGeneros();
@@ -78,6 +83,7 @@ class GeneroServiceTest {
 	}
 	
 	@Test
+    @DisplayName("Test Obtener géneros restantes (repositorio)")
 	void testGenerosRestantesRepository() {
 		Set<Genero> generosActuales = ((Collection<Genero>) generoService.findAllGeneros()).stream().collect(Collectors.toSet());
 		Genero g = new Genero();

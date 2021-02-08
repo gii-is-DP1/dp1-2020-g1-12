@@ -223,7 +223,7 @@
 						</sec:authorize>
 						<c:if test="${puedeEditarVendedor==comentario.vendedor.id}">
 						
-							<spring:url value="/editar/{comentarioId}/articulo/{articuloId}" var="comentarioEditarVendedor">
+							<spring:url value="/comentario/editar/{comentarioId}/articulo/{articuloId}" var="comentarioEditarVendedor">
 								<spring:param name="comentarioId" value="${comentario.id}"/>
 		   						<spring:param name="articuloId" value="${articulo.id}"/>
 							</spring:url>

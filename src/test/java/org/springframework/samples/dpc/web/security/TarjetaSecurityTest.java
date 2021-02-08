@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ class TarjetaSecurityTest {
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Guardar tarjeta (como cliente)")
     void testGuardarTarjeta() throws Exception {
     	mockMvc.perform(post("/tarjetas/save").param("titular", "Juan Alberto García").param("numero", "1234325678123909")
     						.param("cvv", "453")
@@ -50,6 +52,7 @@ class TarjetaSecurityTest {
 	
 	@WithMockUser(username ="moderador1",authorities = {"moderador"})
     @Test
+    @DisplayName("Test Enviar tarjeta (como moderador)")
     void testGuardarTarjetaModerador() throws Exception {
     	mockMvc.perform(post("/tarjetas/save").param("titular", "Juan Alberto García").param("numero", "1234325678123909")
     						.param("cvv", "453")
@@ -60,6 +63,7 @@ class TarjetaSecurityTest {
 	
 	@WithMockUser(username ="cliente3",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Eliminar tarjeta (como cliente)")
 	 void testEliminarTarjeta() throws Exception {
 			mockMvc.perform(get("/tarjetas/"+TEST_TARJETA_ID+"/delete"))
 			.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/clientes/perfil"));
@@ -67,6 +71,7 @@ class TarjetaSecurityTest {
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test Eliminar tarjeta (como vendedor)")
 	 void testEliminarTarjetaVendedor() throws Exception {
 			mockMvc.perform(get("/tarjetas/"+TEST_TARJETA_ID+"/delete"))
 			.andExpect(status().is(HttpStatus.FORBIDDEN.value()));

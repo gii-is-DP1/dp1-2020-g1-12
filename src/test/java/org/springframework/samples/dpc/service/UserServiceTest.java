@@ -18,6 +18,7 @@ class UserServiceTest {
 	private UserService userService;
 
 	@Test
+    @DisplayName("Test Encontrar usuario")
 	void shouldFindUser() {
 		User optperfil = this.userService.findUser("cliente1");
 		assertEquals("$2a$10$QSvCoF1/GTt6J3zsnBfj2ull8tjIjtYqDt/8QfmskilpIlrJz2Mse", optperfil.getPassword());

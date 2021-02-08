@@ -159,5 +159,4 @@ class ClienteControllerTest {
 					.param("email", "mail@mail.com").param("version", "1").with(csrf())).andExpect(status().is2xxSuccessful())
 						.andExpect(view().name("clientes/editarPerfil"));
 	}
-
 }

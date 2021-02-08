@@ -42,6 +42,7 @@ public class TarjetaService {
 		}else
 			return null;
 	}
+
 	@Transactional
 	public void eliminarTarjetaPersona(int tarjetaId) {
 		Cliente cliente = clienteService.getClienteDeSesion();
@@ -51,7 +52,9 @@ public class TarjetaService {
 		}
 		int nRelaciones =tarjetaRepository.tarjetaCompartida(tarjetaId);
 		if(nRelaciones==0) {
-			tarjetaRepository.delete(tarjeta);
+			tarjeta.setTitular("Tarjeta eliminada");
+			tarjeta.setCvv("000");
+			tarjeta.setFechaCaducidad("00/00");
 		}
 		
 	}

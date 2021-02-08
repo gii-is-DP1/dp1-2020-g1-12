@@ -8,8 +8,6 @@
 <dpc:layout pageName="solicitudes">
 
     <h2>Solicitud ${solicitud.id}</h2>
-    ${mensaje}
-
 			<spring:url value="/solicitudes/{solicitudId}/solicitante/{solicitanteId}" var="solicitanteUrl">
                <spring:param name="solicitudId" value="${solicitud.id}"/>
                <spring:param name="solicitanteId" value="${solicitud.vendedor.id}"/>

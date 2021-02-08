@@ -81,7 +81,7 @@ public class SolicitudService {
 
 	@Transactional(rollbackFor = SolicitudRechazadaSinRespuestaException.class)
 	public void denegarSolicitud(Integer solicitudId, String respuesta) throws SolicitudRechazadaSinRespuestaException {
-		if(respuesta.isEmpty() || (respuesta.length() < 15)) {
+		if(respuesta.isEmpty() || (respuesta.length() < 15) || respuesta.length() > 100) {
 			throw new SolicitudRechazadaSinRespuestaException();
 		} else {
 			Solicitud solicitud = detallesSolicitud(solicitudId);

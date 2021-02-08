@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ class PedidoSecurityTest {
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Obtener pedido (como cliente)")
     void testObtenerPedido() throws Exception {
 		mockMvc.perform(get("/pedidos/" + TEST_PEDIDO_ID)).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("clientes/pedido"));
@@ -47,12 +49,14 @@ class PedidoSecurityTest {
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test de error Obtener pedido (como vendedor)")
     void testObtenerPedidoErroneo() throws Exception {
 		mockMvc.perform(get("/pedidos/" + TEST_PEDIDO_ID)).andExpect(status().isForbidden());
 	}
 	
 	@WithMockUser(username ="vendedor2",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test Guardar estado de pedido (como vendedor)")
     void testGuardarEstadoPedido() throws Exception {
 		mockMvc.perform(post("/pedidos/modificar/" + TEST_LINEAPEDIDO_ID +"/save").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/vendedores/articulosVendidos"));
@@ -60,6 +64,7 @@ class PedidoSecurityTest {
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"}) 
     @Test
+    @DisplayName("Test Confirmar compra (como cliente)")
     void testConfirmarCompra() throws Exception {
 		mockMvc.perform(post("/pedidos/confirmarCompra").param("id", "1").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/pedidos"));
@@ -67,6 +72,7 @@ class PedidoSecurityTest {
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Obtener listado de pedidos (como cliente)")
     void testListadoPedidos() throws Exception {
 		mockMvc.perform(get("/pedidos")).andExpect(status().is2xxSuccessful())
 		.andExpect(view().name("clientes/listadoPedidos"));
@@ -74,6 +80,7 @@ class PedidoSecurityTest {
 	
 	@WithMockUser(username ="cliente2",authorities = {"cliente"})
     @Test
+    @DisplayName("Test de error Confirmar compra (sin tarjeta)")
     void testConfirmarCompraErrorSinTarjeta() throws Exception {
 		mockMvc.perform(post("/pedidos/confirmarCompra").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/"));

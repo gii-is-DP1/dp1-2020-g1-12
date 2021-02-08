@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ class CestaSecurityTest {
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Añadir artículo a la cesta (como cliente)")
     void testAnyadirArticuloCesta() throws Exception {
 		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/articulos/{articuloId}"));
@@ -47,18 +49,21 @@ class CestaSecurityTest {
 	
 	@WithMockUser(username ="moderador1",authorities = {"moderador"})
     @Test
+    @DisplayName("Test de error Añadir artículo a la cesta (como moderador)")
     void testAnyadirArticuloCestaModerador() throws Exception {
 		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().isForbidden());
 	}
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test de error Añadir artículo a la cesta (como vendedor)")
     void testAnyadirArticuloCestaVendedor() throws Exception {
 		mockMvc.perform(get("/cesta/anyadirArticulo/" + TEST_ARTICULO_ID)).andExpect(status().isForbidden());
 	}
 	
 	@WithMockUser(username ="cliente2",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Actualizar cesta (como cliente)")
 	void testActualizarCesta() throws Exception {
 		mockMvc.perform(post("/cesta/actualizar").with(csrf()))
 				.andExpect(status().is2xxSuccessful()).andExpect(view().name("clientes/cesta"));
@@ -66,6 +71,7 @@ class CestaSecurityTest {
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test de error Actualizar cesta (como vendedor)")
 	void testActualizarCestaVendedor() throws Exception {
 		mockMvc.perform(post("/cesta/actualizar").with(csrf())).andExpect(status().isForbidden());
 	}
@@ -73,6 +79,7 @@ class CestaSecurityTest {
 	
 	@WithMockUser(username ="cliente2",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Eliminar artículo de la cesta (como cliente)")
 	void testEliminarArticuloCesta() throws Exception {
 		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is3xxRedirection())
 				.andExpect(view().name("redirect:/cesta"));
@@ -80,12 +87,14 @@ class CestaSecurityTest {
 	
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test de error Eliminar artículo de la cesta (como vendedor)")
 	void testEliminarArticuloCestaVendedor() throws Exception {
 		mockMvc.perform(get("/cesta/eliminar/" + 1)).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
 	}
 	
 	@WithMockUser(username ="cliente1",authorities = {"cliente"})
     @Test
+    @DisplayName("Test Obtener listado de cesta (como cliente)")
 	void testListadoCesta() throws Exception {
 		mockMvc.perform(get("/cesta")).andExpect(status().isOk()).andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("clientes/cesta"));
@@ -93,12 +102,14 @@ class CestaSecurityTest {
 
 	@WithMockUser(username ="vendedor1",authorities = {"vendedor"})
     @Test
+    @DisplayName("Test de error Obtener listado de cesta (como vendedor)")
 	void testListadoCestaVendedor() throws Exception {
 		mockMvc.perform(get("/cesta")).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
 	}
 	
 	@WithMockUser(username ="moderador1",authorities = {"moderador"})
     @Test
+    @DisplayName("Test de error Obtener listado de cesta (como moderador)")
 	void testListadoCestaModerador() throws Exception {
 		mockMvc.perform(get("/cesta")).andExpect(status().is(HttpStatus.FORBIDDEN.value()));
 	}
